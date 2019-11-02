@@ -8,6 +8,7 @@ import ToontownLoader
 from direct.gui import DirectGuiGlobals
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
+from libotp import *
 import sys
 import os
 import math
@@ -196,9 +197,9 @@ class ToonBase(OTPBase.OTPBase):
         self.useDrive()
         self.disableMouse()
         if self.mouseInterface:
-            self.mouseInterface.reparentTo(self.dataUnused)
+            self.mouseInterface.detachNode()
         if base.mouse2cam:
-            self.mouse2cam.reparentTo(self.dataUnused)
+            self.mouse2cam.detachNode()
 
     def __walking(self, pressed):
         self.walking = pressed
@@ -399,3 +400,8 @@ class ToonBase(OTPBase.OTPBase):
     def playMusic(self, music, looping = 0, interrupt = 1, volume = None, time = 0.0):
         OTPBase.OTPBase.playMusic(self, self.resetMusic)
         OTPBase.OTPBase.playMusic(self, music, looping, interrupt, volume, time)
+
+    def isMainWindowOpen(self):
+        if self.win != None:
+            return self.win.isValid()
+        return 0

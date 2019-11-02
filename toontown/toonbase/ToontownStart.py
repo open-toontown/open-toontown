@@ -31,7 +31,7 @@ if launcher.isDummy():
     http = HTTPClient()
 else:
     http = launcher.http
-tempLoader = PandaLoader()
+tempLoader = Loader()
 backgroundNode = tempLoader.loadSync(Filename('phase_3/models/gui/loading-background'))
 from direct.gui import DirectGuiGlobals
 print 'ToontownStart: setting default font'

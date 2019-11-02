@@ -1,9 +1,10 @@
-from pandac.libpandaexpressModules import *
+from panda3d.core import *
+from direct.showbase import DConfig
 import string
 import types
 try:
-    language = getConfigExpress().GetString('language', 'english')
-    checkLanguage = getConfigExpress().GetBool('check-language', 0)
+    language = DConfig.GetString('language', 'english')
+    checkLanguage = DConfig.GetBool('check-language', 0)
 except:
     language = simbase.config.GetString('language', 'english')
     checkLanguage = simbase.config.GetBool('check-language', 0)

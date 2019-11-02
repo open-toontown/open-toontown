@@ -39,7 +39,7 @@ if 1:
 
 from otp.launcher.LauncherBase import LauncherBase
 from otp.otpbase import OTPLauncherGlobals
-from pandac.libpandaexpressModules import *
+from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 
 class ToontownLauncher(LauncherBase):

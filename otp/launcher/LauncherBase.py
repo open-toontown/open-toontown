@@ -3,7 +3,7 @@ import os
 import time
 import string
 import __builtin__
-from pandac.libpandaexpressModules import *
+from panda3d.core import *
 from direct.showbase.MessengerGlobal import *
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.EventManagerGlobal import *
@@ -1855,7 +1855,7 @@ class LauncherBase(DirectObject):
             self.notify.info("Third party programs installed:")
             for hack in hacksInstalled.keys():
                 self.notify.info(hack)
-        
+
         if len(hacksRunning) > 0:
             self.notify.info("Third party programs running:")
             for hack in hacksRunning.keys():
