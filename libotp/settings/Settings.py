@@ -1,4 +1,8 @@
 class Settings:
+    GL = 0
+    DX7 = 1
+    DX8 = 5
+
     @staticmethod
     def readSettings():
         pass  # todo
