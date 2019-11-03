@@ -2,7 +2,7 @@ import math
 from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from direct.showbase.PythonUtil import quantizeVec
+from otp.otpbase.PythonUtil import quantizeVec
 from direct.task.Task import Task
 from toontown.toontowngui import TTDialog
 from toontown.toonbase.ToonBaseGlobal import *

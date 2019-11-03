@@ -3,7 +3,7 @@ from direct.showbase import GarbageReport, ContainerReport, MessengerLeakDetecto
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.InputStateGlobal import inputState
-from direct.showbase.ObjectCount import ObjectCount
+from otp.otpbase.ObjectCount import ObjectCount
 from direct.task import Task
 from direct.task.TaskProfiler import TaskProfiler
 from otp.avatar import Avatar

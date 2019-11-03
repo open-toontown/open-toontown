@@ -97,3 +97,6 @@ audio-music-active #t
 audio-master-sfx-volume 1
 audio-master-music-volume 1
 server-type prod
+
+# TEMP
+fake-playtoken dev

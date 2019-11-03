@@ -5,7 +5,7 @@ from pandac.PandaModules import *
 import VineGameGlobals
 from direct.interval.SoundInterval import SoundInterval
 
-class VineBat(NodePath.NodePath, DirectObject):
+class VineBat(NodePath, DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('VineBat')
     notify.setDebug(True)
     RADIUS = 1.7
