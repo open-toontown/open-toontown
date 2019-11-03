@@ -1,3 +1,8 @@
+from panda3d.core import *
+
+if __debug__:
+    loadPrcFile('etc/Configrc.prc')
+
 import __builtin__
 
 class game:
@@ -26,7 +31,6 @@ while not launcher.getGame2Done():
 
 print 'ToontownStart: Game2 is finished.'
 print 'ToontownStart: Starting the game.'
-from pandac.PandaModules import *
 if launcher.isDummy():
     http = HTTPClient()
 else:
@@ -40,7 +44,6 @@ DirectGuiGlobals.setDefaultFontFunc(ToontownGlobals.getInterfaceFont)
 launcher.setPandaErrorCode(7)
 import ToonBase
 ToonBase.ToonBase()
-from pandac.PandaModules import *
 if base.win == None:
     print 'Unable to open window; aborting.'
     sys.exit()

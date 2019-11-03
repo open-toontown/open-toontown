@@ -40,10 +40,10 @@ class ToontownLoadingScreen:
         if gui:
             self.waitBar.reparentTo(self.gui)
             self.title.reparentTo(self.gui)
-            self.gui.reparentTo(aspect2dp, NO_FADE_SORT_INDEX)
+            self.gui.reparentTo(aspect2dp, DGG.NO_FADE_SORT_INDEX)
         else:
-            self.waitBar.reparentTo(aspect2dp, NO_FADE_SORT_INDEX)
-            self.title.reparentTo(aspect2dp, NO_FADE_SORT_INDEX)
+            self.waitBar.reparentTo(aspect2dp, DGG.NO_FADE_SORT_INDEX)
+            self.title.reparentTo(aspect2dp, DGG.NO_FADE_SORT_INDEX)
             self.gui.reparentTo(hidden)
         self.waitBar.update(self.__count)
 

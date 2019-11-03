@@ -11,14 +11,12 @@ lock-to-one-cpu 1
 collect-tcp 1
 collect-tcp-interval 0.2
 server-version sv1.0.47.38
-server-version-suffix 
+server-version-suffix
 cull-bin shadow 15 fixed
-cull-bin ground 14 fixed 
-model-path      .
-sound-path      .
-plugin-path     .
-dc-file phase_3/etc/toon.dc
-dc-file phase_3/etc/otp.dc
+cull-bin ground 14 fixed
+model-path resources
+dc-file etc/toon.dc
+dc-file etc/otp.dc
 window-title Toontown
 verify-ssl 0
 ssl-cipher-list DEFAULT
@@ -40,14 +38,12 @@ downloader-frequency 0.1
 http-connect-timeout 20
 http-timeout 30
 contents-xml-dl-attempts 2
-load-display pandadx9
-aux-display pandadx9
-aux-display pandadx8
+load-display pandagl
 aux-display pandagl
+aux-display pandadx9
 aux-display tinydisplay
 win-size 800 600
 fullscreen #t
-load-file-type toontown
 compress-channels #t
 display-lists 0
 early-random-seed 1
@@ -101,8 +97,3 @@ audio-music-active #t
 audio-master-sfx-volume 1
 audio-master-music-volume 1
 server-type prod
-##!
-##!sig b1b9ca3e3322f3b65884483ec2b21300ec8f6f0bae1cfe70f8151b0d7c53fa2b
-##!sig fb1cc546e32345e09b8eba50624ab167c684e87d1ff4debb11da5322eb573f05
-##!sig c1dadb9a3589c86fbe0186afe1efa885223c4c64fd6ded3417f64ca17a5eaa12
-##!sig 3f317329bf49ce60607de5b408bc730c6ccd54973a5166ea08782fb9fe31a0c2
