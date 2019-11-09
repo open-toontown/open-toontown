@@ -30,6 +30,7 @@ from otp.login import LoginTTSpecificDevAccount
 from otp.login import AccountServerConstants
 from otp.login.CreateAccountScreen import CreateAccountScreen
 from otp.login import LoginScreen
+from otp.login import AstronLoginScreen
 from otp.otpgui import OTPDialog
 from otp.avatar import DistributedAvatar
 from otp.otpbase import OTPLocalizer
@@ -38,6 +39,7 @@ from otp.login import LoginGoAccount
 from otp.login.LoginWebPlayTokenAccount import LoginWebPlayTokenAccount
 from otp.login.LoginDISLTokenAccount import LoginDISLTokenAccount
 from otp.login import LoginTTAccount
+from otp.login import LoginAstronAccount
 from otp.login import HTTPUtil
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPLauncherGlobals
@@ -169,12 +171,16 @@ class OTPClientRepository(ClientRepositoryBase):
         else:
             self.http = HTTPClient()
 
-        self.allocateDcFile()
+        #self.allocateDcFile()
         self.accountOldAuth = config.GetBool('account-old-auth', 0)
         self.accountOldAuth = config.GetBool('%s-account-old-auth' % game.name,
                                              self.accountOldAuth)
         self.useNewTTDevLogin = base.config.GetBool('use-tt-specific-dev-login', False)
-        if self.useNewTTDevLogin:
+        self.astronSupport = config.GetBool('astron-support', True)
+        if self.astronSupport:
+            self.loginInterface = LoginAstronAccount.LoginAstronAccount(self)
+            self.notify.info('loginInterface: LoginAstronAccount')
+        elif self.useNewTTDevLogin:
             self.loginInterface = LoginTTSpecificDevAccount.LoginTTSpecificDevAccount(self)
             self.notify.info('loginInterface: LoginTTSpecificDevAccount')
         elif self.accountOldAuth:
@@ -525,7 +531,10 @@ class OTPClientRepository(ClientRepositoryBase):
     def enterLogin(self):
         self.sendSetAvatarIdMsg(0)
         self.loginDoneEvent = 'loginDone'
-        self.loginScreen = LoginScreen.LoginScreen(self, self.loginDoneEvent)
+        if self.astronSupport:
+            self.loginScreen = AstronLoginScreen.AstronLoginScreen(self, self.loginDoneEvent)
+        else:
+            self.loginScreen = LoginScreen.LoginScreen(self, self.loginDoneEvent)
         self.accept(self.loginDoneEvent, self.__handleLoginDone)
         self.loginScreen.load()
         self.loginScreen.enter()
@@ -1921,47 +1930,51 @@ class OTPClientRepository(ClientRepositoryBase):
         return Task.done
 
     def handleMessageType(self, msgType, di):
-        if msgType == CLIENT_GO_GET_LOST:
-            self.handleGoGetLost(di)
-        elif msgType == CLIENT_HEARTBEAT:
-            self.handleServerHeartbeat(di)
-        elif msgType == CLIENT_SYSTEM_MESSAGE:
-            self.handleSystemMessage(di)
-        elif msgType == CLIENT_SYSTEMMESSAGE_AKNOWLEDGE:
-            self.handleSystemMessageAknowledge(di)
-        elif msgType == CLIENT_CREATE_OBJECT_REQUIRED:
-            self.handleGenerateWithRequired(di)
-        elif msgType == CLIENT_CREATE_OBJECT_REQUIRED_OTHER:
-            self.handleGenerateWithRequiredOther(di)
-        elif msgType == CLIENT_CREATE_OBJECT_REQUIRED_OTHER_OWNER:
-            self.handleGenerateWithRequiredOtherOwner(di)
-        elif msgType == CLIENT_OBJECT_UPDATE_FIELD:
-            self.handleUpdateField(di)
-        elif msgType == CLIENT_OBJECT_DISABLE:
-            self.handleDisable(di)
-        elif msgType == CLIENT_OBJECT_DISABLE_OWNER:
-            self.handleDisable(di, ownerView=True)
-        elif msgType == CLIENT_OBJECT_DELETE_RESP:
-            self.handleDelete(di)
-        elif msgType == CLIENT_DONE_INTEREST_RESP:
-            self.gotInterestDoneMessage(di)
-        elif msgType == CLIENT_GET_STATE_RESP:
-            pass
-        elif msgType == CLIENT_OBJECT_LOCATION:
-            self.gotObjectLocationMessage(di)
-        elif msgType == CLIENT_SET_WISHNAME_RESP:
-            self.gotWishnameResponse(di)
+        if self.astronSupport:
+            if msgType == CLIENT_EJECT:
+                self.handleGoGetLost(di)
         else:
-            currentLoginState = self.loginFSM.getCurrentState()
-            if currentLoginState:
-                currentLoginStateName = currentLoginState.getName()
+            if msgType == CLIENT_GO_GET_LOST:
+                self.handleGoGetLost(di)
+            elif msgType == CLIENT_HEARTBEAT:
+                self.handleServerHeartbeat(di)
+            elif msgType == CLIENT_SYSTEM_MESSAGE:
+                self.handleSystemMessage(di)
+            elif msgType == CLIENT_SYSTEMMESSAGE_AKNOWLEDGE:
+                self.handleSystemMessageAknowledge(di)
+            elif msgType == CLIENT_CREATE_OBJECT_REQUIRED:
+                self.handleGenerateWithRequired(di)
+            elif msgType == CLIENT_CREATE_OBJECT_REQUIRED_OTHER:
+                self.handleGenerateWithRequiredOther(di)
+            elif msgType == CLIENT_CREATE_OBJECT_REQUIRED_OTHER_OWNER:
+                self.handleGenerateWithRequiredOtherOwner(di)
+            elif msgType == CLIENT_OBJECT_UPDATE_FIELD:
+                self.handleUpdateField(di)
+            elif msgType == CLIENT_OBJECT_DISABLE:
+                self.handleDisable(di)
+            elif msgType == CLIENT_OBJECT_DISABLE_OWNER:
+                self.handleDisable(di, ownerView=True)
+            elif msgType == CLIENT_OBJECT_DELETE_RESP:
+                self.handleDelete(di)
+            elif msgType == CLIENT_DONE_INTEREST_RESP:
+                self.gotInterestDoneMessage(di)
+            elif msgType == CLIENT_GET_STATE_RESP:
+                pass
+            elif msgType == CLIENT_OBJECT_LOCATION:
+                self.gotObjectLocationMessage(di)
+            elif msgType == CLIENT_SET_WISHNAME_RESP:
+                self.gotWishnameResponse(di)
             else:
-                currentLoginStateName = 'None'
-            currentGameState = self.gameFSM.getCurrentState()
-            if currentGameState:
-                currentGameStateName = currentGameState.getName()
-            else:
-                currentGameStateName = 'None'
+                currentLoginState = self.loginFSM.getCurrentState()
+                if currentLoginState:
+                    currentLoginStateName = currentLoginState.getName()
+                else:
+                    currentLoginStateName = 'None'
+                currentGameState = self.gameFSM.getCurrentState()
+                if currentGameState:
+                    currentGameStateName = currentGameState.getName()
+                else:
+                    currentGameStateName = 'None'
 
     def gotInterestDoneMessage(self, di):
         if self.deferredGenerates:
