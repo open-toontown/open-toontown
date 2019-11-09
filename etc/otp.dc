@@ -41,9 +41,9 @@ struct AvatarPendingDel {
 
 dclass Account {
   string DcObjectType db;
-  uint32array ACCOUNT_AV_SET required db;
-  uint32array pirateAvatars required db;
-  uint32array HOUSE_ID_SET db;
+  uint32[] ACCOUNT_AV_SET required db;
+  uint32[] pirateAvatars required db;
+  uint32[] HOUSE_ID_SET db;
   uint32 ESTATE_ID db;
   AvatarPendingDel ACCOUNT_AV_SET_DEL[] db;
   string PLAYED_MINUTES db;
@@ -215,6 +215,11 @@ dclass DistributedAvatar : DistributedSmoothNode, TalkPath_owner, TalkPath_whisp
   confirmAvOnShard(uint32, int8);
 };
 
+struct friendEntry {
+  uint32 friendId;
+  uint8 friendCode;
+}
+
 dclass DistributedPlayer : DistributedAvatar {
   arrivedOnDistrict(uint32) ownrecv ram;
   setAccountName(string) required ownrecv db;
@@ -228,7 +233,7 @@ dclass DistributedPlayer : DistributedAvatar {
   setWhitelistChatFlags(uint8) broadcast ownrecv ram airecv;
   setSC(uint16) broadcast ownsend airecv;
   setSCCustom(uint16) broadcast ownsend airecv;
-  setFriendsList(uint32uint8array) ownrecv required db airecv;
+  setFriendsList(friendEntry[]) ownrecv required db airecv;
   setDISLname(string) broadcast ownrecv ram;
   setDISLid(uint32) broadcast ownrecv ram db airecv required;
   OwningAccount(uint32);
@@ -242,7 +247,7 @@ dclass DistributedPlayer : DistributedAvatar {
 dclass MagicWordManager : DistributedObject {
   setMagicWord(string, uint32, uint32, string(0-256)) airecv clsend;
   setMagicWordResponse(string) airecv;
-  setWho(uint32array) airecv clsend;
+  setWho(uint32[]) airecv clsend;
 };
 
 dclass OtpAvatarManager : DistributedObject {
@@ -504,4 +509,3 @@ dclass StatusDatabase : DistributedObject {
 dclass CallbackObject {
   callback(uint32, bool, uint8);
 };
-
