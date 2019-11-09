@@ -35,6 +35,10 @@ uberdogs:
       id: 4695
       anonymous: false
 
+    - class: AstronLoginManager
+      id: 4670
+      anonymous: true
+
 roles:
     - type: clientagent
       bind: 0.0.0.0:7198

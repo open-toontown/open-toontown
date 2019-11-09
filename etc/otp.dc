@@ -27,6 +27,7 @@ from otp.distributed import CentralLogger/AI/UD
 from otp.web import SettingsMgr/AI/UD
 from otp.status import StatusDatabase/UD
 from otp.avatar import AvatarHandle
+from otp.login import AstronLoginManager/UD
 
 typedef uint8 bool;
 
@@ -508,4 +509,9 @@ dclass StatusDatabase : DistributedObject {
 
 dclass CallbackObject {
   callback(uint32, bool, uint8);
+};
+
+dclass AstronLoginManager : DistributedObject {
+  requestLogin(string) clsend;
+  loginResponse(blob);
 };
