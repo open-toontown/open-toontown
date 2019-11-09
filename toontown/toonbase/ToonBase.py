@@ -148,7 +148,7 @@ class ToonBase(OTPBase.OTPBase):
         self.canScreenShot = 1
         self.glitchCount = 0
         self.walking = 0
-        self.resetMusic = self.loadMusic('phase_3/audio/bgm/MIDI_Events_16channels.mid')
+        self.resetMusic = self.loader.loadMusic('phase_3/audio/bgm/MIDI_Events_16channels.mid')
         self.oldX = max(1, base.win.getXSize())
         self.oldY = max(1, base.win.getYSize())
         self.aspectRatio = float(self.oldX) / self.oldY
@@ -308,11 +308,12 @@ class ToonBase(OTPBase.OTPBase):
             self.notify.info('Using gameServer from launcher: %s ' % gameServer)
         else:
             gameServer = 'localhost'
-        serverPort = base.config.GetInt('server-port', 6667)
+        serverPort = base.config.GetInt('server-port', 7198)
         serverList = []
         for name in gameServer.split(';'):
             url = URLSpec(name, 1)
-            url.setScheme('s')
+            if config.GetBool('server-want-ssl', False):
+                url.setScheme('s')
             if not url.hasPort():
                 url.setPort(serverPort)
             serverList.append(url)

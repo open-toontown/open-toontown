@@ -112,6 +112,6 @@ if autoRun and launcher.isDummy() and (not Thread.isTrueThreads() or __name__ ==
     except SystemExit:
         raise
     except:
-        from direct.showbase import PythonUtil
+        from otp.otpbase import PythonUtil
         print PythonUtil.describeException()
         raise
