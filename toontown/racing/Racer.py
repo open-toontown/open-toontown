@@ -1,0 +1,2 @@
+class Racer:
+    pass

@@ -1,4 +1,5 @@
 from pandac.PandaModules import *
+from libtoontown import *
 from direct.showbase.PythonUtil import reduceAngle, randFloat, normalDistrib
 from direct.showbase import DirectObject
 from toontown.pets import PetChase

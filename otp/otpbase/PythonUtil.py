@@ -1,7 +1,35 @@
 import __builtin__
 import sys
 
-__all__ = ['describeException', 'pdir']
+__all__ = ['enumerate', 'nonRepeatingRandomList', 'describeException', 'pdir']
+
+if not hasattr(__builtin__, 'enumerate'):
+    def enumerate(L):
+        """Returns (0, L[0]), (1, L[1]), etc., allowing this syntax:
+        for i, item in enumerate(L):
+           ...
+
+        enumerate is a built-in feature in Python 2.3, which implements it
+        using an iterator. For now, we can use this quick & dirty
+        implementation that returns a list of tuples that is completely
+        constructed every time enumerate() is called.
+        """
+        return zip(xrange(len(L)), L)
+
+    __builtin__.enumerate = enumerate
+else:
+    enumerate = __builtin__.enumerate
+
+def nonRepeatingRandomList(vals, max):
+    random.seed(time.time())
+    #first generate a set of random values
+    valueList=range(max)
+    finalVals=[]
+    for i in range(vals):
+        index=int(random.random()*len(valueList))
+        finalVals.append(valueList[index])
+        valueList.remove(valueList[index])
+    return finalVals
 
 # class 'decorator' that records the stack at the time of creation
 # be careful with this, it creates a StackTrace, and that can take a
