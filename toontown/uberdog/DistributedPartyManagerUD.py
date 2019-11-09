@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.DistributedObjectAI import DistributedObjectAI
+from direct.distributed.DistributedObjectUD import DistributedObjectUD
 
-class DistributedPartyManagerUD(DistributedObjectAI):
+class DistributedPartyManagerUD(DistributedObjectUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyManagerUD')
