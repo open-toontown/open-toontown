@@ -19,6 +19,7 @@ udConfig += 'air-channel-allocation %s\n' % 999999
 udConfig += 'air-stateserver %s\n' % 4002
 udConfig += 'air-connect %s\n' % '127.0.0.1:7199'
 udConfig += 'eventlog-host %s\n' % '127.0.0.1:7197'
+loadPrcFileData('UberDOG Config', udConfig)
 
 simbase.air = ToontownUDRepository(config.GetInt('air-base-channel', 1000000), config.GetInt('air-stateserver', 4002))
 
