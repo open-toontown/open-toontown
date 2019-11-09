@@ -515,3 +515,4 @@ dclass AstronLoginManager : DistributedObject {
   requestLogin(string) clsend;
   loginResponse(blob);
 };
+
