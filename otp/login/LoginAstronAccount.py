@@ -1,5 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from otp.login.LoginBase import LoginBase
+from direct.distributed.PyDatagram import PyDatagram
+from direct.distributed.MsgTypes import *
 
 class LoginAstronAccount(LoginBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('LoginAstronAccount')
@@ -8,11 +10,14 @@ class LoginAstronAccount(LoginBase):
         LoginBase.__init__(self, cr)
 
     def authorize(self, username, password):
-        self.notify.info(username)
-        self.notify.info(password)
+        pass
 
     def sendLoginMsg(self):
-        self.notify.info('LOG ME IN!!!!!!!!!!!!')
+        datagram = PyDatagram()
+        datagram.addUint16(CLIENT_HELLO)
+        datagram.addUint32(self.cr.hashVal)
+        datagram.addString(self.cr.serverVersion)
+        self.cr.send(datagram)
 
     def supportsRelogin(self):
         if __debug__:

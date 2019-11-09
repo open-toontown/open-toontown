@@ -520,7 +520,8 @@ class OTPClientRepository(ClientRepositoryBase):
             return
 
         self.startReaderPollTask()
-        self.startHeartbeat()
+        if not self.astronSupport:
+            self.startHeartbeat()
         newInstall = launcher.getIsNewInstallation()
         newInstall = base.config.GetBool('new-installation', newInstall)
         if newInstall:
@@ -1933,6 +1934,35 @@ class OTPClientRepository(ClientRepositoryBase):
         if self.astronSupport:
             if msgType == CLIENT_EJECT:
                 self.handleGoGetLost(di)
+            elif msgType == CLIENT_HEARTBEAT:
+                self.handleServerHeartbeat(di)
+            elif msgtype == CLIENT_ENTER_OBJECT_REQUIRED:
+                self.handleGenerateWithRequired(di)
+            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER:
+                self.handleGenerateWithRequiredOther(di)
+            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER_OWNER:
+                self.handleGenerateWithRequiredOtherOwner(di)
+            elif msgType == CLIENT_OBJECT_SET_FIELD:
+                self.handleUpdateField(di)
+            elif msgType == CLIENT_OBJECT_LEAVING:
+                self.handleDisable(di)
+            elif msgType == CLIENT_OBJECT_LEAVING_OWNER:
+                self.handleDisable(di, ownerView=True)
+            elif msgType == CLIENT_DONE_INTEREST_RESP:
+                self.gotInterestDoneMessage(di)
+            elif msgType == CLIENT_OBJECT_LOCATION:
+                self.gotObjectLocationMessage(di)
+            else:
+                currentLoginState = self.loginFSM.getCurrentState()
+                if currentLoginState:
+                    currentLoginStateName = currentLoginState.getName()
+                else:
+                    currentLoginStateName = 'None'
+                currentGameState = self.gameFSM.getCurrentState()
+                if currentGameState:
+                    currentGameStateName = currentGameState.getName()
+                else:
+                    currentGameStateName = 'None'
         else:
             if msgType == CLIENT_GO_GET_LOST:
                 self.handleGoGetLost(di)
