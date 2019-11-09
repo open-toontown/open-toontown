@@ -20,11 +20,10 @@ dc-file etc/otp.dc
 window-title Toontown
 verify-ssl 0
 ssl-cipher-list DEFAULT
-http-preapproved-server-certificate-filename ttown4.online.disney.com:46667 gameserver.txt
 chan-config-sanity-check #f
 require-window 0
 language english
-icon-filename toontown.ico
+icon-filename phase_3/models/gui/toontown.ico
 dx-management 1
 tt-specific-login 1
 decompressor-buffer-size 32768
@@ -87,7 +86,7 @@ clock-mode limited
 clock-frame-rate 120
 prefer-parasite-buffer 0
 audio-library-name miles_audio
-cursor-filename toonmono.cur
+cursor-filename phase_3/models/gui/toonmono.cur
 audio-loader mp3
 audio-loader midi
 audio-loader wav
