@@ -1938,7 +1938,7 @@ class OTPClientRepository(ClientRepositoryBase):
                 self.handleGoGetLost(di)
             elif msgType == CLIENT_HEARTBEAT:
                 self.handleServerHeartbeat(di)
-            elif msgtype == CLIENT_ENTER_OBJECT_REQUIRED:
+            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED:
                 self.handleGenerateWithRequired(di)
             elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER:
                 self.handleGenerateWithRequiredOther(di)
