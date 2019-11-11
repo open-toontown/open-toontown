@@ -423,6 +423,9 @@ class OTPClientRepository(ClientRepositoryBase):
         self.uberZoneInterest = None
         self.wantSwitchboard = config.GetBool('want-switchboard', 0)
         self.wantSwitchboardHacks = base.config.GetBool('want-switchboard-hacks', 0)
+        self.__pendingGenerates = {}
+        self.__pendingMessages = {}
+        self.__doId2pendingInterest = {}
         self.centralLogger = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CENTRAL_LOGGER, 'CentralLogger')
         if self.astronSupport:
             self.astronLoginManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_ASTRON_LOGIN_MANAGER, 'AstronLoginManager')
@@ -1934,6 +1937,8 @@ class OTPClientRepository(ClientRepositoryBase):
 
     def handleMessageType(self, msgType, di):
         if self.astronSupport:
+            if self.__recordObjectMessage(msgType, di):
+                return
             if msgType == CLIENT_EJECT:
                 self.handleGoGetLost(di)
             elif msgType == CLIENT_HEARTBEAT:
@@ -1941,7 +1946,7 @@ class OTPClientRepository(ClientRepositoryBase):
             elif msgType == CLIENT_ENTER_OBJECT_REQUIRED:
                 self.handleGenerateWithRequired(di)
             elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER:
-                self.handleGenerateWithRequiredOther(di)
+                self.handleGenerateWithRequired(di, other=True)
             elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER_OWNER:
                 self.handleGenerateWithRequiredOtherOwner(di)
             elif msgType == CLIENT_OBJECT_SET_FIELD:
@@ -2014,6 +2019,19 @@ class OTPClientRepository(ClientRepositoryBase):
             di = DatagramIterator(dg, di.getCurrentIndex())
             self.deferredGenerates.append((CLIENT_DONE_INTEREST_RESP, (dg, di)))
         else:
+            if self.astronSupport:
+                # Play back generates, if necessary.
+                # First, create a new DatagramIterator using
+                # the Datagram from DatagramIterator di, and
+                # the current index of DatagramIterator di:
+                di2 = DatagramIterator(di.getDatagram(), di.getCurrentIndex())
+
+                # Now, get the handle:
+                handle = di2.getUint16()
+
+                # Finally, play back the generates:
+                self.__playBackGenerates(handle)
+
             self.handleInterestDoneMessage(di)
 
     def gotObjectLocationMessage(self, di):
@@ -2151,51 +2169,180 @@ class OTPClientRepository(ClientRepositoryBase):
                 return True
         return False
 
-    def handleGenerateWithRequired(self, di):
-        parentId = di.getUint32()
-        zoneId = di.getUint32()
-        classId = di.getUint16()
-        doId = di.getUint32()
-        dclass = self.dclassesByNumber[classId]
-        if self._isInvalidPlayerAvatarGenerate(doId, dclass, parentId, zoneId):
-            return
-        dclass.startGenerate()
-        distObj = self.generateWithRequiredFields(dclass, doId, di, parentId, zoneId)
-        dclass.stopGenerate()
+    if not config.GetBool('astron-support', True):
+        def handleGenerateWithRequired(self, di):
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            classId = di.getUint16()
+            doId = di.getUint32()
+            dclass = self.dclassesByNumber[classId]
+            if self._isInvalidPlayerAvatarGenerate(doId, dclass, parentId, zoneId):
+                return
+            dclass.startGenerate()
+            distObj = self.generateWithRequiredFields(dclass, doId, di, parentId, zoneId)
+            dclass.stopGenerate()
 
-    def handleGenerateWithRequiredOther(self, di):
-        parentId = di.getUint32()
-        zoneId = di.getUint32()
-        classId = di.getUint16()
-        doId = di.getUint32()
-        dclass = self.dclassesByNumber[classId]
-        if self._isInvalidPlayerAvatarGenerate(doId, dclass, parentId, zoneId):
-            return
-        deferrable = getattr(dclass.getClassDef(), 'deferrable', False)
-        if not self.deferInterval or self.noDefer:
-            deferrable = False
-        now = globalClock.getFrameTime()
-        if self.deferredGenerates or deferrable:
-            if self.deferredGenerates or now - self.lastGenerate < self.deferInterval:
-                self.deferredGenerates.append((CLIENT_CREATE_OBJECT_REQUIRED_OTHER, doId))
-                dg = Datagram(di.getDatagram())
-                di = DatagramIterator(dg, di.getCurrentIndex())
-                self.deferredDoIds[doId] = ((parentId,
-                  zoneId,
-                  classId,
-                  doId,
-                  di),
-                 deferrable,
-                 dg,
-                 [])
-                if len(self.deferredGenerates) == 1:
-                    taskMgr.remove('deferredGenerate')
-                    taskMgr.doMethodLater(self.deferInterval, self.doDeferredGenerate, 'deferredGenerate')
+        def handleGenerateWithRequiredOther(self, di):
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            classId = di.getUint16()
+            doId = di.getUint32()
+            dclass = self.dclassesByNumber[classId]
+            if self._isInvalidPlayerAvatarGenerate(doId, dclass, parentId, zoneId):
+                return
+            deferrable = getattr(dclass.getClassDef(), 'deferrable', False)
+            if not self.deferInterval or self.noDefer:
+                deferrable = False
+            now = globalClock.getFrameTime()
+            if self.deferredGenerates or deferrable:
+                if self.deferredGenerates or now - self.lastGenerate < self.deferInterval:
+                    self.deferredGenerates.append((CLIENT_CREATE_OBJECT_REQUIRED_OTHER, doId))
+                    dg = Datagram(di.getDatagram())
+                    di = DatagramIterator(dg, di.getCurrentIndex())
+                    self.deferredDoIds[doId] = ((parentId,
+                      zoneId,
+                      classId,
+                      doId,
+                      di),
+                     deferrable,
+                     dg,
+                     [])
+                    if len(self.deferredGenerates) == 1:
+                        taskMgr.remove('deferredGenerate')
+                        taskMgr.doMethodLater(self.deferInterval, self.doDeferredGenerate, 'deferredGenerate')
+                else:
+                    self.lastGenerate = now
+                    self.doGenerate(parentId, zoneId, classId, doId, di)
             else:
-                self.lastGenerate = now
                 self.doGenerate(parentId, zoneId, classId, doId, di)
-        else:
-            self.doGenerate(parentId, zoneId, classId, doId, di)
+    else:
+        def handleGenerateWithRequired(self, di, other=False):
+            doId = di.getUint32()
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            classId = di.getUint16()
+
+            # Determine whether or not we should add this generate
+            # to the pending generates, or just generate it right away.
+            for handle, interest in self._interests.items():
+                if parentId != interest.parentId:
+                    continue
+
+                if isinstance(interest.zoneIdList, list):
+                    if zoneId not in interest.zoneIdList:
+                        continue
+                else:
+                    if zoneId != interest.zoneIdList:
+                        continue
+
+                break
+            else:
+                interest = None
+
+            if not interest or not interest.events:
+                # Generate this object right away.
+                return self.__generateObject(doId, parentId, zoneId, classId, di, other)
+
+            # Wait on the interest events to complete before generating.
+            pending = self.__pendingGenerates.setdefault(handle, [])
+            pending.append((doId, parentId, zoneId, classId, Datagram(di.getDatagram()), other))
+            self.__doId2pendingInterest[doId] = handle
+
+        def __playBackGenerates(self, handle):
+            if handle not in self.__pendingGenerates:
+                # Nothing to play back!
+                return
+
+            # We will now play back this interest's pending generates.
+            # First, get a copy of the pending generates, and remove
+            # them from self.__pendingGenerates:
+            generates = self.__pendingGenerates[handle]
+            del self.__pendingGenerates[handle]
+
+            # Sort generates by classId:
+            generates.sort(key=lambda x: x[3])
+
+            # Generate the objects:
+            for doId, parentId, zoneId, classId, dg, other in generates:
+                # Set up a DatagramIterator using Datagram dg:
+                di = DatagramIterator(dg)
+
+                # Skip 16 bytes to move past the header.
+                # For the record: MsgType(2), zoneId, doId, parentId (3x4), classId (2)
+                di.skipBytes(16)
+
+                # Generate the object:
+                self.__generateObject(doId, parentId, zoneId, classId, di, other)
+
+                # Delete this object's doId from
+                # __doId2pendingInterest if it exists:
+                if doId in self.__doId2pendingInterest:
+                    del self.__doId2pendingInterest[doId]
+
+            # Now that we have generated the object, if there
+            # are any messages to play back, do so now:
+            self.__playBackMessages(handle)
+
+        def __playBackMessages(self, handle):
+            if handle not in self.__pendingMessages:
+                # Nothing to play back!
+                return
+
+            # We will now play back any pending messages.
+            # First, loop through all the Datagram instances
+            # in __pendingMessages:
+            for dg in self.__pendingMessages[handle]:
+                # Set up a DatagramIterator using Datagram dg:
+                di = DatagramIterator(dg)
+
+                # Get the msgType:
+                msgType = di.getUint16()
+
+                # If self.handler is set, use that. Otherwise,
+                # use self.handleMessageType:
+                if self.handler:
+                    self.handler(msgType, di)
+                else:
+                    self.handleMessageType(msgType, di)
+
+            # We can now remove the handle from __pendingMessages:
+            del self.__pendingMessages[handle]
+
+        def __recordObjectMessage(self, msgType, di):
+            if msgType not in (CLIENT_OBJECT_SET_FIELD, CLIENT_OBJECT_LEAVING, CLIENT_OBJECT_LOCATION):
+                return False
+
+            di2 = DatagramIterator(di.getDatagram(), di.getCurrentIndex())
+            doId = di2.getUint32()
+            if doId not in self.__doId2pendingInterest:
+                return False
+
+            pending = self.__pendingMessages.setdefault(self.__doId2pendingInterest[doId], [])
+            pending.append(Datagram(di.getDatagram()))
+            return True
+
+        def __generateObject(self, doId, parentId, zoneId, classId, di, other):
+            # Get our dclass:
+            dclass = self.dclassesByNumber[classId]
+
+            # Is this an invalid player avatar generate?
+            if self._isInvalidPlayerAvatarGenerate(doId, dclass, parentId, zoneId):
+                # Yup, ignore this.
+                return
+
+            # Start the generation process:
+            dclass.startGenerate()
+
+            # Is this an other generate?
+            if other:
+                # Yup. In this case, we'll use generateWithRequiredOtherFields.
+                distObj = self.generateWithRequiredOtherFields(dclass, doId, di, parentId, zoneId)
+            else:
+                # Nah. In this case, we'll use generateWithRequiredFields.
+                distObj = self.generateWithRequiredFields(dclass, doId, di, parentId, zoneId)
+
+            # We're done.
+            dclass.stopGenerate()
 
     def handleGenerateWithRequiredOtherOwner(self, di):
         classId = di.getUint16()
