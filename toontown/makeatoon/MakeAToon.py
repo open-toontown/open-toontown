@@ -228,7 +228,7 @@ class MakeAToon(StateData.StateData):
         self.spotlight.setHpr(0, 0, 0)
         smokeSeqNode = SequenceNode('smoke')
         smokeModel = loader.loadModel('phase_3/models/makeatoon/tt_m_ara_mat_smoke')
-        smokeFrameList = smokeModel.findAllMatches('**/smoke_*').asList()
+        smokeFrameList = list(smokeModel.findAllMatches('**/smoke_*'))
         smokeFrameList.reverse()
         for smokeFrame in smokeFrameList:
             smokeSeqNode.addChild(smokeFrame.node())

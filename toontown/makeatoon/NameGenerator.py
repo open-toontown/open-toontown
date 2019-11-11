@@ -5,7 +5,6 @@ import copy
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 import os
-from direct.showbase import AppRunnerGlobal
 from direct.directnotify import DirectNotifyGlobal
 
 class NameGenerator:
@@ -37,13 +36,8 @@ class NameGenerator:
         self.lastSuffixes = []
         self.nameDictionary = {}
         searchPath = DSearchPath()
-        if AppRunnerGlobal.appRunner:
-            searchPath.appendDirectory(Filename.expandFrom('$TT_3_ROOT/phase_3/etc'))
-        else:
-            searchPath.appendDirectory(Filename('phase_3/etc'))
-            base = os.path.expandvars('$TOONTOWN') or './toontown'
-            searchPath.appendDirectory(Filename.fromOsSpecific(os.path.expandvars(base + '/src/configfiles')))
-            searchPath.appendDirectory(Filename('.'))
+        if __debug__:
+            searchPath.appendDirectory(Filename('resources/phase_3/etc'))
         filename = Filename(TTLocalizer.NameShopNameMaster)
         found = vfs.resolveFilename(filename, searchPath)
         if not found:

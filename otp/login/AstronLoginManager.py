@@ -15,3 +15,7 @@ class AstronLoginManager(DistributedObjectGlobal):
 
     def sendRequestLogin(self, playToken):
         self.sendUpdate('requestLogin', [playToken])
+
+    def loginResponse(self, responseBlob):
+        # TODO HANDLE THIS PROPERLY
+        messenger.send(self.doneEvent, [{'mode': 'success'}])
