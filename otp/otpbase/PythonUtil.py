@@ -1,7 +1,7 @@
 import __builtin__
 import sys
 
-__all__ = ['enumerate', 'nonRepeatingRandomList', 'describeException', 'pdir']
+__all__ = ['enumerate', 'nonRepeatingRandomList', 'describeException', 'pdir', 'choice']
 
 if not hasattr(__builtin__, 'enumerate'):
     def enumerate(L):
@@ -130,6 +130,13 @@ def pdir(obj, str = None, width = None,
         _pdir(obj, str, width, fTruncate, lineWidth, wantPrivate)
         print
 
+def choice(condition, ifTrue, ifFalse):
+    # equivalent of C++ (condition ? ifTrue : ifFalse)
+    if condition:
+        return ifTrue
+    else:
+        return ifFalse
+
 def quantize(value, divisor):
     # returns new value that is multiple of (1. / divisor)
     return float(int(value * int(divisor))) / int(divisor)
@@ -148,3 +155,4 @@ def isClient():
 
 __builtin__.pdir = pdir
 __builtin__.isClient = isClient
+__builtin__.choice = choice

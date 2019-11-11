@@ -34,3 +34,11 @@ class Settings:
     @staticmethod
     def getResolution():
         return 1
+
+    @staticmethod
+    def getEmbeddedMode():
+        return 0
+
+    @staticmethod
+    def doSavedSettingsExist():
+        return 0

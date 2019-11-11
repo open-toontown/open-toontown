@@ -950,12 +950,19 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterWaitForAvatarList(self):
-        self.handler = self.handleWaitForAvatarList
+        if not self.astronSupport:
+            self.handler = self.handleWaitForAvatarList
         self._requestAvatarList()
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def _requestAvatarList(self):
-        self.sendGetAvatarsMsg()
+        if not self.astronSupport:
+            self.sendGetAvatarsMsg()
+        else:
+            # TODO SET UP PROPERLY
+            #self.astronLoginManager.sendRequestAvatarList()
+            self.avList = []
+            self.loginFSM.request('chooseAvatar', [self.avList])
         self.waitForDatabaseTimeout(requestName='WaitForAvatarList')
         self.acceptOnce(OtpAvatarManager.OtpAvatarManager.OnlineEvent, self._requestAvatarList)
 
@@ -2241,7 +2248,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
                 break
             else:
-                self.notify.warning('Received generate from %d for %d:%d, which is not a part of any existing interests!' % (doId, parentId, zoneId))
+                self.notify.warning('Received generate for %d from %d:%d, which is not a part of any existing interests!' % (doId, parentId, zoneId))
                 interest = None
 
             if not interest or not interest.events:

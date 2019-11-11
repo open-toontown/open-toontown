@@ -125,7 +125,7 @@ class TeaserPanel(DirectObject):
         base.cr.centralLogger.writeClientEvent('velvetRope: %s' % pageName)
         self.browser.scrollTo(PageOrder.index(pageName))
         self.cleanup()
-        self.dialog = TTDialog.TTDialog(parent=aspect2dp, text=TTLocalizer.TeaserTop, text_scale=TTLocalizer.TPdialog, text_align=TextNode.ACenter, text_wordwrap=TTLocalizer.TPdialogWordwrap, topPad=-0.15, midPad=1.25, sidePad=0.25, pad=(0.25, 0.25), command=self.__handleDone, fadeScreen=0.5, style=TTDialog.TwoChoice, buttonTextList=[TTLocalizer.TeaserSubscribe, TTLocalizer.TeaserContinue], button_text_scale=TTLocalizer.TPbuttonTextList, buttonPadSF=5.5, sortOrder=NO_FADE_SORT_INDEX, image=self.upsellBackground)
+        self.dialog = TTDialog.TTDialog(parent=aspect2dp, text=TTLocalizer.TeaserTop, text_scale=TTLocalizer.TPdialog, text_align=TextNode.ACenter, text_wordwrap=TTLocalizer.TPdialogWordwrap, topPad=-0.15, midPad=1.25, sidePad=0.25, pad=(0.25, 0.25), command=self.__handleDone, fadeScreen=0.5, style=TTDialog.TwoChoice, buttonTextList=[TTLocalizer.TeaserSubscribe, TTLocalizer.TeaserContinue], button_text_scale=TTLocalizer.TPbuttonTextList, buttonPadSF=5.5, sortOrder=DGG.NO_FADE_SORT_INDEX, image=self.upsellBackground)
         self.dialog.setPos(0, 0, 0.75)
         self.browser.reparentTo(self.dialog)
         base.transitions.fadeScreen(0.5)
@@ -160,8 +160,7 @@ class TeaserPanel(DirectObject):
 class FeatureBrowser(DirectScrolledList):
 
     def __init__(self, parent = aspect2dp, **kw):
-        self.parent = parent
-        optiondefs = (('parent', self.parent, None),
+        optiondefs = (('parent', parent, None),
          ('relief', None, None),
          ('numItemsVisible', 1, None),
          ('items', [], None))
