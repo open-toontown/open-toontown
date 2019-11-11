@@ -2026,6 +2026,10 @@ class OTPClientRepository(ClientRepositoryBase):
                 # the current index of DatagramIterator di:
                 di2 = DatagramIterator(di.getDatagram(), di.getCurrentIndex())
 
+                # Get the context. This is never actually used,
+                # however none of this will work unless we get it.
+                ctx = di2.getUint32()
+
                 # Now, get the handle:
                 handle = di2.getUint16()
 
@@ -2237,6 +2241,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
                 break
             else:
+                self.notify.warning('Received generate from %d for %d:%d, which is not a part of any existing interests!' % (doId, parentId, zoneId))
                 interest = None
 
             if not interest or not interest.events:
