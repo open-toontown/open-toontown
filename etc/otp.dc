@@ -4,6 +4,7 @@ from direct.distributed import DistributedSmoothNode/AI
 from direct.distributed import DistributedCartesianGrid/AI
 from direct.distributed import DistributedCamera/AI/OV
 from otp.distributed import Account/AI/UD
+from otp.distributed import AstronAccount/AI/UD
 from otp.ai import TimeManager/AI
 from otp.ai import MagicWordManager/AI
 from otp.avatar import DistributedAvatar/AI/UD
@@ -51,6 +52,15 @@ dclass Account {
   string PLAYED_MINUTES_PERIOD db;
   string CREATED db;
   string LAST_LOGIN db;
+};
+
+dclass AstronAccount {
+  uint32[] ACCOUNT_AV_SET required db;
+  uint32 ESTATE_ID db;
+  AvatarPendingDel ACCOUNT_AV_SET_DEL[] db;
+  string CREATED db;
+  string LAST_LOGIN db;
+  string ACCOUNT_ID db;
 };
 
 struct BarrierData {
@@ -515,4 +525,3 @@ dclass AstronLoginManager : DistributedObject {
   requestLogin(string) clsend;
   loginResponse(blob);
 };
-
