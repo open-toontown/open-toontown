@@ -1,5 +1,4 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.PyDatagram import *
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
 from otp.distributed.OtpDoGlobals import *

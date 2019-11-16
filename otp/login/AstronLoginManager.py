@@ -1,11 +1,10 @@
 import json
-from datetime import datetime
 import time
+from datetime import datetime
 
-from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from otp.uberdog.AccountDetailRecord import AccountDetailRecord
-from otp.distributed.PotentialAvatar import PotentialAvatar
 
 class AstronLoginManager(DistributedObjectGlobal):
     notify = DirectNotifyGlobal.directNotify.newCategory('AstronLoginManager')
@@ -14,6 +13,7 @@ class AstronLoginManager(DistributedObjectGlobal):
         DistributedObjectGlobal.__init__(self, cr)
         self.doneEvent = None
         self._callback = None
+        self.userName = ''
 
     def handleRequestLogin(self, doneEvent):
         self.doneEvent = doneEvent
@@ -124,7 +124,7 @@ class AstronLoginManager(DistributedObjectGlobal):
 
     def sendCreateAvatar(self, avDNA, avName, avPosition):
         # avName isn't used. Sad!
-        self.sendUpdate('createAvatar', [avDNA.makeNetString(), avPosition])
+        self.sendUpdate('createAvatar', [avDNA.makeNetString(), index])
 
     def createAvatarResponse(self, avId):
         messenger.send('nameShopCreateAvatarDone', [avId])
