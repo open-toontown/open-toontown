@@ -10,6 +10,7 @@ from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobal
 from direct.distributed.PyDatagram import *
 from toontown.toon.ToonDNA import ToonDNA
 from toontown.toonbase import TTLocalizer
+from toontown.makeatoon.NameGenerator import NameGenerator
 
 class AccountDB:
     """
@@ -345,17 +346,96 @@ class CreateAvatarOperation:
         del self.loginManager.account2operation[self.sender]
 
 
+class SetNamePatternOperation:
+    notify = DirectNotifyGlobal.directNotify.newCategory('SetNamePatternOperation')
+
+    def __init__(self, loginManager, sender):
+        self.loginManager = loginManager
+        self.sender = sender
+        self.avId = None
+        self.pattern = None
+
+    def start(self, avId, pattern):
+        self.avId = avId
+        self.pattern = pattern
+        self.__handleRetrieveAccount()
+
+    def __handleRetrieveAccount(self):
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+
+    def __handleAccountRetrieved(self, dclass, fields):
+        if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
+            # no uwu
+            return
+
+        self.account = fields
+        self.avList = self.account['ACCOUNT_AV_SET']
+        self.avList = self.avList[:6]
+        self.avList += [0] * (6 - len(self.avList))
+        self.__handleRetrieveAvatar()
+
+    def __handleRetrieveAvatar(self):
+        if self.avId and self.avId not in self.avList:
+            # Main screen turn on.
+            # It's you!
+            return
+
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId, self.__handleAvatarRetrieved)
+
+    def __handleAvatarRetrieved(self, dclass, fields):
+        if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
+            # How are you gentlemen?
+            # All your base are belong to us
+            return
+
+        if fields['WishNameState'][0] != 'OPEN':
+            # You are on your way to destruction
+            # What you say?
+            return
+
+        self.__handleSetName()
+
+    def __handleSetName(self):
+        parts = []
+        for p, f in self.pattern:
+            part = self.loginManager.nameGenerator.nameDictionary.get(p, ('', ''))[1]
+            if f:
+                part = part[:1].upper() + part[1:]
+            else:
+                part = part.lower()
+
+            parts.append(part)
+
+        parts[2] += parts.pop(3)
+        while '' in parts:
+            parts.remove('')
+
+        name = ' '.join(parts)
+
+        self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.avId, self.loginManager.air.dclassesByName['DistributedToonUD'],
+                                                       {'WishNameState': ('LOCKED',),
+                                                        'WishName': ('',),
+                                                        'setName': (name,)})
+
+        self.loginManager.sendUpdateToAccountId(self.sender, 'namePatternAnswer', [self.avId, 1])
+        del self.loginManager.account2operation[self.sender]
+
+
 class AstronLoginManagerUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('AstronLoginManagerUD')
 
     def __init__(self, air):
         DistributedObjectGlobalUD.__init__(self, air)
+        self.nameGenerator = None
         self.accountDb = None
         self.sender2loginOperation = {}
         self.account2operation = {}
 
     def announceGenerate(self):
         DistributedObjectGlobalUD.announceGenerate(self)
+
+        # This is for processing name patterns.
+        self.nameGenerator = NameGenerator()
 
         # Instantiate the account database backend.
         # TODO: In the future, add more database interfaces & make this configurable.
@@ -402,3 +482,18 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         newOperation = CreateAvatarOperation(self, sender)
         self.account2operation[sender] = newOperation
         newOperation.start(avDNA, avPosition)
+
+    def setNamePattern(self, avId, p1, f1, p2, f2, p3, f3, p4, f4):
+        sender = self.air.getAccountIdFromSender()
+        if not sender:
+            # TODO KILL CONNECTION
+            return
+
+        if sender in self.account2operation:
+            # BAD!!!!
+            return
+
+        newOperation = SetNamePatternOperation(self, sender)
+        self.account2operation[sender] = newOperation
+        newOperation.start(avId, [(p1, f1), (p2, f2),
+                                  (p3, f3), (p4, f4)])
