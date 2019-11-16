@@ -5,6 +5,7 @@ import time
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from direct.directnotify import DirectNotifyGlobal
 from otp.uberdog.AccountDetailRecord import AccountDetailRecord
+from otp.distributed.PotentialAvatar import PotentialAvatar
 
 class AstronLoginManager(DistributedObjectGlobal):
     notify = DirectNotifyGlobal.directNotify.newCategory('AstronLoginManager')
@@ -113,3 +114,9 @@ class AstronLoginManager(DistributedObjectGlobal):
             self.notify.warning('account days is negative %s' % accountDays)
         self.notify.debug('result=%s' % result)
         return result
+
+    def sendRequestAvatarList(self):
+        self.sendUpdate('requestAvatarList')
+
+    def avatarListResponse(self, avatarList):
+        self.cr.handleAvatarListResponse(avatarList)

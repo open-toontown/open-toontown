@@ -959,10 +959,7 @@ class OTPClientRepository(ClientRepositoryBase):
         if not self.astronSupport:
             self.sendGetAvatarsMsg()
         else:
-            # TODO SET UP PROPERLY
-            #self.astronLoginManager.sendRequestAvatarList()
-            self.avList = []
-            self.loginFSM.request('chooseAvatar', [self.avList])
+            self.astronLoginManager.sendRequestAvatarList()
         self.waitForDatabaseTimeout(requestName='WaitForAvatarList')
         self.acceptOnce(OtpAvatarManager.OtpAvatarManager.OnlineEvent, self._requestAvatarList)
 
@@ -2355,6 +2352,28 @@ class OTPClientRepository(ClientRepositoryBase):
 
             # We're done.
             dclass.stopGenerate()
+
+        def handleAvatarListResponse(self, avatarList):
+            avList = []
+            for avNum, avName, avDNA, avPosition, nameState in avatarList:
+                avNames = ['',
+                 '',
+                 '',
+                 '']
+                avNames[0] = avName
+                if nameState == 2:  # Pending
+                    avNames[1] = avName
+                elif nameState == 3:  # Approved
+                    avNames[2] = avName
+                elif nameState == 4:  # Rejected
+                    avNames[3] = avName
+
+                aname = int(nameState == 1)
+                potAv = PotentialAvatar(avNum, avNames, avDNA, avPosition, aname)
+                avList.append(potAv)
+
+            self.avList = avList
+            self.loginFSM.request('chooseAvatar', [self.avList])
 
     def handleGenerateWithRequiredOtherOwner(self, di):
         classId = di.getUint16()

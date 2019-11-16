@@ -226,7 +226,7 @@ dclass DistributedAvatar : DistributedSmoothNode, TalkPath_owner, TalkPath_whisp
   confirmAvOnShard(uint32, int8);
 };
 
-struct friendEntry {
+struct FriendEntry {
   uint32 friendId;
   uint8 friendCode;
 }
@@ -244,7 +244,7 @@ dclass DistributedPlayer : DistributedAvatar {
   setWhitelistChatFlags(uint8) broadcast ownrecv ram airecv;
   setSC(uint16) broadcast ownsend airecv;
   setSCCustom(uint16) broadcast ownsend airecv;
-  setFriendsList(friendEntry[]) ownrecv required db airecv;
+  setFriendsList(FriendEntry[]) ownrecv required db airecv;
   setDISLname(string) broadcast ownrecv ram;
   setDISLid(uint32) broadcast ownrecv ram db airecv required;
   OwningAccount(uint32);
@@ -521,7 +521,17 @@ dclass CallbackObject {
   callback(uint32, bool, uint8);
 };
 
+struct PotentialAvatar {
+  uint32 avNum;
+  string avName;
+  string avDNA;
+  uint8 avPosition;
+  uint8 nameState;
+};
+
 dclass AstronLoginManager : DistributedObject {
   requestLogin(string) clsend;
   loginResponse(blob);
+  requestAvatarList() clsend;
+  avatarListResponse(PotentialAvatar[]);
 };

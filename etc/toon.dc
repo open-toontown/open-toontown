@@ -459,7 +459,7 @@ dclass DistributedToon : DistributedPlayer {
   setTrackBonusLevel(int8[]) required broadcast ownrecv db;
   setInventory(blob) required ownrecv db;
   setMaxNPCFriends(uint16) required ownrecv db;
-  setNPCFriendsDict(friendEntry[]) required ownrecv db;
+  setNPCFriendsDict(FriendEntry[]) required ownrecv db;
   setDefaultShard(uint32) required ownrecv db;
   setDefaultZone(uint32) required ownrecv db;
   setShtickerBook(blob) required ownrecv db;
@@ -3269,4 +3269,3 @@ dclass DistributedTrashcanZeroMgr : DistributedPhaseEventMgr {
 
 dclass DistributedSillyMeterMgr : DistributedPhaseEventMgr {
 };
-

@@ -163,6 +163,7 @@ class LoginOperation:
         }
         responseBlob = json.dumps(responseData)
         self.loginManager.sendUpdateToChannel(self.sender, 'loginResponse', [responseBlob])
+        del self.loginManager.sender2loginOperation[self.sender]
 
     def getLastLoggedInStr(self):
         return ''  # TODO
@@ -186,6 +187,79 @@ class LoginOperation:
         return accountDays
 
 
+class GetAvatarsOperation:
+
+    def __init__(self, loginManager, sender):
+        self.loginManager = loginManager
+        self.sender = sender
+        self.account = None
+        self.avList = []
+        self.pendingAvatars = None
+        self.avatarFields = None
+
+    def start(self):
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+
+    def __handleAccountRetrieved(self, dclass, fields):
+        if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
+            # no uwu
+            return
+
+        self.account = fields
+        self.avList = self.account['ACCOUNT_AV_SET']
+        self.avList = self.avList[:6]
+        self.avList += [0] * (6 - len(self.avList))
+        self.__handleQueryAvatars()
+
+    def __handleQueryAvatars(self):
+        self.pendingAvatars = set()
+        self.avatarFields = {}
+        for avId in self.avList:
+            if avId:
+                self.pendingAvatars.add(avId)
+                def response(dclass, fields, avId=avId):
+                    if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
+                        # mayonnaise
+                        return
+
+                    self.avatarFields[avId] = fields
+                    self.pendingAvatars.remove(avId)
+                    if not self.pendingAvatars:
+                        self.__handleSendAvatars()
+
+                self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, avId, response)
+
+        if not self.pendingAvatars:
+            self.__handleSendAvatars()
+
+    def __handleSendAvatars(self):
+        potentialAvatars = []
+        for avId, fields in self.avatarFields.items():
+            index = self.avList.index(avId)
+            wishNameState = fields.get('WishNameState', [''])[0]
+            name = fields['setName'][0]
+            nameState = 0
+            if wishNameState == 'OPEN':
+                nameState = 1
+            elif wishNameState == 'PENDING':
+                nameState = 2
+            elif wishNameState == 'APPROVED':
+                nameState = 3
+                name = fields['WishName'][0]
+            elif wishNameState == 'REJECTED':
+                nameState = 4
+            elif wishNameState == 'LOCKED':
+                nameState = 0
+            else:
+                # unknown name state.
+                nameState = 0
+
+            potentialAvatars.append([avId, name, fields['setDNAString'][0], index, nameState])
+
+        self.loginManager.sendUpdateToAccountId(self.sender, 'avatarListResponse', [potentialAvatars])
+        del self.loginManager.account2operation[self.sender]
+
+
 class AstronLoginManagerUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('AstronLoginManagerUD')
 
@@ -193,6 +267,7 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         DistributedObjectGlobalUD.__init__(self, air)
         self.accountDb = None
         self.sender2loginOperation = {}
+        self.account2operation = {}
 
     def announceGenerate(self):
         DistributedObjectGlobalUD.announceGenerate(self)
@@ -212,3 +287,17 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         newLoginOperation = LoginOperation(self, sender)
         self.sender2loginOperation[sender] = newLoginOperation
         newLoginOperation.start(playToken)
+
+    def requestAvatarList(self):
+        sender = self.air.getAccountIdFromSender()
+        if not sender:
+            # TODO KILL CONNECTION
+            return
+
+        if sender in self.account2operation:
+            # BAD!!!!
+            return
+
+        newOperation = GetAvatarsOperation(self, sender)
+        self.account2operation[sender] = newOperation
+        newOperation.start()

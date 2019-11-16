@@ -12,3 +12,6 @@ class OTPInternalRepository(AstronInternalRepository):
 
     def handleConnected(self):
         AstronInternalRepository.handleConnected(self)
+
+    def getAccountIdFromSender(self):
+        return (self.getMsgSender() >> 32) & 0xFFFFFFFF
