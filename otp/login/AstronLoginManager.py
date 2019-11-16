@@ -135,3 +135,17 @@ class AstronLoginManager(DistributedObjectGlobal):
 
     def namePatternAnswer(self, avId, status):
         self._callback(avId, status)
+
+    def sendSetNameTyped(self, avId, name, callback):
+        self._callback = callback
+        self.sendUpdate('setNameTyped', [avId, name])
+
+    def nameTypedResponse(self, avId, status):
+        self._callback(avId, status)
+
+    def sendAcknowledgeAvatarName(self, avId, callback):
+        self._callback = callback
+        self.sendUpdate('acknowledgeAvatarName', [avId])
+
+    def acknowledgeAvatarNameResponse(self):
+        self._callback()

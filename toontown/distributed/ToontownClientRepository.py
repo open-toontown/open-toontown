@@ -179,12 +179,16 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         del self.okButton
         del self.acceptedText
         del self.acceptedBanner
-        datagram = PyDatagram()
-        datagram.addUint16(CLIENT_SET_WISHNAME_CLEAR)
-        datagram.addUint32(avatarChoice.id)
-        datagram.addUint8(1)
-        self.send(datagram)
-        self.loginFSM.request('waitForSetAvatarResponse', [avatarChoice])
+        if not self.astronSupport:
+            datagram = PyDatagram()
+            datagram.addUint16(CLIENT_SET_WISHNAME_CLEAR)
+            datagram.addUint32(avatarChoice.id)
+            datagram.addUint8(1)
+            self.send(datagram)
+            self.loginFSM.request('waitForSetAvatarResponse', [avatarChoice])
+        else:
+            self.astronLoginManager.sendAcknowledgeAvatarName(avatarChoice.id,
+                                                              lambda: self.loginFSM.request('waitForSetAvatarResponse', [avatarChoice]))
 
     def betterlucknexttime(self, avList, index):
         self.rejectDoneEvent = 'rejectDone'
@@ -195,8 +199,9 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def __handleReject(self, avList, index):
         self.rejectDialog.cleanup()
-        datagram = PyDatagram()
-        datagram.addUint16(CLIENT_SET_WISHNAME_CLEAR)
+        if not self.astronSupport:
+            datagram = PyDatagram()
+            datagram.addUint16(CLIENT_SET_WISHNAME_CLEAR)
         avid = 0
         for k in avList:
             if k.position == index:
@@ -204,10 +209,13 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
         if avid == 0:
             self.notify.error('Avatar rejected not found in avList.  Index is: ' + str(index))
-        datagram.addUint32(avid)
-        datagram.addUint8(0)
-        self.send(datagram)
-        self.loginFSM.request('waitForAvatarList')
+        if not self.astronSupport:
+            datagram.addUint32(avid)
+            datagram.addUint8(0)
+            self.send(datagram)
+            self.loginFSM.request('waitForAvatarList')
+        else:
+            self.astronLoginManager.sendAcknowledgeAvatarName(avId, lambda: self.loginFSM.request('waitForAvatarList'))
 
     def enterChooseAvatar(self, avList):
         ModelPool.garbageCollect()

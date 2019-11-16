@@ -538,4 +538,8 @@ dclass AstronLoginManager : DistributedObject {
   createAvatarResponse(uint32);
   setNamePattern(uint32, int16, uint8, int16, uint8, int16, uint8, int16, uint8) clsend;
   namePatternAnswer(uint32, uint8);
+  setNameTyped(uint32, string) clsend;
+  nameTypedResponse(uint32, uint8);
+  acknowledgeAvatarName(uint32) clsend;
+  acknowledgeAvatarNameResponse();
 };

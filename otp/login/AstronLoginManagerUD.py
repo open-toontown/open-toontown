@@ -421,6 +421,134 @@ class SetNamePatternOperation:
         del self.loginManager.account2operation[self.sender]
 
 
+class SetNameTypedOperation:
+    notify = DirectNotifyGlobal.directNotify.newCategory('SetNameTypedOperation')
+
+    def __init__(self, loginManager, sender):
+        self.loginManager = loginManager
+        self.sender = sender
+        self.avId = None
+        self.name = None
+
+    def start(self, avId, name):
+        self.avId = avId
+        self.name = name
+        if self.avId:
+            self.__handleRetrieveAccount()
+            return
+
+        self.__handleJudgeName()
+
+    def __handleRetrieveAccount(self):
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+
+    def __handleAccountRetrieved(self, dclass, fields):
+        if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
+            # no uwu
+            return
+
+        self.account = fields
+        self.avList = self.account['ACCOUNT_AV_SET']
+        self.avList = self.avList[:6]
+        self.avList += [0] * (6 - len(self.avList))
+        self.__handleRetrieveAvatar()
+
+    def __handleRetrieveAvatar(self):
+        if self.avId and self.avId not in self.avList:
+            # You have no chance to survive make your time
+            # Hahaha
+            return
+
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId, self.__handleAvatarRetrieved)
+
+    def __handleAvatarRetrieved(self, dclass, fields):
+        if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
+            # How are you gentlemen?
+            # All your base are belong to us
+            return
+
+        if fields['WishNameState'][0] != 'OPEN':
+            # You are on your way to destruction
+            # What you say?
+            return
+
+        self.__handleJudgeName()
+
+    def __handleJudgeName(self):
+        status = 1  # TODO Make this useful
+        if self.avId and status:
+            self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.avId,
+                                                           self.loginManager.air.dclassesByName['DistributedToonUD'],
+                                                           {'WishNameState': ('PENDING',),
+                                                            'WishName': (self.name,)})
+
+        self.loginManager.sendUpdateToAccountId(self.sender, 'nameTypedResponse', [self.avId, status])
+        del self.loginManager.account2operation[self.sender]
+
+
+class AcknowledgeNameOperation:
+    notify = DirectNotifyGlobal.directNotify.newCategory('AcknowledgeNameOperation')
+
+    def __init__(self, loginManager, sender):
+        self.loginManager = loginManager
+        self.sender = sender
+        self.avId = None
+
+    def start(self, avId):
+        self.avId = avId
+        self.__handleRetrieveAccount()
+
+    def __handleRetrieveAccount(self):
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+
+    def __handleAccountRetrieved(self, dclass, fields):
+        if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
+            # no uwu
+            return
+
+        self.account = fields
+        self.avList = self.account['ACCOUNT_AV_SET']
+        self.avList = self.avList[:6]
+        self.avList += [0] * (6 - len(self.avList))
+        self.__handleGetTargetAvatar()
+
+    def __handleGetTargetAvatar(self):
+        if self.avId not in self.avList:
+            # welp
+            return
+
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId, self.__handleAvatarRetrieved)
+
+    def __handleAvatarRetrieved(self, dclass, fields):
+        if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
+            return
+
+        wishNameState = fields['WishNameState'][0]
+        wishName = fields['WishName'][0]
+        name = fields['setName'][0]
+        if wishNameState == 'APPROVED':
+            wishNameState = 'LOCKED'
+            name = wishName
+            wishName = ''
+        elif wishNameState == 'REJECTED':
+            wishNameState = 'OPEN'
+            wishName = ''
+        else:
+            return
+
+        self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.avId,
+                                                       self.loginManager.air.dclassesByName['DistributedToonUD'],
+                                                       {'WishNameState': (wishNameState,),
+                                                        'WishName': (wishName,),
+                                                        'setName': (name,)},
+                                                       {'WishNameState': fields['WishNameState'],
+                                                        'WishName': fields['WishName'],
+                                                        'setName': fields['setName']})
+
+        self.loginManager.sendUpdateToAccountId(self.sender, 'acknowledgeAvatarNameResponse', [])
+        del self.loginManager.account2operation[self.sender]
+
+
 class AstronLoginManagerUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('AstronLoginManagerUD')
 
@@ -497,3 +625,31 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         self.account2operation[sender] = newOperation
         newOperation.start(avId, [(p1, f1), (p2, f2),
                                   (p3, f3), (p4, f4)])
+
+    def setNameTyped(self, avId, name):
+        sender = self.air.getAccountIdFromSender()
+        if not sender:
+            # TODO KILL CONNECTION
+            return
+
+        if sender in self.account2operation:
+            # BAD!!!!
+            return
+
+        newOperation = SetNameTypedOperation(self, sender)
+        self.account2operation[sender] = newOperation
+        newOperation.start(avId, name)
+
+    def acknowledgeAvatarName(self, avId):
+        sender = self.air.getAccountIdFromSender()
+        if not sender:
+            # TODO KILL CONNECTION
+            return
+
+        if sender in self.account2operation:
+            # BAD!!!!
+            return
+
+        newOperation = AcknowledgeNameOperation(self, sender)
+        self.account2operation[sender] = newOperation
+        newOperation.start(avId)
