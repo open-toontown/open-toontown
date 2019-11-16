@@ -1,6 +1,8 @@
 import anydbm
 import dumbdbm
+import json
 import sys
+from datetime import datetime
 import time
 
 from direct.directnotify import DirectNotifyGlobal
@@ -145,10 +147,43 @@ class LoginOperation:
         # set client state to established, thus un-sandboxing the sender
         self.loginManager.air.setClientState(self.sender, 2)
 
-        # send dummy login response
-        import json
-        a = json.dumps({})
-        self.loginManager.sendUpdateToChannel(self.sender, 'loginResponse', [a])
+        responseData = {
+            'returnCode': 0,
+            'respString': '',
+            'accountNumber': self.sender,
+            'createFriendsWithChat': 'YES',
+            'chatCodeCreationRule': 'YES',
+            'access': 'FULL',
+            'WhiteListResponse': 'YES',
+            'lastLoggedInStr': self.getLastLoggedInStr(),
+            'accountDays': self.getAccountDays(),
+            'serverTime': int(time.time()),
+            'toonAccountType': 'NO_PARENT_ACCOUNT',
+            'userName': str(self.databaseId)
+        }
+        responseBlob = json.dumps(responseData)
+        self.loginManager.sendUpdateToChannel(self.sender, 'loginResponse', [responseBlob])
+
+    def getLastLoggedInStr(self):
+        return ''  # TODO
+
+    def getAccountCreationDate(self):
+        accountCreationDate = self.account.get('CREATED', '')
+        try:
+            accountCreationDate = datetime.fromtimestamp(time.mktime(time.strptime(accountCreationDate)))
+        except ValueError:
+            accountCreationDate = ''
+
+        return accountCreationDate
+
+    def getAccountDays(self):
+        accountCreationDate = self.getAccountCreationDate()
+        accountDays = -1
+        if accountCreationDate:
+            now = datetime.fromtimestamp(time.mktime(time.strptime(time.ctime())))
+            accountDays = abs((now - accountCreationDate).days)
+
+        return accountDays
 
 
 class AstronLoginManagerUD(DistributedObjectGlobalUD):
