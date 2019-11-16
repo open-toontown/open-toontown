@@ -543,3 +543,4 @@ dclass AstronLoginManager : DistributedObject {
   acknowledgeAvatarName(uint32) clsend;
   acknowledgeAvatarNameResponse();
 };
+
