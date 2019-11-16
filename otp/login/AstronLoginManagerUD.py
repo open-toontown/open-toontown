@@ -8,6 +8,8 @@ import time
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
 from direct.distributed.PyDatagram import *
+from toontown.toon.ToonDNA import ToonDNA
+from toontown.toonbase import TTLocalizer
 
 class AccountDB:
     """
@@ -260,6 +262,89 @@ class GetAvatarsOperation:
         del self.loginManager.account2operation[self.sender]
 
 
+class CreateAvatarOperation:
+    notify = DirectNotifyGlobal.directNotify.newCategory('CreateAvatarOperation')
+
+    def __init__(self, loginManager, sender):
+        self.loginManager = loginManager
+        self.sender = sender
+        self.avPosition = None
+        self.avDNA = None
+
+    def start(self, avDNA, avPosition):
+        if avPosition >= 6:
+            # NO!!!!!!!
+            return
+
+        valid = ToonDNA().isValidNetString(avDNA)
+        if not valid:
+            # time to eat paste
+            return
+
+        self.avPosition = avPosition
+        self.avDNA = avDNA
+
+        self.__handleRetrieveAccount()
+
+    def __handleRetrieveAccount(self):
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+
+    def __handleAccountRetrieved(self, dclass, fields):
+        if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
+            # no uwu
+            return
+
+        self.account = fields
+        self.avList = self.account['ACCOUNT_AV_SET']
+        self.avList = self.avList[:6]
+        self.avList += [0] * (6 - len(self.avList))
+        if self.avList[self.avPosition]:
+            # my leg
+            return
+
+        self.__handleCreateAvatar()
+
+    def __handleCreateAvatar(self):
+        dna = ToonDNA()
+        dna.makeFromNetString(self.avDNA)
+        colorString = TTLocalizer.NumToColor[dna.headColor]
+        animalType = TTLocalizer.AnimalToSpecies[dna.getAnimal()]
+        name = ' '.join((colorString, animalType))
+        toonFields = {'setName': (name,),
+                      'WishNameState': ('OPEN',),
+                      'WishName': ('',),
+                      'setDNAString': (self.avDNA,),
+                      'setDISLid': (self.sender,)}
+
+        self.loginManager.air.dbInterface.createObject(self.loginManager.air.dbId, self.loginManager.air.dclassesByName['DistributedToonUD'], toonFields, self.__handleToonCreated)
+
+    def __handleToonCreated(self, avId):
+        if not avId:
+            # WHAT!
+            return
+
+        self.avId = avId
+        self.__handleStoreAvatar()
+
+    def __handleStoreAvatar(self):
+        self.avList[self.avPosition] = self.avId
+        self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.sender, self.loginManager.air.dclassesByName['AstronAccountUD'],
+                                                   {'ACCOUNT_AV_SET': self.avList},
+                                                   {'ACCOUNT_AV_SET': self.account['ACCOUNT_AV_SET']},
+                                                   self.__handleAvatarStored)
+
+    def __handleAvatarStored(self, fields):
+        if fields:
+            # What happen!
+            # Someone set up us the bomb.
+            # We get signal.
+            # What!
+            return
+
+        self.loginManager.sendUpdateToAccountId(self.sender, 'createAvatarResponse', [self.avId])
+        del self.loginManager.account2operation[self.sender]
+
+
 class AstronLoginManagerUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('AstronLoginManagerUD')
 
@@ -288,6 +373,8 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         self.sender2loginOperation[sender] = newLoginOperation
         newLoginOperation.start(playToken)
 
+    # TODO: CLEAN UP ALL THIS CODE!!!!!!!!
+
     def requestAvatarList(self):
         sender = self.air.getAccountIdFromSender()
         if not sender:
@@ -301,3 +388,17 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         newOperation = GetAvatarsOperation(self, sender)
         self.account2operation[sender] = newOperation
         newOperation.start()
+
+    def createAvatar(self, avDNA, avPosition):
+        sender = self.air.getAccountIdFromSender()
+        if not sender:
+            # TODO KILL CONNECTION
+            return
+
+        if sender in self.account2operation:
+            # BAD!!!!
+            return
+
+        newOperation = CreateAvatarOperation(self, sender)
+        self.account2operation[sender] = newOperation
+        newOperation.start(avDNA, avPosition)

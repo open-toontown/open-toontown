@@ -1057,15 +1057,18 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def sendCreateAvatarMsg(self, avDNA, avName, avPosition):
-        datagram = PyDatagram()
-        datagram.addUint16(CLIENT_CREATE_AVATAR)
-        datagram.addUint16(0)
-        datagram.addString(avDNA.makeNetString())
-        datagram.addUint8(avPosition)
-        self.newName = avName
-        self.newDNA = avDNA
-        self.newPosition = avPosition
-        self.send(datagram)
+        if self.astronSupport:
+            self.astronLoginManager.sendCreateAvatar(avDNA, avName, avPosition)
+        else:
+            datagram = PyDatagram()
+            datagram.addUint16(CLIENT_CREATE_AVATAR)
+            datagram.addUint16(0)
+            datagram.addString(avDNA.makeNetString())
+            datagram.addUint8(avPosition)
+            self.newName = avName
+            self.newDNA = avDNA
+            self.newPosition = avPosition
+            self.send(datagram)
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def sendCreateAvatar2Msg(self, avClass, avDNA, avName, avPosition):

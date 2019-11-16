@@ -1004,18 +1004,46 @@ class NameShop(StateData.StateData):
             self.requestingSkipTutorial = False
         if not self.avExists or self.avExists and self.avId == 'deleteMe':
             messenger.send('nameShopCreateAvatar', [style, '', self.index])
+            if base.cr.astronSupport:
+                self.accept('nameShopCreateAvatarDone', self.handleCreateAvatarResponseMsg)
         else:
             self.checkNameTyped()
         self.notify.debug('Ending Make A Toon: %s' % self.toon.style)
         base.cr.centralLogger.writeClientEvent('MAT - endingMakeAToon: %s' % self.toon.style)
 
-    def handleCreateAvatarResponseMsg(self, di):
-        self.notify.debug('handleCreateAvatarResponseMsg')
-        echoContext = di.getUint16()
-        returnCode = di.getUint8()
-        if returnCode == 0:
+    if not config.GetBool('astron-support', True):
+        def handleCreateAvatarResponseMsg(self, di):
+            self.notify.debug('handleCreateAvatarResponseMsg')
+            echoContext = di.getUint16()
+            returnCode = di.getUint8()
+            if returnCode == 0:
+                self.notify.debug('avatar with default name accepted')
+                self.avId = di.getUint32()
+                self.avExists = 1
+                self.logAvatarCreation()
+                if self.nameAction == 0:
+                    self.toon.setName(self.names[0])
+                    newPotAv = PotentialAvatar.PotentialAvatar(self.avId, self.names, self.newDNA, self.index, 1)
+                    self.avList.append(newPotAv)
+                    self.doneStatus = 'done'
+                    self.storeSkipTutorialRequest()
+                    messenger.send(self.doneEvent)
+                elif self.nameAction == 1:
+                    self.checkNamePattern()
+                elif self.nameAction == 2:
+                    self.checkNameTyped()
+                else:
+                    self.notify.debug('avatar invalid nameAction')
+                    self.rejectName(TTLocalizer.NameError)
+            else:
+                self.notify.debug('avatar rejected')
+                self.rejectName(TTLocalizer.NameError)
+            return None
+    else:
+        def handleCreateAvatarResponseMsg(self, avId):
+            self.notify.debug('handleCreateAvatarResponseMsg')
             self.notify.debug('avatar with default name accepted')
-            self.avId = di.getUint32()
+            self.avId = avId
             self.avExists = 1
             self.logAvatarCreation()
             if self.nameAction == 0:
@@ -1032,10 +1060,6 @@ class NameShop(StateData.StateData):
             else:
                 self.notify.debug('avatar invalid nameAction')
                 self.rejectName(TTLocalizer.NameError)
-        else:
-            self.notify.debug('avatar rejected')
-            self.rejectName(TTLocalizer.NameError)
-        return None
 
     def waitForServer(self):
         self.waitForServerDialog = TTDialog.TTDialog(text=TTLocalizer.WaitingForNameSubmission, style=TTDialog.NoButtons)
@@ -1068,7 +1092,7 @@ class NameShop(StateData.StateData):
             self.promptTutorial()
 
     def promptTutorial(self):
-        self.promptTutorialDialog = TTDialog.TTDialog(parent=aspect2dp, text=TTLocalizer.PromptTutorial, text_scale=0.06, text_align=TextNode.ACenter, text_wordwrap=22, command=self.__openTutorialDialog, fadeScreen=0.5, style=TTDialog.TwoChoice, buttonTextList=[TTLocalizer.MakeAToonEnterTutorial, TTLocalizer.MakeAToonSkipTutorial], button_text_scale=0.06, buttonPadSF=5.5, sortOrder=NO_FADE_SORT_INDEX)
+        self.promptTutorialDialog = TTDialog.TTDialog(parent=aspect2dp, text=TTLocalizer.PromptTutorial, text_scale=0.06, text_align=TextNode.ACenter, text_wordwrap=22, command=self.__openTutorialDialog, fadeScreen=0.5, style=TTDialog.TwoChoice, buttonTextList=[TTLocalizer.MakeAToonEnterTutorial, TTLocalizer.MakeAToonSkipTutorial], button_text_scale=0.06, buttonPadSF=5.5, sortOrder=DGG.NO_FADE_SORT_INDEX)
         self.promptTutorialDialog.show()
 
     def __openTutorialDialog(self, choice = 0):

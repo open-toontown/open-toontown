@@ -120,3 +120,10 @@ class AstronLoginManager(DistributedObjectGlobal):
 
     def avatarListResponse(self, avatarList):
         self.cr.handleAvatarListResponse(avatarList)
+
+    def sendCreateAvatar(self, avDNA, avName, avPosition):
+        # avName isn't used. Sad!
+        self.sendUpdate('createAvatar', [avDNA.makeNetString(), avPosition])
+
+    def createAvatarResponse(self, avId):
+        messenger.send('nameShopCreateAvatarDone', [avId])
