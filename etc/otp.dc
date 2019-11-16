@@ -229,7 +229,7 @@ dclass DistributedAvatar : DistributedSmoothNode, TalkPath_owner, TalkPath_whisp
 struct FriendEntry {
   uint32 friendId;
   uint8 friendCode;
-}
+};
 
 dclass DistributedPlayer : DistributedAvatar {
   arrivedOnDistrict(uint32) ownrecv ram;

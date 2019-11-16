@@ -2356,6 +2356,7 @@ class OTPClientRepository(ClientRepositoryBase):
             # We're done.
             dclass.stopGenerate()
 
+        @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
         def handleAvatarListResponse(self, avatarList):
             avList = []
             for avNum, avName, avDNA, avPosition, nameState in avatarList:
