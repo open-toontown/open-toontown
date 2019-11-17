@@ -35,6 +35,7 @@ class IssueFrame(DirectFrame):
         DirectFrame.__init__(self, frameColor=(1, 1, 1, 0), frameSize=self.FrameDimensions, relief=DGG.FLAT, parent=parent)
         self.hide()
         self.accept('newsSnapshot', self.doSnapshot)
+        self._parent = parent
         self.newsDir = newsDir
         self.dateStr = dateStr
         self.myIssueIndex = myIssueIndex

@@ -1039,6 +1039,30 @@ class OTPClientRepository(ClientRepositoryBase):
             self.loginFSM.request('shutdown')
         return
 
+    if config.GetBool('astron-support', True):
+        @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
+        def handleAvatarListResponse(self, avatarList):
+            avList = []
+            for avNum, avName, avDNA, avPosition, nameState in avatarList:
+                avNames = ['',
+                 '',
+                 '',
+                 '']
+                avNames[0] = avName
+                if nameState == 2:  # Pending
+                    avNames[1] = avName
+                elif nameState == 3:  # Approved
+                    avNames[2] = avName
+                elif nameState == 4:  # Rejected
+                    avNames[3] = avName
+
+                aname = int(nameState == 1)
+                potAv = PotentialAvatar(avNum, avNames, avDNA, avPosition, aname)
+                avList.append(potAv)
+
+            self.avList = avList
+            self.loginFSM.request('chooseAvatar', [self.avList])
+
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterChooseAvatar(self, avList):
         pass
@@ -2447,29 +2471,6 @@ class OTPClientRepository(ClientRepositoryBase):
             dclass.startGenerate()
             distObj = self.generateWithRequiredOtherFields(dclass, doId, di, parentId, zoneId)
             dclass.stopGenerate()
-
-        @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-        def handleAvatarListResponse(self, avatarList):
-            avList = []
-            for avNum, avName, avDNA, avPosition, nameState in avatarList:
-                avNames = ['',
-                 '',
-                 '',
-                 '']
-                avNames[0] = avName
-                if nameState == 2:  # Pending
-                    avNames[1] = avName
-                elif nameState == 3:  # Approved
-                    avNames[2] = avName
-                elif nameState == 4:  # Rejected
-                    avNames[3] = avName
-
-                aname = int(nameState == 1)
-                potAv = PotentialAvatar(avNum, avNames, avDNA, avPosition, aname)
-                avList.append(potAv)
-
-            self.avList = avList
-            self.loginFSM.request('chooseAvatar', [self.avList])
 
     def handleDisable(self, di, ownerView = False):
         doId = di.getUint32()
