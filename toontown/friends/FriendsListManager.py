@@ -1,4 +1,5 @@
 from pandac.PandaModules import *
+from libotp import *
 import FriendsListPanel
 import FriendInviter
 import FriendInvitee

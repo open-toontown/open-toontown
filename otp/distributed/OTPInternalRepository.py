@@ -15,3 +15,6 @@ class OTPInternalRepository(AstronInternalRepository):
 
     def getAccountIdFromSender(self):
         return (self.getMsgSender() >> 32) & 0xFFFFFFFF
+
+    def getAvatarIdFromSender(self):
+        return self.getMsgSender() & 0xFFFFFFFF

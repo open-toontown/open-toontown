@@ -128,14 +128,12 @@ class OptionsTabPage(DirectFrame):
      'DirectX8': Settings.DX8}
 
     def __init__(self, parent = aspect2d):
-        self.parent = parent
         self.currentSizeIndex = None
-        DirectFrame.__init__(self, parent=self.parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
+        DirectFrame.__init__(self, parent=parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
         self.load()
         return
 
     def destroy(self):
-        self.parent = None
         DirectFrame.destroy(self)
         return
 
@@ -473,13 +471,11 @@ class CodesTabPage(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('CodesTabPage')
 
     def __init__(self, parent = aspect2d):
-        self.parent = parent
-        DirectFrame.__init__(self, parent=self.parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
+        DirectFrame.__init__(self, parent=parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
         self.load()
         return
 
     def destroy(self):
-        self.parent = None
         DirectFrame.destroy(self)
         return
 

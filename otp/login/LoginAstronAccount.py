@@ -23,3 +23,6 @@ class LoginAstronAccount(LoginBase):
         if __debug__:
             return 1
         return 0
+
+    def supportsAuthenticateDelete(self):
+        return 0

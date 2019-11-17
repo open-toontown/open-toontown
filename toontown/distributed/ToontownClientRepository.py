@@ -322,7 +322,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.avCreate = MakeAToon.MakeAToon(self.loginFSM, avList, 'makeAToonComplete', index, self.isPaid())
         self.avCreate.load()
         self.avCreate.enter()
-        self.handler = self.handleCreateAvatar
+        if not self.astronSupport:
+            self.handler = self.handleCreateAvatar
         self.accept('makeAToonComplete', self.__handleMakeAToon, [avList, index])
         self.accept('nameShopCreateAvatar', self.sendCreateAvatarMsg)
         self.accept('nameShopPost', self.relayMessage)
@@ -332,13 +333,10 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.send(dg)
 
     def handleCreateAvatar(self, msgType, di):
-        if self.astronSupport:
-            self.handleMessageType(msgType, di)
+        if msgType == CLIENT_CREATE_AVATAR_RESP or msgType == CLIENT_SET_NAME_PATTERN_ANSWER or msgType == CLIENT_SET_WISHNAME_RESP:
+            self.avCreate.ns.nameShopHandler(msgType, di)
         else:
-            if msgType == CLIENT_CREATE_AVATAR_RESP or msgType == CLIENT_SET_NAME_PATTERN_ANSWER or msgType == CLIENT_SET_WISHNAME_RESP:
-                self.avCreate.ns.nameShopHandler(msgType, di)
-            else:
-                self.handleMessageType(msgType, di)
+            self.handleMessageType(msgType, di)
 
     def __handleMakeAToon(self, avList, avPosition):
         done = self.avCreate.getDoneStatus()
@@ -372,11 +370,38 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             del self.newPotAv
         return
 
-    def handleAvatarResponseMsg(self, di):
-        self.cleanupWaitingForDatabase()
-        avatarId = di.getUint32()
-        returnCode = di.getUint8()
-        if returnCode == 0:
+    if not config.GetBool('astron-support', True):
+        def handleAvatarResponseMsg(self, di):
+            self.cleanupWaitingForDatabase()
+            avatarId = di.getUint32()
+            returnCode = di.getUint8()
+            if returnCode == 0:
+                dclass = self.dclassesByName['DistributedToon']
+                NametagGlobals.setMasterArrowsOn(0)
+                loader.beginBulkLoad('localAvatarPlayGame', OTPLocalizer.CREnteringToontown, 400, 1, TTLocalizer.TIP_GENERAL)
+                localAvatar = LocalToon.LocalToon(self)
+                localAvatar.dclass = dclass
+                base.localAvatar = localAvatar
+                __builtins__['localAvatar'] = base.localAvatar
+                NametagGlobals.setToon(base.localAvatar)
+                localAvatar.doId = avatarId
+                self.localAvatarDoId = avatarId
+                parentId = None
+                zoneId = None
+                localAvatar.setLocation(parentId, zoneId)
+                localAvatar.generateInit()
+                localAvatar.generate()
+                localAvatar.updateAllRequiredFields(dclass, di)
+                self.doId2do[avatarId] = localAvatar
+                localAvatar.initInterface()
+                self.sendGetFriendsListRequest()
+                self.loginFSM.request('playingGame')
+            else:
+                self.notify.error('Bad avatar: return code %d' % returnCode)
+            return
+    else:
+        def handleAvatarResponseMsg(self, avatarId, di):
+            self.cleanupWaitingForDatabase()
             dclass = self.dclassesByName['DistributedToon']
             NametagGlobals.setMasterArrowsOn(0)
             loader.beginBulkLoad('localAvatarPlayGame', OTPLocalizer.CREnteringToontown, 400, 1, TTLocalizer.TIP_GENERAL)
@@ -392,14 +417,13 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             localAvatar.setLocation(parentId, zoneId)
             localAvatar.generateInit()
             localAvatar.generate()
-            localAvatar.updateAllRequiredFields(dclass, di)
+            dclass.receiveUpdateBroadcastRequiredOwner(localAvatar, di)
+            localAvatar.announceGenerate()
+            localAvatar.postGenerateMessage()
             self.doId2do[avatarId] = localAvatar
             localAvatar.initInterface()
             self.sendGetFriendsListRequest()
             self.loginFSM.request('playingGame')
-        else:
-            self.notify.error('Bad avatar: return code %d' % returnCode)
-        return
 
     def getAvatarDetails(self, avatar, func, *args):
         pad = ScratchPad()
@@ -826,11 +850,14 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.friendsListError = 0
 
     def sendGetFriendsListRequest(self):
-        self.friendsMapPending = 1
-        self.friendsListError = 0
-        datagram = PyDatagram()
-        datagram.addUint16(CLIENT_GET_FRIEND_LIST)
-        self.send(datagram)
+        if self.astronSupport:
+            print 'sendGetFriendsListRequest TODO'
+        else:
+            self.friendsMapPending = 1
+            self.friendsListError = 0
+            datagram = PyDatagram()
+            datagram.addUint16(CLIENT_GET_FRIEND_LIST)
+            self.send(datagram)
 
     def cleanPetsFromFriendsMap(self):
         for objId, obj in self.friendsMap.items():
@@ -1050,29 +1077,63 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         return True
 
     def sendQuietZoneRequest(self):
-        self.sendSetZoneMsg(OTPGlobals.QuietZone)
+        if self.astronSupport:
+            self.sendSetZoneMsg(OTPGlobals.QuietZone, [])
+        else:
+            self.sendSetZoneMsg(OTPGlobals.QuietZone)
 
-    def handleQuietZoneGenerateWithRequired(self, di):
-        parentId = di.getUint32()
-        zoneId = di.getUint32()
-        classId = di.getUint16()
-        doId = di.getUint32()
-        dclass = self.dclassesByNumber[classId]
-        if dclass.getClassDef().neverDisable:
-            dclass.startGenerate()
-            distObj = self.generateWithRequiredFields(dclass, doId, di, parentId, zoneId)
-            dclass.stopGenerate()
+    if not config.GetBool('astron-support', True):
+        def handleQuietZoneGenerateWithRequired(self, di):
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            classId = di.getUint16()
+            doId = di.getUint32()
+            dclass = self.dclassesByNumber[classId]
+            if dclass.getClassDef().neverDisable:
+                dclass.startGenerate()
+                distObj = self.generateWithRequiredFields(dclass, doId, di, parentId, zoneId)
+                dclass.stopGenerate()
 
-    def handleQuietZoneGenerateWithRequiredOther(self, di):
-        parentId = di.getUint32()
-        zoneId = di.getUint32()
-        classId = di.getUint16()
-        doId = di.getUint32()
-        dclass = self.dclassesByNumber[classId]
-        if dclass.getClassDef().neverDisable:
-            dclass.startGenerate()
-            distObj = self.generateWithRequiredOtherFields(dclass, doId, di, parentId, zoneId)
-            dclass.stopGenerate()
+        def handleQuietZoneGenerateWithRequiredOther(self, di):
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            classId = di.getUint16()
+            doId = di.getUint32()
+            dclass = self.dclassesByNumber[classId]
+            if dclass.getClassDef().neverDisable:
+                dclass.startGenerate()
+                distObj = self.generateWithRequiredOtherFields(dclass, doId, di, parentId, zoneId)
+                dclass.stopGenerate()
+    else:
+        def handleQuietZoneGenerateWithRequired(self, di):
+            doId = di.getUint32()
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            classId = di.getUint16()
+            dclass = self.dclassesByNumber[classId]
+            if dclass.getClassDef().neverDisable:
+                dclass.startGenerate()
+                distObj = self.generateWithRequiredFields(dclass, doId, di, parentId, zoneId)
+                dclass.stopGenerate()
+
+        def handleQuietZoneGenerateWithRequiredOther(self, di):
+            doId = di.getUint32()
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            classId = di.getUint16()
+            dclass = self.dclassesByNumber[classId]
+            if dclass.getClassDef().neverDisable:
+                dclass.startGenerate()
+                distObj = self.generateWithRequiredOtherFields(dclass, doId, di, parentId, zoneId)
+                dclass.stopGenerate()
+
+        def handleGenerateWithRequiredOtherOwner(self, di):
+            if self.loginFSM.getCurrentState().getName() == 'waitForSetAvatarResponse':
+                doId = di.getUint32()
+                parentId = di.getUint32()
+                zoneId = di.getUint32()
+                classId = di.getUint16()
+                self.handleAvatarResponseMsg(doId, di)
 
     def handleQuietZoneUpdateField(self, di):
         di2 = DatagramIterator(di)

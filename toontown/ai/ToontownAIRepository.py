@@ -1,16 +1,25 @@
 from direct.directnotify import DirectNotifyGlobal
+from otp.ai.AIZoneData import AIZoneDataStore
+from otp.distributed.OtpDoGlobals import *
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
-from otp.distributed.OtpDoGlobals import *
+from toontown.ai.HolidayManagerAI import HolidayManagerAI
+from toontown.catalog.CatalogManagerAI import CatalogManagerAI
+from toontown.uberdog.DistributedInGameNewsMgrAI import DistributedInGameNewsMgrAI
 
 class ToontownAIRepository(ToontownInternalRepository):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownAIRepository')
 
     def __init__(self, baseChannel, serverId, districtName):
         ToontownInternalRepository.__init__(self, baseChannel, serverId, dcSuffix='AI')
+        self.doLiveUpdates = config.GetBool('want-live-updates', True)
         self.districtName = districtName
         self.districtId = None
         self.district = None
+        self.holidayManager = None
+        self.zoneDataStore = None
+        self.inGameNewsMgr = None
+        self.catalogManager = None
 
     def handleConnected(self):
         ToontownInternalRepository.handleConnected(self)
@@ -24,6 +33,53 @@ class ToontownAIRepository(ToontownInternalRepository):
         # Claim ownership of that district...
         self.district.setAI(self.ourChannel)
 
+        # Create our local objects.
+        self.createLocals()
+
+        # Create our global objects.
+        self.createGlobals()
+
         # Make our district available, and we're done.
         self.district.b_setAvailable(True)
         self.notify.info('Done.')
+
+    def createLocals(self):
+        """
+        Creates "local" (non-distributed) objects.
+        """
+
+        # Create our holiday manager...
+        self.holidayManager = HolidayManagerAI(self)
+
+        # Create our zone data store...
+        self.zoneDataStore = AIZoneDataStore()
+
+    def createGlobals(self):
+        """
+        Creates "global" (distributed) objects.
+        """
+
+        # Generate our in-game news manager...
+        self.inGameNewsMgr = DistributedInGameNewsMgrAI(self)
+        self.inGameNewsMgr.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
+
+        # Generate our catalog manager...
+        self.catalogManager = CatalogManagerAI(self)
+
+    def getTrackClsends(self):
+        return False
+
+    def getAvatarExitEvent(self, avId):
+        return 'distObjDelete-%d' % avId
+
+    def getZoneDataStore(self):
+        return self.zoneDataStore
+
+    def incrementPopulation(self):
+        print 'TODO districtStats'
+
+    def decrementPopulation(self):
+        print 'TODO districtStats'
+
+    def sendQueryToonMaxHp(self, avId, callback):
+        pass  # TODO?

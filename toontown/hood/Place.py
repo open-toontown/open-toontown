@@ -111,7 +111,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
     def removeSetZoneCompleteCallback(self, token):
         if token is not None:
-            if token in self._setZoneCompleteLocalCallbacks:
+            if any(token == x[1] for x in self._setZoneCompleteLocalCallbacks._callbacks):
                 self._setZoneCompleteLocalCallbacks.remove(token)
             qzsd = self._getQZState()
             if qzsd:

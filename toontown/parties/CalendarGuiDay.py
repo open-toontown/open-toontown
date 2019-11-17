@@ -202,7 +202,7 @@ class CalendarGuiDay(DirectFrame):
         except e:
             numItems = 0
 
-        if numItems <= self.scrollList.numItemsVisible:
+        if numItems <= self.scrollList['numItemsVisible']:
             self.scrollList.incButton.hide()
             self.scrollList.decButton.hide()
         else:

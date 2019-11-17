@@ -191,6 +191,7 @@ class LoginOperation:
 
 
 class GetAvatarsOperation:
+    notify = DirectNotifyGlobal.directNotify.newCategory('GetAvatarsOperation')
 
     def __init__(self, loginManager, sender):
         self.loginManager = loginManager
@@ -549,6 +550,181 @@ class AcknowledgeNameOperation:
         del self.loginManager.account2operation[self.sender]
 
 
+class RemoveAvatarOperation:
+    notify = DirectNotifyGlobal.directNotify.newCategory('RemoveAvatarOperation')
+
+    def __init__(self, loginManager, sender):
+        self.loginManager = loginManager
+        self.sender = sender
+        self.account = None
+        self.avList = []
+        self.pendingAvatars = None
+        self.avatarFields = None
+        self.avId = None
+
+    def start(self, avId):
+        self.avId = avId
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+
+    def __handleAccountRetrieved(self, dclass, fields):
+        if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
+            # no uwu
+            return
+
+        self.account = fields
+        self.avList = self.account['ACCOUNT_AV_SET']
+        self.avList = self.avList[:6]
+        self.avList += [0] * (6 - len(self.avList))
+        self.__handleRemoveAvatar()
+
+    def __handleRemoveAvatar(self):
+        if self.avId not in self.avList:
+            # avatar doesn't exist.
+            return
+
+        index = self.avList.index(self.avId)
+        self.avList[index] = 0
+        avatarsRemoved = list(self.account.get('ACCOUNT_AV_SET_DEL', []))
+        avatarsRemoved.append([self.avId, int(time.time())])
+        estateId = self.account.get('ESTATE_ID', 0)
+        if estateId != 0:
+            self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, estateId,
+                                                           self.loginManager.air.dclassesByName['DistributedEstateAI'],
+                                                           {'setSlot%sToonId' % index: [0],
+                                                            'setSlot%sItems' % index: [[]]})
+
+        self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.sender, self.loginManager.air.dclassesByName['AstronAccountUD'],
+                                                       {'ACCOUNT_AV_SET': self.avList,
+                                                        'ACCOUNT_AV_SET_DEL': avatarsRemoved},
+                                                       {'ACCOUNT_AV_SET': self.account['ACCOUNT_AV_SET'],
+                                                        'ACCOUNT_AV_SET_DEL': self.account['ACCOUNT_AV_SET_DEL']},
+                                                       self.__handleAvatarRemoved)
+
+    def __handleAvatarRemoved(self, fields):
+        if fields:
+            # failed to remove the avatar.
+            return
+
+        self.__handleQueryAvatars()
+
+    def __handleQueryAvatars(self):
+        self.pendingAvatars = set()
+        self.avatarFields = {}
+        for avId in self.avList:
+            if avId:
+                self.pendingAvatars.add(avId)
+                def response(dclass, fields, avId=avId):
+                    if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
+                        # mayonnaise
+                        return
+
+                    self.avatarFields[avId] = fields
+                    self.pendingAvatars.remove(avId)
+                    if not self.pendingAvatars:
+                        self.__handleSendAvatars()
+
+                self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, avId, response)
+
+        if not self.pendingAvatars:
+            self.__handleSendAvatars()
+
+    def __handleSendAvatars(self):
+        potentialAvatars = []
+        for avId, fields in self.avatarFields.items():
+            index = self.avList.index(avId)
+            wishNameState = fields.get('WishNameState', [''])[0]
+            name = fields['setName'][0]
+            nameState = 0
+            if wishNameState == 'OPEN':
+                nameState = 1
+            elif wishNameState == 'PENDING':
+                nameState = 2
+            elif wishNameState == 'APPROVED':
+                nameState = 3
+                name = fields['WishName'][0]
+            elif wishNameState == 'REJECTED':
+                nameState = 4
+            elif wishNameState == 'LOCKED':
+                nameState = 0
+            else:
+                # unknown name state.
+                nameState = 0
+
+            potentialAvatars.append([avId, name, fields['setDNAString'][0], index, nameState])
+
+        self.loginManager.sendUpdateToAccountId(self.sender, 'avatarListResponse', [potentialAvatars])
+        del self.loginManager.account2operation[self.sender]
+
+
+class LoadAvatarOperation:
+    notify = DirectNotifyGlobal.directNotify.newCategory('LoadAvatarOperation')
+
+    def __init__(self, loginManager, sender):
+        self.loginManager = loginManager
+        self.sender = sender
+        self.avId = None
+
+    def start(self, avId):
+        self.avId = avId
+        self.__handleRetrieveAccount()
+
+    def __handleRetrieveAccount(self):
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+
+    def __handleAccountRetrieved(self, dclass, fields):
+        if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
+            # no uwu
+            return
+
+        self.account = fields
+        self.avList = self.account['ACCOUNT_AV_SET']
+        self.avList = self.avList[:6]
+        self.avList += [0] * (6 - len(self.avList))
+        self.__handleGetTargetAvatar()
+
+    def __handleGetTargetAvatar(self):
+        if self.avId not in self.avList:
+            return
+
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId, self.__handleAvatarRetrieved)
+
+    def __handleAvatarRetrieved(self, dclass, fields):
+        if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
+            return
+
+        self.avatar = fields
+        self.__handleSetAvatar()
+
+    def __handleSetAvatar(self):
+        channel = self.loginManager.GetAccountConnectionChannel(self.sender)
+
+        cleanupDatagram = PyDatagram()
+        cleanupDatagram.addServerHeader(self.avId, channel, STATESERVER_OBJECT_DELETE_RAM)
+        cleanupDatagram.addUint32(self.avId)
+        datagram = PyDatagram()
+        datagram.addServerHeader(channel, self.loginManager.air.ourChannel, CLIENTAGENT_ADD_POST_REMOVE)
+        datagram.addString(cleanupDatagram.getMessage())
+        self.loginManager.air.send(datagram)
+
+        self.loginManager.air.sendActivate(self.avId, 0, 0, self.loginManager.air.dclassesByName['DistributedToonUD'])
+
+        datagram = PyDatagram()
+        datagram.addServerHeader(channel, self.loginManager.air.ourChannel, CLIENTAGENT_OPEN_CHANNEL)
+        datagram.addChannel(self.loginManager.GetPuppetConnectionChannel(self.avId))
+        self.loginManager.air.send(datagram)
+
+        self.loginManager.air.clientAddSessionObject(channel, self.avId)
+
+        datagram = PyDatagram()
+        datagram.addServerHeader(channel, self.loginManager.air.ourChannel, CLIENTAGENT_SET_CLIENT_ID)
+        datagram.addChannel(self.sender << 32 | self.avId)  # accountId in high 32 bits, avatar in low.
+        self.loginManager.air.send(datagram)
+
+        self.loginManager.air.setOwner(self.avId, channel)
+
+        del self.loginManager.account2operation[self.sender]
+
+
 class AstronLoginManagerUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('AstronLoginManagerUD')
 
@@ -653,3 +829,45 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         newOperation = AcknowledgeNameOperation(self, sender)
         self.account2operation[sender] = newOperation
         newOperation.start(avId)
+
+    def requestRemoveAvatar(self, avId):
+        sender = self.air.getAccountIdFromSender()
+        if not sender:
+            # TODO KILL CONNECTION
+            return
+
+        if sender in self.account2operation:
+            # BAD!!!!
+            return
+
+        newOperation = RemoveAvatarOperation(self, sender)
+        self.account2operation[sender] = newOperation
+        newOperation.start(avId)
+
+    def requestPlayAvatar(self, avId):
+        currentAvId = self.air.getAvatarIdFromSender()
+        accId = self.air.getAccountIdFromSender()
+        if currentAvId and avId:
+            # todo: kill the connection
+            return
+        elif not currentAvId and not avId:
+            # I don't think we need to do anything extra here
+            return
+
+        sender = self.air.getAccountIdFromSender()
+        if not sender:
+            # TODO KILL CONNECTION
+            return
+
+        if sender in self.account2operation:
+            # BAD!!!!
+            return
+
+        if avId:
+            newOperation = LoadAvatarOperation(self, sender)
+            self.account2operation[sender] = newOperation
+            newOperation.start(avId)
+        else:
+            newOperation = UnloadAvatarOperation(self, sender)
+            self.account2operation[sender] = newOperation
+            newOperation.start(currentAvId)

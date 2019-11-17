@@ -149,3 +149,9 @@ class AstronLoginManager(DistributedObjectGlobal):
 
     def acknowledgeAvatarNameResponse(self):
         self._callback()
+
+    def sendRequestRemoveAvatar(self, avId):
+        self.sendUpdate('requestRemoveAvatar', [avId])
+
+    def sendRequestPlayAvatar(self, avId):
+        self.sendUpdate('requestPlayAvatar', [avId])

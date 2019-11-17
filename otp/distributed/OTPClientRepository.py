@@ -956,18 +956,18 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def _requestAvatarList(self):
-        if not self.astronSupport:
-            self.sendGetAvatarsMsg()
-        else:
-            self.astronLoginManager.sendRequestAvatarList()
+        self.sendGetAvatarsMsg()
         self.waitForDatabaseTimeout(requestName='WaitForAvatarList')
         self.acceptOnce(OtpAvatarManager.OtpAvatarManager.OnlineEvent, self._requestAvatarList)
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def sendGetAvatarsMsg(self):
-        datagram = PyDatagram()
-        datagram.addUint16(CLIENT_GET_AVATARS)
-        self.send(datagram)
+        if self.astronSupport:
+            self.astronLoginManager.sendRequestAvatarList()
+        else:
+            datagram = PyDatagram()
+            datagram.addUint16(CLIENT_GET_AVATARS)
+            self.send(datagram)
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def exitWaitForAvatarList(self):
@@ -1086,16 +1086,20 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterWaitForDeleteAvatarResponse(self, potAv):
-        self.handler = self.handleWaitForDeleteAvatarResponse
+        if not self.astronSupport:
+            self.handler = self.handleWaitForDeleteAvatarResponse
         self.sendDeleteAvatarMsg(potAv.id)
         self.waitForDatabaseTimeout(requestName='WaitForDeleteAvatarResponse')
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def sendDeleteAvatarMsg(self, avId):
-        datagram = PyDatagram()
-        datagram.addUint16(CLIENT_DELETE_AVATAR)
-        datagram.addUint32(avId)
-        self.send(datagram)
+        if self.astronSupport:
+            self.astronLoginManager.sendRequestRemoveAvatar(avId)
+        else:
+            datagram = PyDatagram()
+            datagram.addUint16(CLIENT_DELETE_AVATAR)
+            datagram.addUint32(avId)
+            self.send(datagram)
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def exitWaitForDeleteAvatarResponse(self):
@@ -1133,7 +1137,8 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterWaitForSetAvatarResponse(self, potAv):
-        self.handler = self.handleWaitForSetAvatarResponse
+        if not self.astronSupport:
+            self.handler = self.handleWaitForSetAvatarResponse
         self.sendSetAvatarMsg(potAv)
         self.waitForDatabaseTimeout(requestName='WaitForSetAvatarResponse')
 
@@ -1152,10 +1157,13 @@ class OTPClientRepository(ClientRepositoryBase):
     def sendSetAvatarIdMsg(self, avId):
         if avId != self.__currentAvId:
             self.__currentAvId = avId
-            datagram = PyDatagram()
-            datagram.addUint16(CLIENT_SET_AVATAR)
-            datagram.addUint32(avId)
-            self.send(datagram)
+            if self.astronSupport:
+                self.astronLoginManager.sendRequestPlayAvatar(avId)
+            else:
+                datagram = PyDatagram()
+                datagram.addUint16(CLIENT_SET_AVATAR)
+                datagram.addUint32(avId)
+                self.send(datagram)
             if avId == 0:
                 self.stopPeriodTimer()
             else:
@@ -1413,7 +1421,8 @@ class OTPClientRepository(ClientRepositoryBase):
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterWaitOnEnterResponses(self, shardId, hoodId, zoneId, avId):
         self.cleanGameExit = False
-        self.handler = self.handleWaitOnEnterResponses
+        if not self.astronSupport:
+            self.handler = self.handleWaitOnEnterResponses
         self.handlerArgs = {'hoodId': hoodId,
          'zoneId': zoneId,
          'avId': avId}
@@ -1635,33 +1644,52 @@ class OTPClientRepository(ClientRepositoryBase):
         else:
             self.gameFSM.request('playGame', [hoodId, zoneId, avId])
 
-    def handlePlayGame(self, msgType, di):
-        if self.notify.getDebug():
-            self.notify.debug('handle play game got message type: ' + `msgType`)
-        if msgType == CLIENT_CREATE_OBJECT_REQUIRED:
-            self.handleGenerateWithRequired(di)
-        elif msgType == CLIENT_CREATE_OBJECT_REQUIRED_OTHER:
-            self.handleGenerateWithRequiredOther(di)
-        elif msgType == CLIENT_OBJECT_UPDATE_FIELD:
-            self.handleUpdateField(di)
-        elif msgType == CLIENT_OBJECT_DISABLE_RESP:
-            self.handleDisable(di)
-        elif msgType == CLIENT_OBJECT_DELETE_RESP:
-            self.handleDelete(di)
-        elif msgType == CLIENT_GET_FRIEND_LIST_RESP:
-            self.handleGetFriendsList(di)
-        elif msgType == CLIENT_GET_FRIEND_LIST_EXTENDED_RESP:
-            self.handleGetFriendsListExtended(di)
-        elif msgType == CLIENT_FRIEND_ONLINE:
-            self.handleFriendOnline(di)
-        elif msgType == CLIENT_FRIEND_OFFLINE:
-            self.handleFriendOffline(di)
-        elif msgType == CLIENT_GET_AVATAR_DETAILS_RESP:
-            self.handleGetAvatarDetailsResp(di)
-        elif msgType == CLIENT_GET_PET_DETAILS_RESP:
-            self.handleGetAvatarDetailsResp(di)
-        else:
-            self.handleMessageType(msgType, di)
+    if not config.GetBool('astron-support', True):
+        def handlePlayGame(self, msgType, di):
+            if self.notify.getDebug():
+                self.notify.debug('handle play game got message type: ' + `msgType`)
+            if msgType == CLIENT_CREATE_OBJECT_REQUIRED:
+                self.handleGenerateWithRequired(di)
+            elif msgType == CLIENT_CREATE_OBJECT_REQUIRED_OTHER:
+                self.handleGenerateWithRequiredOther(di)
+            elif msgType == CLIENT_OBJECT_UPDATE_FIELD:
+                self.handleUpdateField(di)
+            elif msgType == CLIENT_OBJECT_DISABLE_RESP:
+                self.handleDisable(di)
+            elif msgType == CLIENT_OBJECT_DELETE_RESP:
+                self.handleDelete(di)
+            elif msgType == CLIENT_GET_FRIEND_LIST_RESP:
+                self.handleGetFriendsList(di)
+            elif msgType == CLIENT_GET_FRIEND_LIST_EXTENDED_RESP:
+                self.handleGetFriendsListExtended(di)
+            elif msgType == CLIENT_FRIEND_ONLINE:
+                self.handleFriendOnline(di)
+            elif msgType == CLIENT_FRIEND_OFFLINE:
+                self.handleFriendOffline(di)
+            elif msgType == CLIENT_GET_AVATAR_DETAILS_RESP:
+                self.handleGetAvatarDetailsResp(di)
+            elif msgType == CLIENT_GET_PET_DETAILS_RESP:
+                self.handleGetAvatarDetailsResp(di)
+            else:
+                self.handleMessageType(msgType, di)
+    else:
+        def handlePlayGame(self, msgType, di):
+            if self.notify.getDebug():
+                self.notify.debug('handle play game got message type: ' + `msgType`)
+            if msgType == CLIENT_ENTER_OBJECT_REQUIRED:
+                self.handleGenerateWithRequired(di)
+            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER:
+                self.handleGenerateWithRequiredOther(di)
+            elif msgType == CLIENT_OBJECT_SET_FIELD:
+                self.handleUpdateField(di)
+            elif msgType == CLIENT_OBJECT_DISABLE:
+                self.handleDisable(di)
+            elif msgType == CLIENT_OBJECT_DISABLE_OWNER:
+                self.handleDisable(di, ownerView=True)
+            elif msgType == CLIENT_OBJECT_DELETE_RESP:
+                self.handleDelete(di)
+            else:
+                self.handleMessageType(msgType, di)
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterSwitchShards(self, shardId, hoodId, zoneId, avId):
@@ -2226,6 +2254,36 @@ class OTPClientRepository(ClientRepositoryBase):
                     self.doGenerate(parentId, zoneId, classId, doId, di)
             else:
                 self.doGenerate(parentId, zoneId, classId, doId, di)
+
+        def handleGenerateWithRequiredOtherOwner(self, di):
+            classId = di.getUint16()
+            doId = di.getUint32()
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            dclass = self.dclassesByNumber[classId]
+            dclass.startGenerate()
+            distObj = self.generateWithRequiredOtherFieldsOwner(dclass, doId, di)
+            dclass.stopGenerate()
+
+        def handleQuietZoneGenerateWithRequired(self, di):
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            classId = di.getUint16()
+            doId = di.getUint32()
+            dclass = self.dclassesByNumber[classId]
+            dclass.startGenerate()
+            distObj = self.generateWithRequiredFields(dclass, doId, di, parentId, zoneId)
+            dclass.stopGenerate()
+
+        def handleQuietZoneGenerateWithRequiredOther(self, di):
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            classId = di.getUint16()
+            doId = di.getUint32()
+            dclass = self.dclassesByNumber[classId]
+            dclass.startGenerate()
+            distObj = self.generateWithRequiredOtherFields(dclass, doId, di, parentId, zoneId)
+            dclass.stopGenerate()
     else:
         def handleGenerateWithRequired(self, di, other=False):
             doId = di.getUint32()
@@ -2356,6 +2414,36 @@ class OTPClientRepository(ClientRepositoryBase):
             # We're done.
             dclass.stopGenerate()
 
+        def handleGenerateWithRequiredOtherOwner(self, di):
+            doId = di.getUint32()
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            classId = di.getUint16()
+            dclass = self.dclassesByNumber[classId]
+            dclass.startGenerate()
+            distObj = self.generateWithRequiredOtherFieldsOwner(dclass, doId, di)
+            dclass.stopGenerate()
+
+        def handleQuietZoneGenerateWithRequired(self, di):
+            doId = di.getUint32()
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            classId = di.getUint16()
+            dclass = self.dclassesByNumber[classId]
+            dclass.startGenerate()
+            distObj = self.generateWithRequiredFields(dclass, doId, di, parentId, zoneId)
+            dclass.stopGenerate()
+
+        def handleQuietZoneGenerateWithRequiredOther(self, di):
+            doId = di.getUint32()
+            parentId = di.getUint32()
+            zoneId = di.getUint32()
+            classId = di.getUint16()
+            dclass = self.dclassesByNumber[classId]
+            dclass.startGenerate()
+            distObj = self.generateWithRequiredOtherFields(dclass, doId, di, parentId, zoneId)
+            dclass.stopGenerate()
+
         @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
         def handleAvatarListResponse(self, avatarList):
             avList = []
@@ -2378,36 +2466,6 @@ class OTPClientRepository(ClientRepositoryBase):
 
             self.avList = avList
             self.loginFSM.request('chooseAvatar', [self.avList])
-
-    def handleGenerateWithRequiredOtherOwner(self, di):
-        classId = di.getUint16()
-        doId = di.getUint32()
-        parentId = di.getUint32()
-        zoneId = di.getUint32()
-        dclass = self.dclassesByNumber[classId]
-        dclass.startGenerate()
-        distObj = self.generateWithRequiredOtherFieldsOwner(dclass, doId, di)
-        dclass.stopGenerate()
-
-    def handleQuietZoneGenerateWithRequired(self, di):
-        parentId = di.getUint32()
-        zoneId = di.getUint32()
-        classId = di.getUint16()
-        doId = di.getUint32()
-        dclass = self.dclassesByNumber[classId]
-        dclass.startGenerate()
-        distObj = self.generateWithRequiredFields(dclass, doId, di, parentId, zoneId)
-        dclass.stopGenerate()
-
-    def handleQuietZoneGenerateWithRequiredOther(self, di):
-        parentId = di.getUint32()
-        zoneId = di.getUint32()
-        classId = di.getUint16()
-        doId = di.getUint32()
-        dclass = self.dclassesByNumber[classId]
-        dclass.startGenerate()
-        distObj = self.generateWithRequiredOtherFields(dclass, doId, di, parentId, zoneId)
-        dclass.stopGenerate()
 
     def handleDisable(self, di, ownerView = False):
         doId = di.getUint32()

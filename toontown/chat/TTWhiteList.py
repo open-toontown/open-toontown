@@ -3,7 +3,6 @@ import datetime
 from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
-from direct.showbase import AppRunnerGlobal
 from otp.chat.WhiteList import WhiteList
 from toontown.toonbase import TTLocalizer
 
@@ -23,14 +22,8 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
         vfs = VirtualFileSystem.getGlobalPtr()
         filename = Filename('twhitelist.dat')
         searchPath = DSearchPath()
-        if AppRunnerGlobal.appRunner:
-            searchPath.appendDirectory(Filename.expandFrom('$TT_3_ROOT/phase_3/etc'))
-        else:
-            searchPath.appendDirectory(Filename('.'))
-            searchPath.appendDirectory(Filename('etc'))
-            searchPath.appendDirectory(Filename.fromOsSpecific(os.path.expandvars('$TOONTOWN/src/chat')))
-            searchPath.appendDirectory(Filename.fromOsSpecific(os.path.expandvars('toontown/src/chat')))
-            searchPath.appendDirectory(Filename.fromOsSpecific(os.path.expandvars('toontown/chat')))
+        if __debug__:
+            searchPath.appendDirectory(Filename('resources/phase_3/etc'))
         found = vfs.resolveFilename(filename, searchPath)
         if not found:
             self.notify.info("Couldn't find whitelist data file!")

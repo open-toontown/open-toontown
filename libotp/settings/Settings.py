@@ -42,3 +42,11 @@ class Settings:
     @staticmethod
     def doSavedSettingsExist():
         return 0
+
+    @staticmethod
+    def getAcceptingNewFriends():
+        return 1
+
+    @staticmethod
+    def getAcceptingNonFriendWhispers():
+        return 1

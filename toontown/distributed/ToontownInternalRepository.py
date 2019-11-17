@@ -8,3 +8,9 @@ class ToontownInternalRepository(OTPInternalRepository):
 
     def __init__(self, baseChannel, serverId=None, dcFileNames=None, dcSuffix='AI', connectMethod=None, threadedNet=None):
         OTPInternalRepository.__init__(self, baseChannel, serverId, dcFileNames, dcSuffix, connectMethod, threadedNet)
+
+    def _isValidPlayerLocation(self, parentId, zoneId):
+        if zoneId < 1000 and zoneId != -1:
+            return False
+
+        return True

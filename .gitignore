@@ -2,4 +2,7 @@
 *.pyo
 *.log
 resources/
+news/
+sign/
+whitelist/
 *.so
