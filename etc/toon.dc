@@ -456,7 +456,7 @@ dclass DistributedToon : DistributedPlayer {
   setMaxCarry(uint8 = 20) required ownrecv db;
   setTrackAccess(uint16[] = [0, 0, 0, 0, 1, 1, 0]) required broadcast ownrecv db;
   setTrackProgress(int8 = -1, uint32 = 0) required ownrecv db;
-  setTrackBonusLevel(int8[] = [-1 * 7]) required broadcast ownrecv db;
+  setTrackBonusLevel(int8[] = [-1, -1, -1, -1, -1, -1, -1]) required broadcast ownrecv db;
   setInventory(blob = [0 * 7, 0 * 7, 0 * 7, 0 * 7, 1, 0 * 6, 1, 0 * 6, 0 * 7]) required ownrecv db;
   setMaxNPCFriends(uint16 = 16) required ownrecv db;
   setNPCFriendsDict(FriendEntry[]) required ownrecv db;
@@ -486,7 +486,7 @@ dclass DistributedToon : DistributedPlayer {
   setTunnelOut(int16, int16/10, int16/10, int16/10, int16/10, int16/100, int32/100) ownsend broadcast;
   setAnimState(char [0-1024], int16/1000, int16) broadcast ram ownsend airecv;
   setEmoteState(int16, int16/1000, int16) broadcast ram ownsend;
-  setEmoteAccess(uint8[] = [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) required ownrecv db;
+  setEmoteAccess(uint8[] = [1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]) required ownrecv db;
   setCustomMessages(uint16[] = []) required ownrecv db;
   setSleepAutoReply(uint32) broadcast clsend ownrecv;
   setResistanceMessages(pair16 [] = []) required ownrecv db;
@@ -3269,3 +3269,4 @@ dclass DistributedTrashcanZeroMgr : DistributedPhaseEventMgr {
 
 dclass DistributedSillyMeterMgr : DistributedPhaseEventMgr {
 };
+
