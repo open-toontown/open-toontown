@@ -10,10 +10,10 @@ class FishPicker(DirectScrolledList):
 
     def __init__(self, parent = aspect2d, **kw):
         self.fishList = []
-        self.parent = parent
+        self._parent = parent
         self.shown = 0
         gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
-        optiondefs = (('parent', self.parent, None),
+        optiondefs = (('parent', self._parent, None),
          ('relief', None, None),
          ('incButton_image', (gui.find('**/FndsLst_ScrollUp'),
            gui.find('**/FndsLst_ScrollDN'),
@@ -58,7 +58,7 @@ class FishPicker(DirectScrolledList):
 
     def destroy(self):
         DirectScrolledList.destroy(self)
-        self.parent = None
+        self._parent = None
         self.fishList = []
         self.fishPanel = None
         return

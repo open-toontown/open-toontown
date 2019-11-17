@@ -524,7 +524,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.handlerArgs = {'hoodId': hoodId,
          'zoneId': zoneId,
          'avId': avId}
-        self.handler = self.handleTutorialQuestion
+        if not self.astronSupport:
+            self.handler = self.handleTutorialQuestion
         self.__requestSkipTutorial(hoodId, zoneId, avId)
 
     def __requestSkipTutorial(self, hoodId, zoneId, avId):
@@ -551,7 +552,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         return
 
     def enterTutorialQuestion(self, hoodId, zoneId, avId):
-        self.handler = self.handleTutorialQuestion
+        if not self.astronSupport:
+            self.handler = self.handleTutorialQuestion
         self.__requestTutorial(hoodId, zoneId, avId)
 
     def handleTutorialQuestion(self, msgType, di):

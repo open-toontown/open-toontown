@@ -103,7 +103,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
         newsDirAsFile = vfs.getFile(Filename(newsDir))
         fileList = newsDirAsFile.scanDirectory()
         fileNames = fileList.getFiles()
-        self.notify.debug('filenames=%s' % fileNames)
+        self.notify.debug('filenames=%s' % str(fileNames))
         homeFileNames = set([])
         for name in fileNames:
             self.notify.debug('processing %s' % name)

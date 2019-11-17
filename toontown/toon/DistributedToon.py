@@ -1,4 +1,5 @@
 from pandac.PandaModules import *
+from libotp import *
 from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *

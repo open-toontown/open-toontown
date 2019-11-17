@@ -1,6 +1,7 @@
 import ShtikerPage
 from toontown.toonbase import ToontownGlobals
 from direct.showbase import PythonUtil
+from otp.otpbase import PythonUtil as OTPPythonUtil
 from toontown.hood import ZoneUtil
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
@@ -239,7 +240,7 @@ class MapPage(ShtikerPage.ShtikerPage):
             messenger.send(self.doneEvent)
 
     def __hoverCallback(self, inside, hoodIndex, pos):
-        alpha = PythonUtil.choice(inside, 0.25, 1.0)
+        alpha = OTPPythonUtil.choice(inside, 0.25, 1.0)
         try:
             clouds = self.clouds[hoodIndex]
         except ValueError:

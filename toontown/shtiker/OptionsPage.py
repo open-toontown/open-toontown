@@ -128,12 +128,14 @@ class OptionsTabPage(DirectFrame):
      'DirectX8': Settings.DX8}
 
     def __init__(self, parent = aspect2d):
+        self._parent = parent
         self.currentSizeIndex = None
-        DirectFrame.__init__(self, parent=parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
+        DirectFrame.__init__(self, parent=self._parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
         self.load()
         return
 
     def destroy(self):
+        self._parent = None
         DirectFrame.destroy(self)
         return
 
@@ -206,7 +208,7 @@ class OptionsTabPage(DirectFrame):
         self.speedChatStyleText.enter()
         self.speedChatStyleIndex = base.localAvatar.getSpeedChatStyleIndex()
         self.updateSpeedChatStyle()
-        if self.parent.book.safeMode:
+        if self._parent.book.safeMode:
             self.exitButton.hide()
         else:
             self.exitButton.show()
@@ -453,7 +455,7 @@ class OptionsTabPage(DirectFrame):
     def __handleExitShowWithConfirm(self):
         self.confirm = TTDialog.TTGlobalDialog(doneEvent='confirmDone', message=TTLocalizer.OptionsPageExitConfirm, style=TTDialog.TwoChoice)
         self.confirm.show()
-        self.parent.doneStatus = {'mode': 'exit',
+        self._parent.doneStatus = {'mode': 'exit',
          'exitTo': 'closeShard'}
         self.accept('confirmDone', self.__handleConfirm)
 
@@ -464,18 +466,20 @@ class OptionsTabPage(DirectFrame):
         del self.confirm
         if status == 'ok':
             base.cr._userLoggingOut = True
-            messenger.send(self.parent.doneEvent)
+            messenger.send(self._parent.doneEvent)
 
 
 class CodesTabPage(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('CodesTabPage')
 
     def __init__(self, parent = aspect2d):
-        DirectFrame.__init__(self, parent=parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
+        self._parent = parent
+        DirectFrame.__init__(self, parent=self._parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
         self.load()
         return
 
     def destroy(self):
+        self._parent = None
         DirectFrame.destroy(self)
         return
 

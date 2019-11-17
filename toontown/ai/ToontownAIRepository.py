@@ -4,6 +4,7 @@ from otp.distributed.OtpDoGlobals import *
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
 from toontown.ai.HolidayManagerAI import HolidayManagerAI
+from toontown.ai.NewsManagerAI import NewsManagerAI
 from toontown.catalog.CatalogManagerAI import CatalogManagerAI
 from toontown.uberdog.DistributedInGameNewsMgrAI import DistributedInGameNewsMgrAI
 
@@ -17,6 +18,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.districtId = None
         self.district = None
         self.holidayManager = None
+        self.newsManager = None
         self.zoneDataStore = None
         self.inGameNewsMgr = None
         self.catalogManager = None
@@ -58,6 +60,10 @@ class ToontownAIRepository(ToontownInternalRepository):
         """
         Creates "global" (distributed) objects.
         """
+
+        # Generate our news manager...
+        self.newsManager = NewsManagerAI(self)
+        self.newsManager.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
 
         # Generate our in-game news manager...
         self.inGameNewsMgr = DistributedInGameNewsMgrAI(self)
