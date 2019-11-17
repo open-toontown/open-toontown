@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from libotp import Settings
+from libotp import *
 import ShtikerPage
 from toontown.toontowngui import TTDialog
 from direct.gui.DirectGui import *

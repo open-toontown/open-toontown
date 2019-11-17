@@ -1130,6 +1130,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                 dclass.stopGenerate()
 
         def handleGenerateWithRequiredOtherOwner(self, di):
+            # OwnerViews are only used for LocalToon in Toontown.
             if self.loginFSM.getCurrentState().getName() == 'waitForSetAvatarResponse':
                 doId = di.getUint32()
                 parentId = di.getUint32()

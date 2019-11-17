@@ -58,7 +58,7 @@ class Hood(StateData.StateData):
         self.titleText.setColor(Vec4(*self.titleColor))
         self.titleText.clearColorScale()
         self.titleText.setFg(self.titleColor)
-        self.titleTextSeq = Sequence(Wait(0.1), Wait(6.0), self.titleText.colorScaleInterval(0.5, Vec4(1.0, 1.0, 1.0, 0.0), Vec4(1.0, 1.0, 1.0, 1.0)), Func(self.hideTitleText))
+        self.titleTextSeq = Sequence(Wait(0.1), Wait(6.0), self.titleText.colorScaleInterval(0.5, Vec4(1.0, 1.0, 1.0, 0.0)), Func(self.hideTitleText))
         self.titleTextSeq.start()
 
     def hideTitleText(self):

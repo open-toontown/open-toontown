@@ -1169,9 +1169,14 @@ class OTPClientRepository(ClientRepositoryBase):
             else:
                 self.startPeriodTimer()
 
-    @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
-    def handleAvatarResponseMsg(self, di):
-        pass
+    if not config.GetBool('astron-support', True):
+        @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
+        def handleAvatarResponseMsg(self, di):
+            pass
+    else:
+        @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
+        def handleAvatarResponseMsg(self, avatarId, di):
+            pass
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def handleWaitForSetAvatarResponse(self, msgType, di):
@@ -1676,17 +1681,15 @@ class OTPClientRepository(ClientRepositoryBase):
         def handlePlayGame(self, msgType, di):
             if self.notify.getDebug():
                 self.notify.debug('handle play game got message type: ' + `msgType`)
+            if self.__recordObjectMessage(msgType, di):
+                return
             if msgType == CLIENT_ENTER_OBJECT_REQUIRED:
                 self.handleGenerateWithRequired(di)
             elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER:
-                self.handleGenerateWithRequiredOther(di)
+                self.handleGenerateWithRequired(di, other=True)
             elif msgType == CLIENT_OBJECT_SET_FIELD:
                 self.handleUpdateField(di)
-            elif msgType == CLIENT_OBJECT_DISABLE:
-                self.handleDisable(di)
-            elif msgType == CLIENT_OBJECT_DISABLE_OWNER:
-                self.handleDisable(di, ownerView=True)
-            elif msgType == CLIENT_OBJECT_DELETE_RESP:
+            elif msgType == CLIENT_OBJECT_LEAVING:
                 self.handleDelete(di)
             else:
                 self.handleMessageType(msgType, di)
@@ -1970,42 +1973,8 @@ class OTPClientRepository(ClientRepositoryBase):
         messenger.send('periodTimerExpired')
         return Task.done
 
-    def handleMessageType(self, msgType, di):
-        if self.astronSupport:
-            if self.__recordObjectMessage(msgType, di):
-                return
-            if msgType == CLIENT_EJECT:
-                self.handleGoGetLost(di)
-            elif msgType == CLIENT_HEARTBEAT:
-                self.handleServerHeartbeat(di)
-            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED:
-                self.handleGenerateWithRequired(di)
-            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER:
-                self.handleGenerateWithRequired(di, other=True)
-            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER_OWNER:
-                self.handleGenerateWithRequiredOtherOwner(di)
-            elif msgType == CLIENT_OBJECT_SET_FIELD:
-                self.handleUpdateField(di)
-            elif msgType == CLIENT_OBJECT_LEAVING:
-                self.handleDisable(di)
-            elif msgType == CLIENT_OBJECT_LEAVING_OWNER:
-                self.handleDisable(di, ownerView=True)
-            elif msgType == CLIENT_DONE_INTEREST_RESP:
-                self.gotInterestDoneMessage(di)
-            elif msgType == CLIENT_OBJECT_LOCATION:
-                self.gotObjectLocationMessage(di)
-            else:
-                currentLoginState = self.loginFSM.getCurrentState()
-                if currentLoginState:
-                    currentLoginStateName = currentLoginState.getName()
-                else:
-                    currentLoginStateName = 'None'
-                currentGameState = self.gameFSM.getCurrentState()
-                if currentGameState:
-                    currentGameStateName = currentGameState.getName()
-                else:
-                    currentGameStateName = 'None'
-        else:
+    if not config.GetBool('astron-support', True):
+        def handleMessageType(self, msgType, di):
             if msgType == CLIENT_GO_GET_LOST:
                 self.handleGoGetLost(di)
             elif msgType == CLIENT_HEARTBEAT:
@@ -2036,6 +2005,41 @@ class OTPClientRepository(ClientRepositoryBase):
                 self.gotObjectLocationMessage(di)
             elif msgType == CLIENT_SET_WISHNAME_RESP:
                 self.gotWishnameResponse(di)
+            else:
+                currentLoginState = self.loginFSM.getCurrentState()
+                if currentLoginState:
+                    currentLoginStateName = currentLoginState.getName()
+                else:
+                    currentLoginStateName = 'None'
+                currentGameState = self.gameFSM.getCurrentState()
+                if currentGameState:
+                    currentGameStateName = currentGameState.getName()
+                else:
+                    currentGameStateName = 'None'
+    else:
+        def handleMessageType(self, msgType, di):
+            if self.__recordObjectMessage(msgType, di):
+                return
+            if msgType == CLIENT_EJECT:
+                self.handleGoGetLost(di)
+            elif msgType == CLIENT_HEARTBEAT:
+                self.handleServerHeartbeat(di)
+            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED:
+                self.handleGenerateWithRequired(di)
+            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER:
+                self.handleGenerateWithRequired(di, other=True)
+            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER_OWNER:
+                self.handleGenerateWithRequiredOtherOwner(di)
+            elif msgType == CLIENT_OBJECT_SET_FIELD:
+                self.handleUpdateField(di)
+            elif msgType == CLIENT_OBJECT_LEAVING:
+                self.handleDisable(di)
+            elif msgType == CLIENT_OBJECT_LEAVING_OWNER:
+                self.handleDisable(di, ownerView=True)
+            elif msgType == CLIENT_DONE_INTEREST_RESP:
+                self.gotInterestDoneMessage(di)
+            elif msgType == CLIENT_OBJECT_LOCATION:
+                self.gotObjectLocationMessage(di)
             else:
                 currentLoginState = self.loginFSM.getCurrentState()
                 if currentLoginState:
