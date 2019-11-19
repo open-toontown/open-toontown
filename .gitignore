@@ -6,3 +6,4 @@ news/
 sign/
 whitelist/
 *.so
+*.DS_Store
