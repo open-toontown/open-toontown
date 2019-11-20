@@ -71,6 +71,7 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         # Generate our catalog manager...
         self.catalogManager = CatalogManagerAI(self)
+        self.catalogManager.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
 
     def getTrackClsends(self):
         return False
