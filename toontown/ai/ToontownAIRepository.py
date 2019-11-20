@@ -13,13 +13,13 @@ class ToontownAIRepository(ToontownInternalRepository):
 
     def __init__(self, baseChannel, serverId, districtName):
         ToontownInternalRepository.__init__(self, baseChannel, serverId, dcSuffix='AI')
-        self.doLiveUpdates = config.GetBool('want-live-updates', True)
         self.districtName = districtName
+        self.doLiveUpdates = config.GetBool('want-live-updates', True)
         self.districtId = None
         self.district = None
         self.holidayManager = None
-        self.newsManager = None
         self.zoneDataStore = None
+        self.newsManager = None
         self.inGameNewsMgr = None
         self.catalogManager = None
 
