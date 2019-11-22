@@ -1,4 +1,3 @@
-cull-bin gui-popup 60 unsorted
 want-render2dp 1
 text-encoding utf8
 direct-wtext 0
@@ -12,8 +11,6 @@ collect-tcp 1
 collect-tcp-interval 0.2
 server-version sv1.0.47.38
 server-version-suffix
-cull-bin shadow 15 fixed
-cull-bin ground 14 fixed
 model-path resources
 dc-file etc/toon.dc
 dc-file etc/otp.dc

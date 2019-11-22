@@ -143,6 +143,9 @@ class ToonBase(OTPBase.OTPBase):
         tpMgr.setProperties('WLDisplay', WLDisplay)
         tpMgr.setProperties('WLEnter', WLEnter)
         del tpMgr
+        CullBinManager.getGlobalPtr().addBin('gui-popup', CullBinManager.BTUnsorted, 60)
+        CullBinManager.getGlobalPtr().addBin('shadow', CullBinManager.BTFixed, 15)
+        CullBinManager.getGlobalPtr().addBin('ground', CullBinManager.BTFixed, 14)
         self.lastScreenShotTime = globalClock.getRealTime()
         self.accept('InputState-forward', self.__walking)
         self.canScreenShot = 1
