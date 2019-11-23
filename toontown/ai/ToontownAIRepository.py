@@ -135,7 +135,7 @@ class ToontownAIRepository(ToontownInternalRepository):
     def createZones(self):
         # First, generate our zone2NpcDict...
         NPCToons.generateZone2NpcDict()
-        
+
         # Toontown Central
         self.zoneTable[ToontownGlobals.ToontownCentral] = (
             (ToontownGlobals.ToontownCentral, 1, 0), (ToontownGlobals.SillyStreet, 1, 1),
