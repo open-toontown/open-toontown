@@ -59,7 +59,7 @@ class DistributedCountryClub(DistributedObject.DistributedObject):
 
     def stopSky(self):
         taskMgr.remove('skyTrack')
-        self.sky.remove()
+        self.sky.removeNode()
 
     def __setupHighSky(self):
         self.startSky()

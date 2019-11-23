@@ -45,7 +45,7 @@ class CogdoBarrelRoom:
         self.nearBattleNode.setPos(0, -25, 0)
         self.rewardUi = CogdoBarrelRoomRewardPanel.CogdoBarrelRoomRewardPanel()
         self.hideRewardUi()
-        self.stomperSfx = base.loadSfx(CogdoBarrelRoomConsts.StomperSound)
+        self.stomperSfx = base.loader.loadSfx(CogdoBarrelRoomConsts.StomperSound)
         self.fog = Fog('barrel-room-fog')
         self.fog.setColor(CogdoBarrelRoomConsts.BarrelRoomFogColor)
         self.fog.setLinearRange(*CogdoBarrelRoomConsts.BarrelRoomFogLinearRange)

@@ -277,14 +277,14 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         self.invModel = loader.loadModel('phase_3.5/models/gui/inventory_icons')
         self.model = model
         self.model1 = model1
-        self.soundFire = base.loadSfx('phase_6/audio/sfx/Golf_Hit_Ball.mp3')
-        self.soundLand = base.loadSfx('phase_4/audio/sfx/MG_maze_pickup.mp3')
-        self.soundBurst = base.loadSfx('phase_5/audio/sfx/Toon_bodyfall_synergy.mp3')
-        self.soundBomb = base.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.mp3')
-        self.soundLose = base.loadSfx('phase_11/audio/sfx/LB_capacitor_discharge_3.mp3')
-        self.soundWin = base.loadSfx('phase_4/audio/sfx/MG_pairing_match_bonus_both.mp3')
-        self.soundDone = base.loadSfx('phase_3/audio/sfx/GUI_create_toon_back.mp3')
-        self.soundMove = base.loadSfx('phase_3.5/audio/sfx/SA_shred.mp3')
+        self.soundFire = base.loader.loadSfx('phase_6/audio/sfx/Golf_Hit_Ball.mp3')
+        self.soundLand = base.loader.loadSfx('phase_4/audio/sfx/MG_maze_pickup.mp3')
+        self.soundBurst = base.loader.loadSfx('phase_5/audio/sfx/Toon_bodyfall_synergy.mp3')
+        self.soundBomb = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.mp3')
+        self.soundLose = base.loader.loadSfx('phase_11/audio/sfx/LB_capacitor_discharge_3.mp3')
+        self.soundWin = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_match_bonus_both.mp3')
+        self.soundDone = base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_back.mp3')
+        self.soundMove = base.loader.loadSfx('phase_3.5/audio/sfx/SA_shred.mp3')
         background = model.find('**/bg')
         itemBoard = model.find('**/item_board')
         self.focusPoint = self.baseNode.attachNewNode('GolfGreenGameFrame')
@@ -382,7 +382,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         for panelKey in self.toonPanels:
             self.toonPanels[panelKey].destroy()
 
-        self.headPanel.remove()
+        self.headPanel.removeNode()
         self.toonPanels = None
         self.soundFire = None
         self.soundLand = None
@@ -538,7 +538,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         base.localAvatar.startUpdateSmartCamera()
 
     def __removeGame(self):
-        self.spriteNode.remove()
+        self.spriteNode.removeNode()
         self.setupFlag = 0
 
     def __leaveGame(self):

@@ -80,9 +80,9 @@ class DistributedRingGame(DistributedMinigame):
         self.notify.debug('load')
         DistributedMinigame.load(self)
         self.defineConstants()
-        self.music = base.loadMusic('phase_4/audio/bgm/MG_toontag.mid')
-        self.sndAmbience = base.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
-        self.sndPerfect = base.loadSfx('phase_4/audio/sfx/ring_perfect.mp3')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_toontag.mid')
+        self.sndAmbience = base.loader.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
+        self.sndPerfect = base.loader.loadSfx('phase_4/audio/sfx/ring_perfect.mp3')
         loadBase = 'phase_4/models/minigames/'
         self.environModel = loader.loadModel(loadBase + 'swimming_game.bam')
         self.environModel.setPos(0, self.ENVIRON_LENGTH / 2.0, self.SEA_FLOOR_Z)
@@ -166,8 +166,8 @@ class DistributedRingGame(DistributedMinigame):
         self.sndTable = {'gotRing': [None] * self.numPlayers,
          'missedRing': [None] * self.numPlayers}
         for i in range(0, self.numPlayers):
-            self.sndTable['gotRing'][i] = base.loadSfx('phase_4/audio/sfx/ring_get.mp3')
-            self.sndTable['missedRing'][i] = base.loadSfx('phase_4/audio/sfx/ring_miss.mp3')
+            self.sndTable['gotRing'][i] = base.loader.loadSfx('phase_4/audio/sfx/ring_get.mp3')
+            self.sndTable['missedRing'][i] = base.loader.loadSfx('phase_4/audio/sfx/ring_miss.mp3')
 
         self.__addToonDropShadow(self.getAvatar(self.localAvId))
         self.__spawnUpdateEnvironTask()

@@ -89,7 +89,7 @@ class DistributedButton(DistributedSwitch.DistributedSwitch):
         DistributedSwitch.DistributedSwitch.exitTrigger(self, args)
 
     def switchOnTrack(self):
-        onSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_switch_pressed.mp3')
+        onSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_switch_pressed.mp3')
         duration = 0.8
         halfDur = duration * 0.5
         pos = Vec3(0.0, 0.0, -0.2)
@@ -99,7 +99,7 @@ class DistributedButton(DistributedSwitch.DistributedSwitch):
 
     def switchCountdownTrack(self):
         wait = self.secondsOn - self.countdownSeconds
-        countDownSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_switch_depressed.mp3')
+        countDownSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_switch_depressed.mp3')
         track = Parallel(
             SoundInterval(countDownSfx),
             Sequence(
@@ -123,7 +123,7 @@ class DistributedButton(DistributedSwitch.DistributedSwitch):
         return track
 
     def switchOffTrack(self):
-        offSfx = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_switch_popup.mp3')
+        offSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_switch_popup.mp3')
         duration = 1.0
         halfDur = duration * 0.5
         pos = Vec3(0.0)

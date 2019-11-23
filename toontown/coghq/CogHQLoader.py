@@ -28,8 +28,8 @@ class CogHQLoader(StateData.StateData):
 
     def load(self, zoneId):
         self.parentFSMState.addChild(self.fsm)
-        self.music = base.loadMusic(self.musicFile)
-        self.battleMusic = base.loadMusic('phase_9/audio/bgm/encntr_suit_winning.mid')
+        self.music = base.loader.loadMusic(self.musicFile)
+        self.battleMusic = base.loader.loadMusic('phase_9/audio/bgm/encntr_suit_winning.mid')
         self.townBattle = TownBattle.TownBattle(self.townBattleDoneEvent)
         self.townBattle.load()
         Suit.loadSuits(3)

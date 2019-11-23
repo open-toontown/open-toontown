@@ -28,8 +28,8 @@ class Train(DirectObject):
         self.numCars = len(self.CarFiles)
         self.locomotive = loader.loadModel(self.LocomotiveFile)
         self.cars = []
-        self.trainPassingSfx = base.loadSfx(self.Sfx_TrainPass)
-        self.trainStopStartSfx = base.loadSfx(self.Sfx_TrainStopStart)
+        self.trainPassingSfx = base.loader.loadSfx(self.Sfx_TrainPass)
+        self.trainStopStartSfx = base.loader.loadSfx(self.Sfx_TrainStopStart)
         self.trainId = trackNum
         self.bFlipped = False
         if trackStartPos[0] < trackEndPos[0]:

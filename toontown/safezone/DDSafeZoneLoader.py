@@ -18,10 +18,10 @@ class DDSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
 
     def load(self):
         SafeZoneLoader.SafeZoneLoader.load(self)
-        self.seagullSound = base.loadSfx('phase_6/audio/sfx/SZ_DD_Seagull.mp3')
-        self.underwaterSound = base.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
-        self.swimSound = base.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.mp3')
-        self.submergeSound = base.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.mp3')
+        self.seagullSound = base.loader.loadSfx('phase_6/audio/sfx/SZ_DD_Seagull.mp3')
+        self.underwaterSound = base.loader.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
+        self.swimSound = base.loader.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.mp3')
+        self.submergeSound = base.loader.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.mp3')
         water = self.geom.find('**/water')
         water.setTransparency(1)
         water.setColor(1, 1, 1, 0.8)
@@ -35,10 +35,10 @@ class DDSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
             else:
                 wheel.hide()
             self.boat.stash()
-        self.dockSound = base.loadSfx('phase_6/audio/sfx/SZ_DD_dockcreak.mp3')
-        self.foghornSound = base.loadSfx('phase_5/audio/sfx/SZ_DD_foghorn.mp3')
-        self.bellSound = base.loadSfx('phase_6/audio/sfx/SZ_DD_shipbell.mp3')
-        self.waterSound = base.loadSfx('phase_6/audio/sfx/SZ_DD_waterlap.mp3')
+        self.dockSound = base.loader.loadSfx('phase_6/audio/sfx/SZ_DD_dockcreak.mp3')
+        self.foghornSound = base.loader.loadSfx('phase_5/audio/sfx/SZ_DD_foghorn.mp3')
+        self.bellSound = base.loader.loadSfx('phase_6/audio/sfx/SZ_DD_shipbell.mp3')
+        self.waterSound = base.loader.loadSfx('phase_6/audio/sfx/SZ_DD_waterlap.mp3')
 
     def unload(self):
         SafeZoneLoader.SafeZoneLoader.unload(self)

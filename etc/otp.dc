@@ -545,3 +545,4 @@ dclass AstronLoginManager : DistributedObject {
   requestRemoveAvatar(uint32) clsend;
   requestPlayAvatar(uint32) clsend;
 };
+

@@ -59,8 +59,8 @@ class DistributedBarrelBase(BasicEntities.DistributedNodePathEntity, BarrelBase.
         self.accept(self.uniqueName('enterbarrelSphere'), self.handleEnterSphere)
 
     def loadModel(self):
-        self.grabSound = base.loadSfx(self.grabSoundPath)
-        self.rejectSound = base.loadSfx(self.rejectSoundPath)
+        self.grabSound = base.loader.loadSfx(self.grabSoundPath)
+        self.rejectSound = base.loader.loadSfx(self.rejectSoundPath)
         self.barrel = loader.loadModel('phase_4/models/cogHQ/gagTank')
         self.barrel.setScale(self.barrelScale)
         self.barrel.reparentTo(self)
