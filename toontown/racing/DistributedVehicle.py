@@ -390,7 +390,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         for x in self.drifts:
             x.destroy()
 
-        self.smokeMount.remove()
+        self.smokeMount.removeNode()
         del self.driftSeq
         del self.driftParticleForces
         del self.drifts
@@ -445,7 +445,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         for x in self.sparks:
             x.destroy()
 
-        self.sparkMount.remove()
+        self.sparkMount.removeNode()
         del self.sparks
         del self.sparkMount
 

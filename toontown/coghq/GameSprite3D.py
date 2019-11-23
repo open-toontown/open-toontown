@@ -95,7 +95,7 @@ class GameSprite:
         if not self.nodeObj or self.nodeObj.isEmpty():
             self.nodeObj = None
         else:
-            self.nodeObj.remove()
+            self.nodeObj.removeNode()
         colorType = type
         self.multiColor = 0
         self.breakable = 1

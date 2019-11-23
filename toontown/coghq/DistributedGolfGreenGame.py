@@ -382,7 +382,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         for panelKey in self.toonPanels:
             self.toonPanels[panelKey].destroy()
 
-        self.headPanel.remove()
+        self.headPanel.removeNode()
         self.toonPanels = None
         self.soundFire = None
         self.soundLand = None
@@ -538,7 +538,7 @@ class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
         base.localAvatar.startUpdateSmartCamera()
 
     def __removeGame(self):
-        self.spriteNode.remove()
+        self.spriteNode.removeNode()
         self.setupFlag = 0
 
     def __leaveGame(self):

@@ -471,7 +471,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         self.waitingLabel.setScale(TTLocalizer.DRenterWaiting)
 
     def exitWaiting(self):
-        self.waitingLabel.remove()
+        self.waitingLabel.removeNode()
 
     def enterStart(self):
         waitTime = self.baseTime - globalClock.getFrameTime()
@@ -684,7 +684,7 @@ class DistributedRace(DistributedObject.DistributedObject):
             return Task.cont
 
     def endGoSign(self, t):
-        self.clock.remove()
+        self.clock.removeNode()
 
     def countdown(self, duration):
         countdownTask = Task(self.timerTask)

@@ -278,14 +278,14 @@ class OZSafeZoneLoader(SafeZoneLoader):
         del self.birdSound
         SafeZoneLoader.unload(self)
         self.done = 1
-        self.collBase.remove()
+        self.collBase.removeNode()
         if self.geyserTrack:
             self.geyserTrack.finish()
         self.geyserTrack = None
         self.geyserActor.cleanup()
-        self.geyserModel.remove()
+        self.geyserModel.removeNode()
         self.waterfallActor.cleanup()
-        self.waterfallModel.remove()
+        self.waterfallModel.removeNode()
         self.bubbles.destroy()
         del self.bubbles
         self.geyserPoolSoundInterval.finish()

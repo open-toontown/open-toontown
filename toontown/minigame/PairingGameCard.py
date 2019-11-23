@@ -55,7 +55,7 @@ class PairingGameCard(PlayingCardNodePath):
         logo.setZ(0.025)
         logo.setX(-0.05)
         logo.setH(180)
-        cardModel.remove()
+        cardModel.removeNode()
         self.setR(0)
         self.setScale(2.5)
         self.flipIval = None
