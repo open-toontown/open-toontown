@@ -143,12 +143,9 @@ class OTPInternalRepository(AstronInternalRepository):
                 return
 
             if doId in self.doId2do:
-                self.notify.info('we already know {}'.format(doId))
                 return # We already know about this object; ignore the entry.
 
             dclass = self.dclassesByNumber[classId]
-
-            self.notify.info('{} now entering'.format(dclass.getName()))
 
             do = dclass.getClassDef()(self)
             do.dclass = dclass
