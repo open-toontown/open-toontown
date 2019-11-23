@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from direct.distributed.MsgTypes import *
+from otp.distributed.OTPMsgTypes import *
 from direct.directnotify import DirectNotifyGlobal
 import LoginBase
 import TTAccount

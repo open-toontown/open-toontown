@@ -1,6 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
 from otp.login.LoginScreen import LoginScreen
-from direct.distributed.MsgTypes import *
+if astronSupport:
+    from direct.distributed.MsgTypes import *
+else:
+    from otp.distributed.OTPMsgTypes import *
 
 class AstronLoginScreen(LoginScreen):
 

@@ -5,7 +5,10 @@ from direct.showbase.PythonUtil import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNode
 from direct.distributed.ClockDelta import globalClockDelta
-from direct.distributed.MsgTypes import *
+if astronSupport:
+    from direct.distributed.MsgTypes import *
+else:
+    from otp.distributed.OTPMsgTypes import *
 from direct.task import Task
 from otp.otpbase import OTPGlobals
 from toontown.pets import Pet, PetBase, PetTraits, PetConstants, PetManager, PetAvatarPanel

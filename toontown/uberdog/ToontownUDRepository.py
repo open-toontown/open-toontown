@@ -3,8 +3,6 @@ from toontown.distributed.ToontownInternalRepository import ToontownInternalRepo
 from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
 from otp.distributed.OtpDoGlobals import *
 
-# TODO: Remove Astron dependence.
-
 class ToontownUDRepository(ToontownInternalRepository):
 
     def __init__(self, baseChannel, serverId):
@@ -26,5 +24,6 @@ class ToontownUDRepository(ToontownInternalRepository):
         self.notify.info('UberDOG server is ready.')
 
     def createGlobals(self):
-        # Create our Astron login manager...
-        self.astronLoginManager = self.generateGlobalObject(OTP_DO_ID_ASTRON_LOGIN_MANAGER, 'AstronLoginManager')
+        if astronSupport:
+            # Create our Astron login manager...
+            self.astronLoginManager = self.generateGlobalObject(OTP_DO_ID_ASTRON_LOGIN_MANAGER, 'AstronLoginManager')

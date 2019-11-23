@@ -33,7 +33,10 @@ import InventoryNew
 from toontown.speedchat import TTSCDecoders
 from toontown.chat import ToonChatGarbler
 from toontown.chat import ResistanceChat
-from direct.distributed.MsgTypes import *
+if astronSupport:
+    from direct.distributed.MsgTypes import *
+else:
+    from otp.distributed.OTPMsgTypes import *
 from toontown.effects.ScavengerHuntEffects import *
 from toontown.estate import FlowerCollection
 from toontown.estate import FlowerBasket

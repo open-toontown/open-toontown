@@ -1,5 +1,8 @@
 from pandac.PandaModules import *
-from direct.distributed.MsgTypes import *
+if astronSupport:
+    from direct.distributed.MsgTypes import *
+else:
+    from otp.distributed.OTPMsgTypes import *
 from direct.directnotify import DirectNotifyGlobal
 import LoginBase
 from direct.distributed.PyDatagram import PyDatagram

@@ -138,7 +138,7 @@ class QuietZoneState(StateData.StateData):
                 self._setZoneCompleteCallbacks.remove(token)
         return
 
-    if not config.GetBool('astron-support', True):
+    if not astronSupport:
         def handleWaitForQuietZoneResponse(self, msgType, di):
             self.notify.debug('handleWaitForQuietZoneResponse(' + 'msgType=' + str(msgType) + ', di=' + str(di) + ')')
             if msgType == CLIENT_CREATE_OBJECT_REQUIRED:

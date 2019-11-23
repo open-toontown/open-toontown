@@ -96,6 +96,7 @@ audio-master-sfx-volume 1
 audio-master-music-volume 1
 server-type prod
 want-dev 0
+astron-support #t
 
 # TEMP
 fake-playtoken dev

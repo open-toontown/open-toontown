@@ -82,6 +82,7 @@ version = OnscreenText(serverVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0,
 loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, TTLocalizer.TIP_NONE)
 from ToonBaseGlobal import *
 from direct.showbase.MessengerGlobal import *
+__builtin__.astronSupport = base.config.GetBool('astron-support', True)
 from toontown.distributed import ToontownClientRepository
 cr = ToontownClientRepository.ToontownClientRepository(serverVersion, launcher)
 cr.music = music

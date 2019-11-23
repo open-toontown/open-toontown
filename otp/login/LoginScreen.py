@@ -2,7 +2,10 @@ import os
 import time
 from datetime import datetime
 from pandac.PandaModules import *
-from direct.distributed.MsgTypes import *
+if astronSupport:
+    from direct.distributed.MsgTypes import *
+else:
+    from otp.distributed.OTPMsgTypes import *
 from direct.gui.DirectGui import *
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM

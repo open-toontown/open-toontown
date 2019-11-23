@@ -10,7 +10,10 @@ from otp.otpbase import OTPLocalizer
 import TTAccount
 import GuiScreen
 from otp.otpbase import OTPGlobals
-from direct.distributed.MsgTypes import *
+if astronSupport:
+    from direct.distributed.MsgTypes import *
+else:
+    from otp.distributed.OTPMsgTypes import *
 
 class CreateAccountScreen(StateData.StateData, GuiScreen.GuiScreen):
     notify = DirectNotifyGlobal.directNotify.newCategory('CreateAccountScreen')
