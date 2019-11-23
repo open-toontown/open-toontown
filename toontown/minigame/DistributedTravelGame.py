@@ -235,7 +235,7 @@ class DistributedTravelGame(DistributedMinigame):
         turnTable.removeNode()
         self.loadGui()
         self.introMovie = self.getIntroMovie()
-        self.music = base.loadMusic('phase_4/audio/bgm/MG_Travel.mid')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_Travel.mid')
         self.flashWinningBeansTrack = None
         return
 

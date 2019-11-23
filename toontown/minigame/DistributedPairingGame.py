@@ -119,7 +119,7 @@ class DistributedPairingGame(DistributedMinigame):
         self.__textGen.setAlign(TextNode.ACenter)
         self.sndPerfect = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_all_matched.mp3')
         self.calcBonusTraversal()
-        self.music = base.loadMusic('phase_4/audio/bgm/MG_Pairing.mid')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_Pairing.mid')
         self.matchSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_match.mp3')
         self.matchWithBonusSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_match_bonus_both.mp3')
         self.signalSfx = []

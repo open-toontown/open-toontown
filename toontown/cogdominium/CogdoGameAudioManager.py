@@ -43,7 +43,7 @@ class CogdoGameAudioManager:
         self.currentMusic = None
         self._music = {}
         for name, filePath in musicFiles.items():
-            self._music[name] = base.loadMusic(filePath)
+            self._music[name] = base.loader.loadMusic(filePath)
 
         self._audioSounds = []
         self._soundIvals = {}

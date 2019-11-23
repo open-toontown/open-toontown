@@ -530,7 +530,7 @@ class DistributedMazeGame(DistributedMinigame):
         model.removeNode()
         self.treasureModel.setScale(1.6)
         self.treasureModel.setP(-90)
-        self.music = base.loadMusic('phase_4/audio/bgm/MG_toontag.mid')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_toontag.mid')
         self.toonHitTracks = {}
         self.scorePanels = []
 

@@ -91,7 +91,7 @@ class DistributedPatternGame(DistributedMinigame):
         self.incorrectSound = base.loader.loadSfx('phase_4/audio/sfx/MG_neg_buzzer.wav')
         self.perfectSound = base.loader.loadSfx('phase_4/audio/sfx/MG_win.mp3')
         self.fallSound = base.loader.loadSfx('phase_4/audio/sfx/MG_Tag_A.mp3')
-        self.music = base.loadMusic(self.bgm)
+        self.music = base.loader.loadMusic(self.bgm)
         self.waitingText = DirectLabel(text=self.strPleaseWait, text_fg=(0.9, 0.9, 0.9, 1.0), frameColor=(1, 1, 1, 0), text_font=ToontownGlobals.getSignFont(), pos=(0, 0, -.78), scale=0.12)
         self.roundText = DirectLabel(text=self.strRound % 1, text_fg=self.normalTextColor, frameColor=(1, 1, 1, 0), text_font=ToontownGlobals.getSignFont(), pos=(0.014, 0, -.84), scale=0.12)
         self.roundText.hide()

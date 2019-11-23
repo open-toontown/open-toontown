@@ -46,7 +46,7 @@ class ToonBlitzAssetMgr(DirectObject):
         dropPlane.addSolid(plane)
         dropPlane.setCollideMask(ToontownGlobals.FloorBitmask)
         self.world.attachNewNode(dropPlane)
-        self.gameMusic = base.loadMusic('phase_4/audio/bgm/MG_TwoDGame.mid')
+        self.gameMusic = base.loader.loadMusic('phase_4/audio/bgm/MG_TwoDGame.mid')
         self.treasureGrabSound = loader.loadSfx('phase_4/audio/sfx/SZ_DD_treasure.mp3')
         self.sndOof = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_hit_dirt.mp3')
         self.soundJump = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_jump.mp3')

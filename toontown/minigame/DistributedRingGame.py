@@ -80,7 +80,7 @@ class DistributedRingGame(DistributedMinigame):
         self.notify.debug('load')
         DistributedMinigame.load(self)
         self.defineConstants()
-        self.music = base.loadMusic('phase_4/audio/bgm/MG_toontag.mid')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_toontag.mid')
         self.sndAmbience = base.loader.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
         self.sndPerfect = base.loader.loadSfx('phase_4/audio/sfx/ring_perfect.mp3')
         loadBase = 'phase_4/models/minigames/'

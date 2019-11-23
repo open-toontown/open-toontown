@@ -95,7 +95,7 @@ class DistributedVineGame(DistributedMinigame):
         self.notify.debug('load')
         DistributedMinigame.load(self)
         self.defineConstants()
-        self.music = base.loadMusic('phase_4/audio/bgm/MG_Vine.mid')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_Vine.mid')
         self.gameAssets = loader.loadModel('phase_4/models/minigames/vine_game')
         self.gameBoard = self.gameAssets.find('**/background')
         self.gameBoard.reparentTo(render)

@@ -76,8 +76,8 @@ class DistributedCogdoInterior(DistributedObject.DistributedObject):
         self.penthouseOutroTrack = None
         self.penthouseOutroChatDoneTrack = None
         self.penthouseIntroTrack = None
-        self.waitMusic = base.loadMusic('phase_7/audio/bgm/encntr_toon_winning_indoor.mid')
-        self.elevatorMusic = base.loadMusic('phase_7/audio/bgm/tt_elevator.mid')
+        self.waitMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_toon_winning_indoor.mid')
+        self.elevatorMusic = base.loader.loadMusic('phase_7/audio/bgm/tt_elevator.mid')
         self.fsm = ClassicFSM.ClassicFSM('DistributedCogdoInterior', [State.State('WaitForAllToonsInside', self.enterWaitForAllToonsInside, self.exitWaitForAllToonsInside, ['Elevator']),
          State.State('Elevator', self.enterElevator, self.exitElevator, ['Game']),
          State.State('Game', self.enterGame, self.exitGame, ['Resting', 'Failed', 'BattleIntro']),

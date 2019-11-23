@@ -132,7 +132,7 @@ class DistributedPhotoGame(DistributedMinigame, PhotoGameBase.PhotoGameBase):
         self.tripodModel = loader.loadModel('phase_4/models/minigames/toon_cannon')
         self.filmPanel = DirectLabel(parent=hidden, relief=None, pos=(1.16, 0.0, 0.45), scale=0.65, text=str(self.filmCount), text_scale=0.2, text_fg=(0.95, 0.95, 0, 1), text_pos=(0.08, -0.15), text_font=ToontownGlobals.getSignFont(), image=self.filmImage, image_scale=Point3(1.0, 0.0, 0.85))
         self.filmPanelTitle = DirectLabel(parent=self.filmPanel, relief=None, pos=(0.08, 0, 0.04), scale=0.08, text=TTLocalizer.PhotoGameFilm, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1))
-        self.music = base.loadMusic('phase_4/audio/bgm/MG_cannon_game.mid')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_cannon_game.mid')
         self.sndPhotoMove = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.mp3')
         self.sndPhotoFire = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.mp3')
         self.sndWin = base.loader.loadSfx('phase_4/audio/sfx/MG_win.mp3')
