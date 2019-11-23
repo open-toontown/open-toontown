@@ -1,5 +1,6 @@
 from toontown.toonbase.ToonBaseGlobal import *
 from pandac.PandaModules import *
+from libtoontown import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from toontown.toonbase import ToontownGlobals
