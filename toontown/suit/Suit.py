@@ -170,7 +170,7 @@ HeadModelDict = {'a': ('/models/char/suitA-', 4),
  'c': ('/models/char/suitC-', 3.5)}
 
 def loadTutorialSuit():
-    loader.loadModelNode('phase_3.5/models/char/suitC-mod')
+    loader.loadModel('phase_3.5/models/char/suitC-mod').node()
     loadDialog(1)
 
 
@@ -195,10 +195,10 @@ def loadSuitModelsAndAnims(level, flag = 0):
             if base.config.GetBool('want-new-cogs', 0):
                 filepath = 'phase_3.5' + model + 'zero'
                 if cogExists(model + 'zero.bam'):
-                    loader.loadModelNode(filepath)
+                    loader.loadModel(filepath).node()
             else:
-                loader.loadModelNode('phase_3.5' + model + 'mod')
-            loader.loadModelNode('phase_' + str(headPhase) + headModel + 'heads')
+                loader.loadModel('phase_3.5' + model + 'mod').node()
+            loader.loadModel('phase_' + str(headPhase) + headModel + 'heads').node()
         else:
             if base.config.GetBool('want-new-cogs', 0):
                 filepath = 'phase_3.5' + model + 'zero'
@@ -239,7 +239,7 @@ def loadSuitAnims(suit, flag = 1):
         filePrefix = ModelDict[bodyType][0]
         animName = filePrefix + anim[1]
         if flag:
-            loader.loadModelNode(animName)
+            loader.loadModel(animName).node()
         else:
             loader.unloadModel(animName)
 

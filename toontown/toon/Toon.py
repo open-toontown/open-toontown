@@ -215,30 +215,30 @@ def loadModels():
 
         for key in LegDict.keys():
             fileRoot = LegDict[key]
-            model = loader.loadModelNode('phase_3' + fileRoot + '1000')
+            model = loader.loadModel('phase_3' + fileRoot + '1000').node()
             Preloaded.append(model)
-            model = loader.loadModelNode('phase_3' + fileRoot + '500')
+            model = loader.loadModel('phase_3' + fileRoot + '500').node()
             Preloaded.append(model)
-            model = loader.loadModelNode('phase_3' + fileRoot + '250')
+            model = loader.loadModel('phase_3' + fileRoot + '250').node()
             Preloaded.append(model)
 
         for key in TorsoDict.keys():
             fileRoot = TorsoDict[key]
-            model = loader.loadModelNode('phase_3' + fileRoot + '1000')
+            model = loader.loadModel('phase_3' + fileRoot + '1000').node()
             Preloaded.append(model)
             if len(key) > 1:
-                model = loader.loadModelNode('phase_3' + fileRoot + '500')
+                model = loader.loadModel('phase_3' + fileRoot + '500').node()
                 Preloaded.append(model)
-                model = loader.loadModelNode('phase_3' + fileRoot + '250')
+                model = loader.loadModel('phase_3' + fileRoot + '250').node()
                 Preloaded.append(model)
 
         for key in HeadDict.keys():
             fileRoot = HeadDict[key]
-            model = loader.loadModelNode('phase_3' + fileRoot + '1000')
+            model = loader.loadModel('phase_3' + fileRoot + '1000').node()
             Preloaded.append(model)
-            model = loader.loadModelNode('phase_3' + fileRoot + '500')
+            model = loader.loadModel('phase_3' + fileRoot + '500').node()
             Preloaded.append(model)
-            model = loader.loadModelNode('phase_3' + fileRoot + '250')
+            model = loader.loadModel('phase_3' + fileRoot + '250').node()
             Preloaded.append(model)
 
 
