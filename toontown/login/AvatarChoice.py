@@ -8,7 +8,7 @@ from direct.gui.DirectGui import *
 from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toontowngui import TeaserPanel
-from toontown.toonbase import UserFunnel
+#from toontown.toonbase import UserFunnel
 NAME_ROTATIONS = (7, -11, 1, -5, 3.5, -5)
 NAME_POSITIONS = ((0, 0, 0.26),
  (-0.03, 0, 0.25),
@@ -177,8 +177,8 @@ class AvatarChoice(DirectButton):
     def __handleChoice(self):
         cleanupDialog('globalDialog')
         messenger.send(self.doneEvent, ['chose', self.position])
-        UserFunnel.loggingAvID('write', str(self.avForLogging))
-        UserFunnel.logSubmit(0, 'AvatarChoice')
+        #UserFunnel.loggingAvID('write', str(self.avForLogging))
+        #UserFunnel.logSubmit(0, 'AvatarChoice')
 
     def __handleCreate(self):
         cleanupDialog('globalDialog')
