@@ -85,12 +85,12 @@ class DistributedPatternGame(DistributedMinigame):
         self.room = loader.loadModel('phase_4/models/minigames/matching_room')
         self.buttonSounds = []
         for soundName in self.ButtonSoundNames:
-            self.buttonSounds.append(base.loadSfx(soundName))
+            self.buttonSounds.append(base.loader.loadSfx(soundName))
 
-        self.correctSound = base.loadSfx('phase_4/audio/sfx/MG_pos_buzzer.wav')
-        self.incorrectSound = base.loadSfx('phase_4/audio/sfx/MG_neg_buzzer.wav')
-        self.perfectSound = base.loadSfx('phase_4/audio/sfx/MG_win.mp3')
-        self.fallSound = base.loadSfx('phase_4/audio/sfx/MG_Tag_A.mp3')
+        self.correctSound = base.loader.loadSfx('phase_4/audio/sfx/MG_pos_buzzer.wav')
+        self.incorrectSound = base.loader.loadSfx('phase_4/audio/sfx/MG_neg_buzzer.wav')
+        self.perfectSound = base.loader.loadSfx('phase_4/audio/sfx/MG_win.mp3')
+        self.fallSound = base.loader.loadSfx('phase_4/audio/sfx/MG_Tag_A.mp3')
         self.music = base.loadMusic(self.bgm)
         self.waitingText = DirectLabel(text=self.strPleaseWait, text_fg=(0.9, 0.9, 0.9, 1.0), frameColor=(1, 1, 1, 0), text_font=ToontownGlobals.getSignFont(), pos=(0, 0, -.78), scale=0.12)
         self.roundText = DirectLabel(text=self.strRound % 1, text_fg=self.normalTextColor, frameColor=(1, 1, 1, 0), text_font=ToontownGlobals.getSignFont(), pos=(0.014, 0, -.84), scale=0.12)

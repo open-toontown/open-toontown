@@ -166,7 +166,7 @@ class DistributedFoodBelt(DistributedObject.DistributedObject, FSM.FSM, FoodBelt
             joint = self.beltActor.find('**/uvj_WakeWhiteTide1')
             mesh.setTexProjector(mesh.findTextureStage('default'), joint, self.beltActor)
             self.beltActor.setPos(self.startLocator.getPos())
-        self.beltSound = base.loadSfx('phase_12/audio/sfx/CHQ_FACT_conveyor_belt.wav')
+        self.beltSound = base.loader.loadSfx('phase_12/audio/sfx/CHQ_FACT_conveyor_belt.wav')
         self.beltSound.setLoop(1)
         self.beltSoundInterval = SoundInterval(self.beltSound, node=self.beltModel, listenerNode=base.localAvatar, seamlessLoop=True, volume=0.25, cutOff=100)
 

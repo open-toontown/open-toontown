@@ -25,7 +25,7 @@ class RaceGag(DirectObject.DirectObject):
         self.slot = slot
         self.type = 0
         self.accept('imIn-' + self.name, self.hitGag)
-        self.pickupSound = base.loadSfx('phase_6/audio/sfx/KART_getGag.mp3')
+        self.pickupSound = base.loader.loadSfx('phase_6/audio/sfx/KART_getGag.mp3')
         self.fadeout = None
         return
 

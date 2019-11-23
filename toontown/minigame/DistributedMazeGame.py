@@ -579,12 +579,12 @@ class DistributedMazeGame(DistributedMinigame):
         self.sndTable = {'hitBySuit': [None] * self.numPlayers,
          'falling': [None] * self.numPlayers}
         for i in xrange(self.numPlayers):
-            self.sndTable['hitBySuit'][i] = base.loadSfx('phase_4/audio/sfx/MG_Tag_C.mp3')
-            self.sndTable['falling'][i] = base.loadSfx('phase_4/audio/sfx/MG_cannon_whizz.mp3')
+            self.sndTable['hitBySuit'][i] = base.loader.loadSfx('phase_4/audio/sfx/MG_Tag_C.mp3')
+            self.sndTable['falling'][i] = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_whizz.mp3')
 
         self.grabSounds = []
         for i in xrange(5):
-            self.grabSounds.append(base.loadSfx('phase_4/audio/sfx/MG_maze_pickup.mp3'))
+            self.grabSounds.append(base.loader.loadSfx('phase_4/audio/sfx/MG_maze_pickup.mp3'))
 
         self.grabSoundIndex = 0
         for avId in self.avIdList:

@@ -69,8 +69,8 @@ class DistributedRace(DistributedObject.DistributedObject):
         self.hasFog = False
         self.dummyNode = None
         self.fog = None
-        self.bananaSound = base.loadSfx('phase_6/audio/sfx/KART_tossBanana.mp3')
-        self.anvilFall = base.loadSfx('phase_6/audio/sfx/KART_Gag_Hit_Anvil.mp3')
+        self.bananaSound = base.loader.loadSfx('phase_6/audio/sfx/KART_tossBanana.mp3')
+        self.anvilFall = base.loader.loadSfx('phase_6/audio/sfx/KART_Gag_Hit_Anvil.mp3')
         self.accept('leaveRace', self.leaveRace)
         self.toonsToLink = []
         self.curveTs = []
@@ -98,8 +98,8 @@ class DistributedRace(DistributedObject.DistributedObject):
         bboard.post('race', self)
         self.roomWatcher = None
         self.cutoff = 0.01
-        self.startBoopSfx = base.loadSfx(self.SFX_StartBoop)
-        self.startBoop2Sfx = base.loadSfx(self.SFX_StartBoop2)
+        self.startBoopSfx = base.loader.loadSfx(self.SFX_StartBoop)
+        self.startBoop2Sfx = base.loader.loadSfx(self.SFX_StartBoop2)
         return
 
     def announceGenerate(self):
@@ -234,7 +234,7 @@ class DistributedRace(DistributedObject.DistributedObject):
             cheerToPlay = place + (4 - self.numRacers)
             if cheerToPlay > 4:
                 cheerToPlay = 4
-            self.victory = base.loadSfx(self.SFX_Applause % cheerToPlay)
+            self.victory = base.loader.loadSfx(self.SFX_Applause % cheerToPlay)
             self.victory.play()
         self.knownPlace[avId] = place
         kart = base.cr.doId2do.get(self.kartMap.get(avId, None), None)
@@ -256,7 +256,7 @@ class DistributedRace(DistributedObject.DistributedObject):
             return
         if avId == localAvatar.doId:
             cheerToPlay = place + (4 - self.numRacers)
-            self.victory = base.loadSfx(self.SFX_Applause % cheerToPlay)
+            self.victory = base.loader.loadSfx(self.SFX_Applause % cheerToPlay)
             self.victory.play()
         oldPlace = 0
         if self.knownPlace.get(avId):

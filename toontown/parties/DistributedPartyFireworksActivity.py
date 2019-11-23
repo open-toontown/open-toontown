@@ -61,7 +61,7 @@ class DistributedPartyFireworksActivity(DistributedPartyActivity, FireworkShowMi
         effectsLocator = self.rocketActor.find('**/joint1')
         self.rocketExplosionEffect = RocketExplosion(effectsLocator, rocketLocator)
         self.rocketParticleSeq = None
-        self.launchSound = base.loadSfx('phase_13/audio/sfx/rocket_launch.mp3')
+        self.launchSound = base.loader.loadSfx('phase_13/audio/sfx/rocket_launch.mp3')
         self.activityFSM = FireworksActivityFSM(self)
         self.activityFSM.request('Idle')
         return

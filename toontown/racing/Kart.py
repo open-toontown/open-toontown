@@ -113,8 +113,8 @@ class Kart(NodePath, ShadowCaster.ShadowCaster):
             self.setActiveShadow()
             self.dropShadow.setScale(1.3, 3, 1)
         kartType = self.kartDNA[KartDNA.bodyType]
-        self.kartStartSfx = base.loadSfx(self.SFX_KartStart % kartType)
-        self.kartLoopSfx = base.loadSfx(self.SFX_KartLoop % kartType)
+        self.kartStartSfx = base.loader.loadSfx(self.SFX_KartStart % kartType)
+        self.kartLoopSfx = base.loader.loadSfx(self.SFX_KartLoop % kartType)
         self.kartLoopSfx.setLoop()
 
     def __createLODKart(self, level):

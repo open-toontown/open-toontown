@@ -70,7 +70,7 @@ class DistributedDivingGame(DistributedMinigame):
         DistributedMinigame.load(self)
         loadBase = 'phase_4/models/minigames/'
         loadBaseShip = 'phase_5/models/props/'
-        self.sndAmbience = base.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
+        self.sndAmbience = base.loader.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
         self.environModel = loader.loadModel(loadBase + 'diving_game.bam')
         self.boatModel = self.environModel.find('**/boat')
         self.skyModel = self.environModel.find('**/sky')

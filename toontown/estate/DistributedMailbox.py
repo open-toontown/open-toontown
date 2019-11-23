@@ -170,9 +170,9 @@ class DistributedMailbox(DistributedObject.DistributedObject):
             return
         elif mode == MailboxGlobals.MAILBOX_MOVIE_EXIT:
             if random.random() < 0.5:
-                sfx = base.loadSfx('phase_5.5/audio/sfx/mailbox_close_1.mp3')
+                sfx = base.loader.loadSfx('phase_5.5/audio/sfx/mailbox_close_1.mp3')
             else:
-                sfx = base.loadSfx('phase_5.5/audio/sfx/mailbox_close_2.mp3')
+                sfx = base.loader.loadSfx('phase_5.5/audio/sfx/mailbox_close_2.mp3')
             sfxTrack = SoundInterval(sfx, node=self.model)
             sfxTrack.start()
             DistributedMailbox.notify.debug('setMovie: exit')
@@ -190,9 +190,9 @@ class DistributedMailbox(DistributedObject.DistributedObject):
         elif mode == MailboxGlobals.MAILBOX_MOVIE_READY:
             DistributedMailbox.notify.debug('setMovie: ready')
             if random.random() < 0.5:
-                sfx = base.loadSfx('phase_5.5/audio/sfx/mailbox_open_1.mp3')
+                sfx = base.loader.loadSfx('phase_5.5/audio/sfx/mailbox_open_1.mp3')
             else:
-                sfx = base.loadSfx('phase_5.5/audio/sfx/mailbox_open_2.mp3')
+                sfx = base.loader.loadSfx('phase_5.5/audio/sfx/mailbox_open_2.mp3')
             sfxTrack = SoundInterval(sfx, node=self.model)
             sfxTrack.start()
             if isLocalToon:

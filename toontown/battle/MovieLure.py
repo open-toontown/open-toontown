@@ -379,7 +379,7 @@ def __createSuitDamageTrack(battle, suit, hp, lure, trapProp):
         explosionTrack = Sequence(Wait(2.3), createTNTExplosionTrack(battle, trapProp=trapProp, relativeTo=parent))
         suitTrack = Sequence(ActorInterval(suit, 'flail', duration=0.7), ActorInterval(suit, 'flail', startTime=0.7, endTime=0.0), ActorInterval(suit, 'neutral', duration=0.4), ActorInterval(suit, 'flail', startTime=0.6, endTime=0.7), Wait(0.4), ActorInterval(suit, 'slip-forward', startTime=2.48, duration=0.1), Func(battle.movie.needRestoreColor), Func(suit.setColorScale, Vec4(0.2, 0.2, 0.2, 1)), Func(trapProp.reparentTo, hidden), ActorInterval(suit, 'slip-forward', startTime=2.58), Func(suit.clearColorScale), Func(trapProp.sparksEffect.cleanup), Func(battle.movie.clearRestoreColor))
         damageTrack = Sequence(Wait(2.3), Func(suit.showHpText, -hp, openEnded=0), Func(suit.updateHealthBar, hp))
-        explosionSound = base.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.mp3')
+        explosionSound = base.loader.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.mp3')
         soundTrack = Sequence(SoundInterval(globalBattleSoundCache.getSound('TL_dynamite.mp3'), duration=2.0, node=suit), SoundInterval(explosionSound, duration=0.6, node=suit))
         result.append(Parallel(tntTrack, suitTrack, damageTrack, explosionTrack, soundTrack))
     elif trapName == 'traintrack':
