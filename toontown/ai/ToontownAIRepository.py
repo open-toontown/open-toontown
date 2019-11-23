@@ -1,6 +1,7 @@
 from libtoontown import *
 from direct.directnotify import DirectNotifyGlobal
 from otp.ai.AIZoneData import AIZoneDataStore
+from otp.ai.TimeManagerAI import TimeManagerAI
 from otp.distributed.OtpDoGlobals import *
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
@@ -13,6 +14,7 @@ from toontown.hood.TTHoodDataAI import TTHoodDataAI
 from toontown.hood import ZoneUtil
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
+from toontown.toon import NPCToons
 from toontown.uberdog.DistributedInGameNewsMgrAI import DistributedInGameNewsMgrAI
 from toontown.toonbase import ToontownGlobals
 
@@ -31,6 +33,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.zoneDataStore = None
         self.petMgr = None
         self.suitInvasionManager = None
+        self.timeManager = None
         self.newsManager = None
         self.inGameNewsMgr = None
         self.catalogManager = None
@@ -95,6 +98,10 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.districtStats.generateWithRequiredAndId(self.allocateChannel(), self.district.getDoId(),
                                                      OTP_ZONE_ID_DISTRICTS_STATS)
 
+        # Generate our time manager...
+        self.timeManager = TimeManagerAI(self)
+        self.timeManager.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
+
         # Generate our news manager...
         self.newsManager = NewsManagerAI(self)
         self.newsManager.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
@@ -126,6 +133,9 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.hoods.append(hood)
 
     def createZones(self):
+        # First, generate our zone2NpcDict...
+        NPCToons.generateZone2NpcDict()
+        
         # Toontown Central
         self.zoneTable[ToontownGlobals.ToontownCentral] = (
             (ToontownGlobals.ToontownCentral, 1, 0), (ToontownGlobals.SillyStreet, 1, 1),

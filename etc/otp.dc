@@ -106,7 +106,7 @@ dclass TimeManager : DistributedObject {
   serverTime(uint8, int32, uint32);
   setDisconnectReason(uint8) airecv clsend;
   setExceptionInfo(string(0-1024)) airecv clsend;
-  setSignature(string(0-1024), char [16], char [16]) airecv clsend;
+  setSignature(string(0-1024), blob, blob) airecv clsend;
   setFrameRate(uint16/10, uint16/1000, uint16, string(0-256), uint32/10, uint32/10, string(0-256), uint16, uint16, uint32/10, uint32/10, uint32/10, uint32, OSInfo, CPUSpeed, uint16, uint16, string(0-256)) airecv clsend;
   setCpuInfo(string(0-1024), string) airecv clsend;
   checkForGarbageLeaks(bool) airecv clsend;
@@ -545,4 +545,3 @@ dclass AstronLoginManager : DistributedObject {
   requestRemoveAvatar(uint32) clsend;
   requestPlayAvatar(uint32) clsend;
 };
-
