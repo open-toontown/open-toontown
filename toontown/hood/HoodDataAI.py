@@ -5,6 +5,7 @@ from toontown.suit import DistributedSuitPlannerAI
 from toontown.safezone import ButterflyGlobals
 from toontown.safezone import DistributedButterflyAI
 from pandac.PandaModules import *
+from libtoontown import *
 from toontown.toon import NPCToons
 
 class HoodDataAI:

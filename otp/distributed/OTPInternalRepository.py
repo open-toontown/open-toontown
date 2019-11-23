@@ -18,3 +18,7 @@ class OTPInternalRepository(AstronInternalRepository):
 
     def getAvatarIdFromSender(self):
         return self.getMsgSender() & 0xFFFFFFFF
+
+    def sendSetZone(self, distObj, zoneId):
+        distObj.setLocation(distObj.parentId, zoneId)
+        self.sendSetLocation(distObj, distObj.parentId, zoneId)

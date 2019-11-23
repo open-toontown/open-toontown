@@ -1,4 +1,5 @@
 from pandac.PandaModules import *
+from libtoontown import *
 import random
 import string
 from direct.directnotify import DirectNotifyGlobal
@@ -520,7 +521,7 @@ class SuitPlannerBase:
         self.setupDNA()
 
     def extractGroupName(self, groupFullName):
-        return string.split(groupFullName, ':', 1)[0]
+        return str(groupFullName).split(':', 1)[0]
 
     def initDNAInfo(self):
         numGraphs = self.dnaStore.discoverContinuity()

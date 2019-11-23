@@ -1,5 +1,6 @@
 from otp.ai.AIBaseGlobal import *
 from pandac.PandaModules import *
+from libtoontown import *
 from direct.distributed.ClockDelta import *
 from otp.avatar import DistributedAvatarAI
 import SuitTimings

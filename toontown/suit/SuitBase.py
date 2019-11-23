@@ -1,4 +1,5 @@
 from pandac.PandaModules import *
+from libtoontown import *
 from direct.distributed.ClockDelta import *
 import math
 import random

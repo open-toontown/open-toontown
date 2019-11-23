@@ -1,3 +1,4 @@
+from libtoontown import *
 from otp.ai.AIBaseGlobal import *
 from direct.distributed import DistributedObjectAI
 import SuitPlannerBase, DistributedSuitAI

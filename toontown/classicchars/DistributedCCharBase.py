@@ -1,4 +1,5 @@
 from pandac.PandaModules import *
+from libotp import *
 from direct.interval.IntervalGlobal import *
 from otp.avatar import Avatar
 from libotp import CFQuicktalker
