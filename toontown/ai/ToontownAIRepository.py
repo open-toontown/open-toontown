@@ -3,6 +3,7 @@ from otp.ai.AIZoneData import AIZoneDataStore
 from otp.distributed.OtpDoGlobals import *
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
+from toontown.distributed.ToontownDistrictStatsAI import ToontownDistrictStatsAI
 from toontown.ai.HolidayManagerAI import HolidayManagerAI
 from toontown.ai.NewsManagerAI import NewsManagerAI
 from toontown.catalog.CatalogManagerAI import CatalogManagerAI
@@ -17,6 +18,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.doLiveUpdates = config.GetBool('want-live-updates', True)
         self.districtId = None
         self.district = None
+        self.districtStats = None
         self.holidayManager = None
         self.zoneDataStore = None
         self.newsManager = None
@@ -61,6 +63,12 @@ class ToontownAIRepository(ToontownInternalRepository):
         Creates "global" (distributed) objects.
         """
 
+        # Generate our district stats...
+        self.districtStats = ToontownDistrictStatsAI(self)
+        self.districtStats.settoontownDistrictId(self.districtId)
+        self.districtStats.generateWithRequiredAndId(self.allocateChannel(), self.district.getDoId(),
+                                                     OTP_ZONE_ID_DISTRICTS_STATS)
+
         # Generate our news manager...
         self.newsManager = NewsManagerAI(self)
         self.newsManager.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
@@ -83,10 +91,10 @@ class ToontownAIRepository(ToontownInternalRepository):
         return self.zoneDataStore
 
     def incrementPopulation(self):
-        print 'TODO districtStats'
+        self.districtStats.b_setAvatarCount(self.districtStats.getAvatarCount() + 1)
 
     def decrementPopulation(self):
-        print 'TODO districtStats'
+        self.districtStats.b_setAvatarCount(self.districtStats.getAvatarCount() - 1)
 
     def sendQueryToonMaxHp(self, avId, callback):
         pass  # TODO?

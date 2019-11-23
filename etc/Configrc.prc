@@ -38,13 +38,15 @@ load-display pandagl
 aux-display pandagl
 aux-display pandadx9
 aux-display tinydisplay
+depth-bits 24
 win-size 800 600
 fullscreen #t
-compress-channels #t
+compress-channels #f
 display-lists 0
 early-random-seed 1
 ssl-cipher-list DEFAULT
 respect-prev-transform 1
+default-directnotify-level info
 notify-level-collide warning
 notify-level-chan warning
 notify-level-gobj warning
