@@ -1,5 +1,6 @@
 *.pyc
 *.pyo
+*.pyd
 *.log
 resources/
 news/
