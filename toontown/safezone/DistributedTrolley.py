@@ -62,7 +62,7 @@ class DistributedTrolley(DistributedObject.DistributedObject):
             key = self.keys[i]
             key.setTwoSided(1)
             ref = self.trolleyCar.attachNewNode('key' + `i` + 'ref')
-            ref.iPosHpr(key)
+            ref.setPosHpr(key, 0, 0, 0, 0, 0, 0)
             self.keyRef.append(ref)
             self.keyInit.append(key.getTransform())
 
@@ -73,7 +73,7 @@ class DistributedTrolley(DistributedObject.DistributedObject):
         for i in range(self.numFrontWheels):
             wheel = self.frontWheels[i]
             ref = self.trolleyCar.attachNewNode('frontWheel' + `i` + 'ref')
-            ref.iPosHpr(wheel)
+            ref.setPosHpr(wheel, 0, 0, 0, 0, 0, 0)
             self.frontWheelRef.append(ref)
             self.frontWheelInit.append(wheel.getTransform())
 
@@ -84,7 +84,7 @@ class DistributedTrolley(DistributedObject.DistributedObject):
         for i in range(self.numBackWheels):
             wheel = self.backWheels[i]
             ref = self.trolleyCar.attachNewNode('backWheel' + `i` + 'ref')
-            ref.iPosHpr(wheel)
+            ref.setPosHpr(wheel, 0, 0, 0, 0, 0, 0)
             self.backWheelRef.append(ref)
             self.backWheelInit.append(wheel.getTransform())
 

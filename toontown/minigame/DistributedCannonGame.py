@@ -858,7 +858,7 @@ class DistributedCannonGame(DistributedMinigame):
                 s = Sequence(Wait(0.5), toon.posInterval(duration=LAND_TIME - 0.5, pos=hitPos, blendType='easeIn'))
                 self.toonIntervalDict[task.info['avId']] = s
                 s.start()
-                avatar.iPos()
+                avatar.setPos(0, 0, 0)
                 avatar.pose('slip-forward', 25)
                 base.playSfx(self.sndHitTower)
             elif task.info['hitWhat'] == self.HIT_GROUND:
