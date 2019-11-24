@@ -60,8 +60,8 @@ class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp)
     def knockKnockTrack(self, avatar, duration):
         if avatar == None:
             return
-        self.rimshot = base.loadSfx('phase_5/audio/sfx/AA_heal_telljoke.mp3')
-        self.knockSfx = base.loadSfx('phase_5/audio/sfx/GUI_knock_3.mp3')
+        self.rimshot = base.loader.loadSfx('phase_5/audio/sfx/AA_heal_telljoke.mp3')
+        self.knockSfx = base.loader.loadSfx('phase_5/audio/sfx/GUI_knock_3.mp3')
         joke = KnockKnockJokes[self.propId % len(KnockKnockJokes)]
         place = base.cr.playGame.getPlace()
         if place:

@@ -40,11 +40,11 @@ class PartyLoader(SafeZoneLoader.SafeZoneLoader):
         self.oldClear = base.win.getClearColor()
         base.win.setClearColor(Vec4(0.47, 0.69, 0.3, 1.0))
         SafeZoneLoader.SafeZoneLoader.load(self)
-        self.underwaterSound = base.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
-        self.swimSound = base.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.mp3')
-        self.submergeSound = base.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.mp3')
-        self.birdSound = map(base.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.mp3'])
-        self.cricketSound = map(base.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.mp3'])
+        self.underwaterSound = base.loader.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
+        self.swimSound = base.loader.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.mp3')
+        self.submergeSound = base.loader.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.mp3')
+        self.birdSound = map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.mp3'])
+        self.cricketSound = map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.mp3'])
 
     def unload(self):
         self.ignoreAll()

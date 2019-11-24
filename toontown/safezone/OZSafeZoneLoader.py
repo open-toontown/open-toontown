@@ -40,10 +40,10 @@ class OZSafeZoneLoader(SafeZoneLoader):
         self.done = 0
         self.geyserTrack = None
         SafeZoneLoader.load(self)
-        self.birdSound = map(base.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.mp3'])
-        self.underwaterSound = base.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
-        self.swimSound = base.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.mp3')
-        self.submergeSound = base.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.mp3')
+        self.birdSound = map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.mp3'])
+        self.underwaterSound = base.loader.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
+        self.swimSound = base.loader.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.mp3')
+        self.submergeSound = base.loader.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.mp3')
         geyserPlacer = self.geom.find('**/geyser*')
         waterfallPlacer = self.geom.find('**/waterfall*')
         binMgr = CullBinManager.getGlobalPtr()
@@ -278,14 +278,14 @@ class OZSafeZoneLoader(SafeZoneLoader):
         del self.birdSound
         SafeZoneLoader.unload(self)
         self.done = 1
-        self.collBase.remove()
+        self.collBase.removeNode()
         if self.geyserTrack:
             self.geyserTrack.finish()
         self.geyserTrack = None
         self.geyserActor.cleanup()
-        self.geyserModel.remove()
+        self.geyserModel.removeNode()
         self.waterfallActor.cleanup()
-        self.waterfallModel.remove()
+        self.waterfallModel.removeNode()
         self.bubbles.destroy()
         del self.bubbles
         self.geyserPoolSoundInterval.finish()

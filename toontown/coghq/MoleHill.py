@@ -64,7 +64,7 @@ class MoleHill(NodePath):
         if self.isUp and (self.hillType == MoleFieldBase.HILL_MOLE and type == MoleFieldBase.HILL_BOMB or self.hillType == MoleFieldBase.HILL_BOMB and type == MoleFieldBase.HILL_MOLE):
             return
         self.hillType = type
-        self.moleHead.remove()
+        self.moleHead.removeNode()
         if type == MoleFieldBase.HILL_MOLE:
             self.moleHead = loader.loadModel('phase_12/models/bossbotHQ/mole_norm')
             self.moleColNodePath.setScale(3.0)

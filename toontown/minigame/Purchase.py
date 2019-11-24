@@ -141,9 +141,9 @@ class Purchase(PurchaseBase):
         self.convertingVotesToBeansLabel.hide()
         self.rewardDoubledJellybeanLabel = DirectLabel(text=TTLocalizer.PartyRewardDoubledJellybean, text_fg=(1.0, 0.125, 0.125, 1.0), text_shadow=(0, 0, 0, 1), relief=None, pos=(0.0, 0, -0.67), scale=0.08)
         self.rewardDoubledJellybeanLabel.hide()
-        self.countSound = base.loadSfx('phase_3.5/audio/sfx/tick_counter.mp3')
-        self.overMaxSound = base.loadSfx('phase_3.5/audio/sfx/AV_collision.mp3')
-        self.celebrateSound = base.loadSfx('phase_4/audio/sfx/MG_win.mp3')
+        self.countSound = base.loader.loadSfx('phase_3.5/audio/sfx/tick_counter.mp3')
+        self.overMaxSound = base.loader.loadSfx('phase_3.5/audio/sfx/AV_collision.mp3')
+        self.celebrateSound = base.loader.loadSfx('phase_4/audio/sfx/MG_win.mp3')
         return
 
     def unload(self):

@@ -60,7 +60,7 @@ class RubberBand:
     def delete(self):
         taskMgr.remove('recreateBand %s' % self.bandNumber)
         self.bandGN.removeAllGeoms()
-        self.baseNode.remove()
+        self.baseNode.removeNode()
 
     def redraw(self, task):
         color = {}

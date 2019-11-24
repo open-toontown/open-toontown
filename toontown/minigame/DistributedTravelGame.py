@@ -109,12 +109,12 @@ class DistributedTravelGame(DistributedMinigame):
         self.minigameLabels = []
         self.minigameIcons = []
         self.bonusLabels = []
-        self.trolleyAwaySfx = base.loadSfx('phase_4/audio/sfx/SZ_trolley_away.mp3')
-        self.trolleyBellSfx = base.loadSfx('phase_4/audio/sfx/SZ_trolley_bell.mp3')
-        self.turntableRotateSfx = base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_turntble_rotate_2.mp3')
-        self.wonGameSfx = base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_bonus.mp3')
-        self.lostGameSfx = base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_no_bonus_2.mp3')
-        self.noWinnerSfx = base.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_no_bonus.mp3')
+        self.trolleyAwaySfx = base.loader.loadSfx('phase_4/audio/sfx/SZ_trolley_away.mp3')
+        self.trolleyBellSfx = base.loader.loadSfx('phase_4/audio/sfx/SZ_trolley_bell.mp3')
+        self.turntableRotateSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_turntble_rotate_2.mp3')
+        self.wonGameSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_bonus.mp3')
+        self.lostGameSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_no_bonus_2.mp3')
+        self.noWinnerSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_no_bonus.mp3')
         self.boardIndex = 0
         self.avNames = []
         self.disconnectedAvIds = []
@@ -153,7 +153,7 @@ class DistributedTravelGame(DistributedMinigame):
             key = self.keys[i]
             key.setTwoSided(1)
             ref = self.trolleyCar.attachNewNode('key' + `i` + 'ref')
-            ref.iPosHpr(key)
+            ref.setPosHpr(key, 0, 0, 0, 0, 0, 0)
             self.keyRef.append(ref)
             self.keyInit.append(key.getTransform())
 
@@ -164,7 +164,7 @@ class DistributedTravelGame(DistributedMinigame):
         for i in range(self.numFrontWheels):
             wheel = self.frontWheels[i]
             ref = self.trolleyCar.attachNewNode('frontWheel' + `i` + 'ref')
-            ref.iPosHpr(wheel)
+            ref.setPosHpr(wheel, 0, 0, 0, 0, 0, 0)
             self.frontWheelRef.append(ref)
             self.frontWheelInit.append(wheel.getTransform())
 
@@ -175,7 +175,7 @@ class DistributedTravelGame(DistributedMinigame):
         for i in range(self.numBackWheels):
             wheel = self.backWheels[i]
             ref = self.trolleyCar.attachNewNode('backWheel' + `i` + 'ref')
-            ref.iPosHpr(wheel)
+            ref.setPosHpr(wheel, 0, 0, 0, 0, 0, 0)
             self.backWheelRef.append(ref)
             self.backWheelInit.append(wheel.getTransform())
 
@@ -235,7 +235,7 @@ class DistributedTravelGame(DistributedMinigame):
         turnTable.removeNode()
         self.loadGui()
         self.introMovie = self.getIntroMovie()
-        self.music = base.loadMusic('phase_4/audio/bgm/MG_Travel.mid')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_Travel.mid')
         self.flashWinningBeansTrack = None
         return
 

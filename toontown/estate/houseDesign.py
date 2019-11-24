@@ -190,7 +190,7 @@ class MovableObject(NodePath, DirectObject):
         else:
             self.setIsTable(0)
         m = self.getTransform()
-        self.iPosHpr()
+        self.setPosHpr(0, 0, 0, 0, 0, 0)
         bMin, bMax = self.bounds = self.getTightBounds()
         bMin -= Vec3(0.1, 0.1, 0)
         bMax += Vec3(0.1, 0.1, 0)
@@ -559,7 +559,7 @@ class ObjectManager(NodePath, DirectObject):
             self.selectedObject.collisionNodePath.stash()
             self.selectedObject.dfitem.startAdjustPosHpr()
             self.firstTime = 1
-            self.iPosHpr()
+            self.setPosHpr(0, 0, 0, 0, 0, 0)
             self.startPoseValid = 0
             self.centerMarker['image'] = self.grabDown
             self.centerMarker.configure(text=TTLocalizer.HDMoveLabel, text_pos=(0, 1), text_scale=0.7, text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), image_scale=0.3)
@@ -580,7 +580,7 @@ class ObjectManager(NodePath, DirectObject):
     def moveObjectTask(self, state):
         so = self.selectedObject
         target = self.targetNodePath
-        self.startPose.iPosHpr(so)
+        self.startPose.setPosHpr(so, 0, 0, 0, 0, 0, 0)
         self.iRay.setParentNP(base.cam)
         entry = self.iRay.pickBitMask(bitMask=ToontownGlobals.FurnitureDragBitmask, targetNodePath=target, skipFlags=SKIP_BACKFACE | SKIP_CAMERA | SKIP_UNPICKABLE)
         if not entry:
@@ -590,8 +590,8 @@ class ObjectManager(NodePath, DirectObject):
             self.moveObjectInit()
             self.firstTime = 0
         else:
-            self.gridSnapNP.iPos()
-            self.collisionOffsetNP.iPosHpr()
+            self.gridSnapNP.setPos(0, 0, 0)
+            self.collisionOffsetNP.setPosHpr(0, 0, 0, 0, 0, 0)
         if self.gridSpacing:
             pos = self.dragPointNP.getPos(target)
             self.gridSnapNP.setPos(target, ROUND_TO(pos[0], self.gridSpacing), ROUND_TO(pos[1], self.gridSpacing), pos[2])
@@ -770,7 +770,7 @@ class ObjectManager(NodePath, DirectObject):
             return
         so = self.selectedObject
         so.dfitem.startAdjustPosHpr()
-        self.iPosHpr(so)
+        self.setPosHpr(so, 0, 0, 0, 0, 0, 0)
         self.moveObjectInit()
         if so.getOnWall():
             startR = self.gridSnapNP.getR()
@@ -794,7 +794,7 @@ class ObjectManager(NodePath, DirectObject):
             return
         so = self.selectedObject
         so.dfitem.startAdjustPosHpr()
-        self.iPosHpr(so)
+        self.setPosHpr(so, 0, 0, 0, 0, 0, 0)
         self.moveObjectInit()
         if so.getOnWall():
             startR = self.gridSnapNP.getR()
@@ -815,8 +815,8 @@ class ObjectManager(NodePath, DirectObject):
 
     def moveObjectInit(self):
         self.dragPointNP.setPosHpr(self.selectedObject, self.selectedObject.dragPoint, Vec3(0))
-        self.gridSnapNP.iPosHpr()
-        self.collisionOffsetNP.iPosHpr()
+        self.gridSnapNP.setPosHpr(0, 0, 0, 0, 0, 0)
+        self.collisionOffsetNP.setPosHpr(0, 0, 0, 0, 0, 0)
         self.selectedObject.wrtReparentTo(self.collisionOffsetNP)
 
     def resetFurniture(self):
@@ -1268,7 +1268,7 @@ class ObjectManager(NodePath, DirectObject):
             for object in self.objectDict.values():
                 object.stashBuiltInCollisionNodes()
 
-            self.gridSnapNP.iPosHpr()
+            self.gridSnapNP.setPosHpr(0, 0, 0, 0, 0, 0)
             target = self.targetNodePath
             self.iRay.setParentNP(base.localAvatar)
             entry = self.iRay.pickBitMask3D(bitMask=ToontownGlobals.WallBitmask, targetNodePath=target, origin=Point3(0, 0, 6), dir=Vec3(0, 1, 0), skipFlags=SKIP_BACKFACE | SKIP_CAMERA | SKIP_UNPICKABLE)

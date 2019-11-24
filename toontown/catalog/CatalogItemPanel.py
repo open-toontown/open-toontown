@@ -266,7 +266,7 @@ class CatalogItemPanel(DirectFrame):
         self.ival = None
         if len(self.items):
             self.items[0].cleanupPicture()
-        self.pictureFrame.remove()
+        self.pictureFrame.removeNode()
         self.pictureFrame = None
         self.items = []
         if self.verify:

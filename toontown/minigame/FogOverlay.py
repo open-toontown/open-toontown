@@ -58,4 +58,4 @@ class FogOverlay:
 
     def delete(self):
         self.overlayGN.removeAllGeoms()
-        self.baseNode.remove()
+        self.baseNode.removeNode()

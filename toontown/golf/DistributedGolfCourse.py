@@ -108,7 +108,7 @@ class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDelet
         return
 
     def load(self):
-        self.music = base.loadMusic('phase_6/audio/bgm/GZ_PlayGolf.mid')
+        self.music = base.loader.loadMusic('phase_6/audio/bgm/GZ_PlayGolf.mid')
 
     def setCourseReady(self, numHoles, holeIds, coursePar):
         self.notify.debug('GOLF COURSE: received setCourseReady')

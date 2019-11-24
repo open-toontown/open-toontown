@@ -497,7 +497,7 @@ class DistributedStartingBlock(DistributedObject.DistributedObject, FSM):
         jumpTrack = self.generateToonJumpTrack()
         name = self.av.uniqueName('EnterRaceTrack')
         if self.av is not None and self.localToonKarting:
-            kartAppearSfx = base.loadSfx(self.SFX_KartAppear)
+            kartAppearSfx = base.loader.loadSfx(self.SFX_KartAppear)
             cameraTrack = self.generateCameraMoveTrack()
             engineStartTrack = self.kart.generateEngineStartTrack()
             self.finishMovie()

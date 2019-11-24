@@ -429,7 +429,7 @@ class ToonHead(Actor.Actor):
                 else:
                     p.reparentTo(self.find('**/__Actor_head'))
                 self.pumpkins.addPath(p)
-                pmodel.remove()
+                pmodel.removeNode()
                 return True
             else:
                 del self.pumpkins

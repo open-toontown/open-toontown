@@ -17,7 +17,7 @@ class DistributedLift(BasicEntities.DistributedNodePathEntity):
     def generateInit(self):
         self.notify.debug('generateInit')
         BasicEntities.DistributedNodePathEntity.generateInit(self)
-        self.moveSnd = base.loadSfx('phase_9/audio/sfx/CHQ_FACT_elevator_up_down.mp3')
+        self.moveSnd = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_elevator_up_down.mp3')
         self.fsm = ClassicFSM.ClassicFSM('DistributedLift', [State.State('off', self.enterOff, self.exitOff, ['moving']), State.State('moving', self.enterMoving, self.exitMoving, ['waiting']), State.State('waiting', self.enterWaiting, self.exitWaiting, ['moving'])], 'off', 'off')
         self.fsm.enterInitialState()
 
