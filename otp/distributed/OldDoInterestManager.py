@@ -79,7 +79,7 @@ class DoInterestManager(DirectObject.DirectObject):
     Top level Interest Manager
     """
     notify = directNotify.newCategory("DoInterestManager")
-    InterestDebug = ConfigVariableBool('interest-debug', True)
+    InterestDebug = ConfigVariableBool('interest-debug', False)
 
     # 'handle' is a number that represents a single interest set that the
     # client has requested; the interest set may be modified

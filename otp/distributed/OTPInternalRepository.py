@@ -97,7 +97,7 @@ class OTPInternalRepository(AstronInternalRepository):
             """
 
             dg = PyDatagram()
-            dg.addServerHeader(doId, aiChannel, STATESERVER_OBJECT_SET_AI)
+            dg.addServerHeader(doId, aiChannel, STATESERVER_ADD_AI_RECV)
             dg.addUint64(aiChannel)
             self.send(dg)
 
