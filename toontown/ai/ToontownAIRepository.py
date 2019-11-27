@@ -1,22 +1,29 @@
-from libtoontown import *
 from direct.directnotify import DirectNotifyGlobal
+
+from libtoontown import *
 from otp.ai.AIZoneData import AIZoneDataStore
 from otp.ai.TimeManagerAI import TimeManagerAI
 from otp.distributed.OtpDoGlobals import *
-from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
-from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
-from toontown.distributed.ToontownDistrictStatsAI import ToontownDistrictStatsAI
 from toontown.ai.HolidayManagerAI import HolidayManagerAI
 from toontown.ai.NewsManagerAI import NewsManagerAI
 from toontown.building.DistributedTrophyMgrAI import DistributedTrophyMgrAI
 from toontown.catalog.CatalogManagerAI import CatalogManagerAI
-from toontown.hood.TTHoodDataAI import TTHoodDataAI
+from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
+from toontown.distributed.ToontownDistrictStatsAI import ToontownDistrictStatsAI
+from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 from toontown.hood import ZoneUtil
+from toontown.hood.BRHoodDataAI import BRHoodDataAI
+from toontown.hood.DDHoodDataAI import DDHoodDataAI
+from toontown.hood.DGHoodDataAI import DGHoodDataAI
+from toontown.hood.DLHoodDataAI import DLHoodDataAI
+from toontown.hood.MMHoodDataAI import MMHoodDataAI
+from toontown.hood.TTHoodDataAI import TTHoodDataAI
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
 from toontown.toon import NPCToons
-from toontown.uberdog.DistributedInGameNewsMgrAI import DistributedInGameNewsMgrAI
 from toontown.toonbase import ToontownGlobals
+from toontown.uberdog.DistributedInGameNewsMgrAI import DistributedInGameNewsMgrAI
+
 
 class ToontownAIRepository(ToontownInternalRepository):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownAIRepository')
@@ -136,12 +143,47 @@ class ToontownAIRepository(ToontownInternalRepository):
         # First, generate our zone2NpcDict...
         NPCToons.generateZone2NpcDict()
 
+        # Donald's Dock
+        self.zoneTable[ToontownGlobals.DonaldsDock] = (
+            (ToontownGlobals.DonaldsDock, 1, 0), (ToontownGlobals.BarnacleBoulevard, 1, 1),
+            (ToontownGlobals.SeaweedStreet, 1, 1), (ToontownGlobals.LighthouseLane, 1, 1)
+        )
+        self.generateHood(DDHoodDataAI, ToontownGlobals.DonaldsDock)
+
         # Toontown Central
         self.zoneTable[ToontownGlobals.ToontownCentral] = (
             (ToontownGlobals.ToontownCentral, 1, 0), (ToontownGlobals.SillyStreet, 1, 1),
             (ToontownGlobals.LoopyLane, 1, 1), (ToontownGlobals.PunchlinePlace, 1, 1)
         )
         self.generateHood(TTHoodDataAI, ToontownGlobals.ToontownCentral)
+
+        # The Brrrgh
+        self.zoneTable[ToontownGlobals.TheBrrrgh] = (
+            (ToontownGlobals.TheBrrrgh, 1, 0), (ToontownGlobals.WalrusWay, 1, 1),
+            (ToontownGlobals.SleetStreet, 1, 1), (ToontownGlobals.PolarPlace, 1, 1)
+        )
+        self.generateHood(BRHoodDataAI, ToontownGlobals.TheBrrrgh)
+
+        # Minnie's Melodyland
+        self.zoneTable[ToontownGlobals.MinniesMelodyland] = (
+            (ToontownGlobals.MinniesMelodyland, 1, 0), (ToontownGlobals.AltoAvenue, 1, 1),
+            (ToontownGlobals.BaritoneBoulevard, 1, 1), (ToontownGlobals.TenorTerrace, 1, 1)
+        )
+        self.generateHood(MMHoodDataAI, ToontownGlobals.MinniesMelodyland)
+
+        # Daisy Gardens
+        self.zoneTable[ToontownGlobals.DaisyGardens] = (
+            (ToontownGlobals.DaisyGardens, 1, 0), (ToontownGlobals.ElmStreet, 1, 1),
+            (ToontownGlobals.MapleStreet, 1, 1), (ToontownGlobals.OakStreet, 1, 1)
+        )
+        self.generateHood(DGHoodDataAI, ToontownGlobals.DaisyGardens)
+
+        # Donald's Dreamland
+        self.zoneTable[ToontownGlobals.DonaldsDreamland] = (
+            (ToontownGlobals.DonaldsDreamland, 1, 0), (ToontownGlobals.LullabyLane, 1, 1),
+            (ToontownGlobals.PajamaPlace, 1, 1)
+        )
+        self.generateHood(DLHoodDataAI, ToontownGlobals.DonaldsDreamland)
 
     def genDNAFileName(self, zoneId):
         canonicalZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
