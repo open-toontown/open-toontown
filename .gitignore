@@ -9,3 +9,4 @@ whitelist/
 *.so
 *.DS_Store
 *.jpg
+.idea
