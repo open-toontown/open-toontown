@@ -3,6 +3,7 @@ import string
 from pandac.PandaModules import *
 from direct.distributed import DistributedNode
 from direct.actor.DistributedActor import DistributedActor
+from direct.interval.IntervalGlobal import *
 from direct.task import Task
 from direct.showbase import PythonUtil
 from libotp import Nametag

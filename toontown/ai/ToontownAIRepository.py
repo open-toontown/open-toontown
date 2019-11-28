@@ -8,6 +8,7 @@ from toontown.ai.HolidayManagerAI import HolidayManagerAI
 from toontown.ai.NewsManagerAI import NewsManagerAI
 from toontown.building.DistributedTrophyMgrAI import DistributedTrophyMgrAI
 from toontown.catalog.CatalogManagerAI import CatalogManagerAI
+from toontown.coghq.PromotionManagerAI import PromotionManagerAI
 from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
 from toontown.distributed.ToontownDistrictStatsAI import ToontownDistrictStatsAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
@@ -19,6 +20,8 @@ from toontown.hood.DLHoodDataAI import DLHoodDataAI
 from toontown.hood.MMHoodDataAI import MMHoodDataAI
 from toontown.hood.TTHoodDataAI import TTHoodDataAI
 from toontown.pets.PetManagerAI import PetManagerAI
+from toontown.quest.QuestManagerAI import QuestManagerAI
+from toontown.shtiker.CogPageManagerAI import CogPageManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
 from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
@@ -40,6 +43,9 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.zoneDataStore = None
         self.petMgr = None
         self.suitInvasionManager = None
+        self.questManager = None
+        self.promotionMgr = None
+        self.cogPageManager = None
         self.timeManager = None
         self.newsManager = None
         self.inGameNewsMgr = None
@@ -93,6 +99,15 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         # Create our suit invasion manager...
         self.suitInvasionManager = SuitInvasionManagerAI(self)
+
+        # Create our quest manager...
+        self.questManager = QuestManagerAI(self)
+
+        # Create our promotion manager...
+        self.promotionMgr = PromotionManagerAI(self)
+
+        # Create our Cog page manager...
+        self.cogPageManager = CogPageManagerAI(self)
 
     def createGlobals(self):
         """
@@ -184,6 +199,10 @@ class ToontownAIRepository(ToontownInternalRepository):
             (ToontownGlobals.PajamaPlace, 1, 1)
         )
         self.generateHood(DLHoodDataAI, ToontownGlobals.DonaldsDreamland)
+
+        # Assign the initial suit buildings.
+        for suitPlanner in self.suitPlanners.values():
+            suitPlanner.assignInitialSuitBuildings()
 
     def genDNAFileName(self, zoneId):
         canonicalZoneId = ZoneUtil.getCanonicalZoneId(zoneId)

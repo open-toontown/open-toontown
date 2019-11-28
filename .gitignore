@@ -10,3 +10,4 @@ whitelist/
 *.DS_Store
 *.jpg
 .idea
+*.buildings

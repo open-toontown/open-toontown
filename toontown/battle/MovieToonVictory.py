@@ -1,3 +1,4 @@
+from libotp import *
 from direct.interval.IntervalGlobal import *
 from direct.showbase.DirectObject import DirectObject
 from RewardPanel import *

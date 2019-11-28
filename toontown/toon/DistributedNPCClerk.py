@@ -16,12 +16,15 @@ class DistributedNPCClerk(DistributedNPCToonBase):
         self.isLocalToon = 0
         self.av = None
         self.purchaseDoneEvent = 'purchaseDone'
+        self.lerpCameraSeq = None
         return
 
     def disable(self):
         self.ignoreAll()
         taskMgr.remove(self.uniqueName('popupPurchaseGUI'))
-        taskMgr.remove(self.uniqueName('lerpCamera'))
+        if self.lerpCameraSeq:
+            self.lerpCameraSeq.finish()
+            self.lerpCameraSeq = None
         if self.purchase:
             self.purchase.exit()
             self.purchase.unload()
@@ -61,7 +64,9 @@ class DistributedNPCClerk(DistributedNPCToonBase):
     def resetClerk(self):
         self.ignoreAll()
         taskMgr.remove(self.uniqueName('popupPurchaseGUI'))
-        taskMgr.remove(self.uniqueName('lerpCamera'))
+        if self.lerpCameraSeq:
+            self.lerpCameraSeq.finish()
+            self.lerpCameraSeq = None
         if self.purchase:
             self.purchase.exit()
             self.purchase.unload()
@@ -81,7 +86,9 @@ class DistributedNPCClerk(DistributedNPCToonBase):
             return
         if mode == NPCToons.PURCHASE_MOVIE_TIMEOUT:
             taskMgr.remove(self.uniqueName('popupPurchaseGUI'))
-            taskMgr.remove(self.uniqueName('lerpCamera'))
+            if self.lerpCameraSeq:
+                self.lerpCameraSeq.finish()
+                self.lerpCameraSeq = None
             if self.isLocalToon:
                 self.ignore(self.purchaseDoneEvent)
             if self.purchase:
@@ -98,7 +105,8 @@ class DistributedNPCClerk(DistributedNPCToonBase):
             self.setupAvatars(self.av)
             if self.isLocalToon:
                 camera.wrtReparentTo(render)
-                camera.lerpPosHpr(-5, 9, self.getHeight() - 0.5, -150, -2, 0, 1, other=self, blendType='easeOut', task=self.uniqueName('lerpCamera'))
+                self.lerpCameraSeq = LerpPosQuatInterval(camera, 1, Point3(-5, 9, self.getHeight() - 0.5), Point3(-150, -2, 0), other=self, blendType='easeOut', name=self.uniqueName('lerpCamera'))
+                self.lerpCameraSeq.start()
             self.setChatAbsolute(TTLocalizer.STOREOWNER_GREETING, CFSpeech | CFTimeout)
             if self.isLocalToon:
                 taskMgr.doMethodLater(1.0, self.popupPurchaseGUI, self.uniqueName('popupPurchaseGUI'))
