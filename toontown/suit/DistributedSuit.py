@@ -1,4 +1,6 @@
 from pandac.PandaModules import *
+from libotp import *
+from libtoontown import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.directtools.DirectGeometry import CLAMP

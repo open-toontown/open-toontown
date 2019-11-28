@@ -1,3 +1,4 @@
+from libotp import *
 from toontown.toonbase.ToontownGlobals import *
 from SuitBattleGlobals import *
 from direct.interval.IntervalGlobal import *

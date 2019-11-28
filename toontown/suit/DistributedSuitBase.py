@@ -71,12 +71,12 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
         if num > self.maxSkeleRevives:
             self.maxSkeleRevives = num
         if self.getSkeleRevives() > 0:
-            nameInfo = TTLocalizer.SuitBaseNameWithLevel % {'name': self.name,
+            nameInfo = TTLocalizer.SuitBaseNameWithLevel % {'name': self._name,
              'dept': self.getStyleDept(),
              'level': '%s%s' % (self.getActualLevel(), TTLocalizer.SkeleRevivePostFix)}
             self.setDisplayName(nameInfo)
         else:
-            nameInfo = TTLocalizer.SuitBaseNameWithLevel % {'name': self.name,
+            nameInfo = TTLocalizer.SuitBaseNameWithLevel % {'name': self._name,
              'dept': self.getStyleDept(),
              'level': self.getActualLevel()}
             self.setDisplayName(nameInfo)
@@ -431,16 +431,15 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
                     self.nametag3d.setDepthTest(0)
                     self.nametag3d.setBin('fixed', 99)
                 self.hpText.setPos(0, 0, self.height / 2)
-                seq = Task.sequence(self.hpText.lerpPos(Point3(0, 0, self.height + 1.5), 1.0, blendType='easeOut'), Task.pause(0.85), self.hpText.lerpColor(Vec4(r, g, b, a), Vec4(r, g, b, 0), 0.1), Task.Task(self.hideHpTextTask))
-                taskMgr.add(seq, self.uniqueName('hpText'))
+                self.hpTextSeq = Sequence(self.hpText.posInterval(1.0, Point3(0, 0, self.height + 1.5), blendType='easeOut'), Wait(0.85), self.hpText.colorInterval(0.1, Vec4(r, g, b, 0)), Func(self.hideHpText))
+                self.hpTextSeq.start()
 
-    def hideHpTextTask(self, task):
-        self.hideHpText()
+    def hideHpText(self):
+        DistributedAvatar.DistributedAvatar.hideHpText(self)
         if self.sillySurgeText:
             self.nametag3d.clearDepthTest()
             self.nametag3d.clearBin()
             self.sillySurgeText = False
-        return Task.done
 
     def getAvIdName(self):
         try:

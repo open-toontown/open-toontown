@@ -355,7 +355,12 @@ class Street(BattlePlace.BattlePlace):
                 if newZoneId != None:
                     self.loader.zoneDict[newZoneId].setColor(0, 0, 1, 1, 100)
             if newZoneId != None:
-                base.cr.sendSetZoneMsg(newZoneId)
+                if not base.cr.astronSupport:
+                    base.cr.sendSetZoneMsg(newZoneId)
+                else:
+                    visZones = [self.loader.node2zone[x] for x in self.loader.nodeDict[newZoneId]]
+                    visZones.append(ZoneUtil.getBranchZone(newZoneId))
+                    base.cr.sendSetZoneMsg(newZoneId, visZones)
                 self.notify.debug('Entering Zone %d' % newZoneId)
             self.zoneId = newZoneId
         geom = base.cr.playGame.getPlace().loader.geom

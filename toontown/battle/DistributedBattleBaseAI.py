@@ -1,7 +1,7 @@
 from otp.ai.AIBase import *
 from direct.distributed.ClockDelta import *
 from BattleBase import *
-from BattleCalculatorAI import *
+import BattleCalculatorAI
 from toontown.toonbase.ToontownBattleGlobals import *
 from SuitBattleGlobals import *
 from pandac.PandaModules import *
@@ -47,7 +47,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
         self.toonOrigMerits = {}
         self.toonMerits = {}
         self.toonParts = {}
-        self.battleCalc = BattleCalculatorAI(self, tutorialFlag)
+        self.battleCalc = BattleCalculatorAI.BattleCalculatorAI(self, tutorialFlag)
         if self.air.suitInvasionManager.getInvading():
             mult = getInvasionMultiplier()
             self.battleCalc.setSkillCreditMultiplier(mult)
@@ -263,7 +263,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
         for s in self.suits:
             if s.battleTrap == NO_TRAP:
                 suitTraps += '9'
-            elif s.battleTrap == BattleCalculatorAI.TRAP_CONFLICT:
+            elif s.battleTrap == BattleCalculatorAI.BattleCalculatorAI.TRAP_CONFLICT:
                 suitTraps += '9'
             else:
                 suitTraps += str(s.battleTrap)

@@ -46,7 +46,7 @@ class SuitBase:
 
     def setLevel(self, level):
         self.level = level
-        nameWLevel = TTLocalizer.SuitBaseNameWithLevel % {'name': self.name,
+        nameWLevel = TTLocalizer.SuitBaseNameWithLevel % {'name': self._name,
          'dept': self.getStyleDept(),
          'level': self.getActualLevel()}
         self.setDisplayName(nameWLevel)

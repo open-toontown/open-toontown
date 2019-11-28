@@ -212,6 +212,9 @@ class ToontownAIRepository(ToontownInternalRepository):
     def getAvatarExitEvent(self, avId):
         return 'distObjDelete-%d' % avId
 
+    def getAvatarDisconnectReason(self, avId):
+        return self.timeManager.avId2disconnectcode.get(avId, ToontownGlobals.DisconnectUnknown)
+
     def getZoneDataStore(self):
         return self.zoneDataStore
 

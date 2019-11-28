@@ -972,7 +972,7 @@ class Suit(Avatar.Avatar):
             bb.setTwoSided(1)
 
         self.setName(TTLocalizer.Skeleton)
-        nameInfo = TTLocalizer.SuitBaseNameWithLevel % {'name': self.name,
+        nameInfo = TTLocalizer.SuitBaseNameWithLevel % {'name': self._name,
          'dept': self.getStyleDept(),
          'level': self.getActualLevel()}
         self.setDisplayName(nameInfo)
