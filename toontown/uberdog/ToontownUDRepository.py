@@ -1,11 +1,14 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
+
 from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
 from otp.distributed.OtpDoGlobals import *
+from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
+
 
 # TODO: Remove Astron dependence.
 
 class ToontownUDRepository(ToontownInternalRepository):
+    notify = DirectNotifyGlobal.directNotify.newCategory('ToontownUDRepository')
 
     def __init__(self, baseChannel, serverId):
         ToontownInternalRepository.__init__(self, baseChannel, serverId, dcSuffix='UD')

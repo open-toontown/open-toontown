@@ -1,8 +1,10 @@
 import __builtin__
 
+
 class game:
     name = 'uberDog'
     process = 'server'
+
 
 __builtin__.game = game
 

@@ -2,15 +2,17 @@ import anydbm
 import dumbdbm
 import json
 import sys
-from datetime import datetime
 import time
+from datetime import datetime
 
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
 from direct.distributed.PyDatagram import *
+
+from toontown.makeatoon.NameGenerator import NameGenerator
 from toontown.toon.ToonDNA import ToonDNA
 from toontown.toonbase import TTLocalizer
-from toontown.makeatoon.NameGenerator import NameGenerator
+
 
 class AccountDB:
     """
@@ -89,7 +91,8 @@ class LoginOperation:
             self.__handleCreateAccount()
 
     def __handleRetrieveAccount(self):
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.accountId, self.__handleAccountRetrieved)
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.accountId,
+                                                      self.__handleAccountRetrieved)
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
@@ -107,7 +110,9 @@ class LoginOperation:
                         'LAST_LOGIN': time.ctime(),
                         'ACCOUNT_ID': str(self.databaseId)}
 
-        self.loginManager.air.dbInterface.createObject(self.loginManager.air.dbId, self.loginManager.air.dclassesByName['AstronAccountUD'], self.account, self.__handleAccountCreated)
+        self.loginManager.air.dbInterface.createObject(self.loginManager.air.dbId,
+                                                       self.loginManager.air.dclassesByName['AstronAccountUD'],
+                                                       self.account, self.__handleAccountCreated)
 
     def __handleAccountCreated(self, accountId):
         if not accountId:
@@ -130,7 +135,8 @@ class LoginOperation:
     def __handleSetAccount(self):
         # if somebody's already logged into this account, disconnect them
         datagram = PyDatagram()
-        datagram.addServerHeader(self.loginManager.GetAccountConnectionChannel(self.accountId), self.loginManager.air.ourChannel, CLIENTAGENT_EJECT)
+        datagram.addServerHeader(self.loginManager.GetAccountConnectionChannel(self.accountId),
+                                 self.loginManager.air.ourChannel, CLIENTAGENT_EJECT)
         datagram.addUint16(100)
         datagram.addString('This account has been logged in elsewhere.')
         self.loginManager.air.send(datagram)
@@ -144,7 +150,7 @@ class LoginOperation:
         # set sender channel to represent account affiliation
         datagram = PyDatagram()
         datagram.addServerHeader(self.sender, self.loginManager.air.ourChannel, CLIENTAGENT_SET_CLIENT_ID)
-        datagram.addChannel(self.accountId << 32) # accountId is in high 32 bits, 0 in low (no avatar).
+        datagram.addChannel(self.accountId << 32)  # accountId is in high 32 bits, 0 in low (no avatar).
         self.loginManager.air.send(datagram)
 
         # set client state to established, thus un-sandboxing the sender
@@ -202,7 +208,8 @@ class GetAvatarsOperation:
         self.avatarFields = None
 
     def start(self):
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender,
+                                                      self.__handleAccountRetrieved)
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
@@ -221,6 +228,7 @@ class GetAvatarsOperation:
         for avId in self.avList:
             if avId:
                 self.pendingAvatars.add(avId)
+
                 def response(dclass, fields, avId=avId):
                     if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
                         # mayonnaise
@@ -289,7 +297,8 @@ class CreateAvatarOperation:
         self.__handleRetrieveAccount()
 
     def __handleRetrieveAccount(self):
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender,
+                                                      self.__handleAccountRetrieved)
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
@@ -318,7 +327,9 @@ class CreateAvatarOperation:
                       'setDNAString': (self.avDNA,),
                       'setDISLid': (self.sender,)}
 
-        self.loginManager.air.dbInterface.createObject(self.loginManager.air.dbId, self.loginManager.air.dclassesByName['DistributedToonUD'], toonFields, self.__handleToonCreated)
+        self.loginManager.air.dbInterface.createObject(self.loginManager.air.dbId,
+                                                       self.loginManager.air.dclassesByName['DistributedToonUD'],
+                                                       toonFields, self.__handleToonCreated)
 
     def __handleToonCreated(self, avId):
         if not avId:
@@ -330,10 +341,11 @@ class CreateAvatarOperation:
 
     def __handleStoreAvatar(self):
         self.avList[self.avPosition] = self.avId
-        self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.sender, self.loginManager.air.dclassesByName['AstronAccountUD'],
-                                                   {'ACCOUNT_AV_SET': self.avList},
-                                                   {'ACCOUNT_AV_SET': self.account['ACCOUNT_AV_SET']},
-                                                   self.__handleAvatarStored)
+        self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.sender,
+                                                       self.loginManager.air.dclassesByName['AstronAccountUD'],
+                                                       {'ACCOUNT_AV_SET': self.avList},
+                                                       {'ACCOUNT_AV_SET': self.account['ACCOUNT_AV_SET']},
+                                                       self.__handleAvatarStored)
 
     def __handleAvatarStored(self, fields):
         if fields:
@@ -362,7 +374,8 @@ class SetNamePatternOperation:
         self.__handleRetrieveAccount()
 
     def __handleRetrieveAccount(self):
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender,
+                                                      self.__handleAccountRetrieved)
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
@@ -381,7 +394,8 @@ class SetNamePatternOperation:
             # It's you!
             return
 
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId, self.__handleAvatarRetrieved)
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId,
+                                                      self.__handleAvatarRetrieved)
 
     def __handleAvatarRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
@@ -413,7 +427,8 @@ class SetNamePatternOperation:
 
         name = ' '.join(parts)
 
-        self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.avId, self.loginManager.air.dclassesByName['DistributedToonUD'],
+        self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.avId,
+                                                       self.loginManager.air.dclassesByName['DistributedToonUD'],
                                                        {'WishNameState': ('LOCKED',),
                                                         'WishName': ('',),
                                                         'setName': (name,)})
@@ -441,7 +456,8 @@ class SetNameTypedOperation:
         self.__handleJudgeName()
 
     def __handleRetrieveAccount(self):
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender,
+                                                      self.__handleAccountRetrieved)
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
@@ -460,7 +476,8 @@ class SetNameTypedOperation:
             # Hahaha
             return
 
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId, self.__handleAvatarRetrieved)
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId,
+                                                      self.__handleAvatarRetrieved)
 
     def __handleAvatarRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
@@ -500,7 +517,8 @@ class AcknowledgeNameOperation:
         self.__handleRetrieveAccount()
 
     def __handleRetrieveAccount(self):
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender,
+                                                      self.__handleAccountRetrieved)
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
@@ -518,7 +536,8 @@ class AcknowledgeNameOperation:
             # welp
             return
 
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId, self.__handleAvatarRetrieved)
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId,
+                                                      self.__handleAvatarRetrieved)
 
     def __handleAvatarRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
@@ -564,7 +583,8 @@ class RemoveAvatarOperation:
 
     def start(self, avId):
         self.avId = avId
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender,
+                                                      self.__handleAccountRetrieved)
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
@@ -593,7 +613,8 @@ class RemoveAvatarOperation:
                                                            {'setSlot%sToonId' % index: [0],
                                                             'setSlot%sItems' % index: [[]]})
 
-        self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.sender, self.loginManager.air.dclassesByName['AstronAccountUD'],
+        self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.sender,
+                                                       self.loginManager.air.dclassesByName['AstronAccountUD'],
                                                        {'ACCOUNT_AV_SET': self.avList,
                                                         'ACCOUNT_AV_SET_DEL': avatarsRemoved},
                                                        {'ACCOUNT_AV_SET': self.account['ACCOUNT_AV_SET'],
@@ -613,6 +634,7 @@ class RemoveAvatarOperation:
         for avId in self.avList:
             if avId:
                 self.pendingAvatars.add(avId)
+
                 def response(dclass, fields, avId=avId):
                     if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
                         # mayonnaise
@@ -669,7 +691,8 @@ class LoadAvatarOperation:
         self.__handleRetrieveAccount()
 
     def __handleRetrieveAccount(self):
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender, self.__handleAccountRetrieved)
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender,
+                                                      self.__handleAccountRetrieved)
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
@@ -686,7 +709,8 @@ class LoadAvatarOperation:
         if self.avId not in self.avList:
             return
 
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId, self.__handleAvatarRetrieved)
+        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId,
+                                                      self.__handleAvatarRetrieved)
 
     def __handleAvatarRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:

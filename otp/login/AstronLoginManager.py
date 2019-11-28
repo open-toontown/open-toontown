@@ -4,7 +4,9 @@ from datetime import datetime
 
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
+
 from otp.uberdog.AccountDetailRecord import AccountDetailRecord
+
 
 class AstronLoginManager(DistributedObjectGlobal):
     notify = DirectNotifyGlobal.directNotify.newCategory('AstronLoginManager')

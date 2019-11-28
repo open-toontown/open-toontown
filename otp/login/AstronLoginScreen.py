@@ -1,8 +1,11 @@
 from direct.directnotify import DirectNotifyGlobal
-from otp.login.LoginScreen import LoginScreen
 from direct.distributed.MsgTypes import *
 
+from otp.login.LoginScreen import LoginScreen
+
+
 class AstronLoginScreen(LoginScreen):
+    notify = DirectNotifyGlobal.directNotify.newCategory('AstronLoginScreen')
 
     def handleWaitForLoginResponse(self, msgType, di):
         if msgType == CLIENT_HELLO_RESP:
