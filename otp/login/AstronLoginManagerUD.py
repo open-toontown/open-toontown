@@ -213,7 +213,7 @@ class GetAvatarsOperation:
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
-            # no uwu
+            # TODO: Kill the connection
             return
 
         self.account = fields
@@ -231,7 +231,7 @@ class GetAvatarsOperation:
 
                 def response(dclass, fields, avId=avId):
                     if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
-                        # mayonnaise
+                        # TODO: Kill the connection
                         return
 
                     self.avatarFields[avId] = fields
@@ -283,12 +283,12 @@ class CreateAvatarOperation:
 
     def start(self, avDNA, avPosition):
         if avPosition >= 6:
-            # NO!!!!!!!
+            # TODO: Kill the connection
             return
 
         valid = ToonDNA().isValidNetString(avDNA)
         if not valid:
-            # time to eat paste
+            # TODO: Kill the connection
             return
 
         self.avPosition = avPosition
@@ -302,7 +302,7 @@ class CreateAvatarOperation:
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
-            # no uwu
+            # TODO: Kill the connection
             return
 
         self.account = fields
@@ -310,7 +310,7 @@ class CreateAvatarOperation:
         self.avList = self.avList[:6]
         self.avList += [0] * (6 - len(self.avList))
         if self.avList[self.avPosition]:
-            # my leg
+            # TODO: Kill the connection
             return
 
         self.__handleCreateAvatar()
@@ -333,7 +333,7 @@ class CreateAvatarOperation:
 
     def __handleToonCreated(self, avId):
         if not avId:
-            # WHAT!
+            # TODO: Kill the connection
             return
 
         self.avId = avId
@@ -349,10 +349,7 @@ class CreateAvatarOperation:
 
     def __handleAvatarStored(self, fields):
         if fields:
-            # What happen!
-            # Someone set up us the bomb.
-            # We get signal.
-            # What!
+            # TODO: Kill the connection
             return
 
         self.loginManager.sendUpdateToAccountId(self.sender, 'createAvatarResponse', [self.avId])
@@ -379,7 +376,7 @@ class SetNamePatternOperation:
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
-            # no uwu
+            # TODO: Kill the connection
             return
 
         self.account = fields
@@ -390,8 +387,7 @@ class SetNamePatternOperation:
 
     def __handleRetrieveAvatar(self):
         if self.avId and self.avId not in self.avList:
-            # Main screen turn on.
-            # It's you!
+            # TODO: Kill the connection
             return
 
         self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId,
@@ -399,13 +395,11 @@ class SetNamePatternOperation:
 
     def __handleAvatarRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
-            # How are you gentlemen?
-            # All your base are belong to us
+            # TODO: Kill the connection
             return
 
         if fields['WishNameState'][0] != 'OPEN':
-            # You are on your way to destruction
-            # What you say?
+            # TODO: Kill the connection
             return
 
         self.__handleSetName()
@@ -461,7 +455,7 @@ class SetNameTypedOperation:
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
-            # no uwu
+            # TODO: Kill the connection
             return
 
         self.account = fields
@@ -472,8 +466,7 @@ class SetNameTypedOperation:
 
     def __handleRetrieveAvatar(self):
         if self.avId and self.avId not in self.avList:
-            # You have no chance to survive make your time
-            # Hahaha
+            # TODO: Kill the connection
             return
 
         self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId,
@@ -481,13 +474,11 @@ class SetNameTypedOperation:
 
     def __handleAvatarRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
-            # How are you gentlemen?
-            # All your base are belong to us
+            # TODO: Kill the connection
             return
 
         if fields['WishNameState'][0] != 'OPEN':
-            # You are on your way to destruction
-            # What you say?
+            # TODO: Kill the connection
             return
 
         self.__handleJudgeName()
@@ -522,7 +513,7 @@ class AcknowledgeNameOperation:
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
-            # no uwu
+            # TODO: Kill the connection
             return
 
         self.account = fields
@@ -533,7 +524,7 @@ class AcknowledgeNameOperation:
 
     def __handleGetTargetAvatar(self):
         if self.avId not in self.avList:
-            # welp
+            # TODO: Kill the connection
             return
 
         self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.avId,
@@ -588,7 +579,7 @@ class RemoveAvatarOperation:
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
-            # no uwu
+            # TODO: Kill the connection
             return
 
         self.account = fields
@@ -599,7 +590,7 @@ class RemoveAvatarOperation:
 
     def __handleRemoveAvatar(self):
         if self.avId not in self.avList:
-            # avatar doesn't exist.
+            # TODO: Kill the connection
             return
 
         index = self.avList.index(self.avId)
@@ -623,7 +614,7 @@ class RemoveAvatarOperation:
 
     def __handleAvatarRemoved(self, fields):
         if fields:
-            # failed to remove the avatar.
+            # TODO: Kill the connection
             return
 
         self.__handleQueryAvatars()
@@ -637,7 +628,7 @@ class RemoveAvatarOperation:
 
                 def response(dclass, fields, avId=avId):
                     if dclass != self.loginManager.air.dclassesByName['DistributedToonUD']:
-                        # mayonnaise
+                        # TODO: Kill the connection
                         return
 
                     self.avatarFields[avId] = fields
@@ -696,7 +687,7 @@ class LoadAvatarOperation:
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
-            # no uwu
+            # TODO: Kill the connection
             return
 
         self.account = fields
@@ -769,106 +760,75 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         # TODO: In the future, add more database interfaces & make this configurable.
         self.accountDb = DeveloperAccountDB(self)
 
-    def requestLogin(self, playToken):
-        # Get the connection ID:
+    def runLoginOperation(self, playToken):
+        # Runs a login operation on the sender. First, get the sender:
         sender = self.air.getMsgSender()
 
-        if sender in self.sender2loginOperation.keys():
-            # BAD!!!!
+        # Is the sender already logged in?
+        if sender >> 32:
+            # TODO kill connection
             return
 
+        # Is the sender already logging in?
+        if sender in self.sender2loginOperation.keys():
+            # TODO kill connection
+            return
+
+        # Run the login operation:
         newLoginOperation = LoginOperation(self, sender)
         self.sender2loginOperation[sender] = newLoginOperation
         newLoginOperation.start(playToken)
 
-    # TODO: CLEAN UP ALL THIS CODE!!!!!!!!
+    def runGameOperation(self, operationType, *args):
+        # Runs a game operation on the sender. First, get the sender:
+        sender = self.air.getAccountIdFromSender()
+        if not sender:
+            # Sender doesn't exist; not logged in.
+            # TODO KILL CONNECTION
+            return
+
+        if sender in self.account2operation:
+            # Sender is already currently running a game operation.
+            # TODO KILL CONNECTION
+            return
+
+        # Run the game operation:
+        newOperation = operationType(self, sender)
+        self.account2operation[sender] = newOperation
+        newOperation.start(*args)
+
+    def requestLogin(self, playToken):
+        # Someone wants to log in to the game; run a LoginOperation:
+        self.runLoginOperation(playToken)
 
     def requestAvatarList(self):
-        sender = self.air.getAccountIdFromSender()
-        if not sender:
-            # TODO KILL CONNECTION
-            return
-
-        if sender in self.account2operation:
-            # BAD!!!!
-            return
-
-        newOperation = GetAvatarsOperation(self, sender)
-        self.account2operation[sender] = newOperation
-        newOperation.start()
+        # Someone wants their avatar list; run a GetAvatarsOperation:
+        self.runGameOperation(GetAvatarsOperation)
 
     def createAvatar(self, avDNA, avPosition):
-        sender = self.air.getAccountIdFromSender()
-        if not sender:
-            # TODO KILL CONNECTION
-            return
-
-        if sender in self.account2operation:
-            # BAD!!!!
-            return
-
-        newOperation = CreateAvatarOperation(self, sender)
-        self.account2operation[sender] = newOperation
-        newOperation.start(avDNA, avPosition)
+        # Someone wants to create a new avatar; run a CreateAvatarOperation:
+        self.runGameOperation(CreateAvatarOperation, avDNA, avPosition)
 
     def setNamePattern(self, avId, p1, f1, p2, f2, p3, f3, p4, f4):
-        sender = self.air.getAccountIdFromSender()
-        if not sender:
-            # TODO KILL CONNECTION
-            return
-
-        if sender in self.account2operation:
-            # BAD!!!!
-            return
-
-        newOperation = SetNamePatternOperation(self, sender)
-        self.account2operation[sender] = newOperation
-        newOperation.start(avId, [(p1, f1), (p2, f2),
-                                  (p3, f3), (p4, f4)])
+        # Someone wants to use a pattern name; run a SetNamePatternOperation:
+        self.runGameOperation(SetNamePatternOperation, avId, [(p1, f1), (p2, f2),
+                                                              (p3, f3), (p4, f4)])
 
     def setNameTyped(self, avId, name):
-        sender = self.air.getAccountIdFromSender()
-        if not sender:
-            # TODO KILL CONNECTION
-            return
-
-        if sender in self.account2operation:
-            # BAD!!!!
-            return
-
-        newOperation = SetNameTypedOperation(self, sender)
-        self.account2operation[sender] = newOperation
-        newOperation.start(avId, name)
+        # Someone has typed a name; run a SetNameTypedOperation:
+        self.runGameOperation(SetNameTypedOperation, avId, name)
 
     def acknowledgeAvatarName(self, avId):
-        sender = self.air.getAccountIdFromSender()
-        if not sender:
-            # TODO KILL CONNECTION
-            return
-
-        if sender in self.account2operation:
-            # BAD!!!!
-            return
-
-        newOperation = AcknowledgeNameOperation(self, sender)
-        self.account2operation[sender] = newOperation
-        newOperation.start(avId)
+        # Someone has acknowledged their name; run an AcknowledgeNameOperation:
+        self.runGameOperation(AcknowledgeNameOperation, avId)
 
     def requestRemoveAvatar(self, avId):
-        sender = self.air.getAccountIdFromSender()
-        if not sender:
-            # TODO KILL CONNECTION
-            return
-
-        if sender in self.account2operation:
-            # BAD!!!!
-            return
-
-        newOperation = RemoveAvatarOperation(self, sender)
-        self.account2operation[sender] = newOperation
-        newOperation.start(avId)
+        # Someone is requesting to have an avatar removed; run a RemoveAvatarOperation:
+        self.runGameOperation(RemoveAvatarOperation, avId)
 
     def requestPlayAvatar(self, avId):
+        # Someone is requesting to play on an avatar.
+        # First, let's get the sender's avId & accId:
         currentAvId = self.air.getAvatarIdFromSender()
         accId = self.air.getAccountIdFromSender()
         if currentAvId and avId:
@@ -878,20 +838,10 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
             # I don't think we need to do anything extra here
             return
 
-        sender = self.air.getAccountIdFromSender()
-        if not sender:
-            # TODO KILL CONNECTION
-            return
-
-        if sender in self.account2operation:
-            # BAD!!!!
-            return
-
         if avId:
-            newOperation = LoadAvatarOperation(self, sender)
-            self.account2operation[sender] = newOperation
-            newOperation.start(avId)
+            # If the avId is not a NoneType, that means the client wants
+            # to load an avatar; run a LoadAvatarOperation.
+            self.runGameOperation(LoadAvatarOperation, avId)
         else:
-            newOperation = UnloadAvatarOperation(self, sender)
-            self.account2operation[sender] = newOperation
-            newOperation.start(currentAvId)
+            # Otherwise, the client wants to unload the avatar; run an UnloadAvatarOperation.
+            self.runGameOperation(UnloadAvatarOperation, currentAvId)
