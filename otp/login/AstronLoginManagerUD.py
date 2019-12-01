@@ -18,7 +18,6 @@ class AccountDB:
     """
     AccountDB is the base class for all account database interface implementations.
     """
-    notify = DirectNotifyGlobal.directNotify.newCategory('AccountDB')
 
     def __init__(self, loginManager):
         self.loginManager = loginManager
@@ -41,12 +40,11 @@ class AccountDB:
             self.dbm.sync()
             callback(True)
         else:
-            self.notify.warning('Unable to associate user %s with account %s!' % (databaseId, accountId))
+            self.loginManager.notify.warning('Unable to associate user %s with account %s!' % (databaseId, accountId))
             callback(False)
 
 
 class DeveloperAccountDB(AccountDB):
-    notify = DirectNotifyGlobal.directNotify.newCategory('DeveloperAccountDB')
 
     def lookup(self, playToken, callback):
         # Check if this play token exists in the dbm:
@@ -63,7 +61,6 @@ class DeveloperAccountDB(AccountDB):
 
 
 class GameOperation:
-    notify = DirectNotifyGlobal.directNotify.newCategory('GameOperation')
 
     def __init__(self, loginManager, sender):
         self.loginManager = loginManager
@@ -75,7 +72,6 @@ class GameOperation:
 
 
 class LoginOperation(GameOperation):
-    notify = DirectNotifyGlobal.directNotify.newCategory('LoginOperation')
 
     def __init__(self, loginManager, sender):
         GameOperation.__init__(self, loginManager, sender)
@@ -208,7 +204,6 @@ class LoginOperation(GameOperation):
 
 
 class AvatarOperation(GameOperation):
-    notify = DirectNotifyGlobal.directNotify.newCategory('AvatarOperation')
 
     def __init__(self, loginManager, sender):
         GameOperation.__init__(self, loginManager, sender)
@@ -241,7 +236,6 @@ class AvatarOperation(GameOperation):
 
 
 class GetAvatarsOperation(AvatarOperation):
-    notify = DirectNotifyGlobal.directNotify.newCategory('GetAvatarsOperation')
 
     def __init__(self, loginManager, sender):
         AvatarOperation.__init__(self, loginManager, sender)
@@ -303,7 +297,6 @@ class GetAvatarsOperation(AvatarOperation):
 
 
 class CreateAvatarOperation(GameOperation):
-    notify = DirectNotifyGlobal.directNotify.newCategory('CreateAvatarOperation')
 
     def __init__(self, loginManager, sender):
         GameOperation.__init__(self, loginManager, sender)
@@ -387,7 +380,6 @@ class CreateAvatarOperation(GameOperation):
 
 
 class SetNamePatternOperation(AvatarOperation):
-    notify = DirectNotifyGlobal.directNotify.newCategory('SetNamePatternOperation')
 
     def __init__(self, loginManager, sender):
         AvatarOperation.__init__(self, loginManager, sender)
@@ -447,7 +439,6 @@ class SetNamePatternOperation(AvatarOperation):
 
 
 class SetNameTypedOperation(AvatarOperation):
-    notify = DirectNotifyGlobal.directNotify.newCategory('SetNameTypedOperation')
 
     def __init__(self, loginManager, sender):
         AvatarOperation.__init__(self, loginManager, sender)
@@ -496,7 +487,6 @@ class SetNameTypedOperation(AvatarOperation):
 
 
 class AcknowledgeNameOperation(AvatarOperation):
-    notify = DirectNotifyGlobal.directNotify.newCategory('AcknowledgeNameOperation')
 
     def __init__(self, loginManager, sender):
         AvatarOperation.__init__(self, loginManager, sender)
@@ -546,7 +536,6 @@ class AcknowledgeNameOperation(AvatarOperation):
 
 
 class RemoveAvatarOperation:
-    notify = DirectNotifyGlobal.directNotify.newCategory('RemoveAvatarOperation')
 
     def __init__(self, loginManager, sender):
         self.loginManager = loginManager
@@ -655,7 +644,6 @@ class RemoveAvatarOperation:
 
 
 class LoadAvatarOperation:
-    notify = DirectNotifyGlobal.directNotify.newCategory('LoadAvatarOperation')
 
     def __init__(self, loginManager, sender):
         self.loginManager = loginManager
