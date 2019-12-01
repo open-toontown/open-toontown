@@ -1,4 +1,5 @@
 from pandac.PandaModules import *
+from libotp import *
 from toontown.toonbase import ToontownGlobals
 import random
 from toontown.hood import ZoneUtil
