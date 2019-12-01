@@ -70,6 +70,12 @@ class GameOperation:
     def setCallback(self, callback):
         self.callback = callback
 
+    def _handleDone(self):
+        if self.__class__.__name__ == 'LoginOperation':
+            del self.loginManager.sender2loginOperation[self.sender]
+        else:
+            del self.loginManager.account2operation[self.sender]
+
 
 class LoginOperation(GameOperation):
 
@@ -179,7 +185,7 @@ class LoginOperation(GameOperation):
         }
         responseBlob = json.dumps(responseData)
         self.loginManager.sendUpdateToChannel(self.sender, 'loginResponse', [responseBlob])
-        del self.loginManager.sender2loginOperation[self.sender]
+        self._handleDone()
 
     def getLastLoggedInStr(self):
         return ''  # TODO
@@ -290,7 +296,7 @@ class GetAvatarsOperation(AvatarOperation):
             potentialAvatars.append([avId, name, fields['setDNAString'][0], index, nameState])
 
         self.loginManager.sendUpdateToAccountId(self.sender, 'avatarListResponse', [potentialAvatars])
-        del self.loginManager.account2operation[self.sender]
+        self._handleDone()
 
 
 class CreateAvatarOperation(GameOperation):
@@ -373,7 +379,7 @@ class CreateAvatarOperation(GameOperation):
             return
 
         self.loginManager.sendUpdateToAccountId(self.sender, 'createAvatarResponse', [self.avId])
-        del self.loginManager.account2operation[self.sender]
+        self._handleDone()
 
 
 class SetNamePatternOperation(AvatarOperation):
@@ -432,7 +438,7 @@ class SetNamePatternOperation(AvatarOperation):
                                                         'setName': (name,)})
 
         self.loginManager.sendUpdateToAccountId(self.sender, 'namePatternAnswer', [self.avId, 1])
-        del self.loginManager.account2operation[self.sender]
+        self._handleDone()
 
 
 class SetNameTypedOperation(AvatarOperation):
@@ -480,7 +486,7 @@ class SetNameTypedOperation(AvatarOperation):
                                                             'WishName': (self.name,)})
 
         self.loginManager.sendUpdateToAccountId(self.sender, 'nameTypedResponse', [self.avId, status])
-        del self.loginManager.account2operation[self.sender]
+        self._handleDone()
 
 
 class AcknowledgeNameOperation(AvatarOperation):
@@ -529,7 +535,7 @@ class AcknowledgeNameOperation(AvatarOperation):
                                                         'setName': fields['setName']})
 
         self.loginManager.sendUpdateToAccountId(self.sender, 'acknowledgeAvatarNameResponse', [])
-        del self.loginManager.account2operation[self.sender]
+        self._handleDone()
 
 
 class RemoveAvatarOperation(GetAvatarsOperation):
@@ -627,7 +633,7 @@ class LoadAvatarOperation(AvatarOperation):
 
         self.loginManager.air.setOwner(self.avId, channel)
 
-        del self.loginManager.account2operation[self.sender]
+        self._handleDone()
 
 
 class UnloadAvatarOperation(GameOperation):
@@ -667,7 +673,7 @@ class UnloadAvatarOperation(GameOperation):
         datagram.addUint32(self.avId)
         self.loginManager.air.send(datagram)
 
-        del self.loginManager.account2operation[self.sender]
+        self._handleDone()
 
 
 class AstronLoginManagerUD(DistributedObjectGlobalUD):
