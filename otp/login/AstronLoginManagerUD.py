@@ -630,6 +630,46 @@ class LoadAvatarOperation(AvatarOperation):
         del self.loginManager.account2operation[self.sender]
 
 
+class UnloadAvatarOperation(GameOperation):
+
+    def __init__(self, loginManager, sender):
+        GameOperation.__init__(self, loginManager, sender)
+        self.avId = None
+
+    def start(self, avId):
+        self.avId = avId
+        self.__handleUnloadAvatar()
+
+    def __handleUnloadAvatar(self):
+        channel = self.loginManager.GetAccountConnectionChannel(self.sender)
+
+        datagram = PyDatagram()
+        datagram.addServerHeader(channel, self.loginManager.air.ourChannel, CLIENTAGENT_CLEAR_POST_REMOVES)
+        self.loginManager.air.send(datagram)
+
+        datagram = PyDatagram()
+        datagram.addServerHeader(channel, self.loginManager.air.ourChannel, CLIENTAGENT_CLOSE_CHANNEL)
+        datagram.addChannel(self.loginManager.GetPuppetConnectionChannel(self.avId))
+        self.loginManager.air.send(datagram)
+
+        datagram = PyDatagram()
+        datagram.addServerHeader(channel, self.loginManager.air.ourChannel, CLIENTAGENT_SET_CLIENT_ID)
+        datagram.addChannel(self.sender << 32)  # accountId in high 32 bits, avatar in low.
+        self.loginManager.air.send(datagram)
+
+        datagram = PyDatagram()
+        datagram.addServerHeader(channel, self.loginManager.air.ourChannel, CLIENTAGENT_REMOVE_SESSION_OBJECT)
+        datagram.addUint32(self.avId)
+        self.loginManager.air.send(datagram)
+
+        datagram = PyDatagram()
+        datagram.addServerHeader(self.avId, channel, STATESERVER_OBJECT_DELETE_RAM)
+        datagram.addUint32(self.avId)
+        self.loginManager.air.send(datagram)
+
+        del self.loginManager.account2operation[self.sender]
+
+
 class AstronLoginManagerUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('AstronLoginManagerUD')
 
