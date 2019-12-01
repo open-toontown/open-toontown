@@ -62,12 +62,23 @@ class DeveloperAccountDB(AccountDB):
                       'databaseId': playToken})
 
 
-class LoginOperation:
-    notify = DirectNotifyGlobal.directNotify.newCategory('LoginOperation')
+class GameOperation:
+    notify = DirectNotifyGlobal.directNotify.newCategory('GameOperation')
 
     def __init__(self, loginManager, sender):
         self.loginManager = loginManager
         self.sender = sender
+        self.callback = None
+
+    def setCallback(self, callback):
+        self.callback = callback
+
+
+class LoginOperation(GameOperation):
+    notify = DirectNotifyGlobal.directNotify.newCategory('LoginOperation')
+
+    def __init__(self, loginManager, sender):
+        GameOperation.__init__(self, loginManager, sender)
         self.playToken = ''
         self.databaseId = 0
         self.accountId = 0
@@ -96,7 +107,7 @@ class LoginOperation:
 
     def __handleAccountRetrieved(self, dclass, fields):
         if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
-            print 'no uwu'
+            # TODO: Kill the connection
             return
 
         self.account = fields
@@ -116,7 +127,7 @@ class LoginOperation:
 
     def __handleAccountCreated(self, accountId):
         if not accountId:
-            # FAILURE!!!!!
+            # TODO: Kill the connection
             return
 
         self.accountId = accountId
@@ -127,7 +138,7 @@ class LoginOperation:
 
     def __handleAccountIdStored(self, success=True):
         if not success:
-            # FAILURE!!!!!!!!!!!!
+            # TODO: Kill the connection
             return
 
         self.__handleSetAccount()
@@ -196,18 +207,18 @@ class LoginOperation:
         return accountDays
 
 
-class GetAvatarsOperation:
-    notify = DirectNotifyGlobal.directNotify.newCategory('GetAvatarsOperation')
+class AvatarOperation(GameOperation):
+    notify = DirectNotifyGlobal.directNotify.newCategory('AvatarOperation')
 
     def __init__(self, loginManager, sender):
-        self.loginManager = loginManager
-        self.sender = sender
+        GameOperation.__init__(self, loginManager, sender)
         self.account = None
         self.avList = []
-        self.pendingAvatars = None
-        self.avatarFields = None
 
     def start(self):
+        self.__handleRetrieveAccount()
+
+    def __handleRetrieveAccount(self):
         self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender,
                                                       self.__handleAccountRetrieved)
 
@@ -216,11 +227,30 @@ class GetAvatarsOperation:
             # TODO: Kill the connection
             return
 
+        # Set the account & avList:
         self.account = fields
         self.avList = self.account['ACCOUNT_AV_SET']
+
+        # Sanitize the avList, just in case it is too long/short:
         self.avList = self.avList[:6]
         self.avList += [0] * (6 - len(self.avList))
-        self.__handleQueryAvatars()
+
+        # We're done; run the callback, if any:
+        if self.callback is not None:
+            self.callback()
+
+
+class GetAvatarsOperation(AvatarOperation):
+    notify = DirectNotifyGlobal.directNotify.newCategory('GetAvatarsOperation')
+
+    def __init__(self, loginManager, sender):
+        AvatarOperation.__init__(self, loginManager, sender)
+        self.pendingAvatars = None
+        self.avatarFields = None
+
+    def start(self):
+        self.setCallback(self.__handleQueryAvatars)
+        AvatarOperation.start(self)
 
     def __handleQueryAvatars(self):
         self.pendingAvatars = set()
@@ -272,12 +302,11 @@ class GetAvatarsOperation:
         del self.loginManager.account2operation[self.sender]
 
 
-class CreateAvatarOperation:
+class CreateAvatarOperation(GameOperation):
     notify = DirectNotifyGlobal.directNotify.newCategory('CreateAvatarOperation')
 
     def __init__(self, loginManager, sender):
-        self.loginManager = loginManager
-        self.sender = sender
+        GameOperation.__init__(self, loginManager, sender)
         self.avPosition = None
         self.avDNA = None
 
@@ -286,7 +315,8 @@ class CreateAvatarOperation:
             # TODO: Kill the connection
             return
 
-        valid = ToonDNA().isValidNetString(avDNA)
+        dna = ToonDNA()
+        valid = dna.isValidNetString(avDNA)
         if not valid:
             # TODO: Kill the connection
             return
@@ -356,34 +386,19 @@ class CreateAvatarOperation:
         del self.loginManager.account2operation[self.sender]
 
 
-class SetNamePatternOperation:
+class SetNamePatternOperation(AvatarOperation):
     notify = DirectNotifyGlobal.directNotify.newCategory('SetNamePatternOperation')
 
     def __init__(self, loginManager, sender):
-        self.loginManager = loginManager
-        self.sender = sender
+        AvatarOperation.__init__(self, loginManager, sender)
         self.avId = None
         self.pattern = None
 
     def start(self, avId, pattern):
         self.avId = avId
         self.pattern = pattern
-        self.__handleRetrieveAccount()
-
-    def __handleRetrieveAccount(self):
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender,
-                                                      self.__handleAccountRetrieved)
-
-    def __handleAccountRetrieved(self, dclass, fields):
-        if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
-            # TODO: Kill the connection
-            return
-
-        self.account = fields
-        self.avList = self.account['ACCOUNT_AV_SET']
-        self.avList = self.avList[:6]
-        self.avList += [0] * (6 - len(self.avList))
-        self.__handleRetrieveAvatar()
+        self.setCallback(self.__handleRetrieveAvatar)
+        AvatarOperation.start(self)
 
     def __handleRetrieveAvatar(self):
         if self.avId and self.avId not in self.avList:
@@ -431,12 +446,11 @@ class SetNamePatternOperation:
         del self.loginManager.account2operation[self.sender]
 
 
-class SetNameTypedOperation:
+class SetNameTypedOperation(AvatarOperation):
     notify = DirectNotifyGlobal.directNotify.newCategory('SetNameTypedOperation')
 
     def __init__(self, loginManager, sender):
-        self.loginManager = loginManager
-        self.sender = sender
+        AvatarOperation.__init__(self, loginManager, sender)
         self.avId = None
         self.name = None
 
@@ -444,25 +458,11 @@ class SetNameTypedOperation:
         self.avId = avId
         self.name = name
         if self.avId:
-            self.__handleRetrieveAccount()
+            self.setCallback(self.__handleRetrieveAvatar)
+            AvatarOperation.start(self)
             return
 
         self.__handleJudgeName()
-
-    def __handleRetrieveAccount(self):
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender,
-                                                      self.__handleAccountRetrieved)
-
-    def __handleAccountRetrieved(self, dclass, fields):
-        if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
-            # TODO: Kill the connection
-            return
-
-        self.account = fields
-        self.avList = self.account['ACCOUNT_AV_SET']
-        self.avList = self.avList[:6]
-        self.avList += [0] * (6 - len(self.avList))
-        self.__handleRetrieveAvatar()
 
     def __handleRetrieveAvatar(self):
         if self.avId and self.avId not in self.avList:
@@ -495,32 +495,17 @@ class SetNameTypedOperation:
         del self.loginManager.account2operation[self.sender]
 
 
-class AcknowledgeNameOperation:
+class AcknowledgeNameOperation(AvatarOperation):
     notify = DirectNotifyGlobal.directNotify.newCategory('AcknowledgeNameOperation')
 
     def __init__(self, loginManager, sender):
-        self.loginManager = loginManager
-        self.sender = sender
+        AvatarOperation.__init__(self, loginManager, sender)
         self.avId = None
 
     def start(self, avId):
         self.avId = avId
-        self.__handleRetrieveAccount()
-
-    def __handleRetrieveAccount(self):
-        self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId, self.sender,
-                                                      self.__handleAccountRetrieved)
-
-    def __handleAccountRetrieved(self, dclass, fields):
-        if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
-            # TODO: Kill the connection
-            return
-
-        self.account = fields
-        self.avList = self.account['ACCOUNT_AV_SET']
-        self.avList = self.avList[:6]
-        self.avList += [0] * (6 - len(self.avList))
-        self.__handleGetTargetAvatar()
+        self.setCallback(self.__handleGetTargetAvatar)
+        AvatarOperation.start(self)
 
     def __handleGetTargetAvatar(self):
         if self.avId not in self.avList:
