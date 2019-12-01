@@ -612,23 +612,42 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.handler = self.handleCloseShard
         self._removeLocalAvFromStateServer()
 
-    def handleCloseShard(self, msgType, di):
-        if msgType == CLIENT_CREATE_OBJECT_REQUIRED:
-            di2 = PyDatagramIterator(di)
-            parentId = di2.getUint32()
-            if self._doIdIsOnCurrentShard(parentId):
-                return
-        elif msgType == CLIENT_CREATE_OBJECT_REQUIRED_OTHER:
-            di2 = PyDatagramIterator(di)
-            parentId = di2.getUint32()
-            if self._doIdIsOnCurrentShard(parentId):
-                return
-        elif msgType == CLIENT_OBJECT_UPDATE_FIELD:
-            di2 = PyDatagramIterator(di)
-            doId = di2.getUint32()
-            if self._doIdIsOnCurrentShard(doId):
-                return
-        self.handleMessageType(msgType, di)
+    if config.GetBool('astron-support', True):
+        def handleCloseShard(self, msgType, di):
+            if msgType == CLIENT_ENTER_OBJECT_REQUIRED:
+                di2 = PyDatagramIterator(di)
+                parentId = di2.getUint32()
+                if self._doIdIsOnCurrentShard(parentId):
+                    return
+            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER:
+                di2 = PyDatagramIterator(di)
+                parentId = di2.getUint32()
+                if self._doIdIsOnCurrentShard(parentId):
+                    return
+            elif msgType == CLIENT_OBJECT_SET_FIELD:
+                di2 = PyDatagramIterator(di)
+                doId = di2.getUint32()
+                if self._doIdIsOnCurrentShard(doId):
+                    return
+            self.handleMessageType(msgType, di)
+    else:
+        def handleCloseShard(self, msgType, di):
+            if msgType == CLIENT_CREATE_OBJECT_REQUIRED:
+                di2 = PyDatagramIterator(di)
+                parentId = di2.getUint32()
+                if self._doIdIsOnCurrentShard(parentId):
+                    return
+            elif msgType == CLIENT_CREATE_OBJECT_REQUIRED_OTHER:
+                di2 = PyDatagramIterator(di)
+                parentId = di2.getUint32()
+                if self._doIdIsOnCurrentShard(parentId):
+                    return
+            elif msgType == CLIENT_OBJECT_UPDATE_FIELD:
+                di2 = PyDatagramIterator(di)
+                doId = di2.getUint32()
+                if self._doIdIsOnCurrentShard(doId):
+                    return
+            self.handleMessageType(msgType, di)
 
     def _logFailedDisable(self, doId, ownerView):
         if doId not in self.doId2do and doId in self._deletedSubShardDoIds:
