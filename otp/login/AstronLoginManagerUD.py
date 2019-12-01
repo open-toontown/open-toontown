@@ -654,7 +654,7 @@ class UnloadAvatarOperation(GameOperation):
 
         datagram = PyDatagram()
         datagram.addServerHeader(channel, self.loginManager.air.ourChannel, CLIENTAGENT_SET_CLIENT_ID)
-        datagram.addChannel(self.sender << 32)  # accountId in high 32 bits, avatar in low.
+        datagram.addChannel(self.sender << 32)  # accountId in high 32 bits, no avatar in low.
         self.loginManager.air.send(datagram)
 
         datagram = PyDatagram()
