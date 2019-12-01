@@ -239,14 +239,9 @@ class GetAvatarsOperation(AvatarOperation):
 
     def __init__(self, loginManager, sender):
         AvatarOperation.__init__(self, loginManager, sender)
+        self.setCallback(self._handleQueryAvatars)
         self.pendingAvatars = None
         self.avatarFields = None
-
-    def start(self, setCallback=True):
-        if setCallback:
-            self.setCallback(self._handleQueryAvatars)
-
-        AvatarOperation.start(self)
 
     def _handleQueryAvatars(self):
         self.pendingAvatars = set()
@@ -385,13 +380,13 @@ class SetNamePatternOperation(AvatarOperation):
 
     def __init__(self, loginManager, sender):
         AvatarOperation.__init__(self, loginManager, sender)
+        self.setCallback(self.__handleRetrieveAvatar)
         self.avId = None
         self.pattern = None
 
     def start(self, avId, pattern):
         self.avId = avId
         self.pattern = pattern
-        self.setCallback(self.__handleRetrieveAvatar)
         AvatarOperation.start(self)
 
     def __handleRetrieveAvatar(self):
@@ -444,6 +439,7 @@ class SetNameTypedOperation(AvatarOperation):
 
     def __init__(self, loginManager, sender):
         AvatarOperation.__init__(self, loginManager, sender)
+        self.setCallback(self.__handleRetrieveAvatar)
         self.avId = None
         self.name = None
 
@@ -451,7 +447,6 @@ class SetNameTypedOperation(AvatarOperation):
         self.avId = avId
         self.name = name
         if self.avId:
-            self.setCallback(self.__handleRetrieveAvatar)
             AvatarOperation.start(self)
             return
 
@@ -492,11 +487,11 @@ class AcknowledgeNameOperation(AvatarOperation):
 
     def __init__(self, loginManager, sender):
         AvatarOperation.__init__(self, loginManager, sender)
+        self.setCallback(self.__handleGetTargetAvatar)
         self.avId = None
 
     def start(self, avId):
         self.avId = avId
-        self.setCallback(self.__handleGetTargetAvatar)
         AvatarOperation.start(self)
 
     def __handleGetTargetAvatar(self):
@@ -541,12 +536,12 @@ class RemoveAvatarOperation(GetAvatarsOperation):
 
     def __init__(self, loginManager, sender):
         GetAvatarsOperation.__init__(self, loginManager, sender)
+        self.setCallback(self.__handleRemoveAvatar)
         self.avId = None
 
     def start(self, avId):
         self.avId = avId
-        self.setCallback(self.__handleRemoveAvatar)
-        GetAvatarsOperation.start(self, False)
+        GetAvatarsOperation.start(self)
 
     def __handleRemoveAvatar(self):
         if self.avId not in self.avList:
@@ -584,11 +579,11 @@ class LoadAvatarOperation(AvatarOperation):
 
     def __init__(self, loginManager, sender):
         AvatarOperation.__init__(self, loginManager, sender)
+        self.setCallback(self.__handleGetTargetAvatar)
         self.avId = None
 
     def start(self, avId):
         self.avId = avId
-        self.setCallback(self.__handleGetTargetAvatar)
         AvatarOperation.start(self)
 
     def __handleGetTargetAvatar(self):
