@@ -26,6 +26,7 @@ class AstronLoginManager(DistributedObjectGlobal):
         self.sendUpdate('requestLogin', [playToken])
 
     def loginResponse(self, responseBlob):
+        self.notify.debug("loginResponse")
         responseData = json.loads(responseBlob)
         now = time.time()
         returnCode = responseData.get('returnCode')
@@ -38,8 +39,12 @@ class AstronLoginManager(DistributedObjectGlobal):
         createFriendsWithChat = responseData.get('createFriendsWithChat')
         canChat = createFriendsWithChat == "YES" or createFriendsWithChat == "CODE"
         self.cr.secretChatAllowed = canChat
+        if base.logPrivateInfo:
+            self.notify.info("CREATE_FRIENDS_WITH_CHAT from game server login: %s %s" % (createFriendsWithChat, canChat))
         chatCodeCreationRule = responseData.get('chatCodeCreationRule')
         self.cr.chatChatCodeCreationRule = chatCodeCreationRule
+        if base.logPrivateInfo:
+            self.notify.info("Chat code creation rule = %s" % chatCodeCreationRule)
         self.cr.secretChatNeedsParentPassword = chatCodeCreationRule == "PARENT"
         serverTime = responseData.get('serverTime')
         self.cr.serverTimeUponLogin = serverTime
@@ -56,6 +61,8 @@ class AstronLoginManager(DistributedObjectGlobal):
         self.cr.setIsPaid(isPaid)
         if isPaid:
             launcher.setPaidUserLoggedIn()
+        if base.logPrivateInfo:
+            self.notify.info("Paid from game server login: %s" % isPaid)
         WhiteListResponse = responseData.get('WhiteListResponse')
         if WhiteListResponse == "YES":
             self.cr.whiteListChatEnabled = 1
@@ -77,6 +84,8 @@ class AstronLoginManager(DistributedObjectGlobal):
             self.cr.withParentAccount = False
         else:
             self.notify.error("unknown toon account type %s" % toonAccountType)
+        if base.logPrivateInfo:
+            self.notify.info("toonAccountType=%s" % toonAccountType)
         self.userName = responseData.get('userName')
         self.cr.userName = self.userName
         self.notify.info("Login response return code %s" % returnCode)
@@ -84,7 +93,7 @@ class AstronLoginManager(DistributedObjectGlobal):
             self.__handleLoginSuccess()
         elif returnCode == -13:
             self.notify.info("Period Time Expired")
-            messenger.send(self.doneEvent, [{'mode': 'reject'}])
+            self.cr.loginScreen.request("showLoginFailDialog", [OTPLocalizer.LoginScreenPeriodTimeExpired])
         else:
             self.notify.info("Login failed: %s" % errorString)
             messenger.send(self.doneEvent, [{'mode': 'reject'}])
@@ -94,9 +103,9 @@ class AstronLoginManager(DistributedObjectGlobal):
         launcher.setGoUserName(self.userName)
         launcher.setLastLogin(self.userName)
         launcher.setUserLoggedIn()
-        if self.cr.loginInterface.freeTimeExpires == -1:
+        if self.cr.loginScreen.loginInterface.freeTimeExpires == -1:
             launcher.setPaidUserLoggedIn()
-        if self.cr.loginInterface.needToSetParentPassword():
+        if self.cr.loginScreen.loginInterface.needToSetParentPassword():
             messenger.send(self.doneEvent, [{'mode': 'getChatPassword'}])
         else:
             messenger.send(self.doneEvent, [{'mode': 'success'}])
@@ -106,7 +115,7 @@ class AstronLoginManager(DistributedObjectGlobal):
         if len(errorString) < len(prefix):
             return errorString
         if errorString[:len(prefix)] == prefix:
-            return '%s%s' % (errorString, ', address=%s' % self.cr.getServerAddress())
+            return '%s%s' % (errorString, ', address=%s' % base.cr.getServerAddress())
         return errorString
 
     def parseAccountDays(self, accountDays):
