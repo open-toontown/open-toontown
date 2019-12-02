@@ -256,12 +256,13 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 self.sendUpdate('setLastHood', [hood])
                 self.setDefaultZone(hood)
                 self.sendUpdate('setDefaultZone', [hood])
+
                 canonicalZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
                 canonicalHood = ZoneUtil.getHoodId(canonicalZoneId)
-                hoodsVisted = list(self.getHoodsVisited())
-                if canonicalHood not in hoodsVisted:
-                    hoodsVisted.append(canonicalHood)
-                    self.b_setHoodsVisited(hoodsVisted)
+                hoodsVisited = list(self.getHoodsVisited())
+                if canonicalHood not in hoodsVisited:
+                    hoodsVisited.append(canonicalHood)
+                    self.b_setHoodsVisited(hoodsVisited)
 
                 if canonicalZoneId == ToontownGlobals.GoofySpeedway:
                     teleportAccess = self.getTeleportAccess()
