@@ -229,10 +229,10 @@ class DistributedAvatar(DistributedActor, Avatar):
                 self.hpTextSeq.start()
 
     def hideHpText(self):
+        if self.hpTextSeq:
+            self.hpTextSeq.finish()
+            self.hpTextSeq = None
         if self.hpText:
-            if self.hpTextSeq:
-                self.hpTextSeq.finish()
-                self.hpTextSeq = None
             self.hpText.removeNode()
             self.hpText = None
         return

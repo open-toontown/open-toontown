@@ -12,6 +12,10 @@ class Settings:
         pass  # lol not yet
 
     @staticmethod
+    def setWindowedMode(_):
+        pass
+
+    @staticmethod
     def getWindowedMode():
         return 1
 
@@ -48,8 +52,16 @@ class Settings:
         return 1
 
     @staticmethod
+    def setResolutionDimensions(_, __):
+        pass
+
+    @staticmethod
     def getResolution():
         return 1
+
+    @staticmethod
+    def setEmbeddedMode(_):
+        pass
 
     @staticmethod
     def getEmbeddedMode():

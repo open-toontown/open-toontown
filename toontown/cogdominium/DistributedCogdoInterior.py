@@ -4,6 +4,7 @@ from direct.distributed.ClockDelta import *
 from toontown.building.ElevatorConstants import *
 from toontown.toon import NPCToons
 from pandac.PandaModules import NodePath
+from libotp import *
 from toontown.building import ElevatorUtils
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownBattleGlobals

@@ -11,7 +11,7 @@ from direct.directnotify import DirectNotifyGlobal
 import random
 from direct.fsm import State
 from direct.fsm import ClassicFSM, State
-from direct.showbase import PythonUtil
+from otp.otpbase import PythonUtil
 
 class DistributedBattleBldgAI(DistributedBattleBaseAI.DistributedBattleBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleBldgAI')

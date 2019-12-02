@@ -18,3 +18,9 @@ class QuestManagerAI:
 
     def hasTailorClothingTicket(self, toon, npc):
         return 0  # TODO
+
+    def toonKilledBuilding(self, toon, track, difficulty, numFloors, zoneId, activeToons):
+        pass  # TODO
+
+    def toonKilledCogdo(self, toon, difficulty, numFloors, zoneId, activeToons):
+        pass  # TODO

@@ -412,7 +412,7 @@ def getSplicedLerpAnimsTrack(object, animName, origDuration, newDuration, startT
     numIvals = origDuration * fps
     timeInterval = newDuration / numIvals
     animInterval = origDuration / numIvals
-    for i in range(0, numIvals):
+    for i in range(0, int(numIvals)):
         track.append(Wait(timeInterval))
         track.append(ActorInterval(object, animName, startTime=startTime + addition, duration=animInterval))
         addition += animInterval
