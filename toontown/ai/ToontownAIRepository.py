@@ -1,4 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
+from panda3d.core import *
 
 from libtoontown import *
 from otp.ai.AIZoneData import AIZoneDataStore
@@ -17,6 +18,7 @@ from toontown.hood.BRHoodDataAI import BRHoodDataAI
 from toontown.hood.DDHoodDataAI import DDHoodDataAI
 from toontown.hood.DGHoodDataAI import DGHoodDataAI
 from toontown.hood.DLHoodDataAI import DLHoodDataAI
+from toontown.hood.GSHoodDataAI import GSHoodDataAI
 from toontown.hood.MMHoodDataAI import MMHoodDataAI
 from toontown.hood.TTHoodDataAI import TTHoodDataAI
 from toontown.pets.PetManagerAI import PetManagerAI
@@ -193,6 +195,12 @@ class ToontownAIRepository(ToontownInternalRepository):
         )
         self.generateHood(DGHoodDataAI, ToontownGlobals.DaisyGardens)
 
+        # Goofy Speedway
+        self.zoneTable[ToontownGlobals.GoofySpeedway] = (
+            (ToontownGlobals.GoofySpeedway, 1, 0),
+        )
+        self.generateHood(GSHoodDataAI, ToontownGlobals.GoofySpeedway)
+
         # Donald's Dreamland
         self.zoneTable[ToontownGlobals.DonaldsDreamland] = (
             (ToontownGlobals.DonaldsDreamland, 1, 0), (ToontownGlobals.LullabyLane, 1, 1),
@@ -216,6 +224,27 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         return 'phase_%s/dna/%s_%s.dna' % (phase, hood, canonicalZoneId)
 
+    def lookupDNAFileName(self, dnaFileName):
+        searchPath = DSearchPath()
+        searchPath.appendDirectory(Filename('resources/phase_3.5/dna'))
+        searchPath.appendDirectory(Filename('resources/phase_4/dna'))
+        searchPath.appendDirectory(Filename('resources/phase_5/dna'))
+        searchPath.appendDirectory(Filename('resources/phase_5.5/dna'))
+        searchPath.appendDirectory(Filename('resources/phase_6/dna'))
+        searchPath.appendDirectory(Filename('resources/phase_8/dna'))
+        searchPath.appendDirectory(Filename('resources/phase_9/dna'))
+        searchPath.appendDirectory(Filename('resources/phase_10/dna'))
+        searchPath.appendDirectory(Filename('resources/phase_11/dna'))
+        searchPath.appendDirectory(Filename('resources/phase_12/dna'))
+        searchPath.appendDirectory(Filename('resources/phase_13/dna'))
+        filename = Filename(dnaFileName)
+        found = vfs.resolveFilename(filename, searchPath)
+        if not found:
+            self.notify.warning('lookupDNAFileName - %s not found on:' % dnaFileName)
+            print searchPath
+        else:
+            return filename.getFullpath()
+
     def loadDNAFileAI(self, dnaStore, dnaFileName):
         return loadDNAFileAI(dnaStore, dnaFileName)
 
@@ -223,6 +252,12 @@ class ToontownAIRepository(ToontownInternalRepository):
         return [], []  # TODO
 
     def findPartyHats(self, dnaData, zoneId):
+        return []  # TODO
+
+    def findRacingPads(self, dnaData, zoneId, area, type='racing_pad'):
+        return [], []  # TODO
+
+    def findLeaderBoards(self, dnaData, zoneId):
         return []  # TODO
 
     def getTrackClsends(self):
