@@ -255,7 +255,7 @@ class LoginScreen(StateData.StateData, GuiScreen.GuiScreen):
 
         def handleHelloResp(self):
             self.cr.startHeartbeat()
-            self.cr.astronLoginManager.handleRequestLogin(self.doneEvent)
+            self.cr.astronLoginManager.handleRequestLogin()
 
     def getExtendedErrorMsg(self, errorString):
         prefix = 'Bad DC Version Compare'
@@ -591,8 +591,7 @@ class LoginScreen(StateData.StateData, GuiScreen.GuiScreen):
             canChat = createFriendsWithChat == "YES" or createFriendsWithChat == "CODE"
             self.cr.secretChatAllowed = canChat
             if base.logPrivateInfo:
-                self.notify.info(
-                    "CREATE_FRIENDS_WITH_CHAT from game server login: %s %s" % (createFriendsWithChat, canChat))
+                self.notify.info("CREATE_FRIENDS_WITH_CHAT from game server login: %s %s" % (createFriendsWithChat, canChat))
             self.chatCodeCreationRule = responseData.get('chatCodeCreationRule')
             self.cr.chatChatCodeCreationRule = self.chatCodeCreationRule
             if base.logPrivateInfo:

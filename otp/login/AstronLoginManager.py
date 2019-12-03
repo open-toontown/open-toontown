@@ -7,11 +7,9 @@ class AstronLoginManager(DistributedObjectGlobal):
 
     def __init__(self, cr):
         DistributedObjectGlobal.__init__(self, cr)
-        self.doneEvent = None
         self._callback = None
 
-    def handleRequestLogin(self, doneEvent):
-        self.doneEvent = doneEvent
+    def handleRequestLogin(self):
         playToken = self.cr.playToken or 'dev'
         self.sendRequestLogin(playToken)
 
