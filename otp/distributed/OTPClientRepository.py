@@ -30,7 +30,6 @@ from otp.login import LoginTTSpecificDevAccount
 from otp.login import AccountServerConstants
 from otp.login.CreateAccountScreen import CreateAccountScreen
 from otp.login import LoginScreen
-from otp.login import AstronLoginScreen
 from otp.otpgui import OTPDialog
 from otp.avatar import DistributedAvatar
 from otp.otpbase import OTPLocalizer
@@ -537,10 +536,7 @@ class OTPClientRepository(ClientRepositoryBase):
     def enterLogin(self):
         self.sendSetAvatarIdMsg(0)
         self.loginDoneEvent = 'loginDone'
-        if self.astronSupport:
-            self.loginScreen = AstronLoginScreen.AstronLoginScreen(self, self.loginDoneEvent)
-        else:
-            self.loginScreen = LoginScreen.LoginScreen(self, self.loginDoneEvent)
+        self.loginScreen = LoginScreen.LoginScreen(self, self.loginDoneEvent)
         self.accept(self.loginDoneEvent, self.__handleLoginDone)
         self.loginScreen.load()
         self.loginScreen.enter()
