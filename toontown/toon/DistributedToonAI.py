@@ -433,7 +433,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def announceZoneChange(self, newZoneId, oldZoneId):
         from toontown.pets import PetObserve
-        #self.air.welcomeValleyManager.toonSetZone(self.doId, newZoneId)
+        self.air.welcomeValleyManager.toonSetZone(self.doId, newZoneId)
         broadcastZones = [oldZoneId, newZoneId]
         if self.isInEstate() or self.wasInEstate():
             broadcastZones = union(broadcastZones, self.estateZones)
