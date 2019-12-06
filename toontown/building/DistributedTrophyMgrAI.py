@@ -1,6 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 
+
 class DistributedTrophyMgrAI(DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTrophyMgrAI')
 
@@ -12,3 +13,6 @@ class DistributedTrophyMgrAI(DistributedObjectAI):
 
     def addTrophy(self, *args, **kwargs):
         pass
+
+    def removeTrophy(self, avId, numFloors):
+        pass  # TODO
