@@ -25,6 +25,7 @@ from toontown.hood.TTHoodDataAI import TTHoodDataAI
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.quest.QuestManagerAI import QuestManagerAI
 from toontown.racing.DistributedLeaderBoardAI import DistributedLeaderBoardAI
+from toontown.racing.RaceManagerAI import RaceManagerAI
 from toontown.shtiker.CogPageManagerAI import CogPageManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
 from toontown.toon import NPCToons
@@ -50,6 +51,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.questManager = None
         self.promotionMgr = None
         self.cogPageManager = None
+        self.raceMgr = None
         self.timeManager = None
         self.newsManager = None
         self.welcomeValleyManager = None
@@ -113,6 +115,9 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         # Create our Cog page manager...
         self.cogPageManager = CogPageManagerAI(self)
+
+        # Create our race manager...
+        self.raceMgr = RaceManagerAI(self)
 
     def createGlobals(self):
         """
