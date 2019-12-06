@@ -25,7 +25,7 @@ class WelcomeValleyManagerAI(DistributedObjectAI):
             if ZoneUtil.isWelcomeValley(zoneId) and not inWelcomeValley:
                 self.air.districtStats.b_setNewAvatarCount(self.air.districtStats.getNewAvatarCount() + 1)
                 self.accept(event, lambda newZoneId, _: self.toonSetZone(doId, newZoneId))
-                self.accept(self.air.getAvatarExitEvent(doId), self.toonSetZone, extraArgs=[doId, 123])
+                self.accept(self.air.getAvatarExitEvent(doId), self.toonSetZone, extraArgs=[doId, 2000])
             elif (not ZoneUtil.isWelcomeValley(zoneId)) and inWelcomeValley:
                 self.air.districtStats.b_setNewAvatarCount(self.air.districtStats.getNewAvatarCount() - 1)
                 self.ignore(event)
