@@ -24,6 +24,7 @@ from toontown.hood.MMHoodDataAI import MMHoodDataAI
 from toontown.hood.TTHoodDataAI import TTHoodDataAI
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.quest.QuestManagerAI import QuestManagerAI
+from toontown.racing.DistributedLeaderBoardAI import DistributedLeaderBoardAI
 from toontown.shtiker.CogPageManagerAI import CogPageManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
 from toontown.toon import NPCToons
@@ -267,7 +268,19 @@ class ToontownAIRepository(ToontownInternalRepository):
         return [], []  # TODO
 
     def findLeaderBoards(self, dnaData, zoneId):
-        return []  # TODO
+        leaderBoards = []
+        if 'leaderBoard' in dnaData.getName():
+            x, y, z = dnaData.getPos()
+            h, p, r = dnaData.getHpr()
+            leaderBoard = DistributedLeaderBoardAI(self, dnaData.getName(), x, y, z, h, p, r)
+            leaderBoard.generateWithRequired(zoneId)
+            leaderBoards.append(leaderBoard)
+
+        for i in xrange(dnaData.getNumChildren()):
+            foundLeaderBoards = self.findLeaderBoards(dnaData.at(i), zoneId)
+            leaderBoards.extend(foundLeaderBoards)
+
+        return leaderBoards
 
     def getTrackClsends(self):
         return False
