@@ -294,7 +294,7 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         return kartPads, kartPadGroups
 
-    def findStartingBlocks(self, dnaData, racePad):
+    def findStartingBlocks(self, dnaData, kartPad):
         return []  # TODO
 
     def findLeaderBoards(self, dnaData, zoneId):
