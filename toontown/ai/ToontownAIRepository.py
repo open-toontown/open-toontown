@@ -25,6 +25,8 @@ from toontown.hood.TTHoodDataAI import TTHoodDataAI
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.quest.QuestManagerAI import QuestManagerAI
 from toontown.racing.DistributedLeaderBoardAI import DistributedLeaderBoardAI
+from toontown.racing.DistributedRacePadAI import DistributedRacePadAI
+from toontown.racing.DistributedViewPadAI import DistributedViewPadAI
 from toontown.racing.RaceManagerAI import RaceManagerAI
 from toontown.shtiker.CogPageManagerAI import CogPageManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
@@ -269,8 +271,31 @@ class ToontownAIRepository(ToontownInternalRepository):
     def findPartyHats(self, dnaData, zoneId):
         return []  # TODO
 
-    def findRacingPads(self, dnaData, zoneId, area, type='racing_pad'):
-        return [], []  # TODO
+    def findRacingPads(self, dnaData, zoneId, area, type='racing_pad', overrideDNAZone=False):
+        kartPads, kartPadGroups = [], []
+        if type in dnaData.getName():
+            if type == 'racing_pad':
+                racePad = DistributedRacePadAI(self)
+                racePad.setArea(area)
+                racePad.generateWithRequired(zoneId)
+                kartPads.append(racePad)
+                kartPadGroups.append(dnaData)
+            elif type == 'viewing_pad':
+                viewPad = DistributedViewPadAI(self)
+                viewPad.setArea(area)
+                viewPad.generateWithRequired(zoneId)
+                kartPads.append(viewPad)
+                kartPadGroups.append(dnaData)
+
+        for i in xrange(dnaData.getNumChildren()):
+            foundKartPads, foundKartPadGroups = self.findRacingPads(dnaData.at(i), zoneId, area, type, overrideDNAZone)
+            kartPads.extend(foundKartPads)
+            kartPadGroups.extend(foundKartPadGroups)
+
+        return kartPads, kartPadGroups
+
+    def findStartingBlocks(self, dnaData, racePad):
+        return []  # TODO
 
     def findLeaderBoards(self, dnaData, zoneId):
         leaderBoards = []
