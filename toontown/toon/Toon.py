@@ -1662,14 +1662,27 @@ class Toon(Avatar.Avatar, ToonHead):
         taskMgr.remove(swimTaskName)
         self.getGeomNode().setZ(4.0)
         self.nametag3d.setZ(5.0)
-        newTask = Task.loop(self.getGeomNode().lerpPosXYZ(0, -3, 3, 1, blendType='easeInOut'), self.getGeomNode().lerpPosXYZ(0, -3, 4, 1, blendType='easeInOut'))
-        taskMgr.add(newTask, swimTaskName)
+        newTaskstart = LerpPosInterval(nodePath=self.getGeomNode(),
+				                       pos=LPoint3(0, -3, 3),
+				                       startPos=LPoint3(0, -3, 4),
+				                       duration=1.0,
+                                       blendType='easeInOut',
+				                       )
+        newTaskend = LerpPosInterval(nodePath=self.getGeomNode(),
+				                     pos=LPoint3(0, -3, 4),
+				                     startPos=LPoint3(0, -3, 3),
+				                     duration=1.0,
+				                     blendType='easeInOut',
+				                     )
+        self.swimBobTask = Sequence(newTaskstart, newTaskend)
+        self.swimBobTask.loop()
 
     def stopBobSwimTask(self):
         swimTaskName = self.taskName('swimBobTask')
         taskMgr.remove(swimTaskName)
         self.getGeomNode().setPos(0, 0, 0)
         self.nametag3d.setZ(1.0)
+        self.swimBobTask.finish()
 
     def enterOpenBook(self, animMultiplier = 1, ts = 0, callback = None, extraArgs = []):
         Emote.globalEmote.disableAll(self, 'enterOpenBook')
