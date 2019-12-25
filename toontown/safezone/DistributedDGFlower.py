@@ -3,6 +3,7 @@ from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObject
 from toontown.toonbase import ToontownGlobals
 from direct.task import Task
+from direct.interval.LerpInterval import LerpPosInterval
 SPIN_RATE = 1.25
 
 class DistributedDGFlower(DistributedObject.DistributedObject):
@@ -51,10 +52,20 @@ class DistributedDGFlower(DistributedObject.DistributedObject):
 
     def __flowerEnter(self, collisionEntry):
         self.sendUpdate('avatarEnter', [])
+        self.bigFlowerZ = self.bigFlower.getZ()
+        self.LerpFlowerUp = LerpPosInterval(nodePath=self.bigFlower,
+				                            duration=0.5,
+                                            pos=Point3(1.39, 92.91, self.bigFlowerZ + 2.0),
+                                            )
+
+        self.LerpFlowerUp.start()
 
     def __flowerExit(self, collisionEntry):
         self.sendUpdate('avatarExit', [])
+        self.raisedbigFlowerZ = self.bigFlower.getZ()
+        self.LerpFlowerDown = LerpPosInterval(nodePath=self.bigFlower,
+			                              duration=0.5,
+                                          pos=Point3(1.39, 92.91, self.raisedbigFlowerZ - 2.0),
+				             )
+        self.LerpFlowerDown.start()
 
-    def setHeight(self, newHeight):
-        pos = self.bigFlower.getPos()
-        self.bigFlower.lerpPos(pos[0], pos[1], newHeight, 0.5, task=self.taskName('DG-flowerRaise'))
