@@ -4,7 +4,7 @@ import math
 
 class PyVec3:
     Epsilon = 0.0001
-    ScalarTypes = (float, int, int)
+    ScalarTypes = (float, int)
 
     def __init__(self, *args):
         self.assign(*args)
