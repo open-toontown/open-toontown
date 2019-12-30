@@ -1,7 +1,7 @@
 import builtins
 import sys
 
-__all__ = ['enumerate', 'nonRepeatingRandomList', 'describeException', 'pdir', 'choice']
+__all__ = ['enumerate', 'nonRepeatingRandomList', 'describeException', 'pdir', 'choice', 'cmp']
 
 if not hasattr(builtins, 'enumerate'):
     def enumerate(L):
@@ -152,7 +152,11 @@ def isClient():
         return False
     return True
 
+def cmp(a, b):
+    return (a > b) - (a < b)
+
 
 builtins.pdir = pdir
 builtins.isClient = isClient
 builtins.choice = choice
+builtins.cmp = cmp

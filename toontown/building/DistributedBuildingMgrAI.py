@@ -253,7 +253,7 @@ class DistributedBuildingMgrAI:
             if os.path.exists(working):
                 os.remove(working)
             os.rename(fileName, working)
-            file = open(working, 'w')
+            file = open(working, 'wb')
             file.seek(0, 2)
             self.saveTo(file, block)
             file.close()
@@ -267,7 +267,7 @@ class DistributedBuildingMgrAI:
             backup = fileName + self.backupExtension
             if os.path.exists(fileName):
                 os.rename(fileName, backup)
-            file = open(fileName, 'w')
+            file = open(fileName, 'wb')
             file.seek(0)
             self.saveTo(file)
             file.close()
@@ -291,12 +291,12 @@ class DistributedBuildingMgrAI:
     def load(self):
         fileName = self.getFileName()
         try:
-            file = open(fileName + self.backupExtension, 'r')
+            file = open(fileName + self.backupExtension, 'rb')
             if os.path.exists(fileName):
                 os.remove(fileName)
         except IOError:
             try:
-                file = open(fileName, 'r')
+                file = open(fileName, 'rb')
             except IOError:
                 return {}
 
