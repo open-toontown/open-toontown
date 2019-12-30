@@ -104,7 +104,7 @@ class Level:
         Level.notify.debug('creating %s %s' % (spec['type'], entId))
         entity = self.entityCreator.createEntity(entId)
         announce = False
-        if entity is 'nonlocal':
+        if entity is 'nonlocalEnt':
             self.nonlocalEntIds[entId] = None
         elif entity is 'nothing':
             self.nothingEntIds[entId] = None

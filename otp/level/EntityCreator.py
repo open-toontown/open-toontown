@@ -19,8 +19,8 @@ def nothing(*args):
     return 'nothing'
 
 
-def nonlocal(*args):
-    return 'nonlocal'
+def nonlocalEnt(*args):
+    return 'nonlocalEnt'
 
 
 class EntityCreator(EntityCreatorBase.EntityCreatorBase):
