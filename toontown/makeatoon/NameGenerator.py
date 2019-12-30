@@ -45,9 +45,9 @@ class NameGenerator:
         input = StreamReader(vfs.openReadFile(filename, 1), 1)
         currentLine = input.readline()
         while currentLine:
-            if currentLine.lstrip()[0:1] != '#':
-                a1 = currentLine.find('*')
-                a2 = currentLine.find('*', a1 + 1)
+            if currentLine.lstrip()[0:1] != b'#':
+                a1 = currentLine.find(b'*')
+                a2 = currentLine.find(b'*', a1 + 1)
                 self.nameDictionary[int(currentLine[0:a1])] = (int(currentLine[a1 + 1:a2]), currentLine[a2 + 1:len(currentLine) - 1])
             currentLine = input.readline()
 

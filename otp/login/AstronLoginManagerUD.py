@@ -1,7 +1,5 @@
 import dbm
-import dbm.dumb
 import json
-import sys
 import time
 from datetime import datetime
 
@@ -24,11 +22,6 @@ class AccountDB:
 
         # Setup the dbm:
         accountDbFile = config.GetString('accountdb-local-file', 'astron/databases/accounts.db')
-        if sys.platform == 'darwin':  # macOS
-            dbm = dumbdbm
-        else:
-            dbm = anydbm
-
         self.dbm = dbm.open(accountDbFile, 'c')
 
     def lookup(self, playToken, callback):
