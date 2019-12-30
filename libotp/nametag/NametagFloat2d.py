@@ -1,4 +1,4 @@
-from Nametag3d import Nametag3d
+from .Nametag3d import Nametag3d
 
 
 class NametagFloat2d(Nametag3d):

@@ -15,7 +15,7 @@ def getLanguage():
 
 print('TTLocalizer: Running in language: %s' % language)
 if language == 'english':
-    _languageModule = 'toontown.toonbase.TTLocalizer' + string.capitalize(language)
+    _languageModule = 'toontown.toonbase.TTLocalizer' + language.capitalize()
 else:
     checkLanguage = 1
     _languageModule = 'toontown.toonbase.TTLocalizer_' + language

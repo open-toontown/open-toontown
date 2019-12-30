@@ -154,7 +154,7 @@ class MarginManager(PandaNode):
             if cell.m_available and not cell.m_np:
                 cells.append(i)
 
-        for handle in self.m_popups.values():
+        for handle in list(self.m_popups.values()):
             v7 = handle.m_popup
             if handle.m_wants_visible and not v7.isVisible():
                 v8 = self.chooseCell(v7, cells)
@@ -163,7 +163,7 @@ class MarginManager(PandaNode):
     def showVisibleResolveConflict(self):
         v4 = []
 
-        for handle in self.m_popups.values():
+        for handle in list(self.m_popups.values()):
             score = 0
             if handle.m_wants_visible:
                 score = handle.m_score
@@ -190,7 +190,7 @@ class MarginManager(PandaNode):
     def update(self):
         num_want_visible = 0
 
-        for handle in self.m_popups.values():
+        for handle in list(self.m_popups.values()):
             popup = handle.m_popup
             handle.m_wants_visible = popup.considerVisible()
             if handle.m_wants_visible and handle.m_objcode:
@@ -207,5 +207,5 @@ class MarginManager(PandaNode):
         else:
             self.showVisibleNoConflict()
 
-        for popup in self.m_popups.keys():
+        for popup in list(self.m_popups.keys()):
             popup.frameCallback()

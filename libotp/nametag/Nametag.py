@@ -1,7 +1,7 @@
 from direct.interval.IntervalGlobal import *
 
-from ClickablePopup import *
-from _constants import *
+from .ClickablePopup import *
+from ._constants import *
 
 
 class Nametag(ClickablePopup):

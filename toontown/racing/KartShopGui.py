@@ -27,7 +27,7 @@ BTA_OPTIONS = PythonUtil.Enum('Ok', -1)
 KS_TEXT_SIZE_BIG = TTLocalizer.KSGtextSizeBig
 KS_TEXT_SIZE_SMALL = TTLocalizer.KSGtextSizeSmall
 
-class KartShopGuiMgr(object, DirectObject.DirectObject):
+class KartShopGuiMgr(DirectObject.DirectObject, object):
     notify = DirectNotifyGlobal.directNotify.newCategory('KartShopGuiMgr')
 
     class MainMenuDlg(DirectFrame):

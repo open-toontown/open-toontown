@@ -1,5 +1,4 @@
 import time
-from sets import Set
 from pandac.PandaModules import Vec3, Vec4, Point3, TextNode, VBase4
 from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel, DirectScrolledList, DirectCheckButton
 from direct.gui import DirectGuiGlobals
@@ -14,7 +13,7 @@ from toontown.parties import PartyUtils
 from toontown.parties.PartyEditorGrid import PartyEditorGrid
 from toontown.parties.PartyEditorListElement import PartyEditorListElement
 
-class PartyEditor(DirectObject, FSM):
+class PartyEditor(FSM, DirectObject):
     notify = directNotify.newCategory('PartyEditor')
 
     def __init__(self, partyPlanner, parent):
@@ -172,13 +171,13 @@ class PartyEditor(DirectObject, FSM):
 
     def getMutuallyExclusiveActivities(self):
         currentActivities = self.partyEditorGrid.getActivitiesOnGrid()
-        actSet = Set([])
+        actSet = set([])
         for act in currentActivities:
             actSet.add(act[0])
 
         result = None
         for mutuallyExclusiveTuples in PartyGlobals.MutuallyExclusiveActivities:
-            mutSet = Set(mutuallyExclusiveTuples)
+            mutSet = set(mutuallyExclusiveTuples)
             inter = mutSet.intersection(actSet)
             if len(inter) > 1:
                 result = inter

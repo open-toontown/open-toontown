@@ -64,7 +64,7 @@ class CMover:
             self.dt = clockDelta - self.dtClock
             self.dtClock = clockDelta
 
-        for cImpulse in self.cImpulses.values():
+        for cImpulse in list(self.cImpulses.values()):
             cImpulse.process(self.getDt())
 
     def addShove(self, shove):

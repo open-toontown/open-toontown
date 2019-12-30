@@ -15,6 +15,7 @@ from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
 from otp.otpbase import OTPGlobals
 from direct.showbase import PythonUtil
+from random import *
 
 class DistributedFindFour(DistributedNode.DistributedNode):
 
@@ -605,7 +606,6 @@ class DistributedFindFour(DistributedNode.DistributedNode):
             else:
                 hasfound = False
                 while hasfound == False:
-                    from random import *
                     x = randint(0, 6)
                     if self.board[0][x] == 0:
                         self.d_requestMove(x)

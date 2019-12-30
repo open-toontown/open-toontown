@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from panda3d.core import *
 
-import NametagGlobals
+from . import NametagGlobals
 
 
 class ChatBalloon:
@@ -30,7 +30,7 @@ class ChatBalloon:
         if node.isGeomNode():
             return node
 
-        for i in xrange(node.getNumChildren()):
+        for i in range(node.getNumChildren()):
             n = ChatBalloon.find_geom_node(node.getChild(i))
             if n:
                 return n
@@ -43,7 +43,7 @@ class ChatBalloon:
             return None
 
         child = None
-        for i in xrange(node.getNumChildren()):
+        for i in range(node.getNumChildren()):
             child = node.getChild(i)
             if child.getName() == 'middle':
                 return n
@@ -58,7 +58,7 @@ class ChatBalloon:
         if node.getName() == 'chatBalloon':
             return self.scan_balloon(node)
 
-        for i in xrange(node.getNumChildren()):
+        for i in range(node.getNumChildren()):
             if self.scan(node.getChild(i)):
                 return True
 
@@ -67,7 +67,7 @@ class ChatBalloon:
     def scan_balloon(self, node):
         self.m_copy_node = node.copySubgraph()
 
-        for i in xrange(node.getNumChildren()):
+        for i in range(node.getNumChildren()):
             child = node.getChild(i)
             if child.getName() == 'top':
                 self.m_top_node = child

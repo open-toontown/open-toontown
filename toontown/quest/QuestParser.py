@@ -49,7 +49,7 @@ def clear():
 def readFile(filename):
     global curId
     scriptFile = StreamReader(vfs.openReadFile(filename, 1), 1)
-    gen = tokenize.generate_tokens(scriptFile.readline)
+    gen = tokenize.tokenize(scriptFile.readline)
     line = getLineOfTokens(gen)
     while line is not None:
         if line == []:
@@ -73,7 +73,7 @@ def getLineOfTokens(gen):
     if token[0] == tokenize.ENDMARKER:
         return None
     while token[0] != tokenize.NEWLINE and token[0] != tokenize.NL:
-        if token[0] == tokenize.COMMENT:
+        if token[0] in (tokenize.COMMENT, tokenize.ENCODING):
             pass
         elif token[0] == tokenize.OP and token[1] == '-':
             nextNeg = 1

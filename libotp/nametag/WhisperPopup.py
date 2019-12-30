@@ -1,5 +1,5 @@
-from ClickablePopup import *
-from MarginPopup import *
+from .ClickablePopup import *
+from .MarginPopup import *
 
 
 class WhisperPopup(ClickablePopup, MarginPopup):

@@ -1,9 +1,9 @@
 from panda3d.core import *
 
-import NametagGlobals
-from Nametag2d import Nametag2d
-from Nametag3d import Nametag3d
-from _constants import *
+from . import NametagGlobals
+from .Nametag2d import Nametag2d
+from .Nametag3d import Nametag3d
+from ._constants import *
 
 
 class NametagGroup:
@@ -282,7 +282,7 @@ class NametagGroup:
 
     def addNametag(self, nametag):
         if nametag.m_group:
-            print 'Attempt to add %s twice to %s.' % (nametag.__class__.__name__, self.m_name)
+            print('Attempt to add %s twice to %s.' % (nametag.__class__.__name__, self.m_name))
             return
 
         nametag.m_group = self
@@ -294,7 +294,7 @@ class NametagGroup:
 
     def removeNametag(self, nametag):
         if not nametag.m_group:
-            print 'Attempt to removed %s twice from %s.' % (nametag.__class__.__name__, self.m_name)
+            print('Attempt to removed %s twice from %s.' % (nametag.__class__.__name__, self.m_name))
             return
 
         if self.m_manager:

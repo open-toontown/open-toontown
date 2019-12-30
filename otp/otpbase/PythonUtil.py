@@ -3,7 +3,7 @@ import sys
 
 __all__ = ['enumerate', 'nonRepeatingRandomList', 'describeException', 'pdir', 'choice']
 
-if not hasattr(__builtin__, 'enumerate'):
+if not hasattr(builtins, 'enumerate'):
     def enumerate(L):
         """Returns (0, L[0]), (1, L[1]), etc., allowing this syntax:
         for i, item in enumerate(L):
@@ -148,7 +148,7 @@ def quantizeVec(vec, divisor):
     vec[2] = quantize(vec[2], divisor)
 
 def isClient():
-    if hasattr(__builtin__, 'simbase') and not hasattr(__builtin__, 'base'):
+    if hasattr(builtins, 'simbase') and not hasattr(builtins, 'base'):
         return False
     return True
 

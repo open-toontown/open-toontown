@@ -2,10 +2,10 @@ import math
 
 from panda3d.core import *
 
-import NametagGlobals
-from MarginPopup import MarginPopup
-from Nametag import Nametag
-from _constants import *
+from . import NametagGlobals
+from .MarginPopup import MarginPopup
+from .Nametag import Nametag
+from ._constants import *
 
 
 class Nametag2d(Nametag, MarginPopup):
@@ -74,7 +74,7 @@ class Nametag2d(Nametag, MarginPopup):
         return np.getPos(NametagGlobals._toon).lengthSquared()
 
     def considerVisible(self):
-        from NametagGroup import NametagGroup
+        from .NametagGroup import NametagGroup
 
         v2 = 0
         do_update = True

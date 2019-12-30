@@ -37,6 +37,6 @@ class CMoverGroup:
             self.dt = clockDelta - self.dtClock
             self.dtClock = clockDelta
 
-        for cMover in self.cMovers.values():
+        for cMover in list(self.cMovers.values()):
             cMover.processCImpulses(self.dt)
             cMover.integrate()

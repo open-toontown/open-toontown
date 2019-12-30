@@ -1,6 +1,6 @@
 from panda3d.core import *
 
-import NametagGlobals
+from . import NametagGlobals
 
 
 class MarginPopup(PandaNode):
