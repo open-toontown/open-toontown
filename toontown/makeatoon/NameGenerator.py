@@ -48,7 +48,7 @@ class NameGenerator:
             if currentLine.lstrip()[0:1] != b'#':
                 a1 = currentLine.find(b'*')
                 a2 = currentLine.find(b'*', a1 + 1)
-                self.nameDictionary[int(currentLine[0:a1])] = (int(currentLine[a1 + 1:a2]), currentLine[a2 + 1:len(currentLine) - 1].decode('utf-8'))
+                self.nameDictionary[int(currentLine[0:a1])] = (int(currentLine[a1 + 1:a2]), currentLine[a2 + 1:].rstrip().decode('utf-8'))
             currentLine = input.readline()
 
         masterList = [self.boyTitles,
