@@ -1,5 +1,5 @@
-import anydbm
-import dumbdbm
+import dbm
+import dbm.dumb
 import json
 import sys
 import time
@@ -273,7 +273,7 @@ class GetAvatarsOperation(AvatarOperation):
 
     def __handleSendAvatars(self):
         potentialAvatars = []
-        for avId, fields in self.avatarFields.items():
+        for avId, fields in list(self.avatarFields.items()):
             index = self.avList.index(avId)
             wishNameState = fields.get('WishNameState', [''])[0]
             name = fields['setName'][0]
@@ -706,7 +706,7 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
             return
 
         # Is the sender already logging in?
-        if sender in self.sender2loginOperation.keys():
+        if sender in list(self.sender2loginOperation.keys()):
             # TODO kill connection
             return
 

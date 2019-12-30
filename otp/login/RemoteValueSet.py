@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
-import TTAccount
-import HTTPUtil
+from . import TTAccount
+from . import HTTPUtil
 
 class RemoteValueSet:
     notify = DirectNotifyGlobal.directNotify.newCategory('RemoteValueSet')
@@ -22,7 +22,7 @@ class RemoteValueSet:
                 continue
             try:
                 name, value = line.split('=', 1)
-            except ValueError, e:
+            except ValueError as e:
                 errMsg = 'unexpected response: %s' % response
                 self.notify.warning(errMsg)
                 onUnexpectedResponse(errMsg)
@@ -34,7 +34,7 @@ class RemoteValueSet:
             self.dict[name] = value
 
         for name in expectedFields:
-            if not self.dict.has_key(name):
+            if name not in self.dict:
                 errMsg = "missing expected field '%s'" % name
                 self.notify.warning(errMsg)
                 onUnexpectedResponse(errMsg)
@@ -46,7 +46,7 @@ class RemoteValueSet:
         return 'RemoteValueSet:%s' % str(self.dict)
 
     def hasKey(self, key):
-        return self.dict.has_key(key)
+        return key in self.dict
 
     def getBool(self, name, default = None):
         return self.__getValue(name, lambda x: int(x) != 0, default)

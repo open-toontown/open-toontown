@@ -1,4 +1,4 @@
-from SCTerminal import SCTerminal
+from .SCTerminal import SCTerminal
 from otp.speedchat import SpeedChatGMHandler
 SCGMTextMsgEvent = 'SCGMTextMsg'
 

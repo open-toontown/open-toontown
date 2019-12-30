@@ -1,6 +1,6 @@
 import string
 from direct.interval.IntervalGlobal import *
-from Entity import Entity
+from .Entity import Entity
 from pandac.PandaModules import Vec3
 
 class PropSpinner(Entity):
@@ -28,7 +28,7 @@ class PropSpinner(Entity):
             try:
                 rate = int(nameParts[3])
             except:
-                print 'invalid prop rotate string: %s' % name
+                print('invalid prop rotate string: %s' % name)
 
             if neg:
                 rate = -rate
@@ -40,7 +40,7 @@ class PropSpinner(Entity):
             elif axis == 'Z':
                 hpr = Vec3(0, 0, rate * 360)
             else:
-                print 'error', axis
+                print('error', axis)
             spinTracks.append(LerpHprInterval(prop, 60, hpr))
 
         spinTracks.loop()

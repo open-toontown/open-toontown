@@ -1,4 +1,4 @@
-from AIBase import *
+from .AIBase import *
 __builtins__['simbase'] = AIBase()
 __builtins__['ostream'] = Notify.out()
 __builtins__['run'] = simbase.run

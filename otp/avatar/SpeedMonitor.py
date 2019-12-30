@@ -18,7 +18,7 @@ class SpeedMonitor:
         taskMgr.remove(self._trackTask)
 
     def _allocToken(self):
-        return 'speedMonitorToken-%s-%s-%s' % (self._name, id(self), SpeedMonitor.SerialGen.next())
+        return 'speedMonitorToken-%s-%s-%s' % (self._name, id(self), next(SpeedMonitor.SerialGen))
 
     def addNodepath(self, nodepath):
         token = self._allocToken()
@@ -46,7 +46,7 @@ class SpeedMonitor:
             (nodepath.getPos(), globalClock.getFrameTime() - SpeedMonitor.TrackingPeriod, 0.0)]
 
     def _trackSpeedsTask(self, task = None):
-        for (token, nodepath) in self._nodepaths.iteritems():
+        for (token, nodepath) in self._nodepaths.items():
             curT = globalClock.getFrameTime()
             curPos = nodepath.getPos()
             while len(self._prevPosQueue[token]) > 1:

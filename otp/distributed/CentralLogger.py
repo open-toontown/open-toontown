@@ -10,7 +10,7 @@ class CentralLogger(DistributedObjectGlobal):
     PlayersReportedThisSession = {}
 
     def hasReportedPlayer(self, targetDISLId, targetAvId):
-        return self.PlayersReportedThisSession.has_key((targetDISLId, targetAvId))
+        return (targetDISLId, targetAvId) in self.PlayersReportedThisSession
 
     def reportPlayer(self, category, targetDISLId, targetAvId, description = 'None'):
         if self.hasReportedPlayer(targetDISLId, targetAvId):

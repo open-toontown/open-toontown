@@ -7,8 +7,8 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase import OTPLocalizer
-import TTAccount
-import GuiScreen
+from . import TTAccount
+from . import GuiScreen
 from otp.otpbase import OTPGlobals
 from direct.distributed.MsgTypes import *
 
@@ -158,7 +158,7 @@ class CreateAccountScreen(StateData.StateData, GuiScreen.GuiScreen):
             if referrer is not None:
                 data['referrer'] = referrer
             error = self.loginInterface.createAccount(self.userName, self.password, data)
-        except TTAccount.TTAccountException, e:
+        except TTAccount.TTAccountException as e:
             error = str(e)
             self.notify.info(error)
             self.dialog.setMessage(error + OTPLocalizer.CreateAccountScreenConnectionErrorSuffix)

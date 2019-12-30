@@ -73,10 +73,10 @@ AIMsgName2Id = {'STATESERVER_OBJECT_GENERATE_WITH_REQUIRED': 2001,
  'SERVER_PING': 5002}
 AIMsgId2Names = invertDictLossless(AIMsgName2Id)
 if not isClient():
-    print 'EXECWARNING AIMsgTypes: %s' % AIMsgName2Id
+    print('EXECWARNING AIMsgTypes: %s' % AIMsgName2Id)
     printStack()
-for name, value in AIMsgName2Id.items():
-    exec '%s = %s' % (name, value)
+for name, value in list(AIMsgName2Id.items()):
+    exec('%s = %s' % (name, value))
 
 del name
 del value

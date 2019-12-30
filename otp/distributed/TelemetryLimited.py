@@ -4,7 +4,7 @@ class TelemetryLimited:
     Sng = SerialNumGen()
 
     def __init__(self):
-        self._telemetryLimiterId = self.Sng.next()
+        self._telemetryLimiterId = next(self.Sng)
         self._limits = set()
 
     def getTelemetryLimiterId(self):

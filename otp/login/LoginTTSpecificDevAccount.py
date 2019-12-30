@@ -1,9 +1,9 @@
 from pandac.PandaModules import *
 from direct.distributed.MsgTypes import *
 from direct.directnotify import DirectNotifyGlobal
-import LoginTTAccount
+from . import LoginTTAccount
 from direct.distributed.PyDatagram import PyDatagram
-from TTAccount import TTAccountException
+from .TTAccount import TTAccountException
 
 class LoginTTSpecificDevAccount(LoginTTAccount.LoginTTAccount):
     notify = DirectNotifyGlobal.directNotify.newCategory('LoginTTSpecificDevAccount')

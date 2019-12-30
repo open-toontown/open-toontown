@@ -1,4 +1,4 @@
-from ColorSpace import *
+from .ColorSpace import *
 
 class SCColorScheme:
 

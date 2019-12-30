@@ -1,5 +1,5 @@
 from direct.showbase.PythonUtil import Functor
-import LevelMgrBase
+from . import LevelMgrBase
 
 class LevelMgrAI(LevelMgrBase.LevelMgrBase):
 
@@ -26,7 +26,7 @@ class LevelMgrAI(LevelMgrBase.LevelMgrBase):
         self.privCreateSortedZoneIdList()
 
     def privCreateSortedZoneIdList(self):
-        zoneNums = self.level.zoneNum2zoneId.keys()
+        zoneNums = list(self.level.zoneNum2zoneId.keys())
         zoneNums.sort()
         self.level.zoneIds = []
         for zoneNum in zoneNums:

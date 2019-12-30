@@ -33,16 +33,16 @@ class ObjectCount(Job):
         yield None
         count2type = invertDictLossless(type2count)
         yield None
-        counts = count2type.keys()
+        counts = list(count2type.keys())
         yield None
         counts.sort()
         yield None
         counts.reverse()
         yield None
-        print '===== ObjectCount: \'%s\' =====' % (self.getJobName())
+        print('===== ObjectCount: \'%s\' =====' % (self.getJobName()))
         for count in counts:
             types = count2type[count]
             for type in types:
-                print '%s: %s' % (count, type)
+                print('%s: %s' % (count, type))
                 yield None
         yield Job.Done

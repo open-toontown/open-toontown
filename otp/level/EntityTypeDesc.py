@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-import AttribDesc
+from . import AttribDesc
 from direct.showbase.PythonUtil import mostDerivedLast
 
 class EntityTypeDesc:
@@ -17,10 +17,10 @@ class EntityTypeDesc:
             self.attribDescDict[attribName] = desc
 
     def isConcrete(self):
-        return not self.__class__.__dict__.has_key('abstract')
+        return 'abstract' not in self.__class__.__dict__
 
     def isPermanent(self):
-        return self.__class__.__dict__.has_key('permanent')
+        return 'permanent' in self.__class__.__dict__
 
     def getOutputType(self):
         return self.output
@@ -33,7 +33,7 @@ class EntityTypeDesc:
 
     def getAttribsOfType(self, type):
         names = []
-        for attribName, desc in self.attribDescDict.items():
+        for attribName, desc in list(self.attribDescDict.items()):
             if desc.getDatatype() == type:
                 names.append(attribName)
 
@@ -41,7 +41,7 @@ class EntityTypeDesc:
 
     @staticmethod
     def privCompileAttribDescs(entTypeClass):
-        if entTypeClass.__dict__.has_key('_attribDescs'):
+        if '_attribDescs' in entTypeClass.__dict__:
             return
         c = entTypeClass
         EntityTypeDesc.notify.debug('compiling attrib descriptors for %s' % c.__name__)
@@ -64,7 +64,7 @@ class EntityTypeDesc:
                     baseADs.append(desc)
 
         attribDescs = []
-        if c.__dict__.has_key('attribs'):
+        if 'attribs' in c.__dict__:
             for attrib in c.attribs:
                 desc = AttribDesc.AttribDesc(*attrib)
                 if desc.getName() == 'type' and entTypeClass.__name__ != 'Entity':

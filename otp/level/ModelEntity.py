@@ -1,6 +1,6 @@
 from toontown.toonbase.ToontownGlobals import *
 from direct.directnotify import DirectNotifyGlobal
-import BasicEntities
+from . import BasicEntities
 
 class ModelEntity(BasicEntities.NodePathEntity):
     LoadFuncs = {'loadModelCopy': loader.loadModelCopy,

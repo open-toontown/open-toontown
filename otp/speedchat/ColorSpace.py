@@ -51,11 +51,11 @@ def rgb2yuv(r, g, b):
     y = 0.299 * r + 0.587 * g + 0.114 * b
     u = -.169 * r - 0.331 * g + 0.5 * b + 0.5
     v = 0.5 * r - 0.419 * g - 0.081 * b + 0.5
-    return tuple(map(lambda x: min(max(x, 0), 1), (y, u, v)))
+    return tuple([min(max(x, 0), 1) for x in (y, u, v)])
 
 
 def yuv2rgb(y, u, v):
     r = y - 0.0009267 * (u - 0.5) + 1.4016868 * (v - 0.5)
     g = y - 0.3436954 * (u - 0.5) - 0.714169 * (v - 0.5)
     b = y + 1.7721604 * (u - 0.5) + 0.0009902 * (v - 0.5)
-    return tuple(map(lambda x: min(max(x, 0), 1), (r, g, b)))
+    return tuple([min(max(x, 0), 1) for x in (r, g, b)])

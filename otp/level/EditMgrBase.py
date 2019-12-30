@@ -1,4 +1,4 @@
-import Entity
+from . import Entity
 from direct.directnotify import DirectNotifyGlobal
 
 class EditMgrBase(Entity.Entity):

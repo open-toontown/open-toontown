@@ -1,4 +1,4 @@
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import os
 from pandac.PandaModules import HTTPClient, Ramfile
 from direct.directnotify import DirectNotifyGlobal
@@ -23,7 +23,7 @@ class BanManagerAI:
         parameters += '&event_name=%s' % self.EventName
         commentWithAvatarId = 'avId-%s ' % avatarId
         commentWithAvatarId += comment
-        parameters += '&comments=%s' % urllib.quote(str(commentWithAvatarId))
+        parameters += '&comments=%s' % urllib.parse.quote(str(commentWithAvatarId))
         baseUrlToUse = self.BanUrl
         osBaseUrl = os.getenv('BAN_URL')
         if osBaseUrl:

@@ -1,4 +1,4 @@
-from EntityTypeDesc import EntityTypeDesc
+from .EntityTypeDesc import EntityTypeDesc
 from toontown.coghq.SpecImports import *
 
 class Entity(EntityTypeDesc):

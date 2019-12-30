@@ -1,5 +1,5 @@
 from direct.distributed import DistributedObject
-import Entity
+from . import Entity
 from direct.directnotify import DirectNotifyGlobal
 
 class DistributedEntity(DistributedObject.DistributedObject, Entity.Entity):

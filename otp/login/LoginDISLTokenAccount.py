@@ -1,7 +1,7 @@
 from direct.showbase.ShowBaseGlobal import *
 from direct.distributed.MsgTypes import *
 from direct.directnotify import DirectNotifyGlobal
-import LoginBase
+from . import LoginBase
 from direct.distributed.PyDatagram import PyDatagram
 
 class LoginDISLTokenAccount(LoginBase.LoginBase):

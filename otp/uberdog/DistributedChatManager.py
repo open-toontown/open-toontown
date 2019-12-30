@@ -46,7 +46,7 @@ class DistributedChatManager(DistributedObjectGlobal):
 
     def whisperFrom(self, fromId, message):
         if base.cr.wantSwitchboardHacks:
-            print 'received whisper on avatar: %s' % message
+            print('received whisper on avatar: %s' % message)
             whisper = WhisperPopup(message, OTPGlobals.getInterfaceFont(), WhisperPopup.WTNormal)
             whisper.manage(base.marginManager)
 

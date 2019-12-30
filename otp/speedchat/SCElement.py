@@ -1,8 +1,8 @@
 from pandac.PandaModules import *
 from direct.gui.DirectGui import *
 from direct.task import Task
-from SCConstants import *
-from SCObject import SCObject
+from .SCConstants import *
+from .SCObject import SCObject
 from direct.showbase.PythonUtil import boolEqual
 from otp.otpbase import OTPGlobals
 
@@ -137,7 +137,7 @@ class SCElement(SCObject, NodePath):
             del self.button
         halfHeight = self.height / 2.0
         textX = 0
-        if dbArgs.has_key('text_align'):
+        if 'text_align' in dbArgs:
             if dbArgs['text_align'] == TextNode.ACenter:
                 textX = self.width / 2.0
         args = {'text': self.getDisplayText(),

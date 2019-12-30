@@ -1,4 +1,4 @@
-import __builtin__
+import builtins
 import sys
 
 __all__ = ['enumerate', 'nonRepeatingRandomList', 'describeException', 'pdir', 'choice']
@@ -14,16 +14,16 @@ if not hasattr(__builtin__, 'enumerate'):
         implementation that returns a list of tuples that is completely
         constructed every time enumerate() is called.
         """
-        return zip(xrange(len(L)), L)
+        return list(zip(list(range(len(L))), L))
 
-    __builtin__.enumerate = enumerate
+    builtins.enumerate = enumerate
 else:
-    enumerate = __builtin__.enumerate
+    enumerate = builtins.enumerate
 
 def nonRepeatingRandomList(vals, max):
     random.seed(time.time())
     #first generate a set of random values
-    valueList=range(max)
+    valueList=list(range(max))
     finalVals=[]
     for i in range(vals):
         index=int(random.random()*len(valueList))
@@ -46,7 +46,7 @@ def recordCreationStack(cls):
     def getCreationStackTraceCompactStr(self):
         return self._creationStackTrace.compact()
     def printCreationStackTrace(self):
-        print self._creationStackTrace
+        print(self._creationStackTrace)
     cls.__init__ = __recordCreationStack_init__
     cls.getCreationStackTrace = getCreationStackTrace
     cls.getCreationStackTraceCompactStr = getCreationStackTraceCompactStr
@@ -120,7 +120,7 @@ def pdir(obj, str = None, width = None,
     # Remove redundant class entries
     uniqueLineage = []
     for l in getClassLineage(obj):
-        if type(l) == types.ClassType:
+        if type(l) == type:
             if l in uniqueLineage:
                 break
         uniqueLineage.append(l)
@@ -128,7 +128,7 @@ def pdir(obj, str = None, width = None,
     uniqueLineage.reverse()
     for obj in uniqueLineage:
         _pdir(obj, str, width, fTruncate, lineWidth, wantPrivate)
-        print
+        print()
 
 def choice(condition, ifTrue, ifFalse):
     # equivalent of C++ (condition ? ifTrue : ifFalse)
@@ -153,6 +153,6 @@ def isClient():
     return True
 
 
-__builtin__.pdir = pdir
-__builtin__.isClient = isClient
-__builtin__.choice = choice
+builtins.pdir = pdir
+builtins.isClient = isClient
+builtins.choice = choice

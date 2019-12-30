@@ -16,7 +16,7 @@ class SettingsMgrBase:
         pass
 
     def _iterSettingNames(self):
-        for name in self._settings.iterkeys():
+        for name in self._settings.keys():
             yield name
 
     def _addSettings(self, *settings):

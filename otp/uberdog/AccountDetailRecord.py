@@ -73,7 +73,7 @@ class AccountDetailRecord:
         s += 'NumFamilyMembers: %d\n' % self.numFamilyMembers
         s += 'FamilyMembers: %s\n' % self.familyMembers
         s += 'NumSubs: %s\n' % self.numSubs
-        for subDetails in self.subDetails.values():
+        for subDetails in list(self.subDetails.values()):
             s += str(subDetails)
 
         s += '================================\n'

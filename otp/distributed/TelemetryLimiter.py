@@ -37,7 +37,7 @@ class TelemetryLimiter(DirectObject):
         self.ignore(self._getDummyEventName(obj))
 
     def _enforceLimits(self, task = None):
-        for obj in self._objs.itervalues():
+        for obj in self._objs.values():
             obj.enforceTelemetryLimits()
 
         return Task.cont
@@ -106,7 +106,7 @@ class TLGatherAllAvs(DirectObject):
     def destroy(self):
         self.ignoreAll()
         while len(self._avs):
-            self._handlePlayerLeave(self._avs.values()[0])
+            self._handlePlayerLeave(list(self._avs.values())[0])
 
         del self._avs
         del self._limits
