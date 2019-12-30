@@ -1,6 +1,6 @@
 from otp.level import DistributedLevelAI
 from direct.directnotify import DirectNotifyGlobal
-import pickle, LevelSuitPlannerAI, LawOfficeBase
+from . import LevelSuitPlannerAI, LawOfficeBase
 from direct.task import Task
 from . import FactoryEntityCreatorAI, FactorySpecs
 from otp.level import LevelSpec

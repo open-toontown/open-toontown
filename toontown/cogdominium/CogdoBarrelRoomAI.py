@@ -1,5 +1,4 @@
 import random
-from sets import Set
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
 from direct.showbase import PythonUtil
@@ -111,9 +110,9 @@ class CogdoBarrelRoomAI:
             return not toon.isToonedUp()
 
     def __allBarrelsCollected(self):
-        toonsNeedingLaff = Set([toon for toon in self.cogdoInteriorAI.toons if self.__toonIdNeedsLaff(toon)])
+        toonsNeedingLaff = set([toon for toon in self.cogdoInteriorAI.toons if self.__toonIdNeedsLaff(toon)])
         for barrel in self.spawnedBarrels:
-            if not toonsNeedingLaff.issubset(Set(barrel.grabbedBy)):
+            if not toonsNeedingLaff.issubset(set(barrel.grabbedBy)):
                 return False
 
         return True

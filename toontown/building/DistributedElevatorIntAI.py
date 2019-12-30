@@ -2,7 +2,8 @@ from otp.ai.AIBase import *
 from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
 from .ElevatorConstants import *
-import copy, DistributedElevatorAI
+import copy
+from . import DistributedElevatorAI
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.task import Task

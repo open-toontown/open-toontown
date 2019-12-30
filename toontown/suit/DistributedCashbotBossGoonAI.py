@@ -8,7 +8,8 @@ from toontown.toonbase import ToontownGlobals
 from otp.otpbase import OTPGlobals
 from toontown.coghq import DistributedCashbotBossObjectAI
 from direct.showbase import PythonUtil
-import DistributedGoonAI, math, random
+from . import DistributedGoonAI
+import math, random
 
 class DistributedCashbotBossGoonAI(DistributedGoonAI.DistributedGoonAI, DistributedCashbotBossObjectAI.DistributedCashbotBossObjectAI):
     legLength = 10

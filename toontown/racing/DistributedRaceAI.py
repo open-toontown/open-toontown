@@ -4,7 +4,8 @@ from toontown.toonbase import ToontownGlobals
 from otp.otpbase.PythonUtil import nonRepeatingRandomList
 from . import DistributedGagAI, DistributedProjectileAI
 from direct.task import Task
-import random, time, Racer, RaceGlobals
+import random
+from . import Racer, RaceGlobals
 from direct.distributed.ClockDelta import *
 
 class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
