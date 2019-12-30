@@ -184,7 +184,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
         self.buildingSideDoors = {}
         for p in self.frontdoorPointList:
             blockNumber = p.getLandmarkBuildingIndex()
-            if p < 0:
+            if p.getPointType() < 0:
                 self.notify.warning('No landmark building for (%s) in zone %d' % (repr(p), self.zoneId))
             elif blockNumber in self.buildingFrontDoors:
                 self.notify.warning('Multiple front doors for building %d in zone %d' % (blockNumber, self.zoneId))
@@ -193,7 +193,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
 
         for p in self.sidedoorPointList:
             blockNumber = p.getLandmarkBuildingIndex()
-            if p < 0:
+            if p.getPointType() < 0:
                 self.notify.warning('No landmark building for (%s) in zone %d' % (repr(p), self.zoneId))
             elif blockNumber in self.buildingSideDoors:
                 self.buildingSideDoors[blockNumber].append(p)
