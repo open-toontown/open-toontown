@@ -16,11 +16,11 @@ class LevelBattleManagerAI(BattleManagerAI.BattleManagerAI):
         return
 
     def destroyBattleMgr(self):
-        battles = self.cellId2battle.values()
+        battles = list(self.cellId2battle.values())
         for battle in battles:
             self.destroy(battle)
 
-        for cellId, battleBlocker in self.battleBlockers.items():
+        for cellId, battleBlocker in list(self.battleBlockers.items()):
             if battleBlocker is not None:
                 battleBlocker.deactivate()
 

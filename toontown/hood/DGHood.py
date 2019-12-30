@@ -1,9 +1,9 @@
 from pandac.PandaModules import *
-import ToonHood
+from . import ToonHood
 from toontown.town import DGTownLoader
 from toontown.safezone import DGSafeZoneLoader
 from toontown.toonbase.ToontownGlobals import *
-import SkyUtil
+from . import SkyUtil
 
 class DGHood(ToonHood.ToonHood):
 

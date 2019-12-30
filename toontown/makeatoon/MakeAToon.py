@@ -14,15 +14,15 @@ from direct.actor.Actor import Actor
 from direct.task import Task
 from direct.gui.DirectGui import *
 from toontown.toonbase import TTLocalizer
-from MakeAToonGlobals import *
+from .MakeAToonGlobals import *
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toontowngui import TTDialog
-import GenderShop
-import BodyShop
-import ColorShop
-import MakeClothesGUI
-import NameShop
+from . import GenderShop
+from . import BodyShop
+from . import ColorShop
+from . import MakeClothesGUI
+from . import NameShop
 import random
 
 class MakeAToon(StateData.StateData):

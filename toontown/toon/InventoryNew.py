@@ -1,7 +1,7 @@
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase.ToontownBattleGlobals import *
-import InventoryBase
+from . import InventoryBase
 from toontown.toonbase import TTLocalizer
 from toontown.quest import BlinkingArrows
 from direct.interval.IntervalGlobal import *

@@ -1,7 +1,7 @@
 from otp.ai.AIBase import *
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
-import DistributedCrusherEntityAI, StomperGlobals
+from . import DistributedCrusherEntityAI, StomperGlobals
 from direct.distributed import ClockDelta
 
 class DistributedStomperAI(DistributedCrusherEntityAI.DistributedCrusherEntityAI):

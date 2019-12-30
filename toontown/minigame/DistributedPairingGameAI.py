@@ -1,4 +1,4 @@
-from DistributedMinigameAI import *
+from .DistributedMinigameAI import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from toontown.minigame import PlayingCardGlobals
@@ -51,7 +51,7 @@ class DistributedPairingGameAI(DistributedMinigameAI):
             self.faceUpDict[avId] = []
 
         self.deck = PairingGameGlobals.createDeck(self.deckSeed, self.numPlayers)
-        for index in xrange(len(self.deck.cards)):
+        for index in range(len(self.deck.cards)):
             cardValue = self.deck.cards[index]
             oneCard = PlayingCardBase(cardValue)
             self.cards.append(oneCard)
@@ -134,7 +134,7 @@ class DistributedPairingGameAI(DistributedMinigameAI):
 
     def isCardFaceUp(self, deckOrderIndex):
         retval = False
-        for key in self.faceUpDict.keys():
+        for key in list(self.faceUpDict.keys()):
             if deckOrderIndex in self.faceUpDict[key]:
                 retval = True
                 break
@@ -146,7 +146,7 @@ class DistributedPairingGameAI(DistributedMinigameAI):
 
     def checkForMatch(self):
         faceUpList = []
-        for oneToonFaceUpList in self.faceUpDict.values():
+        for oneToonFaceUpList in list(self.faceUpDict.values()):
             faceUpList += oneToonFaceUpList
 
         for i in range(len(faceUpList)):
@@ -160,7 +160,7 @@ class DistributedPairingGameAI(DistributedMinigameAI):
 
     def handleMatch(self, cardA, cardB):
         self.notify.debug('we got a match %d %d' % (cardA, cardB))
-        for key in self.faceUpDict.keys():
+        for key in list(self.faceUpDict.keys()):
             if cardA in self.faceUpDict[key]:
                 self.faceUpDict[key].remove(cardA)
             if cardB in self.faceUpDict[key]:
@@ -171,7 +171,7 @@ class DistributedPairingGameAI(DistributedMinigameAI):
 
     def turnDownCard(self, cardA):
         self.notify.debug('turning down card %d' % cardA)
-        for key in self.faceUpDict.keys():
+        for key in list(self.faceUpDict.keys()):
             if cardA in self.faceUpDict[key]:
                 self.faceUpDict[key].remove(cardA)
 

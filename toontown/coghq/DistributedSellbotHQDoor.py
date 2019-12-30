@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from toontown.coghq import DistributedCogHQDoor
 from toontown.toonbase import TTLocalizer
-import CogDisguiseGlobals
+from . import CogDisguiseGlobals
 
 class DistributedSellbotHQDoor(DistributedCogHQDoor.DistributedCogHQDoor):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSellbotHQDoor')

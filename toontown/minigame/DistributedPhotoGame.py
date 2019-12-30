@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import *
 from toontown.toonbase.ToonBaseGlobal import *
-from DistributedMinigame import *
+from .DistributedMinigame import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
@@ -11,7 +11,7 @@ from toontown.toonbase import ToontownTimer
 from direct.task.Task import Task
 import math
 from toontown.toon import ToonHead
-import PhotoGameGlobals
+from . import PhotoGameGlobals
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
@@ -295,7 +295,7 @@ class DistributedPhotoGame(DistributedMinigame, PhotoGameBase.PhotoGameBase):
         vRange = (GOODROWS - BADROWS) / 2
         for row in range(-(GOODROWS / 2), GOODROWS / 2 + 1):
             for column in range(-(GOODROWS / 2), GOODROWS / 2 + 1):
-                goodRange = range(-((GOODROWS - BADROWS) / 2), (GOODROWS - BADROWS) / 2 + 1)
+                goodRange = list(range(-((GOODROWS - BADROWS) / 2), (GOODROWS - BADROWS) / 2 + 1))
                 rayQuality = 'g'
                 if row not in goodRange or column not in goodRange:
                     rayQuality = 'l'
@@ -434,7 +434,7 @@ class DistributedPhotoGame(DistributedMinigame, PhotoGameBase.PhotoGameBase):
                 newEntry = (entry.getFromNode(), object)
                 distance = Vec3(entry.getSurfacePoint(self.tripod)).lengthSquared()
                 name = entry.getFromNode().getName()
-                if not distDict.has_key(name):
+                if name not in distDict:
                     distDict[name] = distance
                     hitDict[name] = (entry.getFromNode(), object, marker)
                 elif distance < distDict[name]:
@@ -462,7 +462,7 @@ class DistributedPhotoGame(DistributedMinigame, PhotoGameBase.PhotoGameBase):
             else:
                 quality = 1
                 onCenter = 1
-            if not centerDict.has_key(superParent):
+            if superParent not in centerDict:
                 centerDict[superParent] = (onCenter,
                  overB,
                  overT,
@@ -986,7 +986,7 @@ class DistributedPhotoGame(DistributedMinigame, PhotoGameBase.PhotoGameBase):
     def printAD(self):
         for assignment in self.assignmentDataDict:
             data = self.assignmentDataDict[assignment]
-            print 'Key:%s\nData:%s\n' % (str(assignment), data)
+            print('Key:%s\nData:%s\n' % (str(assignment), data))
 
     def updateScorePanel(self):
         teamScore = 0.0

@@ -26,7 +26,7 @@ class CogdoBarrelRoomRewardPanel(DirectFrame):
         for p in range(len(results[0])):
             doId = results[0][p]
             laff = results[1][p]
-            if doId > 0 and base.cr.doId2do.has_key(doId):
+            if doId > 0 and doId in base.cr.doId2do:
                 toon = base.cr.doId2do[doId]
                 self.rewardLines[p]['name'].setProp('text', toon.getName())
                 self.rewardLines[p]['laff'].setProp('text', str(laff))

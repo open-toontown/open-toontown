@@ -19,9 +19,9 @@ from toontown.toonbase import ToontownGlobals
 from toontown.effects import Splash
 from toontown.minigame.MinigamePowerMeter import MinigamePowerMeter
 from toontown.minigame.ArrowKeys import ArrowKeys
-import PartyGlobals
-import PartyUtils
-from DistributedPartyTeamActivity import DistributedPartyTeamActivity
+from . import PartyGlobals
+from . import PartyUtils
+from .DistributedPartyTeamActivity import DistributedPartyTeamActivity
 
 class DistributedPartyTugOfWarActivity(DistributedPartyTeamActivity):
     notify = directNotify.newCategory('DistributedPartyTugOfWarActivity')
@@ -128,7 +128,7 @@ class DistributedPartyTugOfWarActivity(DistributedPartyTeamActivity):
         return
 
     def handleToonDisabled(self, toonId):
-        if self.toonIdsToAnimIntervals.has_key(toonId):
+        if toonId in self.toonIdsToAnimIntervals:
             if self.toonIdsToAnimIntervals[toonId]:
                 if self.toonIdsToAnimIntervals[toonId].isPlaying():
                     self.toonIdsToAnimIntervals[toonId].finish()
@@ -430,7 +430,7 @@ class DistributedPartyTugOfWarActivity(DistributedPartyTeamActivity):
                 if self.getAvatar(toonId):
                     self.getAvatar(toonId).loop('victory')
 
-        for ival in self.toonIdsToAnimIntervals.values():
+        for ival in list(self.toonIdsToAnimIntervals.values()):
             if ival is not None:
                 ival.finish()
 
@@ -484,9 +484,9 @@ class DistributedPartyTugOfWarActivity(DistributedPartyTeamActivity):
                 for i in range(numToons - 1, 0, -1):
                     toon1 = self.toonIds[currTeam][i]
                     toon2 = self.toonIds[currTeam][i - 1]
-                    if not self.toonIdsToRightHands.has_key(toon1):
+                    if toon1 not in self.toonIdsToRightHands:
                         self.notify.warning('Toon in tug of war activity but not properly setup:  %s' % toon1)
-                    elif not self.toonIdsToRightHands.has_key(toon2):
+                    elif toon2 not in self.toonIdsToRightHands:
                         self.notify.warning('Toon in tug of war activity but not properly setup:  %s' % toon2)
                     else:
                         self.notify.debug('Connecting rope between toon %d and toon %d of team %d.' % (i, i - 1, currTeam))
@@ -579,7 +579,7 @@ class DistributedPartyTugOfWarActivity(DistributedPartyTeamActivity):
         if self.activityFSM.state != 'Active':
             return
         toon = self.getAvatar(toonId)
-        if not self.toonIdsToIsPullingFlags.has_key(toonId):
+        if toonId not in self.toonIdsToIsPullingFlags:
             if self.getTeam(toonId) == None:
                 self.notify.warning("setAnimState called with toonId (%d) that wasn't in self.toonIds" % toonId)
                 return
@@ -671,7 +671,7 @@ class DistributedPartyTugOfWarActivity(DistributedPartyTeamActivity):
             if fallenPosIndex < 0 or fallenPosIndex >= 4:
                 fallenPosIndex = 0
             newPos = self.fallenPositions[fallenPosIndex]
-            if self.toonIdsToAnimIntervals.has_key(toonId) and self.toonIdsToAnimIntervals[toonId] is not None:
+            if toonId in self.toonIdsToAnimIntervals and self.toonIdsToAnimIntervals[toonId] is not None:
                 if self.toonIdsToAnimIntervals[toonId].isPlaying():
                     self.toonIdsToAnimIntervals[toonId].finish()
             if toon:

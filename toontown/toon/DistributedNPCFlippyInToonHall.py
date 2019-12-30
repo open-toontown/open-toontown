@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from DistributedNPCToon import *
+from .DistributedNPCToon import *
 
 class DistributedNPCFlippyInToonHall(DistributedNPCToon):
 

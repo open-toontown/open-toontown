@@ -1,4 +1,4 @@
-from CatalogSurfaceItem import *
+from .CatalogSurfaceItem import *
 FTTextureName = 0
 FTColor = 1
 FTBasePrice = 2
@@ -100,7 +100,7 @@ class CatalogFlooringItem(CatalogSurfaceItem):
             if colorIndex < len(colors):
                 return colors[colorIndex]
             else:
-                print 'Warning: colorIndex not in colors. Returning white.'
+                print('Warning: colorIndex not in colors. Returning white.')
                 return CT_WHITE
         else:
             return CT_WHITE
@@ -158,7 +158,7 @@ def getFlooringRange(fromIndex, toIndex, *otherRanges):
         tos.append(otherRanges[i + 1])
         i += 2
 
-    for patternIndex in FlooringTypes.keys():
+    for patternIndex in list(FlooringTypes.keys()):
         for fromIndex, toIndex in zip(froms, tos):
             if patternIndex >= fromIndex and patternIndex <= toIndex:
                 colors = FlooringTypes[patternIndex][FTColor]

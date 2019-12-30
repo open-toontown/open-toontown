@@ -3,8 +3,8 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
-import GardenGlobals
-import FlowerPhoto
+from . import GardenGlobals
+from . import FlowerPhoto
 from toontown.estate import BeanRecipeGui
 
 class FlowerSpeciesPanel(DirectFrame):

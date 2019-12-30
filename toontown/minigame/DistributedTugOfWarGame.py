@@ -1,7 +1,7 @@
 from pandac.PandaModules import *
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
-from DistributedMinigame import *
+from .DistributedMinigame import *
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from direct.fsm import ClassicFSM, State
@@ -11,17 +11,17 @@ from toontown.toon import ToonHead
 from toontown.suit import SuitDNA
 from toontown.suit import Suit
 from toontown.char import Char
-import ArrowKeys
+from . import ArrowKeys
 import random
 from toontown.toonbase import ToontownGlobals
 import string
 from toontown.toonbase import TTLocalizer
-import TugOfWarGameGlobals
+from . import TugOfWarGameGlobals
 from direct.showutil import Rope
 from toontown.effects import Splash
 from toontown.effects import Ripples
 from toontown.toonbase import TTLocalizer
-import MinigamePowerMeter
+from . import MinigamePowerMeter
 from direct.task.Task import Task
 
 class DistributedTugOfWarGame(DistributedMinigame):
@@ -280,7 +280,7 @@ class DistributedTugOfWarGame(DistributedMinigame):
             self.introTrack.finish()
             del self.introTrack
             self.introTrack = None
-        for track in self.animTracks.values():
+        for track in list(self.animTracks.values()):
             if track:
                 track.finish()
                 del track
@@ -327,10 +327,10 @@ class DistributedTugOfWarGame(DistributedMinigame):
         if self.suit:
             self.suit.reparentTo(hidden)
         for avId in self.avIdList:
-            if self.dropShadowDict.has_key(avId):
+            if avId in self.dropShadowDict:
                 self.dropShadowDict[avId].reparentTo(hidden)
 
-        if self.dropShadowDict.has_key(self.suitId):
+        if self.suitId in self.dropShadowDict:
             self.dropShadowDict[self.suitId].reparentTo(hidden)
         return
 
@@ -980,7 +980,7 @@ class DistributedTugOfWarGame(DistributedMinigame):
             exitSeq.append(Wait(2.5))
         exitSeq.append(Func(self.gameOver))
         self.showTrack = Parallel(reactSeq, exitSeq)
-        for x in self.animTracks.values():
+        for x in list(self.animTracks.values()):
             if x != None:
                 x.finish()
 

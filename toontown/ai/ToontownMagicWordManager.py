@@ -104,10 +104,10 @@ class ToontownMagicWordManager(MagicWordManager.MagicWordManager):
             go = Fanfare.makeFanfareWithMessageImage(0, base.localAvatar, 1, "You just did a ~fanfare.  Here's a rake.", Vec2(0, 0.2), 0.08, base.localAvatar.inventory.buttonLookup(1, 1), Vec3(0, 0, 0), 4)
             Sequence(go[0], Func(go[1].show), LerpColorScaleInterval(go[1], duration=0.5, startColorScale=Vec4(1, 1, 1, 0), colorScale=Vec4(1, 1, 1, 1)), Wait(2), LerpColorScaleInterval(go[1], duration=0.5, startColorScale=Vec4(1, 1, 1, 1), colorScale=Vec4(1, 1, 1, 0)), Func(go[1].remove)).start()
         elif wordIs('~endgame'):
-            print 'Requesting minigame abort...'
+            print('Requesting minigame abort...')
             messenger.send('minigameAbort')
         elif wordIs('~wingame'):
-            print 'Requesting minigame victory...'
+            print('Requesting minigame victory...')
             messenger.send('minigameVictory')
         elif wordIs('~walk'):
             try:
@@ -139,7 +139,7 @@ class ToontownMagicWordManager(MagicWordManager.MagicWordManager):
                 self.rogues.animate()
             self.acceptOnce('mouse1', self.exit_rogues)
         elif wordIs('~showPaths'):
-            for obj in self.cr.doId2do.values():
+            for obj in list(self.cr.doId2do.values()):
                 if isinstance(obj, DistributedSuitPlanner.DistributedSuitPlanner):
                     obj.showPaths()
 
@@ -147,7 +147,7 @@ class ToontownMagicWordManager(MagicWordManager.MagicWordManager):
             if hasattr(place, 'showPaths'):
                 place.showPaths()
         elif wordIs('~hidePaths'):
-            for obj in self.cr.doId2do.values():
+            for obj in list(self.cr.doId2do.values()):
                 if isinstance(obj, DistributedSuitPlanner.DistributedSuitPlanner):
                     obj.hidePaths()
 
@@ -221,7 +221,7 @@ class ToontownMagicWordManager(MagicWordManager.MagicWordManager):
                 if not camParent.isEmpty():
                     myCam.wrtReparentTo(camParent)
                 self.setMagicWordResponse(response)
-                print response
+                print(response)
         elif wordIs('~sync'):
             tm = base.cr.timeManager
             if tm == None:
@@ -581,7 +581,7 @@ class ToontownMagicWordManager(MagicWordManager.MagicWordManager):
             hoodId = ToontownGlobals.PartyHood
             ToontownDistrictStats.refresh('shardInfoUpdated')
             curShardTuples = base.cr.listActiveShards()
-            lowestPop = 100000000000000000L
+            lowestPop = 100000000000000000
             shardId = None
             for shardInfo in curShardTuples:
                 pop = shardInfo[2]
@@ -680,7 +680,7 @@ class ToontownMagicWordManager(MagicWordManager.MagicWordManager):
     def identifyDistributedObjects(self, name):
         result = []
         lowerName = string.lower(name)
-        for obj in base.cr.doId2do.values():
+        for obj in list(base.cr.doId2do.values()):
             className = obj.__class__.__name__
             try:
                 name = obj.getName()
@@ -741,7 +741,7 @@ class ToontownMagicWordManager(MagicWordManager.MagicWordManager):
     def doBossBattle(self, word):
         args = word.split()
         bossCog = None
-        for distObj in self.cr.doId2do.values():
+        for distObj in list(self.cr.doId2do.values()):
             if isinstance(distObj, DistributedBossCog.DistributedBossCog):
                 bossCog = distObj
                 break

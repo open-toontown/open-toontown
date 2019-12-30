@@ -224,8 +224,8 @@ class InventoryBase(DirectObject.DirectObject):
             tempInv = self.makeFromNetString(newInventory)
         else:
             tempInv = newInventory
-        for track in xrange(len(Tracks)):
-            for level in xrange(len(Levels[track])):
+        for track in range(len(Tracks)):
+            for level in range(len(Levels[track])):
                 if tempInv[track][level] > self.inventory[track][level]:
                     if Levels[track][level] > UnpaidMaxSkills[track]:
                         return 0

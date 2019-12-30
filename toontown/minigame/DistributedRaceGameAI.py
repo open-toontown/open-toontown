@@ -1,11 +1,11 @@
 from math import *
-from DistributedMinigameAI import *
+from .DistributedMinigameAI import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 import random
 from direct.task.Task import Task
-import RaceGameGlobals
+from . import RaceGameGlobals
 
 class DistributedRaceGameAI(DistributedMinigameAI):
 
@@ -53,7 +53,7 @@ class DistributedRaceGameAI(DistributedMinigameAI):
         DistributedMinigameAI.gameOver(self)
 
     def anyAvatarWon(self, positionDict):
-        for avId, position in positionDict.items():
+        for avId, position in list(positionDict.items()):
             if position >= RaceGameGlobals.NumberToWin:
                 self.notify.debug('anyAvatarWon: Somebody won')
                 return 1
@@ -62,7 +62,7 @@ class DistributedRaceGameAI(DistributedMinigameAI):
         return 0
 
     def allAvatarsChosen(self):
-        for choice in self.avatarChoices.values():
+        for choice in list(self.avatarChoices.values()):
             if choice == -1:
                 return 0
 
@@ -121,7 +121,7 @@ class DistributedRaceGameAI(DistributedMinigameAI):
 
     def waitClientsChoicesTimeout(self, task):
         self.notify.debug('waitClientsChoicesTimeout: did not hear from all clients')
-        for avId in self.avatarChoices.keys():
+        for avId in list(self.avatarChoices.keys()):
             if self.avatarChoices[avId] == -1:
                 self.avatarChoices[avId] = 0
 
@@ -135,7 +135,7 @@ class DistributedRaceGameAI(DistributedMinigameAI):
         self.rewardArray = []
         for avId in self.avIdList:
             choice = self.avatarChoices[avId]
-            freq = self.avatarChoices.values().count(choice)
+            freq = list(self.avatarChoices.values()).count(choice)
             self.processChoice(avId, choice, freq)
 
         masterList = []
@@ -229,7 +229,7 @@ class DistributedRaceGameAI(DistributedMinigameAI):
             choice = self.avatarChoices[avId]
             reward = -1
             if choice != 0:
-                freq = self.avatarChoices.values().count(choice)
+                freq = list(self.avatarChoices.values()).count(choice)
                 if recurse or freq == 1:
                     self.avatarPositions[avId] += choice
                     if self.avatarPositions[avId] < 0:

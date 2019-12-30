@@ -1,5 +1,5 @@
-import TownLoader
-import BRStreet
+from . import TownLoader
+from . import BRStreet
 from toontown.suit import Suit
 
 class BRTownLoader(TownLoader.TownLoader):

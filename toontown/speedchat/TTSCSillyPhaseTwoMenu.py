@@ -34,7 +34,7 @@ class TTSCSillyPhaseTwoMenu(SCMenu):
             if section[0] == -1:
                 for phrase in section[1]:
                     if phrase not in OTPLocalizer.SpeedChatStaticText:
-                        print 'warning: tried to link Silly PhaseTwo phrase %s which does not seem to exist' % phrase
+                        print('warning: tried to link Silly PhaseTwo phrase %s which does not seem to exist' % phrase)
                         break
                     self.append(SCStaticTextTerminal(phrase))
 
@@ -42,7 +42,7 @@ class TTSCSillyPhaseTwoMenu(SCMenu):
                 menu = SCMenu()
                 for phrase in section[1]:
                     if phrase not in OTPLocalizer.SpeedChatStaticText:
-                        print 'warning: tried to link Silly PhaseTwo phrase %s which does not seem to exist' % phrase
+                        print('warning: tried to link Silly PhaseTwo phrase %s which does not seem to exist' % phrase)
                         break
                     menu.append(SCStaticTextTerminal(phrase))
 

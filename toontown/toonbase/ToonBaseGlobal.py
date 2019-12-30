@@ -1,1 +1,1 @@
-from ToonBase import *
+from .ToonBase import *

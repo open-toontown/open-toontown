@@ -2,25 +2,25 @@ import copy
 import random
 import time
 from toontown.toonbase import ToontownGlobals
-import DistributedMinigameTemplateAI
-import DistributedRaceGameAI
-import DistributedCannonGameAI
-import DistributedTagGameAI
-import DistributedPatternGameAI
-import DistributedRingGameAI
-import DistributedMazeGameAI
-import DistributedTugOfWarGameAI
-import DistributedCatchGameAI
-import DistributedDivingGameAI
-import DistributedTargetGameAI
-import DistributedPairingGameAI
-import DistributedPhotoGameAI
-import DistributedVineGameAI
-import DistributedIceGameAI
-import DistributedCogThiefGameAI
-import DistributedTwoDGameAI
-import DistributedTravelGameAI
-import TravelGameGlobals
+from . import DistributedMinigameTemplateAI
+from . import DistributedRaceGameAI
+from . import DistributedCannonGameAI
+from . import DistributedTagGameAI
+from . import DistributedPatternGameAI
+from . import DistributedRingGameAI
+from . import DistributedMazeGameAI
+from . import DistributedTugOfWarGameAI
+from . import DistributedCatchGameAI
+from . import DistributedDivingGameAI
+from . import DistributedTargetGameAI
+from . import DistributedPairingGameAI
+from . import DistributedPhotoGameAI
+from . import DistributedVineGameAI
+from . import DistributedIceGameAI
+from . import DistributedCogThiefGameAI
+from . import DistributedTwoDGameAI
+from . import DistributedTravelGameAI
+from . import TravelGameGlobals
 ALLOW_TEMP_MINIGAMES = simbase.config.GetBool('allow-temp-minigames', False)
 if ALLOW_TEMP_MINIGAMES:
     from toontown.minigame.TempMinigameAI import *
@@ -88,14 +88,14 @@ def createMinigame(air, playerArray, trolleyZone, minigameZone = None, previousG
      ToontownGlobals.TravelGameId: DistributedTravelGameAI.DistributedTravelGameAI,
      ToontownGlobals.PhotoGameId: DistributedPhotoGameAI.DistributedPhotoGameAI}
     if ALLOW_TEMP_MINIGAMES:
-        from TempMinigameAI import TempMgCtors
-        for key, value in TempMgCtors.items():
+        from .TempMinigameAI import TempMgCtors
+        for key, value in list(TempMgCtors.items()):
             mgCtors[key] = value
 
     try:
         mg = mgCtors[mgId](air, mgId)
     except KeyError:
-        raise Exception, 'unknown minigame ID: %s' % mgId
+        raise Exception('unknown minigame ID: %s' % mgId)
 
     mg.setExpectedAvatars(playerArray)
     mg.setNewbieIds(newbieIds)
@@ -110,7 +110,7 @@ def createMinigame(air, playerArray, trolleyZone, minigameZone = None, previousG
             avId = playerArray[index]
             votes = startingVotes[index]
             if votes < 0:
-                print 'createMinigame negative votes, avId=%s votes=%s' % (avId, votes)
+                print('createMinigame negative votes, avId=%s votes=%s' % (avId, votes))
                 votes = 0
             mg.setStartingVote(avId, votes)
 

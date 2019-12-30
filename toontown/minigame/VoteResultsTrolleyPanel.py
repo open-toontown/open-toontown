@@ -168,7 +168,7 @@ class VoteResultsTrolleyPanel(DirectFrame):
             label['text'] = str(int(t * additionalVotes + startVotes))
 
         track.append(LerpFunc(totalTicker, duration=duration, name='countTotal %d' % index))
-        if self.avVotesLabel.has_key(index):
+        if index in self.avVotesLabel:
 
             def avVotesTicker(t, label = self.avVotesLabel[index], startVotes = 0, endVotes = numVotes, direction = direction):
                 oldValue = label['text']
@@ -186,7 +186,7 @@ class VoteResultsTrolleyPanel(DirectFrame):
 
             label = self.avVotesLabel[index]
             track.append(Func(self.avVotesLabel[index].show, name='showName %d' % index))
-            if self.avArrows.has_key(index):
+            if index in self.avArrows:
                 track.append(Func(self.avArrows[index].show, name='showArrow %d' % index))
             if direction == 0 and numVotes:
                 pass

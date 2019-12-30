@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from toontown.speedchat.TTSCIndexedTerminal import TTSCIndexedMsgEvent
-import DistributedScavengerHuntTarget
+from . import DistributedScavengerHuntTarget
 
 class DistributedWinterCarolingTarget(DistributedScavengerHuntTarget.DistributedScavengerHuntTarget):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedWinterCarolingTarget')

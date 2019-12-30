@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-import HoodDataAI, ZoneUtil
+from . import HoodDataAI, ZoneUtil
 from toontown.toonbase import ToontownGlobals
 from toontown.racing import DistributedStartingBlockAI
 from pandac.PandaModules import *
@@ -151,7 +151,7 @@ class GZHoodDataAI(HoodDataAI.HoodDataAI):
                 self.golfKarts += foundKarts
                 self.golfKartGroups += foundKartGroups
 
-        print self.golfKarts, self.golfKartGroups
+        print(self.golfKarts, self.golfKartGroups)
         for golfKart in self.golfKarts:
             golfKart.start()
             self.addDistObj(golfKart)

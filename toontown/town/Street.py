@@ -240,7 +240,7 @@ class Street(BattlePlace.BattlePlace):
         hoodId = requestStatus['hoodId']
         zoneId = requestStatus['zoneId']
         if avId != -1:
-            if not base.cr.doId2do.has_key(avId):
+            if avId not in base.cr.doId2do:
                 teleportDebug(requestStatus, "couldn't find friend %s" % avId)
                 handle = base.cr.identifyFriend(avId)
                 requestStatus = {'how': 'teleportIn',
@@ -261,7 +261,7 @@ class Street(BattlePlace.BattlePlace):
         return
 
     def enterTeleportOut(self, requestStatus):
-        if requestStatus.has_key('battle'):
+        if 'battle' in requestStatus:
             self.__teleportOutDone(requestStatus)
         else:
             BattlePlace.BattlePlace.enterTeleportOut(self, requestStatus, self.__teleportOutDone)

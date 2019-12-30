@@ -1,4 +1,4 @@
-from SpecImports import *
+from .SpecImports import *
 from toontown.toonbase import ToontownGlobals
 CogParent = 10000
 CogParent1 = 100021

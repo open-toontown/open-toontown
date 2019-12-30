@@ -1,15 +1,15 @@
 from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
-from BattleBase import *
-from BattleProps import *
-from BattleSounds import *
+from .BattleBase import *
+from .BattleProps import *
+from .BattleSounds import *
 from toontown.toon.ToonDNA import *
 from toontown.suit.SuitDNA import *
 from direct.directnotify import DirectNotifyGlobal
 import random
-import MovieCamera
-import MovieUtil
-from MovieUtil import calcAvgSuitPos
+from . import MovieCamera
+from . import MovieUtil
+from .MovieUtil import calcAvgSuitPos
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieThrow')
 hitSoundFiles = ('AA_tart_only.mp3', 'AA_slice_only.mp3', 'AA_slice_only.mp3', 'AA_slice_only.mp3', 'AA_slice_only.mp3', 'AA_wholepie_only.mp3', 'AA_wholepie_only.mp3')
 tPieLeavesHand = 2.7
@@ -20,7 +20,7 @@ tPieShrink = 0.7
 pieFlyTaskName = 'MovieThrow-pieFly'
 
 def addHit(dict, suitId, hitCount):
-    if dict.has_key(suitId):
+    if suitId in dict:
         dict[suitId] += hitCount
     else:
         dict[suitId] = hitCount
@@ -33,12 +33,12 @@ def doFires(fires):
     suitFiresDict = {}
     for fire in fires:
         suitId = fire['target']['suit'].doId
-        if suitFiresDict.has_key(suitId):
+        if suitId in suitFiresDict:
             suitFiresDict[suitId].append(fire)
         else:
             suitFiresDict[suitId] = [fire]
 
-    suitFires = suitFiresDict.values()
+    suitFires = list(suitFiresDict.values())
     def compFunc(a, b):
         if len(a) > len(b):
             return 1

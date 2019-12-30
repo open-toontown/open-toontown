@@ -1,6 +1,6 @@
 from pandac.PandaModules import *
 from toontown.toonbase import ToontownGlobals
-import AvatarChoice
+from . import AvatarChoice
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State

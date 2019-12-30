@@ -2,7 +2,7 @@ from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from otp.otpbase.PythonUtil import nonRepeatingRandomList
-import DistributedGagAI, DistributedProjectileAI
+from . import DistributedGagAI, DistributedProjectileAI
 from direct.task import Task
 import random, time, Racer, RaceGlobals
 from direct.distributed.ClockDelta import *
@@ -238,7 +238,7 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
         self.kickSlowRacersTask = None
         if self.isDeleted():
             return
-        for racer in self.racers.values():
+        for racer in list(self.racers.values()):
             avId = racer.avId
             av = simbase.air.doId2do.get(avId, None)
             if av and not av.allowRaceTimeout:
@@ -328,7 +328,7 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
 
     def racerLeft(self, avIdFromClient):
         avId = self.air.getAvatarIdFromSender()
-        if self.racers.has_key(avId) and avId == avIdFromClient:
+        if avId in self.racers and avId == avIdFromClient:
             self.notify.debug('Removing %d from race %d' % (avId, self.doId))
             racer = self.racers[avId]
             taskMgr.doMethodLater(10, self.removeObject, racer.kart.uniqueName('removeIt'), extraArgs=[racer.kart])
@@ -389,7 +389,7 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
                 taskMgr.remove('make %s invincible' % id)
                 me.anvilTarget = True
                 someoneIsClose = False
-                for racer in self.racers.values():
+                for racer in list(self.racers.values()):
                     if not racer.exited and not racer.finished:
                         if me.lapT - racer.lapT < 0.15:
                             someoneIsClose = True
@@ -469,7 +469,7 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
 
     def everyoneDone(self):
         done = True
-        for racer in self.racers.values():
+        for racer in list(self.racers.values()):
             if not racer.exited and racer.avId not in self.playersFinished and racer.avId not in self.kickedAvIds:
                 done = False
                 break

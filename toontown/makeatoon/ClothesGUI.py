@@ -3,10 +3,10 @@ from toontown.toon import ToonDNA
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
-from MakeAToonGlobals import *
+from .MakeAToonGlobals import *
 from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
-import ShuffleButton
+from . import ShuffleButton
 import random
 CLOTHES_MAKETOON = 0
 CLOTHES_TAILOR = 1

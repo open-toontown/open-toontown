@@ -1,12 +1,12 @@
 from toontown.toonbase import ToontownGlobals
-import PhoneGlobals
+from . import PhoneGlobals
 from toontown.catalog import CatalogScreen
 from toontown.catalog import CatalogItem
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
-import DistributedHouseInterior
+from . import DistributedHouseInterior
 from direct.actor import Actor
-import DistributedFurnitureItem
+from . import DistributedFurnitureItem
 from direct.distributed import ClockDelta
 from direct.showbase import PythonUtil
 from direct.showutil import Rope
@@ -266,7 +266,7 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
         self.sendUpdate('requestPurchaseMessage', [context, blob, optional])
 
     def requestGiftPurchase(self, item, targetDoID, callback, optional = -1):
-        print 'in the client phone'
+        print('in the client phone')
         blob = item.getBlob(store=CatalogItem.Customization)
         context = self.getCallbackContext(callback, [item])
         self.sendUpdate('requestGiftPurchaseMessage', [context,

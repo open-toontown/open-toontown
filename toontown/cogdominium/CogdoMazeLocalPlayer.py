@@ -6,10 +6,10 @@ from toontown.toonbase import TTLocalizer
 from toontown.minigame.OrthoDrive import OrthoDrive
 from toontown.minigame.OrthoWalk import OrthoWalk
 from toontown.toonbase import ToontownGlobals
-import CogdoGameConsts
-import CogdoMazeGameGlobals as Globals
-from CogdoMazePlayer import CogdoMazePlayer
-from CogdoMazeCameraManager import CogdoMazeCameraManager
+from . import CogdoGameConsts
+from . import CogdoMazeGameGlobals as Globals
+from .CogdoMazePlayer import CogdoMazePlayer
+from .CogdoMazeCameraManager import CogdoMazeCameraManager
 
 class CogdoMazeLocalPlayer(CogdoMazePlayer):
     notify = directNotify.newCategory('CogdoMazeLocalPlayer')

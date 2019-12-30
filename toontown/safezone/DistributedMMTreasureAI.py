@@ -1,4 +1,4 @@
-import DistributedSZTreasureAI
+from . import DistributedSZTreasureAI
 
 class DistributedMMTreasureAI(DistributedSZTreasureAI.DistributedSZTreasureAI):
 

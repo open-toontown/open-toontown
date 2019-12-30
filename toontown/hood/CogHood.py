@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-import Hood
+from . import Hood
 
 class CogHood(Hood.Hood):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogHood')

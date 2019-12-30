@@ -47,8 +47,8 @@ class PetBrain(DirectObject.DirectObject, CPetBrain):
         del self.focus
         del self.pet
         if self.doId2goals:
-            self.notify.warning('destroy(): self.doId2goals is not empty: %s' % self.doId2goals.keys())
-            for goalList in self.doId2goals.values():
+            self.notify.warning('destroy(): self.doId2goals is not empty: %s' % list(self.doId2goals.keys()))
+            for goalList in list(self.doId2goals.values()):
                 for goal in goalList:
                     goal.destroy()
 
@@ -135,7 +135,7 @@ class PetBrain(DirectObject.DirectObject, CPetBrain):
                 self.pscAware.start()
             if len(self.nearbyAvs) > PetConstants.MaxAvatarAwareness:
                 self.nextAwarenessIndex %= len(self.nearbyAvs)
-                self._considerBecomeAwareOf(self.nearbyAvs.keys()[self.nextAwarenessIndex])
+                self._considerBecomeAwareOf(list(self.nearbyAvs.keys())[self.nextAwarenessIndex])
                 self.nextAwarenessIndex += 1
             if __dev__:
                 self.pscAware.stop()

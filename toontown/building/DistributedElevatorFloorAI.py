@@ -1,8 +1,8 @@
 from otp.ai.AIBase import *
 from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
-from ElevatorConstants import *
-import DistributedElevatorFSMAI
+from .ElevatorConstants import *
+from . import DistributedElevatorFSMAI
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm.FSM import FSM
@@ -128,7 +128,7 @@ class DistributedElevatorFloorAI(DistributedElevatorFSMAI.DistributedElevatorFSM
         for i in range(len(self.seats)):
             self.seats[i] = None
 
-        print self.seats
+        print(self.seats)
         if self.wantState == 'closed':
             self.demand('Closing')
         else:

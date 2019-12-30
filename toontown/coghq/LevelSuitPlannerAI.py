@@ -20,7 +20,7 @@ class LevelSuitPlannerAI(DirectObject.DirectObject):
         self.__genSuitInfos(self.level.getCogLevel(), self.level.getCogTrack())
         self.battleMgr = LevelBattleManagerAI.LevelBattleManagerAI(self.air, self.level, battleCtor, battleExpAggreg)
         self.battleCellId2suits = {}
-        for id in self.battleCellSpecs.keys():
+        for id in list(self.battleCellSpecs.keys()):
             self.battleCellId2suits[id] = []
 
     def destroy(self):
@@ -195,7 +195,7 @@ class LevelSuitPlannerAI(DirectObject.DirectObject):
             if oldCell in self.battleCellId2suits:
                 self.battleCellId2suits[oldCell].remove(suit)
             else:
-                self.notify.warning('FIXME crash bandaid suitBattleCellChange suit.doId =%s, oldCell=%s not in battleCellId2Suits.keys %s' % (suit.doId, oldCell, self.battleCellId2suits.keys()))
+                self.notify.warning('FIXME crash bandaid suitBattleCellChange suit.doId =%s, oldCell=%s not in battleCellId2Suits.keys %s' % (suit.doId, oldCell, list(self.battleCellId2suits.keys())))
             blocker = self.battleMgr.battleBlockers.get(oldCell)
             if blocker:
                 blocker.removeSuit(suit)

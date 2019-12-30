@@ -59,7 +59,7 @@ class ServerEventMultiAccumulator(ServerEventBuffer):
         if not len(self.events):
             return
         msg = ''
-        eventNames = self.events.keys()
+        eventNames = list(self.events.keys())
         eventNames.sort()
         for eventName in eventNames:
             msg += '%s:%s' % (eventName, self.events[eventName])

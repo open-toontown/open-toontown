@@ -9,7 +9,7 @@ from toontown.minigame import ArrowKeys
 from direct.showbase import PythonUtil
 from direct.task import Task
 from direct.distributed.ClockDelta import *
-import BuildGeometry
+from . import BuildGeometry
 from toontown.golf import GolfGlobals
 import random, time
 
@@ -155,7 +155,7 @@ class PhysicsWorldBase:
     def getCycleTime(self, doprint = 0):
         cycleTime = (globalClock.getRealTime() + self.timingCycleOffset) % self.timingCycleLength
         if doprint:
-            print 'Get Cycle Time %s' % cycleTime
+            print('Get Cycle Time %s' % cycleTime)
         return cycleTime
 
     def setTimeIntoCycle(self, time, doprint = 0):
@@ -481,22 +481,22 @@ class PhysicsWorldBase:
         if ballIndex == 1:
             self.notify.debug('1')
             geom.setCollideBits(BitMask32(16777215))
-            geom.setCategoryBits(BitMask32(4278190080L))
+            geom.setCategoryBits(BitMask32(4278190080))
         elif ballIndex == 2:
             self.notify.debug('2')
             geom.setCollideBits(BitMask32(16777215))
-            geom.setCategoryBits(BitMask32(4278190080L))
+            geom.setCategoryBits(BitMask32(4278190080))
         elif ballIndex == 3:
             self.notify.debug('3')
             geom.setCollideBits(BitMask32(16777215))
-            geom.setCategoryBits(BitMask32(4278190080L))
+            geom.setCategoryBits(BitMask32(4278190080))
         elif ballIndex == 4:
             self.notify.debug('4')
             geom.setCollideBits(BitMask32(16777215))
-            geom.setCategoryBits(BitMask32(4278190080L))
+            geom.setCategoryBits(BitMask32(4278190080))
         else:
-            geom.setCollideBits(BitMask32(4294967295L))
-            geom.setCategoryBits(BitMask32(4294967295L))
+            geom.setCollideBits(BitMask32(4294967295))
+            geom.setCategoryBits(BitMask32(4294967295))
         geom.setBody(body)
         if self.notify.getDebug():
             self.notify.debug('golf ball geom id')

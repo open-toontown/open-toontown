@@ -4,7 +4,7 @@ from direct.fsm import State
 from toontown.toonbase import ToontownGlobals
 from toontown.building import Elevator
 from pandac.PandaModules import *
-import FactoryExterior
+from . import FactoryExterior
 
 class BossbotOfficeExterior(FactoryExterior.FactoryExterior):
     notify = DirectNotifyGlobal.directNotify.newCategory('LawbotOfficeExterior')

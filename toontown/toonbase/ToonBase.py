@@ -2,9 +2,9 @@ from otp.otpbase import OTPBase
 from otp.otpbase import OTPLauncherGlobals
 from otp.otpbase import OTPGlobals
 from direct.showbase.PythonUtil import *
-import ToontownGlobals
+from . import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
-import ToontownLoader
+from . import ToontownLoader
 from direct.gui import DirectGuiGlobals
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
@@ -76,7 +76,7 @@ class ToonBase(OTPBase.OTPBase):
         self.transitions.IrisModelName = 'phase_3/models/misc/iris'
         self.transitions.FadeModelName = 'phase_3/models/misc/fade'
         self.exitFunc = self.userExit
-        if __builtins__.has_key('launcher') and launcher:
+        if 'launcher' in __builtins__ and launcher:
             launcher.setPandaErrorCode(11)
         globalClock.setMaxDt(0.2)
         if self.config.GetBool('want-particles', 1) == 1:
@@ -341,7 +341,7 @@ class ToonBase(OTPBase.OTPBase):
 
     def removeGlitchMessage(self):
         self.ignore('InputState-forward')
-        print 'ignoring InputState-forward'
+        print('ignoring InputState-forward')
 
     def exitShow(self, errorCode = None):
         self.notify.info('Exiting Toontown: errorCode = %s' % errorCode)

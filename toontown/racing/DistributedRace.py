@@ -8,7 +8,7 @@ from direct.showbase import BulletinBoardWatcher
 from direct.interval.IntervalGlobal import *
 from otp.otpbase import OTPGlobals
 from direct.interval.IntervalGlobal import *
-from RaceGag import RaceGag
+from .RaceGag import RaceGag
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toon import ToonHeadFrame
 from toontown.racing.KartDNA import InvalidEntry, getAccessory, getDefaultColor
@@ -16,8 +16,8 @@ from pandac.PandaModules import CardMaker, OrthographicLens, LineSegs
 from direct.distributed import DistributedSmoothNode
 from math import fmod
 from math import sqrt
-from RaceGUI import RaceGUI
-import RaceGlobals
+from .RaceGUI import RaceGUI
+from . import RaceGlobals
 from direct.task.Task import Task
 from toontown.hood import SkyUtil
 from direct.fsm import ClassicFSM, State
@@ -251,7 +251,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         return
 
     def setCircuitPlace(self, avId, place, entryFee, winnings, bonus, trophies):
-        print 'setting cicruit place'
+        print('setting cicruit place')
         if self.fsm.getCurrentState().getName() == 'leaving':
             return
         if avId == localAvatar.doId:
@@ -264,13 +264,13 @@ class DistributedRace(DistributedObject.DistributedObject):
             self.placeFixup.append([oldPlace - 1, place - 1])
         avatar = base.cr.doId2do.get(avId, None)
         if avatar:
-            print 'circuit trophies %s' % trophies
-            print 'winnings %s' % winnings
+            print('circuit trophies %s' % trophies)
+            print('winnings %s' % winnings)
             self.gui.racerFinishedCircuit(avId, oldPlace, entryFee, winnings, bonus, trophies)
         return
 
     def endCircuitRace(self):
-        print self.placeFixup
+        print(self.placeFixup)
         self.gui.circuitFinished(self.placeFixup)
 
     def prepForRace(self):
@@ -900,7 +900,7 @@ class DistributedRace(DistributedObject.DistributedObject):
                         dict = self.innerBarricadeDict
                     elif side == 'outersidest':
                         dict = self.outerBarricadeDict
-                    if dict.has_key(segmentInd):
+                    if segmentInd in dict:
                         self.currBldgGroups[side] = dict[segmentInd]
                     for i in self.currBldgGroups[side]:
                         self.buildingGroups[side][i].unstash()
@@ -981,7 +981,7 @@ class DistributedRace(DistributedObject.DistributedObject):
                                 dict = self.outerBarricadeDict
                             else:
                                 self.notify.error('unhandled side')
-                            if dict.has_key(i):
+                            if i in dict:
                                 if bldgGroupIndex not in dict[i]:
                                     dict[i].append(bldgGroupIndex)
                             else:
@@ -999,7 +999,7 @@ class DistributedRace(DistributedObject.DistributedObject):
                                 dict = self.outerBarricadeDict
                             else:
                                 self.notify.error('unhandled side')
-                            if dict.has_key(i):
+                            if i in dict:
                                 if bldgGroupIndex not in dict[i]:
                                     dict[i].append(bldgGroupIndex)
                             else:
@@ -1193,7 +1193,7 @@ class DistributedRace(DistributedObject.DistributedObject):
         idStr = into.getTag('boostId')
         arrowVec = self.boostDir.get(idStr)
         if arrowVec == None:
-            print 'Unknown boost arrow %s' % idStr
+            print('Unknown boost arrow %s' % idStr)
             return
         fvec = self.localKart.forward.getPos(self.geom) - self.localKart.getPos(self.geom)
         fvec.normalize()

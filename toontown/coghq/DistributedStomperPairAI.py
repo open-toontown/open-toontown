@@ -1,7 +1,7 @@
 from otp.ai.AIBase import *
 from direct.directnotify import DirectNotifyGlobal
 from otp.level import DistributedEntityAI
-import StomperGlobals
+from . import StomperGlobals
 from direct.distributed import ClockDelta
 
 class DistributedStomperPairAI(DistributedEntityAI.DistributedEntityAI):

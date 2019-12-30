@@ -8,17 +8,17 @@ from direct.distributed.ClockDelta import globalClockDelta
 from toontown.effects.FireworkShowMixin import FireworkShowMixin
 from toontown.effects.RocketExplosion import RocketExplosion
 from toontown.toonbase import TTLocalizer
-from PartyGlobals import FireworkShows
-from PartyGlobals import ActivityIds
-from PartyGlobals import ActivityTypes
-from PartyGlobals import FireworksStartedEvent
-from PartyGlobals import FireworksFinishedEvent
-from PartyGlobals import FireworksPostLaunchDelay
-from PartyGlobals import RocketSoundDelay
-from PartyGlobals import RocketDirectionDelay
-from DistributedPartyActivity import DistributedPartyActivity
-from activityFSMs import FireworksActivityFSM
-import PartyGlobals
+from .PartyGlobals import FireworkShows
+from .PartyGlobals import ActivityIds
+from .PartyGlobals import ActivityTypes
+from .PartyGlobals import FireworksStartedEvent
+from .PartyGlobals import FireworksFinishedEvent
+from .PartyGlobals import FireworksPostLaunchDelay
+from .PartyGlobals import RocketSoundDelay
+from .PartyGlobals import RocketDirectionDelay
+from .DistributedPartyActivity import DistributedPartyActivity
+from .activityFSMs import FireworksActivityFSM
+from . import PartyGlobals
 
 class DistributedPartyFireworksActivity(DistributedPartyActivity, FireworkShowMixin):
     notify = directNotify.newCategory('DistributedPartyFireworksActivity')

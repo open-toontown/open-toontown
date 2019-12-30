@@ -6,7 +6,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM
 from direct.fsm import State
-import CatchGameGlobals
+from . import CatchGameGlobals
 
 class DivingGameToonSD(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('DivingGameToonSD')

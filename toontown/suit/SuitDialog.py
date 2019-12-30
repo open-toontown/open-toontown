@@ -5,7 +5,7 @@ from toontown.toonbase import TTLocalizer
 notify = DirectNotifyGlobal.directNotify.newCategory('SuitDialog')
 
 def getBrushOffIndex(suitName):
-    if SuitBrushOffs.has_key(suitName):
+    if suitName in SuitBrushOffs:
         brushoffs = SuitBrushOffs[suitName]
     else:
         brushoffs = SuitBrushOffs[None]
@@ -23,7 +23,7 @@ def getBrushOffIndex(suitName):
 
 
 def getBrushOffText(suitName, index):
-    if SuitBrushOffs.has_key(suitName):
+    if suitName in SuitBrushOffs:
         brushoffs = SuitBrushOffs[suitName]
     else:
         brushoffs = SuitBrushOffs[None]

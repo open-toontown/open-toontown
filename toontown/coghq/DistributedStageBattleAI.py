@@ -4,7 +4,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import State
 from direct.fsm import ClassicFSM, State
 from toontown.battle.BattleBase import *
-import CogDisguiseGlobals
+from . import CogDisguiseGlobals
 from toontown.toonbase.ToontownBattleGlobals import getStageCreditMultiplier
 from direct.showbase.PythonUtil import addListsByValue
 from otp.otpbase.PythonUtil import enumerate

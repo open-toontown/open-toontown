@@ -1,4 +1,4 @@
-import ClothesGUI
+from . import ClothesGUI
 from toontown.toon import ToonDNA
 
 class MakeClothesGUI(ClothesGUI.ClothesGUI):

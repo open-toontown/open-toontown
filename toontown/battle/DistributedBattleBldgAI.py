@@ -1,11 +1,11 @@
 from otp.ai.AIBase import *
 from direct.distributed.ClockDelta import *
-from BattleBase import *
-from BattleCalculatorAI import *
+from .BattleBase import *
+from .BattleCalculatorAI import *
 from toontown.toonbase.ToontownBattleGlobals import *
-from SuitBattleGlobals import *
+from .SuitBattleGlobals import *
 from direct.showbase.PythonUtil import addListsByValue
-import DistributedBattleBaseAI
+from . import DistributedBattleBaseAI
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
 import random

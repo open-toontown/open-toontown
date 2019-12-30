@@ -1,4 +1,4 @@
-import DistributedNPCToonBaseAI
+from . import DistributedNPCToonBaseAI
 from toontown.toonbase import TTLocalizer, ToontownGlobals
 from direct.fsm import ClassicFSM, State
 from direct.task.Task import Task

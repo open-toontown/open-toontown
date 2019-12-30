@@ -1,19 +1,20 @@
 from pandac.PandaModules import *
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
-from DistributedMinigame import *
+from .DistributedMinigame import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task import Task
-import ArrowKeys
-import Ring
-import RingTrack
-import RingGameGlobals
-import RingGroup
-import RingTrackGroups
+from . import ArrowKeys
+from . import Ring
+from . import RingTrack
+from . import RingGameGlobals
+from . import RingGroup
+from . import RingTrackGroups
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
+from functools import reduce
 
 class DistributedRingGame(DistributedMinigame):
     UPDATE_ENVIRON_TASK = 'RingGameUpdateEnvironTask'
@@ -364,7 +365,7 @@ class DistributedRingGame(DistributedMinigame):
          ToontownGlobals.MinniesMelodyland: [4, 8, 4],
          ToontownGlobals.TheBrrrgh: [4, 6, 6],
          ToontownGlobals.DonaldsDreamland: [2, 6, 8]}
-        for distr in difficultyDistributions.values():
+        for distr in list(difficultyDistributions.values()):
             sum = reduce(lambda x, y: x + y, distr)
 
         difficultyPatterns = {ToontownGlobals.ToontownCentral: [[0] * 14 + [1] * 2 + [2] * 0, [0,
@@ -515,15 +516,15 @@ class DistributedRingGame(DistributedMinigame):
         numGroupsPerDifficulty = difficultyDistributions[safezone]
 
         def patternsAreValid(difficultyPatterns = difficultyPatterns, difficultyDistributions = difficultyDistributions):
-            for sz in difficultyPatterns.keys():
+            for sz in list(difficultyPatterns.keys()):
                 for pattern in difficultyPatterns[sz]:
                     for difficulty in [0, 1, 2]:
                         numGroupsPerDifficulty = difficultyDistributions[sz]
                         if numGroupsPerDifficulty[difficulty] != pattern.count(difficulty):
-                            print 'safezone:', sz
-                            print 'pattern:', pattern
-                            print 'difficulty:', difficulty
-                            print 'expected %s %ss, found %s' % (numGroupsPerDifficulty[difficulty], difficulty, pattern.count(difficulty))
+                            print('safezone:', sz)
+                            print('pattern:', pattern)
+                            print('difficulty:', difficulty)
+                            print('expected %s %ss, found %s' % (numGroupsPerDifficulty[difficulty], difficulty, pattern.count(difficulty)))
                             return 0
 
             return 1
@@ -619,7 +620,7 @@ class DistributedRingGame(DistributedMinigame):
     def enterCleanup(self):
         self.notify.debug('enterCleanup')
         if not self.isSinglePlayer():
-            for np in self.remoteToonCollNPs.values():
+            for np in list(self.remoteToonCollNPs.values()):
                 np.removeNode()
 
             del self.remoteToonCollNPs

@@ -232,7 +232,7 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
                 camera.setPos(0.5, -2, 2.5)
                 camera.setHpr(0, 0, 0)
                 self.boss.toonEnteredCannon(self.avId, self.index)
-            if self.cr.doId2do.has_key(self.avId):
+            if self.avId in self.cr.doId2do:
                 self.av = self.cr.doId2do[self.avId]
                 self.acceptOnce(self.av.uniqueName('disable'), self.__avatarGone)
                 self.av.loop('neutral')
@@ -669,10 +669,10 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
             return Task.done
         flightResults = self.__calcFlightResults(avId, launchTime)
         if not isClient():
-            print 'EXECWARNING DistributedLawbotCannon: %s' % flightResults
+            print('EXECWARNING DistributedLawbotCannon: %s' % flightResults)
             printStack()
         for key in flightResults:
-            exec "%s = flightResults['%s']" % (key, key)
+            exec("%s = flightResults['%s']" % (key, key))
 
         self.notify.debug('start position: ' + str(startPos))
         self.notify.debug('start velocity: ' + str(startVel))

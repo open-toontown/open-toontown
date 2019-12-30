@@ -9,9 +9,9 @@ from toontown.toonbase import ToontownGlobals
 from toontown.suit import Suit
 from toontown.suit import SuitDNA
 from toontown.battle import BattleProps
-import CogdoUtil
-import CogdoFlyingGameGlobals as Globals
-from CogdoFlyingUtil import swapAvatarShadowPlacer
+from . import CogdoUtil
+from . import CogdoFlyingGameGlobals as Globals
+from .CogdoFlyingUtil import swapAvatarShadowPlacer
 from direct.particles import ParticleEffect
 from direct.particles import Particles
 from direct.particles import ForceGroup

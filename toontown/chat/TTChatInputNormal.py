@@ -32,7 +32,7 @@ class TTChatInputNormal(ChatInputNormal.ChatInputNormal):
 
     def importExecNamespace(self):
         ChatInputNormal.ChatInputNormal.importExecNamespace(self)
-        exec 'from toontown.toonbase.ToonBaseGlobal import *' in globals(), self.ExecNamespace
+        exec('from toontown.toonbase.ToonBaseGlobal import *', globals(), self.ExecNamespace)
 
     def typeCallback(self, extraArgs):
         if localAvatar.chatMgr.chatInputWhiteList.isActive():

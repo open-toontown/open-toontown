@@ -5,9 +5,9 @@ from direct.interval.IntervalGlobal import *
 import random
 from otp.level import DistributedLevel
 from direct.directnotify import DirectNotifyGlobal
-import MintRoomBase, MintRoom
-import FactoryEntityCreator
-import MintRoomSpecs
+from . import MintRoomBase, MintRoom
+from . import FactoryEntityCreator
+from . import MintRoomSpecs
 from otp.level import LevelSpec, LevelConstants
 from toontown.toonbase import TTLocalizer
 if __dev__:
@@ -150,7 +150,7 @@ class DistributedMintRoom(DistributedLevel.DistributedLevel, MintRoomBase.MintRo
             pos = base.localAvatar.getPos(thisZone)
             h = base.localAvatar.getH(thisZone)
             roomName = MintRoomSpecs.CashbotMintRoomId2RoomName[self.roomId]
-            print 'mint pos: %s, h: %s, room: %s' % (repr(pos), h, roomName)
+            print('mint pos: %s, h: %s, room: %s' % (repr(pos), h, roomName))
             if self.mint is not None:
                 floorNum = self.mint.floorNum
             else:

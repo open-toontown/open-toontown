@@ -190,14 +190,14 @@ def generateIndexes(doId, playground):
     usedI = []
     unusedI = []
     for area in ButterflyPoints[playground]:
-        usedI.append(range(0, len(area)))
+        usedI.append(list(range(0, len(area))))
         unusedI.append([])
 
     allocatedIndexes[doId] = (usedI, unusedI)
 
 
 def clearIndexes(doId):
-    if allocatedIndexes.has_key(doId):
+    if doId in allocatedIndexes:
         del allocatedIndexes[doId]
 
 
@@ -212,7 +212,7 @@ def getFirstRoute(playground, area, doId):
 
 
 def __getCurrentPos(playground, area, doId):
-    if allocatedIndexes.has_key(doId):
+    if doId in allocatedIndexes:
         unusedI = allocatedIndexes[doId][0][area]
         usedI = allocatedIndexes[doId][1][area]
     else:
@@ -227,7 +227,7 @@ def __getCurrentPos(playground, area, doId):
 
 
 def getNextPos(currentPos, playground, area, doId):
-    if allocatedIndexes.has_key(doId):
+    if doId in allocatedIndexes:
         unusedI = allocatedIndexes[doId][0][area]
         usedI = allocatedIndexes[doId][1][area]
     else:
@@ -250,7 +250,7 @@ def getNextPos(currentPos, playground, area, doId):
 
 
 def recycleIndex(index, playground, area, doId):
-    if allocatedIndexes.has_key(doId):
+    if doId in allocatedIndexes:
         unusedI = allocatedIndexes[doId][0][area]
         usedI = allocatedIndexes[doId][1][area]
     else:

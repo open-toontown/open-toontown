@@ -1,11 +1,11 @@
 from direct.distributed.ClockDelta import globalClockDelta
 from toontown.toonbase import TTLocalizer
-from DistCogdoGame import DistCogdoGame
+from .DistCogdoGame import DistCogdoGame
 from toontown.cogdominium.DistCogdoMazeGameBase import DistCogdoMazeGameBase
-from CogdoMazeGame import CogdoMazeGame
-from CogdoMaze import CogdoMazeFactory
-import CogdoMazeGameGlobals
-import CogdoMazeGameGlobals as Globals
+from .CogdoMazeGame import CogdoMazeGame
+from .CogdoMaze import CogdoMazeFactory
+from . import CogdoMazeGameGlobals
+from . import CogdoMazeGameGlobals as Globals
 
 class DistCogdoMazeGame(DistCogdoGame, DistCogdoMazeGameBase):
     notify = directNotify.newCategory('DistCogdoMazeGame')

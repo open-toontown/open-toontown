@@ -5,9 +5,9 @@ from direct.interval.IntervalGlobal import *
 import random
 from otp.level import DistributedLevel
 from direct.directnotify import DirectNotifyGlobal
-import LawOfficeBase
-import FactoryEntityCreator
-import FactorySpecs
+from . import LawOfficeBase
+from . import FactoryEntityCreator
+from . import FactorySpecs
 from otp.level import LevelSpec
 from otp.level import LevelConstants
 from toontown.toonbase import TTLocalizer
@@ -96,7 +96,7 @@ class DistributedLawOfficeFloor(DistributedLevel.DistributedLevel, LawOfficeBase
         def printPos(self = self):
             pos = base.localAvatar.getPos(self.getZoneNode(self.lastToonZone))
             h = base.localAvatar.getH(self.getZoneNode(self.lastToonZone))
-            print 'factory pos: %s, h: %s, zone %s' % (repr(pos), h, self.lastToonZone)
+            print('factory pos: %s, h: %s, zone %s' % (repr(pos), h, self.lastToonZone))
             posStr = 'X: %.3f' % pos[0] + '\nY: %.3f' % pos[1] + '\nZ: %.3f' % pos[2] + '\nH: %.3f' % h + '\nZone: %s' % str(self.lastToonZone)
             base.localAvatar.setChat(posStr, CFThought, 0)
 

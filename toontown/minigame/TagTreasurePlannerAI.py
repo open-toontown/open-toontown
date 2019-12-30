@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase.ToontownGlobals import *
 from toontown.safezone import RegenTreasurePlannerAI
-import DistributedTagTreasureAI
+from . import DistributedTagTreasureAI
 
 class TagTreasurePlannerAI(RegenTreasurePlannerAI.RegenTreasurePlannerAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('TagTreasurePlannerAI')

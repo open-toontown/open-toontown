@@ -40,7 +40,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
         self.done = 0
         self.geyserTrack = None
         SafeZoneLoader.load(self)
-        self.birdSound = map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.mp3'])
+        self.birdSound = list(map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.mp3']))
         self.underwaterSound = base.loader.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
         self.swimSound = base.loader.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.mp3')
         self.submergeSound = base.loader.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.mp3')
@@ -198,7 +198,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
                 base.holder = holder
                 toonPos = av.getPos(render)
                 toonHpr = av.getHpr(render)
-                print 'av Pos %s' % av.getPos()
+                print('av Pos %s' % av.getPos())
                 base.toonPos = toonPos
                 holder.setPos(toonPos)
                 av.reparentTo(holder)
@@ -210,7 +210,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
                     lookIn = Vec3(0 + lookAt, -30, 0)
                 else:
                     lookIn = Vec3(360 + lookAt, -30, 0)
-                print 'Camera Hprs toon %s; lookIn %s; final %s' % (newHpr, lookIn, lookIn - newHpr)
+                print('Camera Hprs toon %s; lookIn %s; final %s' % (newHpr, lookIn, lookIn - newHpr))
                 if local == 1:
                     camPosOriginal = camera.getPos()
                     camHprOriginal = camera.getHpr()
@@ -272,7 +272,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
 
     def doPrint(self, thing):
         return 0
-        print thing
+        print(thing)
 
     def unload(self):
         del self.birdSound
@@ -335,7 +335,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
             return ZoneUtil.getHoodId(status['zoneId']) == self.hood.hoodId
 
     def enterGolfCourse(self, requestStatus):
-        if requestStatus.has_key('curseId'):
+        if 'curseId' in requestStatus:
             self.golfCourseId = requestStatus['courseId']
         else:
             self.golfCourseId = 0
@@ -347,7 +347,7 @@ class OZSafeZoneLoader(SafeZoneLoader):
         del self.golfCourseId
 
     def handleRaceOver(self):
-        print 'you done!!'
+        print('you done!!')
 
     def handleLeftGolf(self):
         req = {'loader': 'safeZoneLoader',
@@ -379,5 +379,5 @@ class OZSafeZoneLoader(SafeZoneLoader):
             keyList.append(key)
 
         for key in keyList:
-            if self.__toonTracks.has_key(key):
+            if key in self.__toonTracks:
                 self.clearToonTrack(key)

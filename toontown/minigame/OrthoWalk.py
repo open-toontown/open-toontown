@@ -1,7 +1,7 @@
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
-from OrthoDrive import *
+from .OrthoDrive import *
 from direct.directnotify import DirectNotifyGlobal
 
 class OrthoWalk:

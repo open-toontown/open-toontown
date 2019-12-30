@@ -4,8 +4,8 @@ from otp.avatar import Avatar
 from toontown.toonbase import ToontownGlobals
 from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
-import GoonGlobals
-import SuitDNA
+from . import GoonGlobals
+from . import SuitDNA
 import math
 AnimDict = {'pg': (('walk', '-walk'), ('collapse', '-collapse'), ('recovery', '-recovery')),
  'sg': (('walk', '-walk'), ('collapse', '-collapse'), ('recovery', '-recovery'))}

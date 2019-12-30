@@ -195,17 +195,17 @@ class DistCogdoCraneGame(CogdoCraneGameBase, DistCogdoLevelGame):
             self._gravityForceNode.addForce(self._gravityForce)
 
         def _handleEmptyFrictionCoefChanged(self, coef):
-            for crane in self.cranes.itervalues():
+            for crane in self.cranes.values():
                 crane._handleEmptyFrictionCoefChanged(coef)
 
         def _handleRopeLinkMassChanged(self, mass):
-            for crane in self.cranes.itervalues():
+            for crane in self.cranes.values():
                 crane._handleRopeLinkMassChanged(mass)
 
         def _handleMagnetMassChanged(self, mass):
-            for crane in self.cranes.itervalues():
+            for crane in self.cranes.values():
                 crane._handleMagnetMassChanged(mass)
 
         def _handleMoneyBagGrabHeightChanged(self, height):
-            for moneyBag in self.moneyBags.itervalues():
+            for moneyBag in self.moneyBags.values():
                 moneyBag._handleMoneyBagGrabHeightChanged(height)

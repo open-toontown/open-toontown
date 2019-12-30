@@ -27,7 +27,7 @@ class NormalBingo(BingoCardBase.BingoCardBase):
         id = self.cardSize / 2
         if self.checkForWin(id):
             return BingoGlobals.WIN
-        for i in xrange(BingoGlobals.CARD_ROWS):
+        for i in range(BingoGlobals.CARD_ROWS):
             if i != BingoGlobals.CARD_ROWS / 2:
                 rowResult = self.rowCheck(i)
                 colResult = self.colCheck(i)

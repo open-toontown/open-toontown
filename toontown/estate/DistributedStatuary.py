@@ -1,7 +1,7 @@
-import DistributedLawnDecor
+from . import DistributedLawnDecor
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.ShowBase import *
-import GardenGlobals
+from . import GardenGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
@@ -43,10 +43,10 @@ class DistributedStatuary(DistributedLawnDecor.DistributedLawnDecor):
         self.plantType = GardenGlobals.PlantAttributes[typeIndex]['plantType']
         self.modelPath = GardenGlobals.PlantAttributes[typeIndex]['model']
         self.pinballScore = None
-        if GardenGlobals.PlantAttributes[typeIndex].has_key('pinballScore'):
+        if 'pinballScore' in GardenGlobals.PlantAttributes[typeIndex]:
             self.pinballScore = GardenGlobals.PlantAttributes[typeIndex]['pinballScore']
         self.worldScale = 1.0
-        if GardenGlobals.PlantAttributes[typeIndex].has_key('worldScale'):
+        if 'worldScale' in GardenGlobals.PlantAttributes[typeIndex]:
             self.worldScale = GardenGlobals.PlantAttributes[typeIndex]['worldScale']
         return
 

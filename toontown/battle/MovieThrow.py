@@ -1,15 +1,15 @@
 from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
-from BattleBase import *
-from BattleProps import *
-from BattleSounds import *
+from .BattleBase import *
+from .BattleProps import *
+from .BattleSounds import *
 from toontown.toon.ToonDNA import *
 from toontown.suit.SuitDNA import *
 from direct.directnotify import DirectNotifyGlobal
 import random
-import MovieCamera
-import MovieUtil
-from MovieUtil import calcAvgSuitPos
+from . import MovieCamera
+from . import MovieUtil
+from .MovieUtil import calcAvgSuitPos
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieThrow')
 hitSoundFiles = ('AA_tart_only.mp3', 'AA_slice_only.mp3', 'AA_slice_only.mp3', 'AA_slice_only.mp3', 'AA_slice_only.mp3', 'AA_wholepie_only.mp3', 'AA_wholepie_only.mp3')
 tPieLeavesHand = 2.7
@@ -20,7 +20,7 @@ tPieShrink = 0.7
 pieFlyTaskName = 'MovieThrow-pieFly'
 
 def addHit(dict, suitId, hitCount):
-    if dict.has_key(suitId):
+    if suitId in dict:
         dict[suitId] += hitCount
     else:
         dict[suitId] = hitCount
@@ -35,12 +35,12 @@ def doThrows(throws):
             pass
         else:
             suitId = throw['target']['suit'].doId
-            if suitThrowsDict.has_key(suitId):
+            if suitId in suitThrowsDict:
                 suitThrowsDict[suitId].append(throw)
             else:
                 suitThrowsDict[suitId] = [throw]
 
-    suitThrows = suitThrowsDict.values()
+    suitThrows = list(suitThrowsDict.values())
 
     def compFunc(a, b):
         if len(a) > len(b):
@@ -574,7 +574,7 @@ def __throwGroupPie(throw, delay, groupHitDict):
                 singleSuitResponseTrack.append(Func(suit.loop, 'neutral'))
             singleSuitResponseTrack = Parallel(singleSuitResponseTrack, bonusTrack)
         else:
-            groupHitValues = groupHitDict.values()
+            groupHitValues = list(groupHitDict.values())
             if groupHitValues.count(0) == len(groupHitValues):
                 singleSuitResponseTrack = MovieUtil.createSuitDodgeMultitrack(delay + tSuitDodges, suit, leftSuits, rightSuits)
             else:

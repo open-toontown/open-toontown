@@ -47,7 +47,7 @@ class BattleSounds:
                 found = vfs.resolveFilename(filename, self.sfxSearchPath)
             if not found:
                 self.notify.warning('%s not found on:' % name)
-                print self.sfxSearchPath
+                print(self.sfxSearchPath)
             else:
                 return self.mgr.getSound(filename.getFullpath())
         return self.mgr.getNullSound()

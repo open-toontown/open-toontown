@@ -1,7 +1,7 @@
 from otp.ai.AIBase import *
 from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
-from ElevatorConstants import *
+from .ElevatorConstants import *
 from direct.distributed import DistributedObjectAI
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
@@ -258,7 +258,7 @@ class DistributedElevatorAI(DistributedObjectAI.DistributedObjectAI):
         self.accepting = 1
 
     def exitWaitCountdown(self):
-        print 'exit wait countdown'
+        print('exit wait countdown')
         self.accepting = 0
         taskMgr.remove(self.uniqueName('countdown-timer'))
         self.newTrip()

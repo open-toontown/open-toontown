@@ -116,7 +116,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
         if self.releaseTrack:
             self.releaseTrack.finish()
             self.releaseTrack = None
-        flyTracks = self.flyBallTracks.values()
+        flyTracks = list(self.flyBallTracks.values())
         for track in flyTracks:
             track.finish()
 
@@ -458,7 +458,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
 
     def __updateBallPower(self, task):
         if not self.powerBar:
-            print '### no power bar!!!'
+            print('### no power bar!!!')
             return task.done
         newPower = self.__getBallPower(globalClock.getFrameTime())
         self.power = newPower
@@ -671,20 +671,20 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
         return self.__flyBallBubble
 
     def __flyBallHit(self, entry):
-        print entry
+        print(entry)
 
     def flyBallFinishedFlying(self, sequence):
-        if self.flyBallTracks.has_key(sequence):
+        if sequence in self.flyBallTracks:
             del self.flyBallTracks[sequence]
 
     def __finishFlyBallTrack(self, sequence):
-        if self.flyBallTracks.has_key(sequence):
+        if sequence in self.flyBallTracks:
             flyBallTrack = self.flyBallTracks[sequence]
             del self.flyBallTracks[sequence]
             flyBallTrack.finish()
 
     def flyBallFinishedSplatting(self, sequence):
-        if self.splatTracks.has_key(sequence):
+        if sequence in self.splatTracks:
             del self.splatTracks[sequence]
 
     def __flyBallHit(self, entry):
@@ -694,7 +694,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
             return
         sequence = int(entry.getFromNodePath().getNetTag('pieSequence'))
         self.__finishFlyBallTrack(sequence)
-        if self.splatTracks.has_key(sequence):
+        if sequence in self.splatTracks:
             splatTrack = self.splatTracks[sequence]
             del self.splatTracks[sequence]
             splatTrack.finish()

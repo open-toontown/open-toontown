@@ -56,7 +56,7 @@ class TwoDSectionMgr(DirectObject):
         self.startPipe.setPos(12, 0, 44)
         self.startArrow = self.game.assetMgr.arrow.copyTo(self.startSectionNP)
         self.startArrow.setPos(23, 1.5, 12.76)
-        for index in xrange(len(ToonBlitzGlobals.BlockListStart)):
+        for index in range(len(ToonBlitzGlobals.BlockListStart)):
             blockAttribs = ToonBlitzGlobals.BlockListStart[index]
             fileName = ToonBlitzGlobals.BlockTypes[blockAttribs[0]][0]
             blockIndex = int(fileName[-1])

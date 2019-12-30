@@ -1,8 +1,8 @@
-from DistributedMinigameAI import *
+from .DistributedMinigameAI import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-import RingGameGlobals
+from . import RingGameGlobals
 import random
 import types
 
@@ -65,7 +65,7 @@ class DistributedRingGameAI(DistributedMinigameAI):
         for i in range(0, 4):
             c = random.choice(chooseFrom)
             chooseFrom.remove(c)
-            if isinstance(c, types.TupleType):
+            if isinstance(c, tuple):
                 c = random.choice(c)
             self.colorIndices[i] = c
 

@@ -2,7 +2,7 @@ from direct.showbase.DirectObject import DirectObject
 from toontown.toonbase.ToontownGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import *
-import VineGameGlobals
+from . import VineGameGlobals
 
 class VineSpider(NodePath, DirectObject):
     RADIUS = 1.7
@@ -56,8 +56,8 @@ class VineSpider(NodePath, DirectObject):
         self.removeNode()
 
     def __handleEnterSphere(self, collEntry):
-        print 'VineSpider.__handleEnterSphere'
-        print collEntry
+        print('VineSpider.__handleEnterSphere')
+        print(collEntry)
         self.ignoreAll()
         self.notify.debug('treasuerGrabbed')
         messenger.send('VineSpiderGrabbed', [self.serialNum])

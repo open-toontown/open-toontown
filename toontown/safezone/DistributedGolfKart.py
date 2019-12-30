@@ -2,7 +2,7 @@ from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
-from TrolleyConstants import *
+from .TrolleyConstants import *
 from toontown.golf import GolfGlobals
 from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
@@ -174,7 +174,7 @@ class DistributedGolfKart(DistributedObject.DistributedObject):
                 self.localToonOnBoard = 1
             if avId == base.localAvatar.getDoId():
                 self.loader.place.trolley.fsm.request('boarded')
-            if self.cr.doId2do.has_key(avId):
+            if avId in self.cr.doId2do:
                 toon = self.cr.doId2do[avId]
                 toon.stopSmooth()
                 toon.wrtReparentTo(self.golfKart)
@@ -212,7 +212,7 @@ class DistributedGolfKart(DistributedObject.DistributedObject):
             pass
         else:
             self.avIds[index] = 0
-            if self.cr.doId2do.has_key(avId):
+            if avId in self.cr.doId2do:
                 toon = self.cr.doId2do[avId]
                 toon.stopSmooth()
                 sitStartDuration = toon.getDuration('sit-start')
@@ -341,7 +341,7 @@ class DistributedGolfKart(DistributedObject.DistributedObject):
             keyList.append(key)
 
         for key in keyList:
-            if self.__toonTracks.has_key(key):
+            if key in self.__toonTracks:
                 self.clearToonTrack(key)
 
     def setGolfCourse(self, golfCourse):

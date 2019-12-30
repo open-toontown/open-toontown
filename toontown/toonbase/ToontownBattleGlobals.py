@@ -1,6 +1,6 @@
-from ToontownGlobals import *
+from .ToontownGlobals import *
 import math
-import TTLocalizer
+from . import TTLocalizer
 BattleCamFaceOffFov = 30.0
 BattleCamFaceOffPos = Point3(0, -10, 4)
 BattleCamDefaultPos = Point3(0, -8.6, 16.5)

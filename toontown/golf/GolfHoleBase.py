@@ -2,7 +2,7 @@ from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from pandac.PandaModules import *
-import DistributedPhysicsWorldAI
+from . import DistributedPhysicsWorldAI
 from direct.fsm.FSM import FSM
 from toontown.ai.ToonBarrier import *
 from toontown.golf import GolfGlobals
@@ -45,7 +45,7 @@ class GolfHoleBase:
             self.meshDataList.append(terrainDataOde)
             terrainGeomOde = OdeTriMeshGeom(self.space, terrainDataOde)
             self.geomDataList.append(terrainGeomOde)
-            terrainGeomOde.setCollideBits(BitMask32(4026531840L))
+            terrainGeomOde.setCollideBits(BitMask32(4026531840))
             terrainGeomOde.setCategoryBits(BitMask32(240))
             self.space.setSurfaceType(terrainGeomOde, GolfGlobals.GRASS_SURFACE)
             self.space.setCollideId(terrainGeomOde, 2)
@@ -58,7 +58,7 @@ class GolfHoleBase:
             self.meshDataList.append(terrainDataOde)
             terrainGeomOde = OdeTriMeshGeom(self.space, terrainDataOde)
             self.geomDataList.append(terrainGeomOde)
-            terrainGeomOde.setCollideBits(BitMask32(4026531840L))
+            terrainGeomOde.setCollideBits(BitMask32(4026531840))
             terrainGeomOde.setCategoryBits(BitMask32(240))
             self.space.setSurfaceType(terrainGeomOde, GolfGlobals.SLICK_SURFACE)
             self.space.setCollideId(terrainGeomOde, GolfGlobals.SLICK_COLLIDE_ID)
@@ -68,7 +68,7 @@ class GolfHoleBase:
         self.meshDataList.append(cupData)
         cupGeom = OdeTriMeshGeom(self.space, cupData)
         self.geomDataList.append(cupGeom)
-        cupGeom.setCollideBits(BitMask32(4026531840L))
+        cupGeom.setCollideBits(BitMask32(4026531840))
         cupGeom.setCategoryBits(BitMask32(240))
         self.space.setSurfaceType(cupGeom, GolfGlobals.HOLE_SURFACE)
         self.space.setCollideId(cupGeom, GolfGlobals.HOLE_CUP_COLLIDE_ID)
@@ -76,7 +76,7 @@ class GolfHoleBase:
             self.golfBarrier = self.terrainModel.find('**/collision1')
             if not self.golfBarrier.isEmpty():
                 golfBarrierCollection = self.terrainModel.findAllMatches('**/collision?')
-                for i in xrange(golfBarrierCollection.getNumPaths()):
+                for i in range(golfBarrierCollection.getNumPaths()):
                     oneBarrier = golfBarrierCollection.getPath(i)
                     if oneBarrier != self.golfBarrier:
                         oneBarrier.wrtReparentTo(self.golfBarrier)
@@ -92,7 +92,7 @@ class GolfHoleBase:
         self.meshDataList.append(hardData)
         hardGeom = OdeTriMeshGeom(self.space, hardData)
         self.geomDataList.append(hardGeom)
-        hardGeom.setCollideBits(BitMask32(4026531840L))
+        hardGeom.setCollideBits(BitMask32(4026531840))
         hardGeom.setCategoryBits(BitMask32(240))
         self.space.setCollideId(hardGeom, 3)
         hardSurface = self.space.getSurfaceType(hardGeom)
@@ -128,7 +128,7 @@ class GolfHoleBase:
         self.ballRay.setOffsetRotation(Mat3(1, 0, 0, 0, -1, 0, 0, 0, -1))
         self.ballRay.setOffsetPosition(0, 0, 0.0)
         self.ballRay.setCollideBits(BitMask32(16773375))
-        self.ballRay.setCategoryBits(BitMask32(4278190080L))
+        self.ballRay.setCategoryBits(BitMask32(4278190080))
         self.ballRayBody = body
         self.space.setCollideId(self.ballRay, GolfGlobals.OOB_RAY_COLLIDE_ID)
         self.rayList.append(self.ballRay)
@@ -271,7 +271,7 @@ class GolfHoleBase:
                         self.notify.debug('renable limit passed')
                 elif self.frame > 2100 + checkFrames:
                     self.comObjNeedPass = 0
-                    print 'recording limit passed comObj'
+                    print('recording limit passed comObj')
             if ball.isEnabled():
                 lastFrameEnabled = self.frame
 

@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-import ShtikerPage
+from . import ShtikerPage
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
@@ -197,7 +197,7 @@ class GardenPage(ShtikerPage.ShtikerPage):
         self.specialsInfo['text'] = GardenGlobals.Specials[entry[0]]['description']
         self.selectedSpecial = type
         specialInfo = GardenGlobals.Specials[entry[0]]
-        if specialInfo.has_key('useFromShtiker') and specialInfo['useFromShtiker']:
+        if 'useFromShtiker' in specialInfo and specialInfo['useFromShtiker']:
             self.useSpecialButton.show()
         else:
             self.useSpecialButton.hide()
@@ -230,7 +230,7 @@ class GardenPage(ShtikerPage.ShtikerPage):
             self.trophies = []
             hOffset = -0.5
             vOffset = 0.4
-            for level, trophyDesc in GardenGlobals.TrophyDict.items():
+            for level, trophyDesc in list(GardenGlobals.TrophyDict.items()):
                 trophy = GardenTrophy(-1)
                 trophy.nameLabel['text'] = trophyDesc[0]
                 trophy.reparentTo(self.trophyFrame)
@@ -261,7 +261,7 @@ class GardenPage(ShtikerPage.ShtikerPage):
              0.1), borderWidth=(0.025, 0.025), scale=0.45, frameColor=(0.8, 0.8, 0.7, 1), barColor=(0.4, 0.6, 1.0, 1), range=self.barLength + self.FUDGE_FACTOR, value=self.barLength * 0.5 + self.FUDGE_FACTOR, text=' ' + TTLocalizer.Laff, text_scale=0.11, text_fg=(0.05, 0.14, 0.2, 1), text_align=TextNode.ALeft, text_pos=(-0.57, -0.035))
 
     def unload(self):
-        print 'gardenPage Unloading'
+        print('gardenPage Unloading')
         if hasattr(self, 'specialsPhoto'):
             del self.specialsPhoto
         if hasattr(self, 'trophies'):
@@ -302,7 +302,7 @@ class GardenPage(ShtikerPage.ShtikerPage):
             self.wateringCanBar['text'] = textToUse
             self.wateringCanBar['value'] = float(curWateringCanSkill) / float(maxWateringCanSkill) * self.barLength + self.FUDGE_FACTOR
         else:
-            print 'no shovel bar'
+            print('no shovel bar')
         if self.mode == GardenPage_Collection:
             if hasattr(self, 'browser'):
                 self.browser.update()

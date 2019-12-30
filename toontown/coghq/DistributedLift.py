@@ -5,8 +5,8 @@ from otp.level import BasicEntities
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-import LiftConstants
-import MovingPlatform
+from . import LiftConstants
+from . import MovingPlatform
 
 class DistributedLift(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLift')
@@ -82,7 +82,7 @@ class DistributedLift(BasicEntities.DistributedNodePathEntity):
          'back': '**/wall_back',
          'left': '**/wall_left',
          'right': '**/wall_right'}
-        for side in side2srch.values():
+        for side in list(side2srch.values()):
             np = self.platformModel.find(side)
             if not np.isEmpty():
                 np.setScale(1.0, 1.0, 2.0)

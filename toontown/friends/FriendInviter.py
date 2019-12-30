@@ -219,10 +219,10 @@ class FriendInviter(DirectFrame):
     def enterCheckAvailability(self):
         self.accept(self.avDisableName, self.__handleDisableAvatar)
         if not self.playerFriend:
-            if not base.cr.doId2do.has_key(self.avId):
+            if self.avId not in base.cr.doId2do:
                 self.fsm.request('wentAway')
                 return
-        if not base.cr.doId2do.has_key(self.avId):
+        if self.avId not in base.cr.doId2do:
             self.fsm.request('wentAway')
             return
         else:
@@ -363,7 +363,7 @@ class FriendInviter(DirectFrame):
             base.cr.removeFriend(self.avId)
         self['text'] = OTPLocalizer.FriendInviterFriendsNoMore % self.getName()
         self.bOk.show()
-        if not base.cr.doId2do.has_key(self.avId):
+        if self.avId not in base.cr.doId2do:
             messenger.send(self.avDisableName)
 
     def exitFriendsNoMore(self):

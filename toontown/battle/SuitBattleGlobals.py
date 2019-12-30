@@ -1,4 +1,4 @@
-from BattleBase import *
+from .BattleBase import *
 import random
 from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase import OTPLocalizer
@@ -77,7 +77,7 @@ def pickSuitAttack(attacks, suitLevel):
         return attackNum
     elif configAttackName == 'sequence':
         for i in range(len(attacks)):
-            if not debugAttackSequence.has_key(attacks[i]):
+            if attacks[i] not in debugAttackSequence:
                 debugAttackSequence[attacks[i]] = 1
                 return i
 
@@ -101,7 +101,7 @@ def getSuitAttack(suitName, suitLevel, attackNum = -1):
     adict['suitName'] = suitName
     name = attack[0]
     adict['name'] = name
-    adict['id'] = SuitAttacks.keys().index(name)
+    adict['id'] = list(SuitAttacks.keys()).index(name)
     adict['animName'] = SuitAttacks[name][0]
     adict['hp'] = attack[1][suitLevel]
     adict['acc'] = attack[2][suitLevel]
@@ -2953,76 +2953,76 @@ SuitAttacks = {'Audit': ('phone', ATK_TGT_SINGLE),
  'Watercooler': ('watercooler', ATK_TGT_SINGLE),
  'Withdrawal': ('magic1', ATK_TGT_SINGLE),
  'WriteOff': ('hold-pencil', ATK_TGT_SINGLE)}
-AUDIT = SuitAttacks.keys().index('Audit')
-BITE = SuitAttacks.keys().index('Bite')
-BOUNCE_CHECK = SuitAttacks.keys().index('BounceCheck')
-BRAIN_STORM = SuitAttacks.keys().index('BrainStorm')
-BUZZ_WORD = SuitAttacks.keys().index('BuzzWord')
-CALCULATE = SuitAttacks.keys().index('Calculate')
-CANNED = SuitAttacks.keys().index('Canned')
-CHOMP = SuitAttacks.keys().index('Chomp')
-CIGAR_SMOKE = SuitAttacks.keys().index('CigarSmoke')
-CLIPON_TIE = SuitAttacks.keys().index('ClipOnTie')
-CRUNCH = SuitAttacks.keys().index('Crunch')
-DEMOTION = SuitAttacks.keys().index('Demotion')
-DOWNSIZE = SuitAttacks.keys().index('Downsize')
-DOUBLE_TALK = SuitAttacks.keys().index('DoubleTalk')
-EVICTION_NOTICE = SuitAttacks.keys().index('EvictionNotice')
-EVIL_EYE = SuitAttacks.keys().index('EvilEye')
-FILIBUSTER = SuitAttacks.keys().index('Filibuster')
-FILL_WITH_LEAD = SuitAttacks.keys().index('FillWithLead')
-FINGER_WAG = SuitAttacks.keys().index('FingerWag')
-FIRED = SuitAttacks.keys().index('Fired')
-FIVE_O_CLOCK_SHADOW = SuitAttacks.keys().index('FiveOClockShadow')
-FLOOD_THE_MARKET = SuitAttacks.keys().index('FloodTheMarket')
-FOUNTAIN_PEN = SuitAttacks.keys().index('FountainPen')
-FREEZE_ASSETS = SuitAttacks.keys().index('FreezeAssets')
-GAVEL = SuitAttacks.keys().index('Gavel')
-GLOWER_POWER = SuitAttacks.keys().index('GlowerPower')
-GUILT_TRIP = SuitAttacks.keys().index('GuiltTrip')
-HALF_WINDSOR = SuitAttacks.keys().index('HalfWindsor')
-HANG_UP = SuitAttacks.keys().index('HangUp')
-HEAD_SHRINK = SuitAttacks.keys().index('HeadShrink')
-HOT_AIR = SuitAttacks.keys().index('HotAir')
-JARGON = SuitAttacks.keys().index('Jargon')
-LEGALESE = SuitAttacks.keys().index('Legalese')
-LIQUIDATE = SuitAttacks.keys().index('Liquidate')
-MARKET_CRASH = SuitAttacks.keys().index('MarketCrash')
-MUMBO_JUMBO = SuitAttacks.keys().index('MumboJumbo')
-PARADIGM_SHIFT = SuitAttacks.keys().index('ParadigmShift')
-PECKING_ORDER = SuitAttacks.keys().index('PeckingOrder')
-PICK_POCKET = SuitAttacks.keys().index('PickPocket')
-PINK_SLIP = SuitAttacks.keys().index('PinkSlip')
-PLAY_HARDBALL = SuitAttacks.keys().index('PlayHardball')
-POUND_KEY = SuitAttacks.keys().index('PoundKey')
-POWER_TIE = SuitAttacks.keys().index('PowerTie')
-POWER_TRIP = SuitAttacks.keys().index('PowerTrip')
-QUAKE = SuitAttacks.keys().index('Quake')
-RAZZLE_DAZZLE = SuitAttacks.keys().index('RazzleDazzle')
-RED_TAPE = SuitAttacks.keys().index('RedTape')
-RE_ORG = SuitAttacks.keys().index('ReOrg')
-RESTRAINING_ORDER = SuitAttacks.keys().index('RestrainingOrder')
-ROLODEX = SuitAttacks.keys().index('Rolodex')
-RUBBER_STAMP = SuitAttacks.keys().index('RubberStamp')
-RUB_OUT = SuitAttacks.keys().index('RubOut')
-SACKED = SuitAttacks.keys().index('Sacked')
-SANDTRAP = SuitAttacks.keys().index('SandTrap')
-SCHMOOZE = SuitAttacks.keys().index('Schmooze')
-SHAKE = SuitAttacks.keys().index('Shake')
-SHRED = SuitAttacks.keys().index('Shred')
-SONG_AND_DANCE = SuitAttacks.keys().index('SongAndDance')
-SPIN = SuitAttacks.keys().index('Spin')
-SYNERGY = SuitAttacks.keys().index('Synergy')
-TABULATE = SuitAttacks.keys().index('Tabulate')
-TEE_OFF = SuitAttacks.keys().index('TeeOff')
-THROW_BOOK = SuitAttacks.keys().index('ThrowBook')
-TREMOR = SuitAttacks.keys().index('Tremor')
-WATERCOOLER = SuitAttacks.keys().index('Watercooler')
-WITHDRAWAL = SuitAttacks.keys().index('Withdrawal')
-WRITE_OFF = SuitAttacks.keys().index('WriteOff')
+AUDIT = list(SuitAttacks.keys()).index('Audit')
+BITE = list(SuitAttacks.keys()).index('Bite')
+BOUNCE_CHECK = list(SuitAttacks.keys()).index('BounceCheck')
+BRAIN_STORM = list(SuitAttacks.keys()).index('BrainStorm')
+BUZZ_WORD = list(SuitAttacks.keys()).index('BuzzWord')
+CALCULATE = list(SuitAttacks.keys()).index('Calculate')
+CANNED = list(SuitAttacks.keys()).index('Canned')
+CHOMP = list(SuitAttacks.keys()).index('Chomp')
+CIGAR_SMOKE = list(SuitAttacks.keys()).index('CigarSmoke')
+CLIPON_TIE = list(SuitAttacks.keys()).index('ClipOnTie')
+CRUNCH = list(SuitAttacks.keys()).index('Crunch')
+DEMOTION = list(SuitAttacks.keys()).index('Demotion')
+DOWNSIZE = list(SuitAttacks.keys()).index('Downsize')
+DOUBLE_TALK = list(SuitAttacks.keys()).index('DoubleTalk')
+EVICTION_NOTICE = list(SuitAttacks.keys()).index('EvictionNotice')
+EVIL_EYE = list(SuitAttacks.keys()).index('EvilEye')
+FILIBUSTER = list(SuitAttacks.keys()).index('Filibuster')
+FILL_WITH_LEAD = list(SuitAttacks.keys()).index('FillWithLead')
+FINGER_WAG = list(SuitAttacks.keys()).index('FingerWag')
+FIRED = list(SuitAttacks.keys()).index('Fired')
+FIVE_O_CLOCK_SHADOW = list(SuitAttacks.keys()).index('FiveOClockShadow')
+FLOOD_THE_MARKET = list(SuitAttacks.keys()).index('FloodTheMarket')
+FOUNTAIN_PEN = list(SuitAttacks.keys()).index('FountainPen')
+FREEZE_ASSETS = list(SuitAttacks.keys()).index('FreezeAssets')
+GAVEL = list(SuitAttacks.keys()).index('Gavel')
+GLOWER_POWER = list(SuitAttacks.keys()).index('GlowerPower')
+GUILT_TRIP = list(SuitAttacks.keys()).index('GuiltTrip')
+HALF_WINDSOR = list(SuitAttacks.keys()).index('HalfWindsor')
+HANG_UP = list(SuitAttacks.keys()).index('HangUp')
+HEAD_SHRINK = list(SuitAttacks.keys()).index('HeadShrink')
+HOT_AIR = list(SuitAttacks.keys()).index('HotAir')
+JARGON = list(SuitAttacks.keys()).index('Jargon')
+LEGALESE = list(SuitAttacks.keys()).index('Legalese')
+LIQUIDATE = list(SuitAttacks.keys()).index('Liquidate')
+MARKET_CRASH = list(SuitAttacks.keys()).index('MarketCrash')
+MUMBO_JUMBO = list(SuitAttacks.keys()).index('MumboJumbo')
+PARADIGM_SHIFT = list(SuitAttacks.keys()).index('ParadigmShift')
+PECKING_ORDER = list(SuitAttacks.keys()).index('PeckingOrder')
+PICK_POCKET = list(SuitAttacks.keys()).index('PickPocket')
+PINK_SLIP = list(SuitAttacks.keys()).index('PinkSlip')
+PLAY_HARDBALL = list(SuitAttacks.keys()).index('PlayHardball')
+POUND_KEY = list(SuitAttacks.keys()).index('PoundKey')
+POWER_TIE = list(SuitAttacks.keys()).index('PowerTie')
+POWER_TRIP = list(SuitAttacks.keys()).index('PowerTrip')
+QUAKE = list(SuitAttacks.keys()).index('Quake')
+RAZZLE_DAZZLE = list(SuitAttacks.keys()).index('RazzleDazzle')
+RED_TAPE = list(SuitAttacks.keys()).index('RedTape')
+RE_ORG = list(SuitAttacks.keys()).index('ReOrg')
+RESTRAINING_ORDER = list(SuitAttacks.keys()).index('RestrainingOrder')
+ROLODEX = list(SuitAttacks.keys()).index('Rolodex')
+RUBBER_STAMP = list(SuitAttacks.keys()).index('RubberStamp')
+RUB_OUT = list(SuitAttacks.keys()).index('RubOut')
+SACKED = list(SuitAttacks.keys()).index('Sacked')
+SANDTRAP = list(SuitAttacks.keys()).index('SandTrap')
+SCHMOOZE = list(SuitAttacks.keys()).index('Schmooze')
+SHAKE = list(SuitAttacks.keys()).index('Shake')
+SHRED = list(SuitAttacks.keys()).index('Shred')
+SONG_AND_DANCE = list(SuitAttacks.keys()).index('SongAndDance')
+SPIN = list(SuitAttacks.keys()).index('Spin')
+SYNERGY = list(SuitAttacks.keys()).index('Synergy')
+TABULATE = list(SuitAttacks.keys()).index('Tabulate')
+TEE_OFF = list(SuitAttacks.keys()).index('TeeOff')
+THROW_BOOK = list(SuitAttacks.keys()).index('ThrowBook')
+TREMOR = list(SuitAttacks.keys()).index('Tremor')
+WATERCOOLER = list(SuitAttacks.keys()).index('Watercooler')
+WITHDRAWAL = list(SuitAttacks.keys()).index('Withdrawal')
+WRITE_OFF = list(SuitAttacks.keys()).index('WriteOff')
 
 def getFaceoffTaunt(suitName, doId):
-    if SuitFaceoffTaunts.has_key(suitName):
+    if suitName in SuitFaceoffTaunts:
         taunts = SuitFaceoffTaunts[suitName]
     else:
         taunts = TTLocalizer.SuitFaceoffDefaultTaunts
@@ -3037,7 +3037,7 @@ def getAttackTauntIndexFromIndex(suit, attackIndex):
 
 
 def getAttackTauntIndex(attackName):
-    if SuitAttackTaunts.has_key(attackName):
+    if attackName in SuitAttackTaunts:
         taunts = SuitAttackTaunts[attackName]
         return random.randint(0, len(taunts) - 1)
     else:
@@ -3045,7 +3045,7 @@ def getAttackTauntIndex(attackName):
 
 
 def getAttackTaunt(attackName, index = None):
-    if SuitAttackTaunts.has_key(attackName):
+    if attackName in SuitAttackTaunts:
         taunts = SuitAttackTaunts[attackName]
     else:
         taunts = TTLocalizer.SuitAttackDefaultTaunts

@@ -129,7 +129,7 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
         for i in range(len(self.seats)):
             self.seats[i] = None
 
-        print self.seats
+        print(self.seats)
         if self.wantState == 'closed':
             self.demand('Closing')
         else:

@@ -178,7 +178,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
             if belt:
                 belt.cleanup()
 
-        for spot in self.golfSpots.values():
+        for spot in list(self.golfSpots.values()):
             if spot:
                 spot.cleanup()
 
@@ -543,7 +543,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def calcNotDeadList(self):
         if not self.notDeadList:
             self.notDeadList = []
-            for tableIndex in xrange(len(self.tables)):
+            for tableIndex in range(len(self.tables)):
                 table = self.tables[tableIndex]
                 tableInfo = table.getNotDeadInfo()
                 self.notDeadList += tableInfo
@@ -581,7 +581,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
     def enterBattleThree(self):
         self.cleanupIntervals()
         self.calcNotDeadList()
-        for table in self.tables.values():
+        for table in list(self.tables.values()):
             table.setAllDinersToSitNeutral()
 
         self.battleANode.setPosHpr(*ToontownGlobals.DinerBattleAPosHpr)
@@ -1230,7 +1230,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def getToonTableIndex(self, toonId):
         tableIndex = -1
-        for table in self.tables.values():
+        for table in list(self.tables.values()):
             if table.avId == toonId:
                 tableIndex = table.index
                 break
@@ -1239,7 +1239,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
     def getToonGolfSpotIndex(self, toonId):
         golfSpotIndex = -1
-        for golfSpot in self.golfSpots.values():
+        for golfSpot in list(self.golfSpots.values()):
             if golfSpot.avId == toonId:
                 golfSpotIndex = golfSpot.index
                 break

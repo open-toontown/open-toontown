@@ -1,4 +1,4 @@
-from SpecImports import *
+from .SpecImports import *
 BattleCells = {}
 CogData = []
 ReserveCogData = []

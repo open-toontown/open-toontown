@@ -1,10 +1,10 @@
-import __builtin__
+import builtins
 
 class game:
     name = 'toontown'
     process = 'server'
 
-__builtin__.game = game
+builtins.game = game
 
 from panda3d.core import *
 
@@ -38,5 +38,5 @@ except SystemExit:
     raise
 except Exception:
     from otp.otpbase import PythonUtil
-    print PythonUtil.describeException()
+    print(PythonUtil.describeException())
     raise

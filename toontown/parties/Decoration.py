@@ -205,7 +205,7 @@ class Decoration(NodePath):
             self.decorationModels = loader.loadModel('phase_4/models/parties/partyDecorations')
             self.decorationModels.copyTo(self)
             decors = self.findAllMatches('**/partyDecoration_*')
-            for i in xrange(decors.getNumPaths()):
+            for i in range(decors.getNumPaths()):
                 decPiece = decors.getPath(i)
                 n = decPiece.getName()
                 if n.endswith('shadow') or n.endswith('base') or n.endswith('collision') or n.endswith(name):

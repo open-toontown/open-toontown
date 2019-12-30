@@ -133,7 +133,7 @@ class ToonStatueSelectionGUI(DirectFrame):
         if self.checkFamily(friendId):
             if friendId == base.localAvatar.doId:
                 self.createPreviewToon(base.localAvatar.style)
-            elif self.doId2Dna.has_key(friendId):
+            elif friendId in self.doId2Dna:
                 self.createPreviewToon(self.doId2Dna[friendId])
             else:
                 familyAvatar = DistributedToon.DistributedToon(base.cr)

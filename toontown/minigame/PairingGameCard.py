@@ -1,5 +1,5 @@
-from PlayingCard import PlayingCardNodePath
-import PlayingCardGlobals
+from .PlayingCard import PlayingCardNodePath
+from . import PlayingCardGlobals
 from pandac.PandaModules import NodePath, Vec3
 from direct.interval.IntervalGlobal import LerpHprInterval, Parallel, SoundInterval
 

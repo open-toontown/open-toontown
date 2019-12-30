@@ -1,9 +1,9 @@
-from DistributedMinigameAI import *
+from .DistributedMinigameAI import *
 from toontown.ai.ToonBarrier import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-import CatchGameGlobals
-import MinigameGlobals
+from . import CatchGameGlobals
+from . import MinigameGlobals
 
 class DistributedCatchGameAI(DistributedMinigameAI):
 

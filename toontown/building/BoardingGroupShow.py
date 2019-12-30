@@ -179,7 +179,7 @@ class BoardingGroupShow:
         base.cTrav.traverse(render)
         queue.sortEntries()
         if queue.getNumEntries():
-            for entryNum in xrange(queue.getNumEntries()):
+            for entryNum in range(queue.getNumEntries()):
                 entry = queue.getEntry(entryNum)
                 hitObject = entry.getIntoNodePath()
                 if hitObject.getNetTag('pieCode') != '3':

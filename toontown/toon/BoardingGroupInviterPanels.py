@@ -142,7 +142,7 @@ class BoardingGroupInvitingPanel(BoardingGroupInviterPanelBase):
         BoardingGroupInviterPanelBase.cleanup(self)
 
     def setupUnexpectedExitHooks(self):
-        if base.cr.doId2do.has_key(self.avId):
+        if self.avId in base.cr.doId2do:
             toon = base.cr.doId2do[self.avId]
             self.unexpectedExitEventName = toon.uniqueName('disable')
             self.accept(self.unexpectedExitEventName, self.forceCleanup)

@@ -56,9 +56,9 @@ from toontown.distributed import ToontownDistrictStats
 from toontown.makeatoon import TTPickANamePattern
 from toontown.parties import ToontownTimeManager
 from toontown.toon import Toon, DistributedToon
-from ToontownMsgTypes import *
-import HoodMgr
-import PlayGame
+from .ToontownMsgTypes import *
+from . import HoodMgr
+from . import PlayGame
 from toontown.toontowngui import ToontownLoadingBlocker
 from toontown.hood import StreetSign
 
@@ -139,11 +139,11 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                     for torso in ToonDNA.toonTorsoTypes:
                         for legs in ToonDNA.toonLegTypes:
                             for gender in ('m', 'f'):
-                                print 'species: %s, head: %s, torso: %s, legs: %s, gender: %s' % (species,
+                                print('species: %s, head: %s, torso: %s, legs: %s, gender: %s' % (species,
                                  head,
                                  torso,
                                  legs,
-                                 gender)
+                                 gender))
                                 dna = ToonDNA.ToonDNA()
                                 dna.newToon((head,
                                  torso,
@@ -152,8 +152,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                                 toon = Toon.Toon()
                                 try:
                                     toon.setDNA(dna)
-                                except Exception, e:
-                                    print e
+                                except Exception as e:
+                                    print(e)
 
         return
 
@@ -437,7 +437,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def cancelAvatarDetailsRequest(self, avatar):
         avId = avatar.doId
-        if self.__queryAvatarMap.has_key(avId):
+        if avId in self.__queryAvatarMap:
             pad = self.__queryAvatarMap.pop(avId)
             pad.delayDelete.destroy()
 
@@ -467,10 +467,10 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             dclass = self.dclassesByName[dclassName]
             pad.avatar.updateAllRequiredFields(dclass, di)
             gotData = 1
-        if isinstance(pad.func, types.StringType):
+        if isinstance(pad.func, bytes):
             messenger.send(pad.func, list((gotData, pad.avatar) + pad.args))
         else:
-            apply(pad.func, (gotData, pad.avatar) + pad.args)
+            pad.func(*(gotData, pad.avatar) + pad.args)
         pad.delayDelete.destroy()
 
     def enterPlayingGame(self, *args, **kArgs):
@@ -680,12 +680,12 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
             ignoredClasses = ('MagicWordManager', 'TimeManager', 'DistributedDistrict', 'FriendManager', 'NewsManager', 'ToontownMagicWordManager', 'WelcomeValleyManager', 'DistributedTrophyMgr', 'CatalogManager', 'DistributedBankMgr', 'EstateManager', 'RaceManager', 'SafeZoneManager', 'DeleteManager', 'TutorialManager', 'ToontownDistrict', 'DistributedDeliveryManager', 'DistributedPartyManager', 'AvatarFriendsManager', 'InGameNewsMgr', 'WhitelistMgr', 'TTCodeRedemptionMgr')
         messenger.send('clientCleanup')
-        for avId, pad in self.__queryAvatarMap.items():
+        for avId, pad in list(self.__queryAvatarMap.items()):
             pad.delayDelete.destroy()
 
         self.__queryAvatarMap = {}
         delayDeleted = []
-        doIds = self.doId2do.keys()
+        doIds = list(self.doId2do.keys())
         for doId in doIds:
             obj = self.doId2do[doId]
             if isNotLive:
@@ -715,7 +715,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
             self.notify.error(s)
         if isNotLive:
-            self.notify.info('dumpAllSubShardObjects: doIds left: %s' % self.doId2do.keys())
+            self.notify.info('dumpAllSubShardObjects: doIds left: %s' % list(self.doId2do.keys()))
 
     def _removeCurrentShardInterest(self, callback):
         if self.old_setzone_interest_handle is None:
@@ -745,7 +745,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         return False
 
     def _wantShardListComplete(self):
-        print self.activeDistrictMap
+        print(self.activeDistrictMap)
         if self._shardsAreReady():
             self.acceptOnce(ToontownDistrictStats.EventName(), self.shardDetailStatsComplete)
             ToontownDistrictStats.refresh()
@@ -791,17 +791,17 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         return 0
 
     def isFriendOnline(self, doId):
-        return self.friendsOnline.has_key(doId)
+        return doId in self.friendsOnline
 
     def addAvatarToFriendsList(self, avatar):
         self.friendsMap[avatar.doId] = avatar
 
     def identifyFriend(self, doId, source = None):
-        if self.friendsMap.has_key(doId):
+        if doId in self.friendsMap:
             teleportNotify.debug('friend %s in friendsMap' % doId)
             return self.friendsMap[doId]
         avatar = None
-        if self.doId2do.has_key(doId):
+        if doId in self.doId2do:
             teleportNotify.debug('found friend %s in doId2do' % doId)
             avatar = self.doId2do[doId]
         elif self.cache.contains(doId):
@@ -834,7 +834,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         return base.cr.playerFriendsManager.getFriendInfo(pId)
 
     def identifyAvatar(self, doId):
-        if self.doId2do.has_key(doId):
+        if doId in self.doId2do:
             return self.doId2do[doId]
         else:
             return self.identifyFriend(doId)
@@ -845,9 +845,9 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                 return 0
 
         if base.wantPets and base.localAvatar.hasPet():
-            print str(self.friendsMap)
-            print str(self.friendsMap.has_key(base.localAvatar.getPetId()))
-            if self.friendsMap.has_key(base.localAvatar.getPetId()) == None:
+            print(str(self.friendsMap))
+            print(str(base.localAvatar.getPetId() in self.friendsMap))
+            if (base.localAvatar.getPetId() in self.friendsMap) == None:
                 return 0
         return 1
 
@@ -872,7 +872,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def sendGetFriendsListRequest(self):
         if self.astronSupport:
-            print 'sendGetFriendsListRequest TODO'
+            print('sendGetFriendsListRequest TODO')
         else:
             self.friendsMapPending = 1
             self.friendsListError = 0
@@ -881,20 +881,20 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             self.send(datagram)
 
     def cleanPetsFromFriendsMap(self):
-        for objId, obj in self.friendsMap.items():
+        for objId, obj in list(self.friendsMap.items()):
             from toontown.pets import DistributedPet
             if isinstance(obj, DistributedPet.DistributedPet):
-                print 'Removing %s reference from the friendsMap' % obj.getName()
+                print('Removing %s reference from the friendsMap' % obj.getName())
                 del self.friendsMap[objId]
 
     def removePetFromFriendsMap(self):
         doId = base.localAvatar.getPetId()
-        if doId and self.friendsMap.has_key(doId):
+        if doId and doId in self.friendsMap:
             del self.friendsMap[doId]
 
     def addPetToFriendsMap(self, callback = None):
         doId = base.localAvatar.getPetId()
-        if not doId or self.friendsMap.has_key(doId):
+        if not doId or doId in self.friendsMap:
             if callback:
                 callback()
             return
@@ -927,9 +927,9 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                 petId = di.getUint32()
                 handle = FriendHandle.FriendHandle(doId, name, dna, petId)
                 self.friendsMap[doId] = handle
-                if self.friendsOnline.has_key(doId):
+                if doId in self.friendsOnline:
                     self.friendsOnline[doId] = handle
-                if self.friendPendingChatSettings.has_key(doId):
+                if doId in self.friendPendingChatSettings:
                     self.notify.debug('calling setCommonAndWL %s' % str(self.friendPendingChatSettings[doId]))
                     handle.setCommonAndWhitelistChatFlags(*self.friendPendingChatSettings[doId])
 
@@ -980,7 +980,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         if di.getRemainingSize() > 0:
             whitelistChatFlags = di.getUint8()
         self.notify.debug('Friend %d now online. common=%d whitelist=%d' % (doId, commonChatFlags, whitelistChatFlags))
-        if not self.friendsOnline.has_key(doId):
+        if doId not in self.friendsOnline:
             self.friendsOnline[doId] = self.identifyFriend(doId)
             messenger.send('friendOnline', [doId, commonChatFlags, whitelistChatFlags])
             if not self.friendsOnline[doId]:
@@ -997,7 +997,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def getFirstBattle(self):
         from toontown.battle import DistributedBattleBase
-        for dobj in self.doId2do.values():
+        for dobj in list(self.doId2do.values()):
             if isinstance(dobj, DistributedBattleBase.DistributedBattleBase):
                 return dobj
 
@@ -1177,7 +1177,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.deleteObject(doId)
 
     def deleteObject(self, doId, ownerView = False):
-        if self.doId2do.has_key(doId):
+        if doId in self.doId2do:
             obj = self.doId2do[doId]
             del self.doId2do[doId]
             obj.deleteOrDelay()
@@ -1189,7 +1189,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             ClientRepository.notify.warning('Asked to delete non-existent DistObj ' + str(doId))
 
     def _abandonShard(self):
-        for doId, obj in self.doId2do.items():
+        for doId, obj in list(self.doId2do.items()):
             if obj.parentId == localAvatar.defaultShard and obj is not localAvatar:
                 self.deleteObject(doId)
 
@@ -1222,7 +1222,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         taskMgr.doMethodLater(0.1, self.sendAvatarInfoRequests, 'avatarRequestQueueTask')
 
     def sendAvatarInfoRequests(self, task = None):
-        print 'Sending request Queue for AV Handles'
+        print('Sending request Queue for AV Handles')
         if not hasattr(self, 'avatarInfoRequests'):
             return
         if len(self.avatarInfoRequests) == 0:

@@ -222,7 +222,7 @@ class GroupPanel(DirectObject.DirectObject):
         return
 
     def __addDestNames(self):
-        for i in xrange(len(self.elevatorIdList)):
+        for i in range(len(self.elevatorIdList)):
             destName = self.__getDestName(i)
             self.destScrollList.addItem(destName, refresh=0)
 
@@ -291,7 +291,7 @@ class GroupPanel(DirectObject.DirectObject):
             messenger.send('clickedNametag', [avatar])
 
     def __addTestNames(self, num):
-        for i in xrange(num):
+        for i in range(num):
             avatarButton = self.__getAvatarButton(localAvatar.doId)
             self.scrollList.addItem(avatarButton, refresh=0)
 

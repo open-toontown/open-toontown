@@ -63,10 +63,10 @@ CashbotMintFinalRoomIDs = (17, 18, 19, 20, 21, 22, 23, 24, 25)
 CashbotMintConnectorRooms = ('phase_10/models/cashbotHQ/connector_7cubeL2', 'phase_10/models/cashbotHQ/connector_7cubeR2')
 CashbotMintSpecModules = {}
 if not isClient():
-    print 'EXECWARNING MintRoomSpecs: %s' % CashbotMintRoomName2RoomId
+    print('EXECWARNING MintRoomSpecs: %s' % CashbotMintRoomName2RoomId)
     printStack()
-for roomName, roomId in CashbotMintRoomName2RoomId.items():
-    exec 'from toontown.coghq import %s' % roomName
+for roomName, roomId in list(CashbotMintRoomName2RoomId.items()):
+    exec('from toontown.coghq import %s' % roomName)
     CashbotMintSpecModules[roomId] = eval(roomName)
 
 CogSpecModules = {'CashbotMintBoilerRoom_Battle00': CashbotMintBoilerRoom_Battle00_Cogs,
@@ -85,7 +85,7 @@ CogSpecModules = {'CashbotMintBoilerRoom_Battle00': CashbotMintBoilerRoom_Battle
  'CashbotMintPipeRoom_Battle00': CashbotMintPipeRoom_Battle00_Cogs,
  'CashbotMintPipeRoom_Battle01': CashbotMintPipeRoom_Battle01_Cogs}
 roomId2numBattles = {}
-for roomName, roomId in CashbotMintRoomName2RoomId.items():
+for roomName, roomId in list(CashbotMintRoomName2RoomId.items()):
     if roomName not in CogSpecModules:
         roomId2numBattles[roomId] = 0
     else:

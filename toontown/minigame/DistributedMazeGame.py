@@ -11,17 +11,17 @@ from direct.distributed.ClockDelta import globalClockDelta
 from pandac.PandaModules import Point3, Vec3
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownTimer
-from DistributedMinigame import DistributedMinigame
-from MazeSuit import MazeSuit
-from OrthoWalk import OrthoWalk
-from OrthoDrive import OrthoDrive
-import MazeGameGlobals
-import MazeData
-import MazeTreasure
-import Trajectory
-import Maze
-import MinigameAvatarScorePanel
-import MinigameGlobals
+from .DistributedMinigame import DistributedMinigame
+from .MazeSuit import MazeSuit
+from .OrthoWalk import OrthoWalk
+from .OrthoDrive import OrthoDrive
+from . import MazeGameGlobals
+from . import MazeData
+from . import MazeTreasure
+from . import Trajectory
+from . import Maze
+from . import MinigameAvatarScorePanel
+from . import MinigameGlobals
 
 class DistributedMazeGame(DistributedMinigame):
     notify = directNotify.newCategory('DistributedMazeGame')
@@ -565,11 +565,11 @@ class DistributedMazeGame(DistributedMinigame):
         camera.setPos(self.camOffset)
         self.__spawnCameraTask()
         self.toonRNGs = []
-        for i in xrange(self.numPlayers):
+        for i in range(self.numPlayers):
             self.toonRNGs.append(RandomNumGen.RandomNumGen(self.randomNumGen))
 
         self.treasures = []
-        for i in xrange(self.maze.numTreasures):
+        for i in range(self.maze.numTreasures):
             self.treasures.append(MazeTreasure.MazeTreasure(self.treasureModel, self.maze.treasurePosList[i], i, self.doId))
 
         self.__loadSuits()
@@ -578,12 +578,12 @@ class DistributedMazeGame(DistributedMinigame):
 
         self.sndTable = {'hitBySuit': [None] * self.numPlayers,
          'falling': [None] * self.numPlayers}
-        for i in xrange(self.numPlayers):
+        for i in range(self.numPlayers):
             self.sndTable['hitBySuit'][i] = base.loader.loadSfx('phase_4/audio/sfx/MG_Tag_C.mp3')
             self.sndTable['falling'][i] = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_whizz.mp3')
 
         self.grabSounds = []
-        for i in xrange(5):
+        for i in range(5):
             self.grabSounds.append(base.loader.loadSfx('phase_4/audio/sfx/MG_maze_pickup.mp3'))
 
         self.grabSoundIndex = 0
@@ -606,7 +606,7 @@ class DistributedMazeGame(DistributedMinigame):
         if self.introTrack.isPlaying():
             self.introTrack.finish()
         del self.introTrack
-        for avId in self.toonHitTracks.keys():
+        for avId in list(self.toonHitTracks.keys()):
             track = self.toonHitTracks[avId]
             if track.isPlaying():
                 track.finish()
@@ -690,7 +690,7 @@ class DistributedMazeGame(DistributedMinigame):
 
     def enterPlay(self):
         self.notify.debug('enterPlay')
-        for i in xrange(self.numPlayers):
+        for i in range(self.numPlayers):
             avId = self.avIdList[i]
             avName = self.getAvatarName(avId)
             scorePanel = MinigameAvatarScorePanel.MinigameAvatarScorePanel(avId, avName)
@@ -767,7 +767,7 @@ class DistributedMazeGame(DistributedMinigame):
         if self.gameFSM.getCurrentState().getName() not in ['play', 'showScores']:
             self.notify.warning('ignoring msg: av %s hit by suit' % avId)
             return
-        self.notify.debug('avatar ' + `avId` + ' hit by a suit')
+        self.notify.debug('avatar ' + repr(avId) + ' hit by a suit')
         if avId != self.localAvId:
             self.__showToonHitBySuit(avId, timestamp)
 
@@ -782,7 +782,7 @@ class DistributedMazeGame(DistributedMinigame):
             oldTrack.finish()
         toon.setPos(curPos)
         toon.setZ(self.TOON_Z)
-        parentNode = render.attachNewNode('mazeFlyToonParent-' + `avId`)
+        parentNode = render.attachNewNode('mazeFlyToonParent-' + repr(avId))
         parentNode.setPos(toon.getPos())
         toon.reparentTo(parentNode)
         toon.setPos(0,0,0)
@@ -823,7 +823,7 @@ class DistributedMazeGame(DistributedMinigame):
                 camera.setPos(startCamPos + camOffset*u)
                 camera.lookAt(toon)
                 return Task.cont
-            camTaskName = 'mazeToonFlyCam-' + `avId`
+            camTaskName = 'mazeToonFlyCam-' + repr(avId)
             taskMgr.add(camTask, camTaskName, priority=20)
             def cleanupCamTask(self = self, toon = toon, camTaskName = camTaskName, startCamPos = startCamPos):
                 taskMgr.remove(camTaskName)
@@ -1004,9 +1004,9 @@ class DistributedMazeGame(DistributedMinigame):
             fasterTable = self.fasterSuitPeriodsCurve
         fasterPeriods = fasterTable[safeZone][self.numSuits]
         suitPeriods = slowerPeriods + fasterPeriods
-        self.notify.debug('suit periods: ' + `suitPeriods`)
+        self.notify.debug('suit periods: ' + repr(suitPeriods))
         self.randomNumGen.shuffle(suitPeriods)
-        for i in xrange(self.numSuits):
+        for i in range(self.numSuits):
             self.suits.append(MazeSuit(i, self.maze, self.randomNumGen, suitPeriods[i], self.getDifficulty()))
 
     def __unloadSuits(self):
@@ -1034,14 +1034,14 @@ class DistributedMazeGame(DistributedMinigame):
         curT = globalClock.getFrameTime() - self.gameStartTime
         curTic = int(curT * float(MazeGameGlobals.SUIT_TIC_FREQ))
         suitUpdates = []
-        for i in xrange(len(self.suits)):
+        for i in range(len(self.suits)):
             updateTics = self.suits[i].getThinkTimestampTics(curTic)
-            suitUpdates.extend(zip(updateTics, [i] * len(updateTics)))
+            suitUpdates.extend(list(zip(updateTics, [i] * len(updateTics))))
 
         suitUpdates.sort(lambda a, b: a[0] - b[0])
         if len(suitUpdates) > 0:
             curTic = 0
-            for i in xrange(len(suitUpdates)):
+            for i in range(len(suitUpdates)):
                 update = suitUpdates[i]
                 tic = update[0]
                 suitIndex = update[1]
@@ -1056,10 +1056,10 @@ class DistributedMazeGame(DistributedMinigame):
                         j += 1
 
                 unwalkables = []
-                for si in xrange(suitIndex):
+                for si in range(suitIndex):
                     unwalkables.extend(self.suits[si].occupiedTiles)
 
-                for si in xrange(suitIndex + 1, len(self.suits)):
+                for si in range(suitIndex + 1, len(self.suits)):
                     unwalkables.extend(self.suits[si].occupiedTiles)
 
                 suit.think(curTic, curT, unwalkables)
@@ -1084,7 +1084,7 @@ class DistributedMazeGame(DistributedMinigame):
           (lX, bY),
           (rX, bY)))
         scorePanelLocs = scorePanelLocs[self.numPlayers - 1]
-        for i in xrange(self.numPlayers):
+        for i in range(self.numPlayers):
             panel = self.scorePanels[i]
             pos = scorePanelLocs[i]
             lerpTrack.append(Parallel(LerpPosInterval(panel, lerpDur, Point3(pos[0], 0, pos[1]), blendType='easeInOut'), LerpScaleInterval(panel, lerpDur, Vec3(panel.getScale()) * 2.0, blendType='easeInOut')))

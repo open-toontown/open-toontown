@@ -33,7 +33,7 @@ class GolfRewardDialog:
         if av and avId in self.avIdList:
             playerIndex = self.avIdList.index(avId)
             name = av.getName()
-            for trophyIndex in xrange(len(self.trophyList[playerIndex])):
+            for trophyIndex in range(len(self.trophyList[playerIndex])):
                 wonTrophy = self.trophyList[playerIndex][trophyIndex]
                 if wonTrophy:
                     trophyName = TTLocalizer.GolfTrophyDescriptions[trophyIndex]

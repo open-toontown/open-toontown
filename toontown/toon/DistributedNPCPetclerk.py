@@ -1,8 +1,8 @@
 from pandac.PandaModules import *
-from DistributedNPCToonBase import *
+from .DistributedNPCToonBase import *
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
-import NPCToons
+from . import NPCToons
 from direct.task.Task import Task
 from toontown.toonbase import TTLocalizer
 from toontown.pets import PetshopGUI
@@ -99,7 +99,7 @@ class DistributedNPCPetclerk(DistributedNPCToonBase):
         return Task.done
 
     def ignoreEventDict(self):
-        for event in self.eventDict.values():
+        for event in list(self.eventDict.values()):
             self.ignore(event)
 
     def setPetSeeds(self, petSeeds):

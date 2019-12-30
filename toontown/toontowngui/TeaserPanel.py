@@ -3,7 +3,7 @@ from direct.gui.DirectGui import *
 from direct.gui import DirectGuiGlobals
 from pandac.PandaModules import *
 from direct.directnotify import DirectNotifyGlobal
-import TTDialog
+from . import TTDialog
 from toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
 from direct.showbase.DirectObject import DirectObject

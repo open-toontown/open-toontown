@@ -1,8 +1,8 @@
 from pandac.PandaModules import *
-import ToonHood
+from . import ToonHood
 from toontown.town import TutorialTownLoader
 from toontown.toonbase.ToontownGlobals import *
-import SkyUtil
+from . import SkyUtil
 
 class TutorialHood(ToonHood.ToonHood):
 

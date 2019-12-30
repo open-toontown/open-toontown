@@ -91,7 +91,7 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
         return DirectButton(relief=None, text=friendName, text_scale=0.04, text_align=TextNode.ALeft, text_fg=fg, text1_bg=self.textDownColor, text2_bg=self.textRolloverColor, text3_fg=self.textDisabledColor, command=com, extraArgs=[friendId, friendName])
 
     def makeNPCFriendButton(self, NPCFriendId, numCalls):
-        if not TTLocalizer.NPCToonNames.has_key(NPCFriendId):
+        if NPCFriendId not in TTLocalizer.NPCToonNames:
             return None
         friendName = TTLocalizer.NPCToonNames[NPCFriendId]
         friendName += ' %d' % numCalls
@@ -174,7 +174,7 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
                     if not base.cr.playerFriendsManager.askAvatarKnownElseWhere(avatarId):
                         newFriends.append((avatarId, 0))
 
-        for friendPair in self.friends.keys():
+        for friendPair in list(self.friends.keys()):
             if friendPair not in newFriends:
                 friendButton = self.friends[friendPair]
                 self.scrollList.removeItem(friendButton)
@@ -183,7 +183,7 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
                 del self.friends[friendPair]
 
         for friendPair in newFriends:
-            if not self.friends.has_key(friendPair):
+            if friendPair not in self.friends:
                 friendButton = self.makeFriendButton(friendPair)
                 if friendButton:
                     self.scrollList.addItem(friendButton)
@@ -193,7 +193,7 @@ class TownBattleSOSPanel(DirectFrame, StateData.StateData):
 
     def __updateNPCFriendsPanel(self):
         self.NPCFriends = {}
-        for friend, count in base.localAvatar.NPCFriendsDict.items():
+        for friend, count in list(base.localAvatar.NPCFriendsDict.items()):
             track = NPCToons.getNPCTrack(friend)
             if track == ToontownBattleGlobals.LURE_TRACK and self.canLure == 0 or track == ToontownBattleGlobals.TRAP_TRACK and self.canTrap == 0:
                 self.NPCFriends[friend] = 0

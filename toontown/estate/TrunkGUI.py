@@ -4,7 +4,7 @@ from pandac.PandaModules import *
 from direct.distributed import ClockDelta
 from direct.fsm import StateData
 from direct.task.Task import Task
-import ClosetGlobals
+from . import ClosetGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog

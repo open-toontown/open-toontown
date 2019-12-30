@@ -43,7 +43,7 @@ class DistributedPetProxy(DistributedObject.DistributedObject):
         self.safeZone = safeZone
 
     def __generateDistTraitFuncs(self):
-        for i in xrange(PetTraits.PetTraits.NumTraits):
+        for i in range(PetTraits.PetTraits.NumTraits):
             traitName = PetTraits.getTraitNames()[i]
             setterName = self.getSetterName(traitName)
 
@@ -133,10 +133,10 @@ class DistributedPetProxy(DistributedObject.DistributedObject):
     def announceGenerate(self):
         DistributedObject.DistributedObject.announceGenerate(self)
         self.traits = PetTraits.PetTraits(self.traitSeed, self.safeZone)
-        print self.traits.traits
+        print(self.traits.traits)
         self.mood = PetMood.PetMood(self)
         self.lastKnownMood = self.mood.makeCopy()
-        for mood, value in self.requiredMoodComponents.items():
+        for mood, value in list(self.requiredMoodComponents.items()):
             self.mood.setComponent(mood, value, announce=0)
 
         self.requiredMoodComponents = {}

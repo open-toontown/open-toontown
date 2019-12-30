@@ -62,7 +62,7 @@ class HolidayDecorator:
                 index = int(np.getTag('transformIndex'))
                 transform = loader.holidayPropTransforms.get(index, TransformState.makeIdentity())
                 newNP.setTransform(NodePath(), transform)
-                newNP.setTag('transformIndex', `index`)
+                newNP.setTag('transformIndex', repr(index))
             s = Sequence(Wait(wait), np.colorScaleInterval(tFadeOut, Vec4(1, 1, 1, 0), startColorScale=Vec4(1, 1, 1, 1), blendType='easeInOut'), Func(np.detachNode), Func(np.clearTransparency), newNP.colorScaleInterval(tFadeOut, Vec4(1, 1, 1, 1), startColorScale=Vec4(1, 1, 1, 0), blendType='easeInOut'), Func(newNP.clearTransparency), Func(newNP.clearColorScale))
             p.append(s)
 

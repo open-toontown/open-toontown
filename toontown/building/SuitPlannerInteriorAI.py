@@ -20,7 +20,7 @@ class SuitPlannerInteriorAI:
             self.dbg_defaultSuitType = None
         else:
             self.dbg_defaultSuitType = SuitDNA.getSuitType(dbg_defaultSuitName)
-        if isinstance(bldgLevel, types.StringType):
+        if isinstance(bldgLevel, bytes):
             self.notify.warning('bldgLevel is a string!')
             bldgLevel = int(bldgLevel)
         self._genSuitInfos(numFloors, bldgLevel, bldgTrack)

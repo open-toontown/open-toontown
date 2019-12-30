@@ -1,4 +1,4 @@
-import Street
+from . import Street
 
 class TTStreet(Street.Street):
 

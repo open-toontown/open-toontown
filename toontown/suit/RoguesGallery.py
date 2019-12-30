@@ -1,7 +1,7 @@
 from pandac.PandaModules import *
 from direct.fsm import StateData
-import Suit
-import SuitDNA
+from . import Suit
+from . import SuitDNA
 from toontown.toonbase import ToontownGlobals
 import random
 
@@ -91,7 +91,7 @@ class RoguesGallery(StateData.StateData):
         self.text.setTextColor(0.0, 0.0, 0.0, 1.0)
         self.rowHeight = 0.0
         self.minXScale = None
-        print "rognamestr='", self.rognamestr, "'\n"
+        print("rognamestr='", self.rognamestr, "'\n")
         if self.rognamestr == None or len(self.rognamestr) == 0:
             for dept in SuitDNA.suitDepts:
                 self.__makeDept(dept)

@@ -42,7 +42,7 @@ class CogdoGameAudioManager:
         self._cutoff = cutoff
         self.currentMusic = None
         self._music = {}
-        for name, filePath in musicFiles.items():
+        for name, filePath in list(musicFiles.items()):
             self._music[name] = base.loader.loadMusic(filePath)
 
         self._audioSounds = []

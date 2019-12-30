@@ -17,7 +17,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
         self.numChairs = 8
         self.dinerStatus = {}
         self.dinerInfo = {}
-        for i in xrange(self.numDiners):
+        for i in range(self.numDiners):
             self.dinerStatus[i] = self.INACTIVE
             diffSettings = ToontownGlobals.BossbotBossDifficultySettings[self.boss.battleDifficulty]
             hungryDuration = diffSettings[4]
@@ -60,7 +60,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
         hungryDurations = []
         eatingDurations = []
         dinerLevels = []
-        for i in xrange(self.numDiners):
+        for i in range(self.numDiners):
             hungryDurations.append(self.dinerInfo[i][0])
             eatingDurations.append(self.dinerInfo[i][1])
             dinerLevels.append(self.dinerInfo[i][2])
@@ -157,7 +157,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
 
     def getNotDeadInfo(self):
         notDeadList = []
-        for i in xrange(self.numDiners):
+        for i in range(self.numDiners):
             if self.dinerStatus[i] != self.DEAD:
                 notDeadList.append((self.index, i, self.dinerInfo[i][2]))
 
@@ -204,7 +204,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
         return 0
 
     def enterOn(self):
-        for i in xrange(self.numDiners):
+        for i in range(self.numDiners):
             self.b_setDinerStatus(i, self.HUNGRY)
 
     def exitOn(slef):
@@ -217,7 +217,7 @@ class DistributedBanquetTableAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM
         pass
 
     def enterInactive(self):
-        for task in self.transitionTasks.values():
+        for task in list(self.transitionTasks.values()):
             self.removeTask(task)
 
         self.transitionTasks = {}

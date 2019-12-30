@@ -5,9 +5,9 @@ from toontown.toonbase.ToontownGlobals import *
 from toontown.toonbase import TTLocalizer
 from toontown.parties import PartyGlobals
 from toontown.hood import *
-import Fireworks
-import FireworkShows
-from FireworkGlobals import skyTransitionDuration, preShowPauseDuration, postShowPauseDuration, preNormalMusicPauseDuration
+from . import Fireworks
+from . import FireworkShows
+from .FireworkGlobals import skyTransitionDuration, preShowPauseDuration, postShowPauseDuration, preNormalMusicPauseDuration
 from toontown.effects.FireworkShow import FireworkShow
 
 class FireworkShowMixin:

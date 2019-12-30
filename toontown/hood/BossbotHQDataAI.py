@@ -1,6 +1,6 @@
 from pandac.PandaModules import Point3
 from direct.directnotify import DirectNotifyGlobal
-import HoodDataAI
+from . import HoodDataAI
 from toontown.toonbase import ToontownGlobals
 from toontown.coghq import DistributedCogHQDoorAI
 from toontown.building import DistributedDoorAI
@@ -69,7 +69,7 @@ class BossbotHQDataAI(HoodDataAI.HoodDataAI):
         hprList = ((110.815, 0, 0), (61.231, 0, 0), (-105.481, 0, 0))
         mins = ToontownGlobals.FactoryLaffMinimums[3]
         kartIdList = []
-        for cogCourse in xrange(len(posList)):
+        for cogCourse in range(len(posList)):
             pos = posList[cogCourse]
             hpr = hprList[cogCourse]
             cogKart = DistributedCogKartAI.DistributedCogKartAI(self.air, cogCourse, pos[0], pos[1], pos[2], hpr[0], hpr[1], hpr[2], self.air.countryClubMgr, minLaff=mins[cogCourse])

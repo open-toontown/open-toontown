@@ -5,16 +5,16 @@ from direct.interval.FunctionInterval import Wait
 from direct.interval.IntervalGlobal import Func
 from direct.interval.MetaInterval import Sequence, Parallel
 from toontown.toonbase import TTLocalizer
-import CogdoFlyingGameGlobals as Globals
-from CogdoFlyingLocalPlayer import CogdoFlyingLocalPlayer
-from CogdoGameAudioManager import CogdoGameAudioManager
-from CogdoFlyingPlayer import CogdoFlyingPlayer
-from CogdoFlyingObjects import CogdoFlyingGatherable
-from CogdoFlyingObstacles import CogdoFlyingObstacle
-from CogdoFlyingLegalEagle import CogdoFlyingLegalEagle
-from CogdoFlyingGuiManager import CogdoFlyingGuiManager
-from CogdoFlyingLevel import CogdoFlyingLevelFactory
-from CogdoFlyingGameMovies import CogdoFlyingGameIntro, CogdoFlyingGameFinish
+from . import CogdoFlyingGameGlobals as Globals
+from .CogdoFlyingLocalPlayer import CogdoFlyingLocalPlayer
+from .CogdoGameAudioManager import CogdoGameAudioManager
+from .CogdoFlyingPlayer import CogdoFlyingPlayer
+from .CogdoFlyingObjects import CogdoFlyingGatherable
+from .CogdoFlyingObstacles import CogdoFlyingObstacle
+from .CogdoFlyingLegalEagle import CogdoFlyingLegalEagle
+from .CogdoFlyingGuiManager import CogdoFlyingGuiManager
+from .CogdoFlyingLevel import CogdoFlyingLevelFactory
+from .CogdoFlyingGameMovies import CogdoFlyingGameIntro, CogdoFlyingGameFinish
 
 class CogdoFlyingGame(DirectObject):
     notify = directNotify.newCategory('CogdoFlyingGame')

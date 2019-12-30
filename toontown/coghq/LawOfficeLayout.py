@@ -11,8 +11,8 @@ Index2Spec = {
     0: 'LawOffice_Spec_Tier0_a',
     1: 'LawOffice_Spec_Tier0_b'}
 LawbotFloorSpecs = {}
-for (floorIndex, floorSpec) in Index2Spec.items():
-    exec 'from toontown.coghq import %s' % floorSpec
+for (floorIndex, floorSpec) in list(Index2Spec.items()):
+    exec('from toontown.coghq import %s' % floorSpec)
     LawbotFloorSpecs[floorIndex] = eval(floorSpec)
 
 

@@ -56,7 +56,7 @@ class DistributedMoleFieldAI(DistributedEntityAI.DistributedEntityAI, MoleFieldB
 
     def whackedMole(self, moleIndex, popupNum):
         validMoleWhack = False
-        if self.whackedMoles.has_key(moleIndex):
+        if moleIndex in self.whackedMoles:
             if self.whackedMoles[moleIndex] < popupNum:
                 validMoleWhack = True
         else:

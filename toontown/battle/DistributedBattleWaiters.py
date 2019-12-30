@@ -43,7 +43,7 @@ class DistributedBattleWaiters(DistributedBattleFinal.DistributedBattleFinal):
 
     def moveSuitsToInitialPos(self):
         battlePts = self.suitPoints[len(self.suitPendingPoints) - 1]
-        for i in xrange(len(self.suits)):
+        for i in range(len(self.suits)):
             suit = self.suits[i]
             suit.reparentTo(self)
             destPos, destHpr = self.getActorPosHpr(suit, self.suits)

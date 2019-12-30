@@ -1,6 +1,6 @@
 from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer, ToontownGlobals
-import DistributedNPCToonBase
+from . import DistributedNPCToonBase
 
 class DistributedNPCScientist(DistributedNPCToonBase.DistributedNPCToonBase):
 

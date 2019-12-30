@@ -126,12 +126,12 @@ class DistCogdoCraneObject(DistributedSmoothNode.DistributedSmoothNode, FSM.FSM)
             vel.normalize()
             impact = vel[1]
             if impact >= self.getMinImpact():
-                print 'hit! %s' % impact
+                print('hit! %s' % impact)
                 self.hitBossSoundInterval.start()
                 self.doHitBoss(impact)
             else:
                 self.touchedBossSoundInterval.start()
-                print '--not hard enough: %s' % impact
+                print('--not hard enough: %s' % impact)
 
     def doHitBoss(self, impact):
         self.d_hitBoss(impact)
@@ -141,7 +141,7 @@ class DistCogdoCraneObject(DistributedSmoothNode.DistributedSmoothNode, FSM.FSM)
         self.fellOut()
 
     def fellOut(self):
-        raise StandardError, 'fellOut unimplented'
+        raise Exception('fellOut unimplented')
 
     def getMinImpact(self):
         return 0
@@ -201,7 +201,7 @@ class DistCogdoCraneObject(DistributedSmoothNode.DistributedSmoothNode, FSM.FSM)
 
     def defaultFilter(self, request, args):
         if self.craneGame == None:
-            raise FSM.RequestDenied, request
+            raise FSM.RequestDenied(request)
         return FSM.FSM.defaultFilter(self, request, args)
 
     def enterOff(self):

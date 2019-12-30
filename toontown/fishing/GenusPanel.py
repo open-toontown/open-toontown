@@ -3,9 +3,9 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
-import FishBase
-import FishGlobals
-import FishPhoto
+from . import FishBase
+from . import FishGlobals
+from . import FishPhoto
 
 class GenusPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('GenusPanel')

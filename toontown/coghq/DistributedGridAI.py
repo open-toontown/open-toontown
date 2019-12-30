@@ -1,4 +1,4 @@
-from CrateGlobals import *
+from .CrateGlobals import *
 from otp.level import DistributedEntityAI
 from direct.directnotify import DirectNotifyGlobal
 
@@ -245,6 +245,6 @@ class DistributedGridAI(DistributedEntityAI.DistributedEntityAI):
                 else:
                     str += ' . '
 
-            print str + '  : %d' % i
+            print(str + '  : %d' % i)
 
-        print ''
+        print('')

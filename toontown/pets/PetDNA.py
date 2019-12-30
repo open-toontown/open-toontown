@@ -181,15 +181,15 @@ PetGenders = [0, 1]
 
 def getRandomPetDNA(zoneId = ToontownGlobals.DonaldsDreamland):
     from random import choice
-    head = choice(range(-1, len(HeadParts)))
-    ears = choice(range(-1, len(EarParts)))
-    nose = choice(range(-1, len(NoseParts)))
-    tail = choice(range(-1, len(TailParts)))
+    head = choice(list(range(-1, len(HeadParts))))
+    ears = choice(list(range(-1, len(EarParts))))
+    nose = choice(list(range(-1, len(NoseParts))))
+    tail = choice(list(range(-1, len(TailParts))))
     body = getSpecies(zoneId)
-    color = choice(range(0, len(getColors(body))))
-    colorScale = choice(range(0, len(ColorScales)))
-    eyes = choice(range(0, len(PetEyeColors)))
-    gender = choice(range(0, len(PetGenders)))
+    color = choice(list(range(0, len(getColors(body)))))
+    colorScale = choice(list(range(0, len(ColorScales))))
+    eyes = choice(list(range(0, len(PetEyeColors))))
+    gender = choice(list(range(0, len(PetGenders))))
     return [head,
      ears,
      nose,
@@ -240,7 +240,7 @@ def getBodyRarity(bodyIndex):
     for zoneId in PetRarities['body']:
         for body in PetRarities['body'][zoneId]:
             totalWeight += PetRarities['body'][zoneId][body]
-            if weight.has_key(body):
+            if body in weight:
                 weight[body] += PetRarities['body'][zoneId][body]
             else:
                 weight[body] = PetRarities['body'][zoneId][body]

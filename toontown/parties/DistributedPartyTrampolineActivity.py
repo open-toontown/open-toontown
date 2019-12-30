@@ -343,7 +343,7 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
              guiBean,
              beanAnim))
 
-        self.beansToCollect = range(self.numJellyBeans)
+        self.beansToCollect = list(range(self.numJellyBeans))
 
     def cleanupJellyBeans(self):
         for bean in self.beans:

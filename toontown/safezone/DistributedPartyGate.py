@@ -74,7 +74,7 @@ class DistributedPartyGate(DistributedObject.DistributedObject):
 
     def announceGenerate(self):
         DistributedObject.DistributedObject.announceGenerate(self)
-        if ToontownGlobals.dnaMap.has_key(self.zoneId):
+        if self.zoneId in ToontownGlobals.dnaMap:
             playground = ToontownGlobals.dnaMap[self.zoneId]
         else:
             playground = ToontownGlobals.dnaMap[2000]

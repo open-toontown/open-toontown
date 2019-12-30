@@ -1,6 +1,6 @@
 from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
-from ElevatorConstants import *
+from .ElevatorConstants import *
 
 def getLeftClosePoint(type):
     width = ElevatorData[type]['width']

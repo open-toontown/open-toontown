@@ -2,17 +2,17 @@ from pandac.PandaModules import *
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from direct.showbase import DirectObject
-import ToonHead
+from . import ToonHead
 from toontown.friends import FriendHandle
-import LaffMeter
+from . import LaffMeter
 from otp.avatar import Avatar
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.friends import ToontownFriendSecret
-import ToonAvatarDetailPanel
-import AvatarPanelBase
+from . import ToonAvatarDetailPanel
+from . import AvatarPanelBase
 from toontown.toontowngui import TTDialog
 from otp.otpbase import OTPGlobals
 
@@ -130,7 +130,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
 
 
 
-        if base.cr.playerFriendsManager.askTransientFriend(self.avId) and not base.cr.doId2do.has_key(self.avId):
+        if base.cr.playerFriendsManager.askTransientFriend(self.avId) and self.avId not in base.cr.doId2do:
             self.friendButton['state'] = DGG.DISABLED
 
 

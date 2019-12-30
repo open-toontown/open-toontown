@@ -643,7 +643,7 @@ for type in DropObjectTypes:
     Name2DropObjectType[type.name] = type
 
 Name2DOTypeId = {}
-names = Name2DropObjectType.keys()
+names = list(Name2DropObjectType.keys())
 names.sort()
 for i in range(len(names)):
     Name2DOTypeId[names[i]] = i
@@ -804,12 +804,12 @@ def countMusic():
     for key in PhaseToMusicData:
         numMusic += len(PhaseToMusicData[key])
 
-    print 'PhaseToMusicData %d' % numMusic
+    print('PhaseToMusicData %d' % numMusic)
     numMusic = 0
     for key in PhaseToMusicData40:
         numMusic += len(PhaseToMusicData40[key])
 
-    print 'PhaseToMusicData40 %d' % numMusic
+    print('PhaseToMusicData40 %d' % numMusic)
 
 
 def getMusicRepeatTimes(length, minLength = MUSIC_MIN_LENGTH_SECONDS):

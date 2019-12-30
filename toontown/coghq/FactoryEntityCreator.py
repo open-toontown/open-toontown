@@ -1,15 +1,15 @@
 from otp.level import EntityCreator
-import FactoryLevelMgr
-import PlatformEntity
-import ConveyorBelt
-import GearEntity
-import PaintMixer
-import GoonClipPlane
-import MintProduct
-import MintProductPallet
-import MintShelf
-import PathMasterEntity
-import RenderingEntity
+from . import FactoryLevelMgr
+from . import PlatformEntity
+from . import ConveyorBelt
+from . import GearEntity
+from . import PaintMixer
+from . import GoonClipPlane
+from . import MintProduct
+from . import MintProductPallet
+from . import MintShelf
+from . import PathMasterEntity
+from . import RenderingEntity
 
 class FactoryEntityCreator(EntityCreator.EntityCreator):
 

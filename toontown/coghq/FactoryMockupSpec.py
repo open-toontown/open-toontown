@@ -1,4 +1,4 @@
-from SpecImports import *
+from .SpecImports import *
 GlobalEntities = {1000: {'type': 'levelMgr',
         'name': 'LevelMgr',
         'comment': '',

@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-import DistributedStageAI
+from . import DistributedStageAI
 from toontown.toonbase import ToontownGlobals
 from toontown.coghq import StageLayout
 from direct.showbase import DirectObject
@@ -34,7 +34,7 @@ class StageManagerAI(DirectObject.DirectObject):
         for avId in players:
             if bboard.has('stageRoom-%s' % avId):
                 roomId = bboard.get('stageRoom-%s' % avId)
-                for i in xrange(numFloors):
+                for i in range(numFloors):
                     layout = StageLayout.StageLayout(stageId, i)
                     if roomId in layout.getRoomIds():
                         floor = i

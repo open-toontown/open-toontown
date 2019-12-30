@@ -1,13 +1,13 @@
 from direct.interval.IntervalGlobal import *
-from BattleBase import *
-from BattleProps import *
-from BattleSounds import *
+from .BattleBase import *
+from .BattleProps import *
+from .BattleSounds import *
 from toontown.toon.ToonDNA import *
 from toontown.suit.SuitDNA import *
-import MovieUtil
-import MovieCamera
+from . import MovieUtil
+from . import MovieCamera
 from direct.directnotify import DirectNotifyGlobal
-import BattleParticles
+from . import BattleParticles
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownBattleGlobals
 import random
@@ -38,18 +38,18 @@ def doSquirts(squirts):
             if 1:
                 target = squirt['target'][0]
                 suitId = target['suit'].doId
-                if suitSquirtsDict.has_key(suitId):
+                if suitId in suitSquirtsDict:
                     suitSquirtsDict[suitId].append(squirt)
                 else:
                     suitSquirtsDict[suitId] = [squirt]
         else:
             suitId = squirt['target']['suit'].doId
-            if suitSquirtsDict.has_key(suitId):
+            if suitId in suitSquirtsDict:
                 suitSquirtsDict[suitId].append(squirt)
             else:
                 suitSquirtsDict[suitId] = [squirt]
 
-    suitSquirts = suitSquirtsDict.values()
+    suitSquirts = list(suitSquirtsDict.values())
     
     def compFunc(a, b):
         if len(a) > len(b):
@@ -221,7 +221,7 @@ def __getSuitTrack(suit, tContact, tDodge, hp, hpbonus, kbbonus, anim, died, lef
 
 
 def say(statement):
-    print statement
+    print(statement)
 
 
 def __getSoundTrack(level, hitSuit, delay, node = None):

@@ -7,19 +7,19 @@ from direct.controls.ControlManager import CollisionHandlerRayStart
 from direct.task import Task
 from otp.otpbase import OTPGlobals
 from otp.avatar import DistributedAvatar
-import Suit
+from . import Suit
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.battle import DistributedBattle
 from direct.fsm import ClassicFSM
 from direct.fsm import State
-import SuitTimings
-import SuitBase
-import DistributedSuitPlanner
-import SuitDNA
+from . import SuitTimings
+from . import SuitBase
+from . import DistributedSuitPlanner
+from . import SuitDNA
 from direct.directnotify import DirectNotifyGlobal
-import SuitDialog
+from . import SuitDialog
 from toontown.battle import BattleProps
 import math
 import copy

@@ -13,7 +13,7 @@ class RaceHeadFrame(DirectFrame):
          'geom_scale': (1, 1, 0.5),
          'pos': (0, 0, 0)}
         opts.update(kwargs)
-        apply(DirectFrame.__init__, (self,) + args, opts)
+        DirectFrame.__init__(*(self,) + args, **opts)
         self.initialiseoptions(RaceHeadFrame)
         if av:
             self.setAv(av)

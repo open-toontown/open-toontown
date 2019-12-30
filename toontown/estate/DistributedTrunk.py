@@ -2,9 +2,9 @@ from pandac.PandaModules import *
 from direct.gui.DirectGui import *
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
-import DistributedCloset
-import ClosetGlobals
-import TrunkGUI
+from . import DistributedCloset
+from . import ClosetGlobals
+from . import TrunkGUI
 from toontown.toon import ToonDNA
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
@@ -34,15 +34,15 @@ class DistributedTrunk(DistributedCloset.DistributedCloset):
         self.isFreePlayer = 0
 
     def printInfo(self):
-        print 'avid: %s, gender: %s' % (self.av.doId, self.av.style.gender)
-        print 'current hat = %s, glasses = %s, backpack = %s, shoes = %s' % (self.av.getHat(),
+        print('avid: %s, gender: %s' % (self.av.doId, self.av.style.gender))
+        print('current hat = %s, glasses = %s, backpack = %s, shoes = %s' % (self.av.getHat(),
          self.av.getGlasses(),
          self.av.getBackpack(),
-         self.av.getShoes())
-        print 'hatList = %s' % self.av.getHatList()
-        print 'glassesList = %s' % self.av.getGlassesList()
-        print 'backpackList = %s' % self.av.getBackpackList()
-        print 'shoesList = %s' % self.av.getShoesList()
+         self.av.getShoes()))
+        print('hatList = %s' % self.av.getHatList())
+        print('glassesList = %s' % self.av.getGlassesList())
+        print('backpackList = %s' % self.av.getBackpackList())
+        print('shoesList = %s' % self.av.getShoesList())
 
     def setState(self, mode, avId, ownerId, gender, hatList, glassesList, backpackList, shoesList):
         self.notify.debug('setState, mode=%s, avId=%s, ownerId=%d' % (mode, avId, ownerId))
@@ -70,9 +70,9 @@ class DistributedTrunk(DistributedCloset.DistributedCloset):
                     self.oldGlassesList = self.glassesList[0:]
                     self.oldBackpackList = self.backpackList[0:]
                     self.oldShoesList = self.shoesList[0:]
-                    print '-----------Starting trunk interaction-----------'
+                    print('-----------Starting trunk interaction-----------')
                     self.printInfo()
-                    print '-------------------------------------------------'
+                    print('-------------------------------------------------')
                     if not self.isOwner:
                         self.__popupNotOwnerPanel()
                     else:

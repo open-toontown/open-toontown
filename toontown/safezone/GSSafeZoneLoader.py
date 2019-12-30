@@ -36,7 +36,7 @@ class GSSafeZoneLoader(SafeZoneLoader):
             holidayIds = base.cr.newsManager.getDecorationHolidayId()
             if ToontownGlobals.CRASHED_LEADERBOARD in holidayIds:
                 self.startSmokeEffect()
-        self.birdSound = map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.mp3'])
+        self.birdSound = list(map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.mp3']))
 
     def unload(self):
         del self.birdSound
@@ -86,7 +86,7 @@ class GSSafeZoneLoader(SafeZoneLoader):
         del self.trackId
 
     def handleRaceOver(self):
-        print 'you done!!'
+        print('you done!!')
 
     def handleLeftRace(self):
         req = {'loader': 'safeZoneLoader',

@@ -141,7 +141,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         else:
             self.inEstate = 0
             self.estateZones = []
-        PetObserve.send(broadcastZones.keys(), PetObserve.PetActionObserve(PetObserve.Actions.CHANGE_ZONE, self.doId, (oldZoneId, newZoneId)))
+        PetObserve.send(list(broadcastZones.keys()), PetObserve.PetActionObserve(PetObserve.Actions.CHANGE_ZONE, self.doId, (oldZoneId, newZoneId)))
 
     def getOwnerId(self):
         return self.ownerId
@@ -214,7 +214,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.traitList = traitList
 
     def __generateDistTraitFuncs(self):
-        for i in xrange(PetTraits.PetTraits.NumTraits):
+        for i in range(PetTraits.PetTraits.NumTraits):
             traitName = PetTraits.getTraitNames()[i]
             getterName = self.getSetterName(traitName, 'get')
             b_setterName = self.getSetterName(traitName, 'b_set')
@@ -490,7 +490,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.scratchLogger = ServerEventBuffer.ServerEventAccumulator(self.air, 'petScratchings', self.doId)
         self.traits = PetTraits.PetTraits(self.traitSeed, self.safeZone)
         if not hasattr(self, '_beingCreatedInDB'):
-            for i in xrange(len(self.traitList)):
+            for i in range(len(self.traitList)):
                 value = self.traitList[i]
                 if value == 0.0:
                     traitName = PetTraits.getTraitNames()[i]
@@ -512,7 +512,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.setH(randFloat(360))
         if self.initialDNA:
             self.setDNA(self.initialDNA)
-        for mood, value in self.requiredMoodComponents.items():
+        for mood, value in list(self.requiredMoodComponents.items()):
             self.mood.setComponent(mood, value, announce=0)
 
         self.requiredMoodComponents = {}
@@ -734,11 +734,11 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
             self.setMoodComponent(component, lerp(curVal, 1.0, factor))
 
     def addToMoods(self, mood2delta):
-        for mood, delta in mood2delta.items():
+        for mood, delta in list(mood2delta.items()):
             self.addToMood(mood, delta)
 
     def lerpMoods(self, mood2factor):
-        for mood, factor in mood2factor.items():
+        for mood, factor in list(mood2factor.items()):
             self.lerpMood(mood, factor)
 
     def handleMoodChange(self, components = [], distribute = 1):
@@ -898,25 +898,25 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         nearbyToonDict = self._getFullNearbyToonDict()
         if not len(nearbyToonDict):
             return None
-        return nearbyToonDict[random.choice(nearbyToonDict.keys())]
+        return nearbyToonDict[random.choice(list(nearbyToonDict.keys()))]
 
     def _getNearbyToonNonOwner(self):
         nearbyToonDict = self._getNearbyToonDict()
         if not len(nearbyToonDict):
             return None
-        return nearbyToonDict[random.choice(nearbyToonDict.keys())]
+        return nearbyToonDict[random.choice(list(nearbyToonDict.keys()))]
 
     def _getNearbyPet(self):
         nearbyPetDict = self._getNearbyPetDict()
         if not len(nearbyPetDict):
             return None
-        return nearbyPetDict[random.choice(nearbyPetDict.keys())]
+        return nearbyPetDict[random.choice(list(nearbyPetDict.keys()))]
 
     def _getNearbyAvatar(self):
         nearbyAvDict = self._getNearbyAvatarDict()
         if not len(nearbyAvDict):
             return None
-        return nearbyAvDict[random.choice(nearbyAvDict.keys())]
+        return nearbyAvDict[random.choice(list(nearbyAvDict.keys()))]
 
     def isBusy(self):
         return self.busy > 0
@@ -1005,7 +1005,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         return sum / 3.0
 
     def __lockPetMoveTask(self, avId):
-        if not hasattr(self, 'air') or not self.air.doId2do.has_key(avId):
+        if not hasattr(self, 'air') or avId not in self.air.doId2do:
             self.notify.warning('avId: %s gone or self deleted!' % avId)
             return Task.done
         av = self.air.doId2do.get(avId)
@@ -1013,7 +1013,7 @@ class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLooke
         self.distList.append(dist)
         if len(self.distList) > 3:
             self.distList.pop(0)
-        if self.movieDistSwitch.has_key(self.movieMode):
+        if self.movieMode in self.movieDistSwitch:
             dist_Callable = self.movieDistSwitch.get(self.movieMode)
             movieDist = dist_Callable(av.getStyle().getLegSize())
         else:

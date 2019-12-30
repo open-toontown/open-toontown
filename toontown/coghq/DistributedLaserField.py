@@ -1,6 +1,6 @@
 from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
-from StomperGlobals import *
+from .StomperGlobals import *
 from direct.distributed import ClockDelta
 from direct.showbase.PythonUtil import lerp
 import math
@@ -697,7 +697,7 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
                 suit.setVirtual()
 
     def initCollisionGeom(self):
-        print 'Laser Field initCollisionGeom'
+        print('Laser Field initCollisionGeom')
         self.blockerX = self.gridScaleX * 0.5
         self.blockerY = self.gridScaleY
         self.cSphere = CollisionSphere(0, 0, 0, self.blockerX)

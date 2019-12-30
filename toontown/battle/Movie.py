@@ -1,29 +1,29 @@
 from toontown.toonbase.ToontownBattleGlobals import *
-from BattleBase import *
+from .BattleBase import *
 from direct.interval.IntervalGlobal import *
 from direct.showbase import DirectObject
-import MovieFire
-import MovieSOS
-import MovieNPCSOS
-import MoviePetSOS
-import MovieHeal
-import MovieTrap
-import MovieLure
-import MovieSound
-import MovieThrow
-import MovieSquirt
-import MovieDrop
-import MovieSuitAttacks
-import MovieToonVictory
-import PlayByPlayText
-import BattleParticles
+from . import MovieFire
+from . import MovieSOS
+from . import MovieNPCSOS
+from . import MoviePetSOS
+from . import MovieHeal
+from . import MovieTrap
+from . import MovieLure
+from . import MovieSound
+from . import MovieThrow
+from . import MovieSquirt
+from . import MovieDrop
+from . import MovieSuitAttacks
+from . import MovieToonVictory
+from . import PlayByPlayText
+from . import BattleParticles
 from toontown.distributed import DelayDelete
-import BattleExperience
-from SuitBattleGlobals import *
+from . import BattleExperience
+from .SuitBattleGlobals import *
 from direct.directnotify import DirectNotifyGlobal
-import RewardPanel
+from . import RewardPanel
 import random
-import MovieUtil
+from . import MovieUtil
 from toontown.toon import Toon
 from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
@@ -760,7 +760,7 @@ class Movie(DirectObject.DirectObject):
                             adict['target'] = sdict
                 adict['hpbonus'] = ta[TOON_HPBONUS_COL]
                 adict['sidestep'] = ta[TOON_ACCBONUS_COL]
-                if adict.has_key('npcId'):
+                if 'npcId' in adict:
                     adict['sidestep'] = 0
                 adict['battle'] = self.battle
                 adict['playByPlayText'] = self.playByPlayText
@@ -785,7 +785,7 @@ class Movie(DirectObject.DirectObject):
         setCapture = 0
         tp = []
         for ta in self.toonAttackDicts:
-            if ta['track'] == track or track == NPCSOS and ta.has_key('special'):
+            if ta['track'] == track or track == NPCSOS and 'special' in ta:
                 tp.append(ta)
                 if track == SQUIRT:
                     setCapture = 1
@@ -793,11 +793,11 @@ class Movie(DirectObject.DirectObject):
         if track == TRAP:
             sortedTraps = []
             for attack in tp:
-                if not attack.has_key('npcId'):
+                if 'npcId' not in attack:
                     sortedTraps.append(attack)
 
             for attack in tp:
-                if attack.has_key('npcId'):
+                if 'npcId' in attack:
                     sortedTraps.append(attack)
 
             tp = sortedTraps

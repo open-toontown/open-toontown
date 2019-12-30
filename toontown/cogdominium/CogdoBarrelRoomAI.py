@@ -111,7 +111,7 @@ class CogdoBarrelRoomAI:
             return not toon.isToonedUp()
 
     def __allBarrelsCollected(self):
-        toonsNeedingLaff = Set(filter(lambda toon: self.__toonIdNeedsLaff(toon), self.cogdoInteriorAI.toons))
+        toonsNeedingLaff = Set([toon for toon in self.cogdoInteriorAI.toons if self.__toonIdNeedsLaff(toon)])
         for barrel in self.spawnedBarrels:
             if not toonsNeedingLaff.issubset(Set(barrel.grabbedBy)):
                 return False

@@ -1,8 +1,8 @@
-import DistributedLawnDecor
+from . import DistributedLawnDecor
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.ShowBase import *
-import GardenGlobals
+from . import GardenGlobals
 from toontown.toonbase import TTLocalizer
 
 class DistributedPlantBase(DistributedLawnDecor.DistributedLawnDecor):
@@ -17,7 +17,7 @@ class DistributedPlantBase(DistributedLawnDecor.DistributedLawnDecor):
 
     def delete(self):
         self.notify.debug('delete')
-        for waterTrack in self.waterTrackDict.values():
+        for waterTrack in list(self.waterTrackDict.values()):
             if waterTrack:
                 waterTrack.finish()
 

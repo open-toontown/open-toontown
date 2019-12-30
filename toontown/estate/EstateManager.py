@@ -6,8 +6,8 @@ import random
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
-import HouseGlobals
-import Estate
+from . import HouseGlobals
+from . import Estate
 
 class EstateManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('EstateManager')

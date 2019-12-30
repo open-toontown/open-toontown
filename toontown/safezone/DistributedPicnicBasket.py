@@ -2,7 +2,7 @@ from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
-from TrolleyConstants import *
+from .TrolleyConstants import *
 from toontown.golf import GolfGlobals
 from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
@@ -149,7 +149,7 @@ class DistributedPicnicBasket(DistributedObject.DistributedObject):
                 if hasattr(self.loader.place, 'trolley'):
                     self.loader.place.trolley.fsm.request('boarded')
                     self.loader.place.trolley.exitButton.hide()
-            if self.cr.doId2do.has_key(avId):
+            if avId in self.cr.doId2do:
                 toon = self.cr.doId2do[avId]
                 toon.stopSmooth()
                 toon.wrtReparentTo(self.tablecloth)
@@ -216,7 +216,7 @@ class DistributedPicnicBasket(DistributedObject.DistributedObject):
             track.start()
         else:
             self.fullSeat[index] = self.seatState.Empty
-            if self.cr.doId2do.has_key(avId):
+            if avId in self.cr.doId2do:
                 if avId == base.localAvatar.getDoId():
                     if self.clockNode:
                         self.clockNode.hide()
@@ -302,7 +302,7 @@ class DistributedPicnicBasket(DistributedObject.DistributedObject):
             keyList.append(key)
 
         for key in keyList:
-            if self.__toonTracks.has_key(key):
+            if key in self.__toonTracks:
                 self.clearToonTrack(key)
 
     def doneExit(self, avId):

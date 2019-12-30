@@ -6,7 +6,7 @@ from toontown.building import DistributedElevatorExtAI
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.task import Task
-import CogDisguiseGlobals
+from . import CogDisguiseGlobals
 
 class DistributedMintElevatorExtAI(DistributedElevatorExtAI.DistributedElevatorExtAI):
 

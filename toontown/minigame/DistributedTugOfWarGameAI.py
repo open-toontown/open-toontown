@@ -1,10 +1,10 @@
-from DistributedMinigameAI import *
+from .DistributedMinigameAI import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 import random
 from direct.task.Task import Task
 import copy
-import TugOfWarGameGlobals
+from . import TugOfWarGameGlobals
 import math
 
 class DistributedTugOfWarGameAI(DistributedMinigameAI):
@@ -188,7 +188,7 @@ class DistributedTugOfWarGameAI(DistributedMinigameAI):
     def calculateOffsets(self):
         f = [0, 0]
         for i in [0, 1]:
-            for x in self.forceDict[i].values():
+            for x in list(self.forceDict[i].values()):
                 f[i] += x
 
         if self.gameType == TugOfWarGameGlobals.TOON_VS_COG:
@@ -211,7 +211,7 @@ class DistributedTugOfWarGameAI(DistributedMinigameAI):
 
     def reportCurrentKeyRate(self, keyRate, force):
         avId = self.air.getAvatarIdFromSender()
-        if not self.side.has_key(avId):
+        if avId not in self.side:
             self.notify.warning('Avatar %s sent reportCurrentKeyRate too early %s' % (avId, self.side))
             return
         self.keyRateDict[avId] = keyRate
@@ -221,7 +221,7 @@ class DistributedTugOfWarGameAI(DistributedMinigameAI):
         if self.howManyReported == self.numPlayers:
             self.howManyReported = 0
             self.calculateOffsets()
-            self.sendUpdate('sendCurrentPosition', [self.offsetDict.keys(), self.offsetDict.values()])
+            self.sendUpdate('sendCurrentPosition', [list(self.offsetDict.keys()), list(self.offsetDict.values())])
             if self.gameType == TugOfWarGameGlobals.TOON_VS_COG:
                 self.sendUpdate('sendSuitPosition', [self.suitOffset])
 

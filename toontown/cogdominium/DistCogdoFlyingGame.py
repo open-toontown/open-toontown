@@ -1,9 +1,9 @@
 from direct.distributed.ClockDelta import globalClockDelta
 from toontown.toonbase import TTLocalizer
-from CogdoFlyingGame import CogdoFlyingGame
-from DistCogdoGame import DistCogdoGame
-import CogdoFlyingGameGlobals
-import CogdoFlyingGameGlobals as Globals
+from .CogdoFlyingGame import CogdoFlyingGame
+from .DistCogdoGame import DistCogdoGame
+from . import CogdoFlyingGameGlobals
+from . import CogdoFlyingGameGlobals as Globals
 
 class DistCogdoFlyingGame(DistCogdoGame):
     notify = directNotify.newCategory('DistCogdoFlyingGame')

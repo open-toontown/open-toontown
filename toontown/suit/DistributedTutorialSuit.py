@@ -3,7 +3,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
 from toontown.distributed.DelayDeletable import DelayDeletable
-import DistributedSuitBase
+from . import DistributedSuitBase
 
 class DistributedTutorialSuit(DistributedSuitBase.DistributedSuitBase, DelayDeletable):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTutorialSuit')

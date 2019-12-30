@@ -1,4 +1,4 @@
-import ShtikerPage
+from . import ShtikerPage
 from toontown.toonbase import ToontownGlobals
 from direct.showbase import PythonUtil
 from otp.otpbase import PythonUtil as OTPPythonUtil

@@ -1,6 +1,6 @@
-import ShtikerPage
+from . import ShtikerPage
 from direct.task.Task import Task
-import SummonCogDialog
+from . import SummonCogDialog
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase import ToontownGlobals
@@ -8,7 +8,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.suit import SuitDNA
 from toontown.suit import Suit
 from toontown.battle import SuitBattleGlobals
-from CogPageGlobals import *
+from .CogPageGlobals import *
 SCALE_FACTOR = 1.5
 RADAR_DELAY = 0.2
 BUILDING_RADAR_POS = (0.375,
@@ -267,11 +267,11 @@ class SuitPage(ShtikerPage.ShtikerPage):
 
     def grow(self, panel, pos):
         if self.bigPanel:
-            print 'setting next panel - ' + str(panel)
+            print('setting next panel - ' + str(panel))
             self.nextPanel = panel
             self.nextPanelPos = pos
             return
-        print 'big panel - ' + str(panel)
+        print('big panel - ' + str(panel))
         self.bigPanel = panel
         panel.reparentTo(self.enlargedPanelNode)
         panel.setScale(panel.getScale() * SCALE_FACTOR)
@@ -280,11 +280,11 @@ class SuitPage(ShtikerPage.ShtikerPage):
             panel.summonButton['state'] = DGG.NORMAL
 
     def shrink(self, panel, pos):
-        print 'trying to shrink - ' + str(panel)
+        print('trying to shrink - ' + str(panel))
         if panel != self.bigPanel:
             self.nextPanel = None
             return
-        print 'shrink panel - ' + str(panel)
+        print('shrink panel - ' + str(panel))
         self.bigPanel = None
         panel.setScale(panel.scale)
         panel.reparentTo(self.panelNode)
@@ -491,11 +491,11 @@ class SuitPage(ShtikerPage.ShtikerPage):
 
     def updateCogStatus(self, dept, type, status):
         if dept < 0 or dept > len(SuitDNA.suitDepts):
-            print 'ucs: bad cog dept: ', dept
+            print('ucs: bad cog dept: ', dept)
         elif type < 0 or type > SuitDNA.suitsPerDept:
-            print 'ucs: bad cog type: ', type
+            print('ucs: bad cog type: ', type)
         elif status < COG_UNSEEN or status > COG_COMPLETE2:
-            print 'ucs: bad status: ', status
+            print('ucs: bad status: ', status)
         else:
             self.resetPanel(dept, type)
             panel = self.panels[dept * SuitDNA.suitsPerDept + type]

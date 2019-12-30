@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from ToontownAIMsgTypes import *
+from .ToontownAIMsgTypes import *
 from direct.directnotify.DirectNotifyGlobal import *
 from toontown.toon import DistributedToonAI
 from direct.distributed.PyDatagram import PyDatagram
@@ -61,7 +61,7 @@ class DatabaseObject:
         if fields != None:
             values = {}
             for field in fields:
-                if self.values.has_key(field):
+                if field in self.values:
                     values[field] = self.values[field]
                 else:
                     self.notify.warning('Field %s not defined.' % field)
@@ -128,7 +128,7 @@ class DatabaseObject:
         dg.addServerHeader(DBSERVER_ID, self.air.ourChannel, DBSERVER_SET_STORED_VALUES)
         dg.addUint32(self.doId)
         dg.addUint16(len(values))
-        items = values.items()
+        items = list(values.items())
         for field, value in items:
             dg.addString(field)
 
@@ -150,7 +150,7 @@ class DatabaseObject:
 
     def fillin(self, do, dclass):
         do.doId = self.doId
-        for field, value in self.values.items():
+        for field, value in list(self.values.items()):
             if field == 'setZonesVisited' and value.getLength() == 1:
                 self.notify.warning('Ignoring broken setZonesVisited')
             else:
@@ -172,7 +172,7 @@ class DatabaseObject:
 
     def createObject(self, objectType):
         values = {}
-        for key, value in values.items():
+        for key, value in list(values.items()):
             values[key] = PyDatagram(str(value))
 
         context = self.air.dbObjContext
@@ -185,10 +185,10 @@ class DatabaseObject:
         dg.addString('')
         dg.addUint16(objectType)
         dg.addUint16(len(values))
-        for field in values.keys():
+        for field in list(values.keys()):
             dg.addString(field)
 
-        for value in values.values():
+        for value in list(values.values()):
             dg.addString(value.getMessage())
 
         self.air.send(dg)
@@ -209,5 +209,5 @@ class DatabaseObject:
         dg = PyDatagram()
         dg.addServerHeader(DBSERVER_ID, self.air.ourChannel, DBSERVER_DELETE_STORED_OBJECT)
         dg.addUint32(self.doId)
-        dg.addUint32(3735928559L)
+        dg.addUint32(3735928559)
         self.air.send(dg)

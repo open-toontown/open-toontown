@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-import ToonHood
+from . import ToonHood
 from toontown.town import DLTownLoader
 from toontown.safezone import DLSafeZoneLoader
 from toontown.toonbase.ToontownGlobals import *

@@ -84,7 +84,7 @@ class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDelet
         return
 
     def delete(self):
-        print 'GOLF COURSE DELETE'
+        print('GOLF COURSE DELETE')
         self.ignore('clientCleanup')
         if self.scoreBoard:
             self.scoreBoard.delete()
@@ -257,7 +257,7 @@ class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDelet
         pass
 
     def enterCleanup(self):
-        print 'GOLF COURSE CLEANUP'
+        print('GOLF COURSE CLEANUP')
         base.localAvatar.stopSleepWatch()
         for action in self.cleanupActions:
             action()

@@ -1,7 +1,7 @@
 from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
-import SafeZoneLoader
-import BRPlayground
+from . import SafeZoneLoader
+from . import BRPlayground
 from toontown.battle import BattleParticles
 
 class BRSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):

@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-import DistributedMintAI
+from . import DistributedMintAI
 from toontown.toonbase import ToontownGlobals
 from toontown.coghq import MintLayout
 from direct.showbase import DirectObject
@@ -34,7 +34,7 @@ class MintManagerAI(DirectObject.DirectObject):
         for avId in players:
             if bboard.has('mintRoom-%s' % avId):
                 roomId = bboard.get('mintRoom-%s' % avId)
-                for i in xrange(numFloors):
+                for i in range(numFloors):
                     layout = MintLayout.MintLayout(mintId, i)
                     if roomId in layout.getRoomIds():
                         floor = i

@@ -1,4 +1,4 @@
-from DistributedNPCToonAI import *
+from .DistributedNPCToonAI import *
 
 class DistributedNPCFlippyInToonHallAI(DistributedNPCToonAI):
 

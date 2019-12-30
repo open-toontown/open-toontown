@@ -1,11 +1,11 @@
 from otp.avatar import Avatar
 from otp.avatar.Avatar import teleportNotify
-import ToonDNA
+from . import ToonDNA
 from direct.task.Task import Task
 from toontown.suit import SuitDNA
 from direct.actor import Actor
 import string
-from ToonHead import *
+from .ToonHead import *
 from pandac.PandaModules import *
 from libotp import *
 from direct.interval.IntervalGlobal import *
@@ -15,23 +15,24 @@ from otp.otpbase import OTPLocalizer
 from toontown.toonbase import TTLocalizer
 import random
 from toontown.effects import Wake
-import TTEmote
+from . import TTEmote
 from otp.avatar import Emote
-import Motion
+from . import Motion
 from toontown.hood import ZoneUtil
 from toontown.battle import SuitBattleGlobals
 from otp.otpbase import OTPGlobals
 from toontown.effects import DustCloud
 from direct.showbase.PythonUtil import Functor
 from toontown.distributed import DelayDelete
-import AccessoryGlobals
+from . import AccessoryGlobals
 import types
+import importlib
 
 def teleportDebug(requestStatus, msg, onlyIfToAv = True):
     if teleportNotify.getDebug():
         teleport = 'teleport'
-        if requestStatus.has_key('how') and requestStatus['how'][:len(teleport)] == teleport:
-            if not onlyIfToAv or requestStatus.has_key('avId') and requestStatus['avId'] > 0:
+        if 'how' in requestStatus and requestStatus['how'][:len(teleport)] == teleport:
+            if not onlyIfToAv or 'avId' in requestStatus and requestStatus['avId'] > 0:
                 teleportNotify.debug(msg)
 
 
@@ -213,7 +214,7 @@ def loadModels():
         for bottom in ToonDNA.GirlBottoms:
             loadTex(bottom[0])
 
-        for key in LegDict.keys():
+        for key in list(LegDict.keys()):
             fileRoot = LegDict[key]
             model = loader.loadModel('phase_3' + fileRoot + '1000').node()
             Preloaded.append(model)
@@ -222,7 +223,7 @@ def loadModels():
             model = loader.loadModel('phase_3' + fileRoot + '250').node()
             Preloaded.append(model)
 
-        for key in TorsoDict.keys():
+        for key in list(TorsoDict.keys()):
             fileRoot = TorsoDict[key]
             model = loader.loadModel('phase_3' + fileRoot + '1000').node()
             Preloaded.append(model)
@@ -232,7 +233,7 @@ def loadModels():
                 model = loader.loadModel('phase_3' + fileRoot + '250').node()
                 Preloaded.append(model)
 
-        for key in HeadDict.keys():
+        for key in list(HeadDict.keys()):
             fileRoot = HeadDict[key]
             model = loader.loadModel('phase_3' + fileRoot + '1000').node()
             Preloaded.append(model)
@@ -319,28 +320,28 @@ def loadPhaseAnims(phaseStr = 'phase_3', loadFlag = 1):
         animList = Phase12AnimList
     else:
         self.notify.error('Unknown phase string %s' % phaseStr)
-    for key in LegDict.keys():
+    for key in list(LegDict.keys()):
         for anim in animList:
             if loadFlag:
                 pass
-            elif LegsAnimDict[key].has_key(anim[0]):
+            elif anim[0] in LegsAnimDict[key]:
                 if base.localAvatar.style.legs == key:
                     base.localAvatar.unloadAnims([anim[0]], 'legs', None)
 
-    for key in TorsoDict.keys():
+    for key in list(TorsoDict.keys()):
         for anim in animList:
             if loadFlag:
                 pass
-            elif TorsoAnimDict[key].has_key(anim[0]):
+            elif anim[0] in TorsoAnimDict[key]:
                 if base.localAvatar.style.torso == key:
                     base.localAvatar.unloadAnims([anim[0]], 'torso', None)
 
-    for key in HeadDict.keys():
+    for key in list(HeadDict.keys()):
         if string.find(key, 'd') >= 0:
             for anim in animList:
                 if loadFlag:
                     pass
-                elif HeadAnimDict[key].has_key(anim[0]):
+                elif anim[0] in HeadAnimDict[key]:
                     if base.localAvatar.style.head == key:
                         base.localAvatar.unloadAnims([anim[0]], 'head', None)
 
@@ -368,19 +369,19 @@ def compileGlobalAnimList():
      'phase_12']
     for animList in phaseList:
         phaseStr = phaseStrList[phaseList.index(animList)]
-        for key in LegDict.keys():
+        for key in list(LegDict.keys()):
             LegsAnimDict.setdefault(key, {})
             for anim in animList:
                 file = phaseStr + LegDict[key] + anim[1]
                 LegsAnimDict[key][anim[0]] = file
 
-        for key in TorsoDict.keys():
+        for key in list(TorsoDict.keys()):
             TorsoAnimDict.setdefault(key, {})
             for anim in animList:
                 file = phaseStr + TorsoDict[key] + anim[1]
                 TorsoAnimDict[key][anim[0]] = file
 
-        for key in HeadDict.keys():
+        for key in list(HeadDict.keys()):
             if string.find(key, 'd') >= 0:
                 HeadAnimDict.setdefault(key, {})
                 for anim in animList:
@@ -1043,7 +1044,7 @@ class Toon(Avatar.Avatar, ToonHead):
                         tex.setMagfilter(Texture.FTLinear)
                         hatGeom.setTexture(tex, 1)
                 if fromRTM:
-                    reload(AccessoryGlobals)
+                    importlib.reload(AccessoryGlobals)
                 transOffset = None
                 if AccessoryGlobals.ExtendedHatTransTable.get(hat[0]):
                     transOffset = AccessoryGlobals.ExtendedHatTransTable[hat[0]].get(self.style.head[:2])
@@ -1088,7 +1089,7 @@ class Toon(Avatar.Avatar, ToonHead):
                         tex.setMagfilter(Texture.FTLinear)
                         glassesGeom.setTexture(tex, 1)
                 if fromRTM:
-                    reload(AccessoryGlobals)
+                    importlib.reload(AccessoryGlobals)
                 transOffset = None
                 if AccessoryGlobals.ExtendedGlassesTransTable.get(glasses[0]):
                     transOffset = AccessoryGlobals.ExtendedGlassesTransTable[glasses[0]].get(self.style.head[:2])
@@ -1130,7 +1131,7 @@ class Toon(Avatar.Avatar, ToonHead):
                         tex.setMagfilter(Texture.FTLinear)
                         geom.setTexture(tex, 1)
                 if fromRTM:
-                    reload(AccessoryGlobals)
+                    importlib.reload(AccessoryGlobals)
                 transOffset = None
                 if AccessoryGlobals.ExtendedBackpackTransTable.get(backpack[0]):
                     transOffset = AccessoryGlobals.ExtendedBackpackTransTable[backpack[0]].get(self.style.torso[:1])
@@ -1288,7 +1289,7 @@ class Toon(Avatar.Avatar, ToonHead):
             self.lerpLookAt(Point3(x, 1.5, y), blink=1)
             return
         nodePathList = []
-        for id, obj in self.cr.doId2do.items():
+        for id, obj in list(self.cr.doId2do.items()):
             if hasattr(obj, 'getStareAtNodeAndOffset') and obj != self:
                 node, offset = obj.getStareAtNodeAndOffset()
                 if node.getY(self) > 0.0:
@@ -2019,12 +2020,12 @@ class Toon(Avatar.Avatar, ToonHead):
         self.setPlayRate(animMultiplier * 0.4, 'neutral')
         self.setChatAbsolute(SLEEP_STRING, CFThought)
         if self == base.localAvatar:
-            print 'adding timeout task'
+            print('adding timeout task')
             taskMgr.doMethodLater(self.afkTimeout, self.__handleAfkTimeout, self.uniqueName('afkTimeout'))
         self.setActiveShadow(0)
 
     def __handleAfkTimeout(self, task):
-        print 'handling timeout'
+        print('handling timeout')
         self.ignore('wakeup')
         self.takeOffSuit()
         base.cr.playGame.getPlace().fsm.request('final')
@@ -2191,7 +2192,7 @@ class Toon(Avatar.Avatar, ToonHead):
             for partName, pieceNames in pieces:
                 part = self.getPart(partName, lodName)
                 if part:
-                    if type(pieceNames) == types.StringType:
+                    if type(pieceNames) == bytes:
                         pieceNames = (pieceNames,)
                     for pieceName in pieceNames:
                         npc = part.findAllMatches('**/%s;+s' % pieceName)
@@ -2770,9 +2771,9 @@ class Toon(Avatar.Avatar, ToonHead):
                 self.stopTrackAnimToSpeed()
                 self.startTrackAnimToSpeed()
             self.controlManager.disableAvatarJump()
-            indices = range(OTPLocalizer.SCMenuCommonCogIndices[0], OTPLocalizer.SCMenuCommonCogIndices[1] + 1)
+            indices = list(range(OTPLocalizer.SCMenuCommonCogIndices[0], OTPLocalizer.SCMenuCommonCogIndices[1] + 1))
             customIndices = OTPLocalizer.SCMenuCustomCogIndices[suitType]
-            indices += range(customIndices[0], customIndices[1] + 1)
+            indices += list(range(customIndices[0], customIndices[1] + 1))
             self.chatMgr.chatInputSpeedChat.addCogMenu(indices)
         self.suit.loop('neutral')
         self.isDisguised = 1

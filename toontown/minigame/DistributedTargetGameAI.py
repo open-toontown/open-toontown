@@ -1,8 +1,8 @@
-from DistributedMinigameAI import *
+from .DistributedMinigameAI import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-import TargetGameGlobals
+from . import TargetGameGlobals
 import random
 import types
 
@@ -94,7 +94,7 @@ class DistributedTargetGameAI(DistributedMinigameAI):
 
     def setGameStart(self, timestamp):
         self.notify.debug('setGameStart')
-        for avId in self.scoreDict.keys():
+        for avId in list(self.scoreDict.keys()):
             self.scoreDict[avId] = 0
 
         DistributedMinigameAI.setGameStart(self, timestamp)
@@ -173,7 +173,7 @@ class DistributedTargetGameAI(DistributedMinigameAI):
          0,
          0]
         scoreIndex = 0
-        for avId in self.scoreDict.keys():
+        for avId in list(self.scoreDict.keys()):
             scoreList[scoreIndex] = self.scoreDict[avId]
             avList[scoreIndex] = avId
             scoreIndex += 1
@@ -207,7 +207,7 @@ class DistributedTargetGameAI(DistributedMinigameAI):
             return
         avId = self.air.getAvatarIdFromSender()
         self.barrierScore.clear(avId)
-        for avId in self.stateDict.keys():
+        for avId in list(self.stateDict.keys()):
             if self.stateDict[avId] == EXITED:
                 self.barrierScore.clear(avId)
 
@@ -220,7 +220,7 @@ class DistributedTargetGameAI(DistributedMinigameAI):
                 self.scoreDict[entry] = 1
 
         self.scoreTrack.append(self.getScoreList())
-        statMessage = 'MiniGame Stats : Target Game' + '\nScores' + '%s' % self.scoreTrack + '\nAvIds' + '%s' % self.scoreDict.keys() + '\nSafeZone' + '%s' % self.getSafezoneId()
+        statMessage = 'MiniGame Stats : Target Game' + '\nScores' + '%s' % self.scoreTrack + '\nAvIds' + '%s' % list(self.scoreDict.keys()) + '\nSafeZone' + '%s' % self.getSafezoneId()
         self.air.writeServerEvent('MiniGame Stats', None, statMessage)
         self.sendUpdate('setGameDone', [])
         self.gameFSM.request('cleanup')

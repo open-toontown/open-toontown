@@ -6,33 +6,33 @@ from direct.showbase.PythonUtil import normalDistrib, lerp
 import random
 
 def printAllCashbotInfo():
-    print 'roomId: roomName'
-    for roomId, roomName in StageRoomSpecs.CashbotStageRoomId2RoomName.items():
-        print '%s: %s' % (roomId, roomName)
+    print('roomId: roomName')
+    for roomId, roomName in list(StageRoomSpecs.CashbotStageRoomId2RoomName.items()):
+        print('%s: %s' % (roomId, roomName))
 
-    print '\nroomId: numBattles'
-    for roomId, numBattles in StageRoomSpecs.roomId2numBattles.items():
-        print '%s: %s' % (roomId, numBattles)
+    print('\nroomId: numBattles')
+    for roomId, numBattles in list(StageRoomSpecs.roomId2numBattles.items()):
+        print('%s: %s' % (roomId, numBattles))
 
-    print '\nstageId floor roomIds'
+    print('\nstageId floor roomIds')
     printStageRoomIds()
-    print '\nstageId floor numRooms'
+    print('\nstageId floor numRooms')
     printNumRooms()
-    print '\nstageId floor numForcedBattles'
+    print('\nstageId floor numForcedBattles')
     printNumBattles()
 
 
 def iterateLawbotStages(func):
     from toontown.toonbase import ToontownGlobals
-    for layoutId in xrange(len(stageLayouts)):
-        for floorNum in xrange(getNumFloors(layoutId)):
+    for layoutId in range(len(stageLayouts)):
+        for floorNum in range(getNumFloors(layoutId)):
             func(StageLayout(0, floorNum, layoutId))
 
 
 def printStageInfo():
 
     def func(sl):
-        print sl
+        print(sl)
 
     iterateLawbotStages(func)
 
@@ -46,26 +46,26 @@ def printRoomUsage():
             usage[roomId] += 1
 
     iterateLawbotStages(func)
-    roomIds = usage.keys()
+    roomIds = list(usage.keys())
     roomIds.sort()
     for roomId in roomIds:
-        print '%s: %s' % (roomId, usage[roomId])
+        print('%s: %s' % (roomId, usage[roomId]))
 
 
 def printRoomInfo():
-    roomIds = StageRoomSpecs.roomId2numCogs.keys()
+    roomIds = list(StageRoomSpecs.roomId2numCogs.keys())
     roomIds.sort()
     for roomId in roomIds:
-        print 'room %s: %s cogs, %s cogLevels, %s merit cogLevels' % (roomId,
+        print('room %s: %s cogs, %s cogLevels, %s merit cogLevels' % (roomId,
          StageRoomSpecs.roomId2numCogs[roomId],
          StageRoomSpecs.roomId2numCogLevels[roomId],
-         StageRoomSpecs.roomId2numMeritCogLevels[roomId])
+         StageRoomSpecs.roomId2numMeritCogLevels[roomId]))
 
 
 def printStageRoomIds():
 
     def func(ml):
-        print ml.getStageId(), ml.getFloorNum(), ml.getRoomIds()
+        print(ml.getStageId(), ml.getFloorNum(), ml.getRoomIds())
 
     iterateCashbotStages(func)
 
@@ -73,7 +73,7 @@ def printStageRoomIds():
 def printStageRoomNames():
 
     def func(ml):
-        print ml.getStageId(), ml.getFloorNum(), ml.getRoomNames()
+        print(ml.getStageId(), ml.getFloorNum(), ml.getRoomNames())
 
     iterateCashbotStages(func)
 
@@ -81,7 +81,7 @@ def printStageRoomNames():
 def printNumRooms():
 
     def func(ml):
-        print ml.getStageId(), ml.getFloorNum(), ml.getNumRooms()
+        print(ml.getStageId(), ml.getFloorNum(), ml.getNumRooms())
 
     iterateCashbotStages(func)
 
@@ -89,7 +89,7 @@ def printNumRooms():
 def printNumBattles():
 
     def func(ml):
-        print ml.getStageId(), ml.getFloorNum(), ml.getNumBattles()
+        print(ml.getStageId(), ml.getFloorNum(), ml.getNumBattles())
 
     iterateCashbotStages(func)
 
@@ -627,7 +627,7 @@ class StageLayout:
         self.numHallways = self.numRooms - 1
         hallwayRng = self.getRng()
         connectorRoomNames = StageRoomSpecs.CashbotStageConnectorRooms
-        for i in xrange(self.numHallways):
+        for i in range(self.numHallways):
             self.hallways.append(hallwayRng.choice(connectorRoomNames))
 
     def getNumRooms(self):

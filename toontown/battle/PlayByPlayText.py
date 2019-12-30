@@ -2,12 +2,12 @@ from pandac.PandaModules import *
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToontownBattleGlobals import *
 from toontown.toonbase.ToontownGlobals import *
-from SuitBattleGlobals import *
+from .SuitBattleGlobals import *
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 import string
 from direct.gui import OnscreenText
-import BattleBase
+from . import BattleBase
 
 class PlayByPlayText(OnscreenText.OnscreenText):
     notify = DirectNotifyGlobal.directNotify.newCategory('PlayByPlayText')

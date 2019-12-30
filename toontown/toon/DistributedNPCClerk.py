@@ -1,8 +1,8 @@
 from pandac.PandaModules import *
-from DistributedNPCToonBase import *
+from .DistributedNPCToonBase import *
 from toontown.minigame import ClerkPurchase
 from toontown.shtiker.PurchaseManagerConstants import *
-import NPCToons
+from . import NPCToons
 from direct.task.Task import Task
 from toontown.toonbase import TTLocalizer
 from toontown.hood import ZoneUtil

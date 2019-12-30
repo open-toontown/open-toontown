@@ -6,33 +6,33 @@ from direct.showbase.PythonUtil import normalDistrib, lerp
 import random
 
 def printAllBossbotInfo():
-    print 'roomId: roomName'
-    for roomId, roomName in CountryClubRoomSpecs.BossbotCountryClubRoomId2RoomName.items():
-        print '%s: %s' % (roomId, roomName)
+    print('roomId: roomName')
+    for roomId, roomName in list(CountryClubRoomSpecs.BossbotCountryClubRoomId2RoomName.items()):
+        print('%s: %s' % (roomId, roomName))
 
-    print '\nroomId: numBattles'
-    for roomId, numBattles in CountryClubRoomSpecs.roomId2numBattles.items():
-        print '%s: %s' % (roomId, numBattles)
+    print('\nroomId: numBattles')
+    for roomId, numBattles in list(CountryClubRoomSpecs.roomId2numBattles.items()):
+        print('%s: %s' % (roomId, numBattles))
 
-    print '\ncountryClubId floor roomIds'
+    print('\ncountryClubId floor roomIds')
     printCountryClubRoomIds()
-    print '\ncountryClubId floor numRooms'
+    print('\ncountryClubId floor numRooms')
     printNumRooms()
-    print '\ncountryClubId floor numForcedBattles'
+    print('\ncountryClubId floor numForcedBattles')
     printNumBattles()
 
 
 def iterateBossbotCountryClubs(func):
     from toontown.toonbase import ToontownGlobals
     for countryClubId in [ToontownGlobals.BossbotCountryClubIntA, ToontownGlobals.BossbotCountryClubIntB, ToontownGlobals.BossbotCountryClubIntC]:
-        for floorNum in xrange(ToontownGlobals.CountryClubNumFloors[countryClubId]):
+        for floorNum in range(ToontownGlobals.CountryClubNumFloors[countryClubId]):
             func(CountryClubLayout(countryClubId, floorNum))
 
 
 def printCountryClubInfo():
 
     def func(ml):
-        print ml
+        print(ml)
 
     iterateBossbotCountryClubs(func)
 
@@ -40,7 +40,7 @@ def printCountryClubInfo():
 def printCountryClubRoomIds():
 
     def func(ml):
-        print ml.getCountryClubId(), ml.getFloorNum(), ml.getRoomIds()
+        print(ml.getCountryClubId(), ml.getFloorNum(), ml.getRoomIds())
 
     iterateBossbotCountryClubs(func)
 
@@ -48,7 +48,7 @@ def printCountryClubRoomIds():
 def printCountryClubRoomNames():
 
     def func(ml):
-        print ml.getCountryClubId(), ml.getFloorNum(), ml.getRoomNames()
+        print(ml.getCountryClubId(), ml.getFloorNum(), ml.getRoomNames())
 
     iterateBossbotCountryClubs(func)
 
@@ -56,7 +56,7 @@ def printCountryClubRoomNames():
 def printNumRooms():
 
     def func(ml):
-        print ml.getCountryClubId(), ml.getFloorNum(), ml.getNumRooms()
+        print(ml.getCountryClubId(), ml.getFloorNum(), ml.getNumRooms())
 
     iterateBossbotCountryClubs(func)
 
@@ -64,7 +64,7 @@ def printNumRooms():
 def printNumBattles():
 
     def func(ml):
-        print ml.getCountryClubId(), ml.getFloorNum(), ml.getNumBattles()
+        print(ml.getCountryClubId(), ml.getFloorNum(), ml.getNumBattles())
 
     iterateBossbotCountryClubs(func)
 
@@ -151,7 +151,7 @@ class CountryClubLayout:
         self.roomIds = countryClubLayouts[layoutIndex][floorNum]
         hallwayRng = self.getRng()
         connectorRoomNames = CountryClubRoomSpecs.BossbotCountryClubConnectorRooms
-        for i in xrange(self.numHallways):
+        for i in range(self.numHallways):
             self.hallways.append(hallwayRng.choice(connectorRoomNames))
 
     def _genFloorLayout(self):
@@ -171,7 +171,7 @@ class CountryClubLayout:
         numBattles2middleRoomIds = invertDictLossless(CountryClubRoomSpecs.middleRoomId2numBattles)
 
         allBattleRooms = []
-        for num, roomIds in numBattles2middleRoomIds.items():
+        for num, roomIds in list(numBattles2middleRoomIds.items()):
             if num > 0:
                 allBattleRooms.extend(roomIds)
         while 1:
@@ -189,7 +189,7 @@ class CountryClubLayout:
 
         if middleRoomsLeft > 0:
             actionRoomIds = numBattles2middleRoomIds[0]
-            for i in xrange(middleRoomsLeft):
+            for i in range(middleRoomsLeft):
                 roomId = rng.choice(actionRoomIds)
                 actionRoomIds.remove(roomId)
                 middleRoomIds.append(roomId)
@@ -199,7 +199,7 @@ class CountryClubLayout:
         roomIds.append(rng.choice(startingRoomIDs))
 
         middleRoomIds.sort()
-        print 'middleRoomIds=%s' % middleRoomIds
+        print('middleRoomIds=%s' % middleRoomIds)
         roomIds.extend(middleRoomIds)
 
         roomIds.append(finalRoomId)

@@ -1,16 +1,16 @@
 from direct.interval.IntervalGlobal import *
-from BattleBase import *
-from BattleProps import *
+from .BattleBase import *
+from .BattleProps import *
 from toontown.suit.SuitBase import *
 from toontown.toon.ToonDNA import *
-from BattleSounds import *
-import MovieCamera
+from .BattleSounds import *
+from . import MovieCamera
 from direct.directnotify import DirectNotifyGlobal
-import MovieUtil
+from . import MovieUtil
 from toontown.toonbase import ToontownBattleGlobals
-import BattleParticles
-import BattleProps
-import MovieNPCSOS
+from . import BattleParticles
+from . import BattleProps
+from . import MovieNPCSOS
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieLures')
 
 def safeWrtReparentTo(nodePath, parent):
@@ -129,7 +129,7 @@ def __createFishingPoleMultiTrack(lure, dollar, dollarName):
 
 def __createMagnetMultiTrack(lure, magnet, pos, hpr, scale, isSmallMagnet = 1, npcs = []):
     toon = lure['toon']
-    if lure.has_key('npc'):
+    if 'npc' in lure:
         toon = lure['npc']
     battle = lure['battle']
     sidestep = lure['sidestep']
@@ -189,7 +189,7 @@ def __createMagnetMultiTrack(lure, magnet, pos, hpr, scale, isSmallMagnet = 1, n
 
 def __createHypnoGogglesMultiTrack(lure, npcs = []):
     toon = lure['toon']
-    if lure.has_key('npc'):
+    if 'npc' in lure:
         toon = lure['npc']
     targets = lure['target']
     battle = lure['battle']

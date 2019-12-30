@@ -1,7 +1,7 @@
-from DistributedNPCToonBase import *
+from .DistributedNPCToonBase import *
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
-import NPCToons
+from . import NPCToons
 from direct.task.Task import Task
 from toontown.toonbase import TTLocalizer
 from toontown.racing.KartShopGui import *

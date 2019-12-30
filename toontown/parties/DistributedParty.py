@@ -12,7 +12,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toon import Toon
 from toontown.parties import PartyGlobals
 from toontown.parties.Decoration import Decoration
-import PartyUtils
+from . import PartyUtils
 
 class DistributedParty(DistributedObject.DistributedObject):
     notify = directNotify.newCategory('DistributedParty')
@@ -426,7 +426,7 @@ class DistributedParty(DistributedObject.DistributedObject):
     def getClearSquarePos(self):
         clearPositions = self.getClearSquarePositions()
         if len(clearPositions) == 0:
-            raise StandardError, 'Party %s has no empty grid squares.' % self.doId
+            raise Exception('Party %s has no empty grid squares.' % self.doId)
         return random.choice(clearPositions)
 
     def getClearSquarePositions(self):

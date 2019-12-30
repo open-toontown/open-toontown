@@ -22,7 +22,7 @@ class DistributedTimer(DistributedObject.DistributedObject):
 
     def setStartTime(self, time):
         self.startTime = time
-        print 'TIMER startTime %s' % time
+        print('TIMER startTime %s' % time)
 
     def getStartTime(self):
         return self.startTime

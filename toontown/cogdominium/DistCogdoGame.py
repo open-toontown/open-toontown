@@ -71,7 +71,7 @@ class DistCogdoGame(DistCogdoGameBase, DistributedObject):
         return
 
     def getToon(self, toonId):
-        if self.cr.doId2do.has_key(toonId):
+        if toonId in self.cr.doId2do:
             return self.cr.doId2do[toonId]
         else:
             return None

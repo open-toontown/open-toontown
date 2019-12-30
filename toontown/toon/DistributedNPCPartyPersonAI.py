@@ -1,4 +1,4 @@
-from DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
+from .DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
 from toontown.toonbase import TTLocalizer
 from direct.task import Task
 from toontown.toonbase import ToontownGlobals
@@ -20,7 +20,7 @@ class DistributedNPCPartyPersonAI(DistributedNPCToonBaseAI):
 
     def avatarEnter(self):
         avId = self.air.getAvatarIdFromSender()
-        if not self.air.doId2do.has_key(avId):
+        if avId not in self.air.doId2do:
             self.notify.warning('Avatar: %s not found' % avId)
             return
         if self.isBusy():

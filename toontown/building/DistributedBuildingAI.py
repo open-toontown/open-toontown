@@ -7,7 +7,7 @@ from direct.distributed import DistributedObjectAI
 from direct.fsm import State
 from direct.fsm import ClassicFSM, State
 from toontown.toonbase.ToontownGlobals import ToonHall
-import DistributedToonInteriorAI, DistributedToonHallInteriorAI, DistributedSuitInteriorAI, DistributedDoorAI, DoorTypes, DistributedElevatorExtAI, DistributedKnockKnockDoorAI, SuitPlannerInteriorAI, SuitBuildingGlobals, FADoorCodes
+from . import DistributedToonInteriorAI, DistributedToonHallInteriorAI, DistributedSuitInteriorAI, DistributedDoorAI, DoorTypes, DistributedElevatorExtAI, DistributedKnockKnockDoorAI, SuitPlannerInteriorAI, SuitBuildingGlobals, FADoorCodes
 from toontown.hood import ZoneUtil
 import random, time
 from toontown.cogdominium.DistributedCogdoInteriorAI import DistributedCogdoInteriorAI
@@ -244,7 +244,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         return
 
     def setVictorExited(self, avId):
-        print 'victor %d exited unexpectedly for bldg %d' % (avId, self.doId)
+        print('victor %d exited unexpectedly for bldg %d' % (avId, self.doId))
         self.recordVictorResponse(avId)
         if self.allVictorsResponded():
             self.toonTakeOver()
@@ -276,7 +276,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         pass
 
     def getToon(self, toonId):
-        if self.air.doId2do.has_key(toonId):
+        if toonId in self.air.doId2do:
             return self.air.doId2do[toonId]
         else:
             self.notify.warning('getToon() - toon: %d not in repository!' % toonId)
@@ -313,7 +313,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
 
         for i in range(0, 4):
             victor = victorList[i]
-            if victor == None or not self.air.doId2do.has_key(victor):
+            if victor == None or victor not in self.air.doId2do:
                 victorList[i] = 0
             else:
                 event = self.air.getAvatarExitEvent(victor)
@@ -355,7 +355,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
 
         for i in range(0, 4):
             victor = victorList[i]
-            if victor == None or not self.air.doId2do.has_key(victor):
+            if victor == None or victor not in self.air.doId2do:
                 victorList[i] = 0
             else:
                 event = self.air.getAvatarExitEvent(victor)

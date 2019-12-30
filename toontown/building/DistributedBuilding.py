@@ -2,9 +2,9 @@ from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.directtools.DirectGeometry import *
-from ElevatorConstants import *
-from ElevatorUtils import *
-from SuitBuildingGlobals import *
+from .ElevatorConstants import *
+from .ElevatorUtils import *
+from .SuitBuildingGlobals import *
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.toonbase import ToontownGlobals
@@ -710,7 +710,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
     def plantVictorsOutsideBldg(self):
         retVal = 0
         for victor in self.victorList:
-            if victor != 0 and self.cr.doId2do.has_key(victor):
+            if victor != 0 and victor in self.cr.doId2do:
                 toon = self.cr.doId2do[victor]
                 toon.setPosHpr(self.elevatorModel, 0, -10, 0, 0, 0, 0)
                 toon.startSmooth()
@@ -725,12 +725,12 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         delayDeletes = []
         i = 0
         for victor in self.victorList:
-            if victor != 0 and self.cr.doId2do.has_key(victor):
+            if victor != 0 and victor in self.cr.doId2do:
                 toon = self.cr.doId2do[victor]
                 delayDeletes.append(DelayDelete.DelayDelete(toon, 'getVictoryRunTrack'))
                 toon.stopSmooth()
                 toon.setParent(ToontownGlobals.SPHidden)
-                origPosTrack.append(Func(toon.setPosHpr, self.elevatorNodePath, apply(Point3, ElevatorPoints[i]), Point3(180, 0, 0)))
+                origPosTrack.append(Func(toon.setPosHpr, self.elevatorNodePath, Point3(*ElevatorPoints[i]), Point3(180, 0, 0)))
                 origPosTrack.append(Func(toon.setParent, ToontownGlobals.SPRender))
             i += 1
 
@@ -740,7 +740,7 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         runOutAll = Parallel()
         i = 0
         for victor in self.victorList:
-            if victor != 0 and self.cr.doId2do.has_key(victor):
+            if victor != 0 and victor in self.cr.doId2do:
                 toon = self.cr.doId2do[victor]
                 p0 = Point3(0, 0, 0)
                 p1 = Point3(ElevatorPoints[i][0], ElevatorPoints[i][1] - 5.0, ElevatorPoints[i][2])

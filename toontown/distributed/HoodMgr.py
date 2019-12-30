@@ -834,7 +834,7 @@ class HoodMgr(DirectObject.DirectObject):
 
     def getZonesInPhase(self, phase):
         p = []
-        for i in ToontownGlobals.phaseMap.items():
+        for i in list(ToontownGlobals.phaseMap.items()):
             if i[1] == phase:
                 p.append(i[0])
 

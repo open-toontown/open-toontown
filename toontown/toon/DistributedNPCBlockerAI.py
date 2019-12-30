@@ -1,7 +1,7 @@
 from otp.ai.AIBaseGlobal import *
 from pandac.PandaModules import *
-from DistributedNPCToonBaseAI import *
-import NPCToons
+from .DistributedNPCToonBaseAI import *
+from . import NPCToons
 from direct.task.Task import Task
 
 class DistributedNPCBlockerAI(DistributedNPCToonBaseAI):

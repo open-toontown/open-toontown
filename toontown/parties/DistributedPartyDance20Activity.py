@@ -20,7 +20,7 @@ class DistributedPartyDance20Activity(DistributedPartyDanceActivityBase):
         correctBall = self.danceFloor.find('**/discoBall_20')
         if not correctBall.isEmpty():
             numChildren = parentGroup.getNumChildren()
-            for i in xrange(numChildren):
+            for i in range(numChildren):
                 child = parentGroup.getChild(i)
                 if child != correctBall:
                     child.hide()

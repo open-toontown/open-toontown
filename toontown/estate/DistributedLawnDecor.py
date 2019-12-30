@@ -266,7 +266,7 @@ class DistributedLawnDecor(DistributedNode.DistributedNode, NodePath, ShadowCast
         return toonTrack
 
     def unprint(self, string):
-        print string
+        print(string)
 
     def startInteraction(self):
         place = base.cr.playGame.getPlace()

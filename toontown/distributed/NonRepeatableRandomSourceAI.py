@@ -12,7 +12,7 @@ class NonRepeatableRandomSourceAI(DistributedObjectAI):
 
     def announceGenerate(self):
         DistributedObjectAI.announceGenerate(self)
-        self._contextGen = SerialMaskedGen((1L << 32) - 1)
+        self._contextGen = SerialMaskedGen((1 << 32) - 1)
         self._requests = {}
         self._sampleTask = self.doMethodLater(3 * 60, self._sampleRandomTask, self.uniqueName('sampleRandom'))
         self._sampleRandom()
@@ -28,7 +28,7 @@ class NonRepeatableRandomSourceAI(DistributedObjectAI):
         return Task.again
 
     def _sampleRandom(self):
-        self.air.sendUpdateToDoId('NonRepeatableRandomSource', 'randomSample', OtpDoGlobals.OTP_DO_ID_TOONTOWN_NON_REPEATABLE_RANDOM_SOURCE, [self.doId, int(random.randrange(1L << 32))])
+        self.air.sendUpdateToDoId('NonRepeatableRandomSource', 'randomSample', OtpDoGlobals.OTP_DO_ID_TOONTOWN_NON_REPEATABLE_RANDOM_SOURCE, [self.doId, int(random.randrange(1 << 32))])
 
     def randomSampleAck(self):
         self._sampleRandom()
@@ -36,7 +36,7 @@ class NonRepeatableRandomSourceAI(DistributedObjectAI):
     def getRandomSamples(self, callback, num = None):
         if num is None:
             num = 1
-        context = self._contextGen.next()
+        context = next(self._contextGen)
         self._requests[context] = (callback,)
         self.air.sendUpdateToDoId('NonRepeatableRandomSource', 'getRandomSamples', OtpDoGlobals.OTP_DO_ID_TOONTOWN_NON_REPEATABLE_RANDOM_SOURCE, [self.doId,
          'NonRepeatableRandomSource',

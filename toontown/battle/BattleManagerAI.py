@@ -1,4 +1,4 @@
-import DistributedBattleAI
+from . import DistributedBattleAI
 from direct.directnotify import DirectNotifyGlobal
 
 class BattleManagerAI:
@@ -10,15 +10,15 @@ class BattleManagerAI:
         self.battleConstructor = DistributedBattleAI.DistributedBattleAI
 
     def cellHasBattle(self, cellId):
-        return self.cellId2battle.has_key(cellId)
+        return cellId in self.cellId2battle
 
     def getBattle(self, cellId):
-        if self.cellId2battle.has_key(cellId):
+        if cellId in self.cellId2battle:
             return self.cellId2battle[cellId]
         return None
 
     def newBattle(self, cellId, zoneId, pos, suit, toonId, finishCallback=None, maxSuits=4, interactivePropTrackBonus=-1):
-        if self.cellId2battle.has_key(cellId):
+        if cellId in self.cellId2battle:
             self.notify.info("A battle is already present in the suit's zone!")
             if not self.requestBattleAddSuit(cellId, suit):
                 suit.flyAwayNow()

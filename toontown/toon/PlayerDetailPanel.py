@@ -6,9 +6,9 @@ from direct.showbase import DirectObject
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
-import DistributedToon
+from . import DistributedToon
 from toontown.friends import FriendInviter
-import ToonTeleportPanel
+from . import ToonTeleportPanel
 from toontown.toonbase import TTLocalizer
 from toontown.hood import ZoneUtil
 from toontown.toonbase.ToontownBattleGlobals import Tracks, Levels
@@ -48,7 +48,7 @@ class PlayerDetailPanel(DirectFrame):
         self.playerInfo = None
         if playerId:
             self.isPlayer = 1
-            if base.cr.playerFriendsManager.playerId2Info.has_key(playerId):
+            if playerId in base.cr.playerFriendsManager.playerId2Info:
                 self.playerInfo = base.cr.playerFriendsManager.playerId2Info[playerId]
                 if not self.playerInfo.onlineYesNo:
                     avId = None

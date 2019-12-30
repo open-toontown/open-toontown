@@ -7,7 +7,7 @@ from toontown.toonbase.ToonBaseGlobal import *
 from pandac.PandaModules import *
 from toontown.toonbase.ToontownGlobals import *
 import random
-import cPickle
+import pickle
 
 class DistributedLeaderBoard(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DisributedLeaderBoard')
@@ -52,7 +52,7 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
 
     def setDisplay(self, pData):
         self.notify.debug('setDisplay: changing leaderboard text on local side')
-        trackName, recordTitle, scores = cPickle.loads(pData)
+        trackName, recordTitle, scores = pickle.loads(pData)
         self.display(trackName, recordTitle, scores)
 
     def buildListParts(self):

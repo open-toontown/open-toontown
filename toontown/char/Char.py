@@ -217,14 +217,14 @@ class Char(Avatar.Avatar):
         self.loadDialogue(dna.name)
         self.ears = []
         if self._name == 'mickey' or self._name == 'vampire_mickey' or self._name == 'minnie':
-            for bundle in self.getPartBundleDict().values():
+            for bundle in list(self.getPartBundleDict().values()):
                 bundle = bundle['modelRoot'].getBundle()
                 earNull = bundle.findChild('sphere3')
                 if not earNull:
                     earNull = bundle.findChild('*sphere3')
                 earNull.clearNetTransforms()
 
-            for bundle in self.getPartBundleDict().values():
+            for bundle in list(self.getPartBundleDict().values()):
                 charNodepath = bundle['modelRoot'].partBundleNP
                 bundle = bundle['modelRoot'].getBundle()
                 earNull = bundle.findChild('sphere3')

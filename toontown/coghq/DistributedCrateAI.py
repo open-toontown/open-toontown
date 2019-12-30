@@ -1,8 +1,8 @@
-from CrateGlobals import *
+from .CrateGlobals import *
 from direct.directnotify import DirectNotifyGlobal
-import DistributedCrushableEntityAI
+from . import DistributedCrushableEntityAI
 from direct.task import Task
-import CrateGlobals
+from . import CrateGlobals
 
 class DistributedCrateAI(DistributedCrushableEntityAI.DistributedCrushableEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCrateAI')

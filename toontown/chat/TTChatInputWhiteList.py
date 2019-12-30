@@ -119,7 +119,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
 
     def sendWhisperByFriend(self, avatarId, text):
         online = 0
-        if base.cr.doId2do.has_key(avatarId):
+        if avatarId in base.cr.doId2do:
             online = 1
         avatarUnderstandable = 0
         av = None
@@ -132,7 +132,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
         return
 
     def chatButtonPressed(self):
-        print 'chatButtonPressed'
+        print('chatButtonPressed')
         if self.okayToSubmit:
             self.sendChat(self.chatEntry.get())
         else:

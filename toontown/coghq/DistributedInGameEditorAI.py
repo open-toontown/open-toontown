@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
 from direct.directutil import DistributedLargeBlobSenderAI
-from SpecImports import *
+from .SpecImports import *
 
 class DistributedInGameEditorAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedInGameEditorAI')
@@ -40,7 +40,7 @@ class DistributedInGameEditorAI(DistributedObjectAI.DistributedObjectAI):
         return self.levelDoId
 
     def requestCurrentLevelSpec(self):
-        print 'requestCurrentLevelSpec'
+        print('requestCurrentLevelSpec')
         spec = self.level.levelSpec
         specStr = repr(spec)
         largeBlob = DistributedLargeBlobSenderAI.DistributedLargeBlobSenderAI(self.air, self.zoneId, self.editorAvId, specStr, useDisk=simbase.air._specByDisk)

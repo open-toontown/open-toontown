@@ -71,7 +71,7 @@ class TwoDStomper(DirectObject):
         self.range = self.headEndZ - self.headStartZ
         self.collSolids = []
         self.collSolids.append(originalColl)
-        for i in xrange(self.numCollSolids - 1):
+        for i in range(self.numCollSolids - 1):
             newColl = originalColl.copyTo(self.model)
             self.collSolids.append(newColl)
 

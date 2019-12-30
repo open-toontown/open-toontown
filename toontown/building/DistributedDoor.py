@@ -9,9 +9,9 @@ from direct.distributed import DistributedObject
 from toontown.hood import ZoneUtil
 from toontown.suit import Suit
 from toontown.distributed import DelayDelete
-import FADoorCodes
+from . import FADoorCodes
 from direct.task.Task import Task
-import DoorTypes
+from . import DoorTypes
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
 from toontown.toontowngui import TeaserPanel
@@ -70,7 +70,7 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
         self.ignore('clearOutToonInterior')
         self.fsm.request('off')
         self.exitDoorFSM.request('off')
-        if self.__dict__.has_key('building'):
+        if 'building' in self.__dict__:
             del self.building
         self.finishAllTracks()
         self.avatarIDList = []
@@ -116,7 +116,7 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
         return
 
     def getTriggerName(self):
-        if self.doorType == DoorTypes.INT_HQ or self.specialDoorTypes.has_key(self.doorType):
+        if self.doorType == DoorTypes.INT_HQ or self.doorType in self.specialDoorTypes:
             return 'door_trigger_' + str(self.block) + '_' + str(self.doorIndex)
         else:
             return 'door_trigger_' + str(self.block)
@@ -132,7 +132,7 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
         return 'exit' + self.getTriggerName()
 
     def hideDoorParts(self):
-        if self.specialDoorTypes.has_key(self.doorType):
+        if self.doorType in self.specialDoorTypes:
             self.hideIfHasFlat(self.findDoorNode('rightDoor'))
             self.hideIfHasFlat(self.findDoorNode('leftDoor'))
             self.findDoorNode('doorFrameHoleRight').hide()
@@ -141,7 +141,7 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
             return
 
     def setTriggerName(self):
-        if self.specialDoorTypes.has_key(self.doorType):
+        if self.doorType in self.specialDoorTypes:
             building = self.getBuilding()
             doorTrigger = building.find('**/door_' + str(self.doorIndex) + '/**/door_trigger*')
             doorTrigger.node().setName(self.getTriggerName())
@@ -200,7 +200,7 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
         self.setupNametag()
 
     def getBuilding(self):
-        if not self.__dict__.has_key('building'):
+        if 'building' not in self.__dict__:
             if self.doorType == DoorTypes.INT_STANDARD:
                 door = render.find('**/leftDoor;+s')
                 self.building = door.getParent()
@@ -220,12 +220,12 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
         return self.building
 
     def getBuilding_wip(self):
-        if not self.__dict__.has_key('building'):
-            if self.__dict__.has_key('block'):
+        if 'building' not in self.__dict__:
+            if 'block' in self.__dict__:
                 self.building = self.cr.playGame.hood.loader.geom.find('**/??' + str(self.block) + ':*_landmark_*_DNARoot;+s')
             else:
                 self.building = self.cr.playGame.hood.loader.geom
-                print '---------------- door is interior -------'
+                print('---------------- door is interior -------')
         return self.building
 
     def readyToExit(self):
@@ -400,7 +400,7 @@ class DistributedDoor(DistributedObject.DistributedObject, DelayDeletable):
                 otherNP.setPos(posHpr.getPos())
                 otherNP.setHpr(posHpr.getHpr())
                 self.tempDoorNodePath = otherNP
-        elif self.specialDoorTypes.has_key(self.doorType):
+        elif self.doorType in self.specialDoorTypes:
             building = self.getBuilding()
             otherNP = building.find('**/door_origin_' + str(self.doorIndex))
         elif self.doorType == DoorTypes.INT_HQ:

@@ -1,6 +1,6 @@
 from direct.showbase import PythonUtil
 from pandac.PandaModules import VBase4, Vec3, Point3
-from CogdoUtil import VariableContainer, DevVariableContainer
+from .CogdoUtil import VariableContainer, DevVariableContainer
 AI = VariableContainer()
 AI.GameActions = PythonUtil.Enum(('LandOnWinPlatform', 'WinStateFinished', 'GotoWinState', 'HitWhirlwind', 'HitLegalEagle', 'HitMinion', 'DebuffInvul', 'RequestEnterEagleInterest', 'RequestExitEagleInterest', 'RanOutOfTimePenalty', 'Died', 'Spawn', 'SetBlades', 'BladeLost'))
 AI.BroadcastPeriod = 0.3

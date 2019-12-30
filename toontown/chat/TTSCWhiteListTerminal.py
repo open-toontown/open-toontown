@@ -13,7 +13,7 @@ class TTSCWhiteListTerminal(SCTerminal):
         self.parentClass = parentMenu
         self.textId = textId
         self.text = SpeedChatStaticText[self.textId]
-        print 'SpeedText %s %s' % (self.textId, self.text)
+        print('SpeedText %s %s' % (self.textId, self.text))
 
     def handleSelect(self):
         SCTerminal.handleSelect(self)

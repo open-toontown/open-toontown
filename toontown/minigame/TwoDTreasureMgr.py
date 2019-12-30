@@ -29,7 +29,7 @@ class TwoDTreasureMgr(DirectObject):
             self.treasuresNP = NodePath('Treasures')
             self.treasuresNP.reparentTo(self.section.sectionNP)
         self.treasures = []
-        for index in xrange(len(self.treasureList)):
+        for index in range(len(self.treasureList)):
             treasureAttribs = self.treasureList[index][0]
             treasureValue = self.treasureList[index][1]
             self.createNewTreasure(treasureAttribs, treasureValue)
@@ -37,7 +37,7 @@ class TwoDTreasureMgr(DirectObject):
         self.enemyTreasures = []
         numPlayers = self.section.sectionMgr.game.numPlayers
         pos = Point3(-1, -1, -1)
-        for index in xrange(len(self.enemyList)):
+        for index in range(len(self.enemyList)):
             self.createNewTreasure([pos], numPlayers, isEnemyGenerated=True)
 
     def createNewTreasure(self, attrib, value, isEnemyGenerated = False, model = None):

@@ -1,4 +1,4 @@
-import cPickle
+import pickle
 
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
@@ -45,4 +45,4 @@ class DistributedLeaderBoardAI(DistributedObjectAI):
         trackName = TTLocalizer.KartRace_TrackNames[self.subscriptions[self.currentIndex][0]]
         periodName = TTLocalizer.RecordPeriodStrings[self.subscriptions[self.currentIndex][1]]
         leaderList = self.records[self.subscriptions[self.currentIndex][0]][self.subscriptions[self.currentIndex][1]]
-        self.sendUpdate('setDisplay', [cPickle.dumps((trackName, periodName, leaderList))])
+        self.sendUpdate('setDisplay', [pickle.dumps((trackName, periodName, leaderList))])

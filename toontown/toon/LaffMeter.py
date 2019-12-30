@@ -53,7 +53,7 @@ class LaffMeter(DirectFrame):
             elif hType == 'pig':
                 headModel = gui.find('**/pighead')
             else:
-                raise StandardError('unknown toon species: ', hType)
+                raise Exception('unknown toon species: ', hType)
             self.color = self.style.getHeadColor()
             self.container['image'] = headModel
             self.container['image_color'] = self.color

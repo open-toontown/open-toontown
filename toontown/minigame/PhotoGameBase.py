@@ -1,4 +1,4 @@
-import PhotoGameGlobals
+from . import PhotoGameGlobals
 import random
 
 class PhotoGameBase:
@@ -17,7 +17,7 @@ class PhotoGameBase:
         if numPathes == 0:
             return assignmentTemplates
         while len(assignmentTemplates) < numAssignments:
-            subjectIndex = random.choice(range(numPathes))
+            subjectIndex = random.choice(list(range(numPathes)))
             pose = (None, None)
             while pose[0] == None:
                 animSetIndex = self.data['PATHANIMREL'][subjectIndex]

@@ -117,8 +117,8 @@ class DistributedStage(DistributedObject.DistributedObject):
                     DistributedLevel.notify.warning('Invalid zone floor collision node: %s' % name)
                 else:
                     self.camEnterRoom(roomNum)
-                    print collEntry
-                    print
+                    print(collEntry)
+                    print()
 
         self.accept('on-floor', handleCameraRayFloorCollision)
         if bboard.has('stageRoom'):
@@ -210,7 +210,7 @@ class DistributedStage(DistributedObject.DistributedObject):
         return
 
     def warpToRoom(self, roomId):
-        for i in xrange(len(self.rooms)):
+        for i in range(len(self.rooms)):
             room = self.rooms[i]
             if room.roomId == roomId:
                 break

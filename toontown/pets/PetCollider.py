@@ -61,7 +61,7 @@ class PetCollider(Impulse.Impulse):
         return 'petFeeler-%s' % self._getSerialNum()
 
     def handleCollision(self, collEntry):
-        print 'collision!'
+        print('collision!')
         cPoint = collEntry.getSurfacePoint(self.cLineNodePath)
         cNormal = collEntry.getSurfaceNormal(self.cLineNodePath)
         messenger.send(self.mover.getCollisionEventName(), [cPoint, cNormal])

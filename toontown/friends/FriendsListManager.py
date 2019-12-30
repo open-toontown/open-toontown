@@ -1,9 +1,9 @@
 from pandac.PandaModules import *
 from libotp import *
-import FriendsListPanel
-import FriendInviter
-import FriendInvitee
-import FriendNotifier
+from . import FriendsListPanel
+from . import FriendInviter
+from . import FriendInvitee
+from . import FriendNotifier
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toon import ToonTeleportPanel
 from toontown.friends import ToontownFriendSecret
@@ -16,7 +16,7 @@ from toontown.toon import ToonAvatarDetailPanel
 from toontown.toon import PlayerDetailPanel
 from toontown.toonbase import ToontownGlobals
 from toontown.toon import Toon
-import FriendHandle
+from . import FriendHandle
 from otp.otpbase import OTPGlobals
 
 class FriendsListManager:
@@ -182,7 +182,7 @@ class FriendsListManager:
         else:
             friendToon = base.cr.doId2do.get(avId)
             if friendToon:
-                print 'got toon'
+                print('got toon')
                 dna = friendToon.getStyle()
                 FriendNotifier.FriendNotifier(avId, friendToon.getName(), dna, None)
         return

@@ -8,13 +8,13 @@ from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-import MinigameRulesPanel
+from . import MinigameRulesPanel
 from direct.task.Task import Task
 from toontown.toon import Toon
 from direct.showbase import RandomNumGen
 from toontown.toonbase import TTLocalizer
 import random
-import MinigameGlobals
+from . import MinigameGlobals
 from direct.showbase import PythonUtil
 from toontown.toon import TTEmote
 from otp.avatar import Emote
@@ -97,7 +97,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
             return
         self.notify.debug('BASE: handleAnnounceGenerate: send setAvatarJoined')
         if base.randomMinigameNetworkPlugPull and random.random() < 1.0 / 25:
-            print '*** DOING RANDOM MINIGAME NETWORK-PLUG-PULL BEFORE SENDING setAvatarJoined ***'
+            print('*** DOING RANDOM MINIGAME NETWORK-PLUG-PULL BEFORE SENDING setAvatarJoined ***')
             base.cr.pullNetworkPlug()
         self.sendUpdate('setAvatarJoined', [])
         self.normalExit = 1
@@ -172,17 +172,17 @@ class DistributedMinigame(DistributedObject.DistributedObject):
                 taskMgr.doMethodLater(self.randomNetPlugPullDelay, self.doRandomNetworkPlugPull, self.uniqueName('random-netplugpull'))
 
     def doRandomAbort(self, task):
-        print '*** DOING RANDOM MINIGAME ABORT AFTER %.2f SECONDS ***' % self.randomAbortDelay
+        print('*** DOING RANDOM MINIGAME ABORT AFTER %.2f SECONDS ***' % self.randomAbortDelay)
         self.d_requestExit()
         return Task.done
 
     def doRandomDisconnect(self, task):
-        print '*** DOING RANDOM MINIGAME DISCONNECT AFTER %.2f SECONDS ***' % self.randomDisconnectDelay
+        print('*** DOING RANDOM MINIGAME DISCONNECT AFTER %.2f SECONDS ***' % self.randomDisconnectDelay)
         self.sendUpdate('setGameReady')
         return Task.done
 
     def doRandomNetworkPlugPull(self, task):
-        print '*** DOING RANDOM MINIGAME NETWORK-PLUG-PULL AFTER %.2f SECONDS ***' % self.randomNetPlugPullDelay
+        print('*** DOING RANDOM MINIGAME NETWORK-PLUG-PULL AFTER %.2f SECONDS ***' % self.randomNetPlugPullDelay)
         base.cr.pullNetworkPlug()
         return Task.done
 
@@ -236,7 +236,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
         self.notify.debug('difficulty: %s' % self.getDifficulty())
         self.__serverFinished = 0
         for avId in self.remoteAvIdList:
-            if not self.cr.doId2do.has_key(avId):
+            if avId not in self.cr.doId2do:
                 self.notify.warning('BASE: toon %s already left or has not yet arrived; waiting for server to abort the game' % avId)
                 return 1
 
@@ -289,7 +289,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
         self.frameworkFSM.request('frameworkWaitServerFinish')
 
     def getAvatar(self, avId):
-        if self.cr.doId2do.has_key(avId):
+        if avId in self.cr.doId2do:
             return self.cr.doId2do[avId]
         else:
             self.notify.warning('BASE: getAvatar: No avatar in doId2do with id: ' + str(avId))
@@ -367,15 +367,15 @@ class DistributedMinigame(DistributedObject.DistributedObject):
             self.frameworkFSM.request('frameworkCleanup')
 
     def setGameExit(self):
-        print 'setGameExit'
+        print('setGameExit')
         if not self.hasLocalToon:
             return
         self.notify.debug('BASE: setGameExit: now safe to exit game')
         if self.frameworkFSM.getCurrentState().getName() != 'frameworkWaitServerFinish':
-            print 'not waiting'
+            print('not waiting')
             self.__serverFinished = 1
         else:
-            print 'waiting'
+            print('waiting')
             self.frameworkFSM.request('frameworkCleanup')
 
     def exitFrameworkWaitServerFinish(self):
@@ -389,7 +389,7 @@ class DistributedMinigame(DistributedObject.DistributedObject):
 
     def enterFrameworkCleanup(self):
         self.notify.debug('BASE: enterFrameworkCleanup')
-        print 'cleanup'
+        print('cleanup')
         for action in self.cleanupActions:
             action()
 

@@ -1,4 +1,4 @@
-import AnimatedProp
+from . import AnimatedProp
 from direct.actor import Actor
 from direct.interval.IntervalGlobal import *
 from toontown.effects.Splash import *

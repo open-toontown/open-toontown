@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-import ShtikerPage
+from . import ShtikerPage
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from toontown.quest import Quests
@@ -100,17 +100,17 @@ class QuestPage(ShtikerPage.ShtikerPage):
             else:
                 self.questFrames[i].hide()
 
-        for index, questDesc in self.quests.items():
+        for index, questDesc in list(self.quests.items()):
             if questDesc is not None and list(questDesc) not in newQuests:
                 self.clearQuestFrame(index)
 
         for questDesc in newQuests:
             newQuestDesc = tuple(questDesc)
-            if newQuestDesc not in self.quests.values():
+            if newQuestDesc not in list(self.quests.values()):
                 index = self.getLowestUnusedIndex()
                 self.fillQuestFrame(newQuestDesc, index)
 
-        for i, questDesc in self.quests.iteritems():
+        for i, questDesc in self.quests.items():
             if questDesc:
                 if self.canDeleteQuest(questDesc):
                     self.questFrames[i].setDeleteCallback(self.__deleteQuest)

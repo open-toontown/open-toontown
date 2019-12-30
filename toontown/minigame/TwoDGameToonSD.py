@@ -6,7 +6,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-import ToonBlitzGlobals
+from . import ToonBlitzGlobals
 from otp.otpbase import OTPGlobals
 from direct.task.Task import Task
 from toontown.minigame import TwoDBattleMgr

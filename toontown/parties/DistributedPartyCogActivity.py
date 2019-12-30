@@ -1,9 +1,9 @@
 from direct.distributed.ClockDelta import globalClockDelta
 from pandac.PandaModules import Point3
 from toontown.toonbase import TTLocalizer
-import PartyGlobals
-from DistributedPartyTeamActivity import DistributedPartyTeamActivity
-from PartyCogActivity import PartyCogActivity
+from . import PartyGlobals
+from .DistributedPartyTeamActivity import DistributedPartyTeamActivity
+from .PartyCogActivity import PartyCogActivity
 
 class DistributedPartyCogActivity(DistributedPartyTeamActivity):
     notify = directNotify.newCategory('DistributedPartyCogActivity')

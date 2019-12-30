@@ -27,7 +27,7 @@ class TwoDStomperMgr(DirectObject):
             self.stompersNP = NodePath('Stompers')
             self.stompersNP.reparentTo(self.section.sectionNP)
         self.stompers = []
-        for index in xrange(len(self.stomperList)):
+        for index in range(len(self.stomperList)):
             stomperAttribs = self.stomperList[index]
             self.createNewStomper(stomperAttribs)
 

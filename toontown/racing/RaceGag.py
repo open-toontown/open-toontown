@@ -1,7 +1,7 @@
 from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from direct.showbase import DirectObject
-from DroppedGag import *
+from .DroppedGag import *
 types = ['',
  'Pie',
  'Banana',

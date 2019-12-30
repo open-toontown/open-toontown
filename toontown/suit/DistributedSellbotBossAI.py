@@ -1,9 +1,9 @@
 from otp.ai.AIBaseGlobal import *
 from direct.distributed.ClockDelta import *
-import DistributedBossCogAI
+from . import DistributedBossCogAI
 from direct.directnotify import DirectNotifyGlobal
 from otp.avatar import DistributedAvatarAI
-import DistributedSuitAI
+from . import DistributedSuitAI
 from toontown.battle import BattleExperienceAI
 from direct.fsm import FSM
 from toontown.toonbase import ToontownGlobals
@@ -55,7 +55,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def __setCagedToonNpcId(self):
 
         def npcFriendsMaxStars(stars):
-            return [ id for id in NPCToons.npcFriends.keys() if NPCToons.getNPCTrackLevelHpRarity(id)[3] <= stars ]
+            return [ id for id in list(NPCToons.npcFriends.keys()) if NPCToons.getNPCTrackLevelHpRarity(id)[3] <= stars ]
 
         if self.numRentalDiguises >= 4:
             self.cagedToonNpcId = random.choice(NPCToons.npcFriendsMinMaxStars(3, 3))
@@ -438,7 +438,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
 
     def createEasyModeBarrels(self):
         self.barrels = []
-        for entId, entDef in SellbotBossGlobals.BarrelDefs.iteritems():
+        for entId, entDef in SellbotBossGlobals.BarrelDefs.items():
             barrelType = entDef['type']
             barrel = barrelType(self.air, entId)
             SellbotBossGlobals.setBarrelAttr(barrel, entId)

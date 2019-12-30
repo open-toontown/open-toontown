@@ -1,6 +1,6 @@
 from pandac.PandaModules import *
-import SafeZoneLoader
-import DLPlayground
+from . import SafeZoneLoader
+from . import DLPlayground
 
 class DLSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
 

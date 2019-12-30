@@ -4,7 +4,7 @@ TEMP_MG_ID_COUNTER = ToontownGlobals.TravelGameId - 1
 TempMgCtors = {}
 
 def _printMessage(message):
-    print '\n\n!!!', message, '\n\n'
+    print('\n\n!!!', message, '\n\n')
 
 
 def _registerTempMinigame(name, Class, id, minPlayers = 1, maxPlayers = 4):

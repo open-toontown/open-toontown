@@ -2,7 +2,7 @@ from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from pandac.PandaModules import *
-import BuildGeometry
+from . import BuildGeometry
 import random, time
 from math import *
 import math
@@ -42,8 +42,8 @@ class DistributedPhysicsWorldAI(DistributedObjectAI.DistributedObjectAI, Physics
         self.sendUpdate('setCommonObjects', [self.getCommonObjectData()])
 
     def doAction(self):
-        print 'doing Action'
-        print 'before performReadyAction'
+        print('doing Action')
+        print('before performReadyAction')
         self.performReadyAction()
         self.storeAction = None
         self.commonHoldData = None
@@ -56,14 +56,14 @@ class DistributedPhysicsWorldAI(DistributedObjectAI.DistributedObjectAI, Physics
             self.doAction()
 
     def setupCommonObjects(self):
-        print 'setupCommonObjects'
-        print self.commonHoldData
+        print('setupCommonObjects')
+        print(self.commonHoldData)
         if not self.commonHoldData:
             return
         elif self.commonHoldData[0][1] == 99:
-            print 'no common objects'
+            print('no common objects')
         else:
             self.useCommonObjectData(self.commonHoldData, 0)
 
     def performReadyAction(self):
-        print 'Wrong performReadyAction'
+        print('Wrong performReadyAction')

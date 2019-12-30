@@ -1,4 +1,4 @@
-from BaseActivityFSM import BaseActivityFSM
+from .BaseActivityFSM import BaseActivityFSM
 
 class IdleMixin:
 

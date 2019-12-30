@@ -1,10 +1,10 @@
-from DistributedMinigameAI import *
+from .DistributedMinigameAI import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-import PatternGameGlobals
+from . import PatternGameGlobals
 from direct.task.Task import Task
-import MazeGameGlobals
-import MazeData
+from . import MazeGameGlobals
+from . import MazeData
 
 class DistributedMazeGameAI(DistributedMinigameAI):
 
@@ -33,7 +33,7 @@ class DistributedMazeGameAI(DistributedMinigameAI):
         self.numTreasures = len(mData['treasurePosList'])
         self.numTreasuresTaken = 0
         self.takenTable = [0] * self.numTreasures
-        for avId in self.scoreDict.keys():
+        for avId in list(self.scoreDict.keys()):
             self.scoreDict[avId] = 0
 
     def setGameStart(self, timestamp):
@@ -72,7 +72,7 @@ class DistributedMazeGameAI(DistributedMinigameAI):
         if self.gameFSM.getCurrentState() is None or self.gameFSM.getCurrentState().getName() != 'play':
             return
         avId = self.air.getAvatarIdFromSender()
-        if not self.scoreDict.has_key(avId):
+        if avId not in self.scoreDict:
             self.notify.warning('PROBLEM: avatar %s called claimTreasure(%s) but he is not in the scoreDict: %s. avIdList is: %s' % (avId,
              treasureNum,
              self.scoreDict,
@@ -107,11 +107,11 @@ class DistributedMazeGameAI(DistributedMinigameAI):
 
     def __doneShowingScores(self, task):
         self.notify.debug('doneShowingScores')
-        for key in self.scoreDict.keys():
+        for key in list(self.scoreDict.keys()):
             self.scoreDict[key] = max(1, self.scoreDict[key] / 12)
 
         if self.numTreasuresTaken >= self.numTreasures:
-            for key in self.scoreDict.keys():
+            for key in list(self.scoreDict.keys()):
                 self.scoreDict[key] += 8
 
         self.gameOver()

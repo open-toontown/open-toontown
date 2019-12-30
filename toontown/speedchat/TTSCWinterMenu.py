@@ -38,16 +38,16 @@ class TTSCWinterMenu(SCMenu):
             if section[0] == -1:
                 for phrase in section[1]:
                     if phrase not in OTPLocalizer.SpeedChatStaticText:
-                        print 'warning: tried to link Winter phrase %s which does not seem to exist' % phrase
+                        print('warning: tried to link Winter phrase %s which does not seem to exist' % phrase)
                         break
                     self.append(SCStaticTextTerminal(phrase))
 
             else:
                 menu = SCMenu()
-                for phrase in section[1].keys():
+                for phrase in list(section[1].keys()):
                     blatherTxt = section[1][phrase]
                     if blatherTxt not in OTPLocalizer.SpeedChatStaticText:
-                        print 'warning: tried to link Winter phrase %s which does not seem to exist' % phrase
+                        print('warning: tried to link Winter phrase %s which does not seem to exist' % phrase)
                         break
                     menu.append(TTSCIndexedTerminal(OTPLocalizer.SpeedChatStaticText.get(phrase, None), blatherTxt))
 

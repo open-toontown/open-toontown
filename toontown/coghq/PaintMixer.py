@@ -1,4 +1,4 @@
-import PlatformEntity
+from . import PlatformEntity
 
 class PaintMixer(PlatformEntity.PlatformEntity):
 

@@ -4,8 +4,8 @@ from direct.interval.SoundInterval import SoundInterval
 from direct.interval.FunctionInterval import Wait, Func
 from toontown.building import ElevatorConstants
 from toontown.building import ElevatorUtils
-import CogdoUtil
-import CogdoGameConsts
+from . import CogdoUtil
+from . import CogdoGameConsts
 
 class CogdoGameExit(NodePath):
 

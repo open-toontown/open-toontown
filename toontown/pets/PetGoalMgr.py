@@ -25,7 +25,7 @@ class PetGoalMgr(DirectObject.DirectObject):
             del self.pscSetup
             del self.pscFindPrimary
             del self.pscSetPrimary
-        goals = self.goals.keys()
+        goals = list(self.goals.keys())
         for goal in goals:
             self.removeGoal(goal)
             goal.destroy()

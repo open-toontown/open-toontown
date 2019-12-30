@@ -7,7 +7,7 @@ from pandac.PandaModules import CollisionSphere, CollisionNode
 from toontown.suit import Suit
 from toontown.suit import SuitDNA
 from toontown.toonbase import ToontownGlobals
-import MazeGameGlobals
+from . import MazeGameGlobals
 
 class MazeSuit(DirectObject):
     COLL_SPHERE_NAME = 'MazeSuitSphere'
@@ -58,7 +58,7 @@ class MazeSuit(DirectObject):
         self.suit.delete()
 
     def uniqueName(self, str):
-        return str + `(self.serialNum)`
+        return str + repr((self.serialNum))
 
     def gameStart(self, gameStartTime):
         self.gameStartTime = gameStartTime
@@ -187,7 +187,7 @@ class MazeSuit(DirectObject):
         if curTic < self.nextThinkTic:
             return []
         else:
-            r = range(self.nextThinkTic, curTic + 1, self.ticPeriod)
+            r = list(range(self.nextThinkTic, curTic + 1, self.ticPeriod))
             self.lastTicBeforeRender = r[-1]
             return r
 
@@ -229,14 +229,14 @@ class MazeSuit(DirectObject):
         curT = globalClock.getFrameTime() - startTime
         curTic = int(curT * float(ticFreq))
         suitUpdates = []
-        for i in xrange(len(suitList)):
+        for i in range(len(suitList)):
             updateTics = suitList[i].getThinkTimestampTics(curTic)
-            suitUpdates.extend(zip(updateTics, [i] * len(updateTics)))
+            suitUpdates.extend(list(zip(updateTics, [i] * len(updateTics))))
 
         suitUpdates.sort(lambda a, b: a[0] - b[0])
         if len(suitUpdates) > 0:
             curTic = 0
-            for i in xrange(len(suitUpdates)):
+            for i in range(len(suitUpdates)):
                 update = suitUpdates[i]
                 tic = update[0]
                 suitIndex = update[1]
@@ -251,10 +251,10 @@ class MazeSuit(DirectObject):
                         j += 1
 
                 unwalkables = []
-                for si in xrange(suitIndex):
+                for si in range(suitIndex):
                     unwalkables.extend(suitList[si].occupiedTiles)
 
-                for si in xrange(suitIndex + 1, len(suitList)):
+                for si in range(suitIndex + 1, len(suitList)):
                     unwalkables.extend(suitList[si].occupiedTiles)
 
                 suit.think(curTic, curT, unwalkables)

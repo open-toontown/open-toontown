@@ -1,8 +1,8 @@
 from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from ElevatorConstants import *
-from ElevatorUtils import *
+from .ElevatorConstants import *
+from .ElevatorUtils import *
 from direct.showbase import PythonUtil
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
@@ -88,7 +88,7 @@ class DistributedElevator(DistributedObject.DistributedObject):
         if self.bldgRequest:
             self.cr.relatedObjectMgr.abortRequest(self.bldgRequest)
             self.bldgRequest = None
-        for request in self.toonRequests.values():
+        for request in list(self.toonRequests.values()):
             self.cr.relatedObjectMgr.abortRequest(request)
 
         self.toonRequests = {}
@@ -186,7 +186,7 @@ class DistributedElevator(DistributedObject.DistributedObject):
             del self.toonRequests[index]
         if avId == 0:
             pass
-        elif not self.cr.doId2do.has_key(avId):
+        elif avId not in self.cr.doId2do:
             func = PythonUtil.Functor(self.gotToon, index, avId)
             self.toonRequests[index] = self.cr.relatedObjectMgr.requestObjects([avId], allCallback=func)
         elif not self.isSetup:
@@ -226,8 +226,8 @@ class DistributedElevator(DistributedObject.DistributedObject):
             else:
                 animInFunc = Sequence(Func(toon.setAnimState, 'run', 1.0))
                 animFunc = Func(toon.setAnimState, 'neutral', 1.0)
-            toon.headsUp(self.getElevatorModel(), apply(Point3, self.elevatorPoints[index]))
-            track = Sequence(animInFunc, LerpPosInterval(toon, TOON_BOARD_ELEVATOR_TIME * 0.75, apply(Point3, self.elevatorPoints[index]), other=self.getElevatorModel()), LerpHprInterval(toon, TOON_BOARD_ELEVATOR_TIME * 0.25, Point3(180, 0, 0), other=self.getElevatorModel()), Func(self.clearToonTrack, avId), animFunc, name=toon.uniqueName('fillElevator'), autoPause=1)
+            toon.headsUp(self.getElevatorModel(), Point3(*self.elevatorPoints[index]))
+            track = Sequence(animInFunc, LerpPosInterval(toon, TOON_BOARD_ELEVATOR_TIME * 0.75, Point3(*self.elevatorPoints[index]), other=self.getElevatorModel()), LerpHprInterval(toon, TOON_BOARD_ELEVATOR_TIME * 0.25, Point3(180, 0, 0), other=self.getElevatorModel()), Func(self.clearToonTrack, avId), animFunc, name=toon.uniqueName('fillElevator'), autoPause=1)
             if wantBoardingShow:
                 boardingTrack, boardingTrackType = self.getBoardingTrack(toon, index, False)
                 track = Sequence(boardingTrack, track)
@@ -301,7 +301,7 @@ class DistributedElevator(DistributedObject.DistributedObject):
             timeToSet = self.countdownTime
             if timeSent > 0:
                 timeToSet = timeSent
-            if self.cr.doId2do.has_key(avId):
+            if avId in self.cr.doId2do:
                 if bailFlag == 1 and hasattr(self, 'clockNode'):
                     if timestamp < timeToSet and timestamp >= 0:
                         self.countdown(timeToSet - timestamp)
@@ -362,7 +362,7 @@ class DistributedElevator(DistributedObject.DistributedObject):
             place.fsm.request('walk')
 
     def rejectBoard(self, avId, reason = 0):
-        print 'rejectBoard %s' % reason
+        print('rejectBoard %s' % reason)
         if hasattr(base.localAvatar, 'elevatorNotifier'):
             if reason == REJECT_SHUFFLE:
                 base.localAvatar.elevatorNotifier.showMe(TTLocalizer.ElevatorHoppedOff)
@@ -423,7 +423,7 @@ class DistributedElevator(DistributedObject.DistributedObject):
         pass
 
     def onDoorCloseFinish(self):
-        for avId in self.boardedAvIds.keys():
+        for avId in list(self.boardedAvIds.keys()):
             av = self.cr.doId2do.get(avId)
             if av is not None:
                 if av.getParent().compareTo(self.getElevatorModel()) == 0:
@@ -543,7 +543,7 @@ class DistributedElevator(DistributedObject.DistributedObject):
             keyList.append(key)
 
         for key in keyList:
-            if self.__toonTracks.has_key(key):
+            if key in self.__toonTracks:
                 self.clearToonTrack(key)
 
     def getDestName(self):
@@ -553,11 +553,11 @@ class DistributedElevator(DistributedObject.DistributedObject):
         return self.JumpOutOffsets[seatIndex]
 
     def getOffsetPosWrtToonParent(self, toon, seatIndex = 0):
-        self.offsetNP.setPos(apply(Point3, self.getOffsetPos(seatIndex)))
+        self.offsetNP.setPos(Point3(*self.getOffsetPos(seatIndex)))
         return self.offsetNP.getPos(toon.getParent())
 
     def getOffsetPosWrtRender(self, seatIndex = 0):
-        self.offsetNP.setPos(apply(Point3, self.getOffsetPos(seatIndex)))
+        self.offsetNP.setPos(Point3(*self.getOffsetPos(seatIndex)))
         return self.offsetNP.getPos(render)
 
     def canHideBoardingQuitBtn(self, avId):

@@ -7,7 +7,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-import CatchGameGlobals
+from . import CatchGameGlobals
 from direct.task.Task import Task
 
 class CatchGameToonSD(StateData.StateData):

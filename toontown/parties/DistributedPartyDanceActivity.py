@@ -21,7 +21,7 @@ class DistributedPartyDanceActivity(DistributedPartyDanceActivityBase):
         origBall = self.danceFloor.find('**/discoBall_mesh_orig')
         if not correctBall.isEmpty():
             numChildren = parentGroup.getNumChildren()
-            for i in xrange(numChildren):
+            for i in range(numChildren):
                 child = parentGroup.getChild(i)
                 if child != correctBall:
                     child.hide()

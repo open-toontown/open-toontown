@@ -1,7 +1,7 @@
 from pandac.PandaModules import *
 from toontown.toonbase.ToontownGlobals import *
 from direct.directnotify import DirectNotifyGlobal
-import Walk
+from . import Walk
 
 class PublicWalk(Walk.Walk):
     notify = DirectNotifyGlobal.directNotify.newCategory('PublicWalk')

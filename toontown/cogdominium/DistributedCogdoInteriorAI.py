@@ -16,10 +16,10 @@ from toontown.toonbase.ToontownBattleGlobals import *
 from toontown.hood import ZoneUtil
 from toontown.minigame.MinigameGlobals import SafeZones
 from toontown.toon import NPCToons
-from DistributedCogdoElevatorIntAI import DistributedCogdoElevatorIntAI
+from .DistributedCogdoElevatorIntAI import DistributedCogdoElevatorIntAI
 from toontown.cogdominium import CogdoBarrelRoomConsts
 from toontown.cogdominium import CogdoBarrelRoomAI
-from DistCogdoBoardroomGameAI import DistCogdoBoardroomGameAI
+from .DistCogdoBoardroomGameAI import DistCogdoBoardroomGameAI
 from toontown.cogdominium.DistCogdoCraneGameAI import DistCogdoCraneGameAI
 from toontown.cogdominium.DistCogdoMazeGameAI import DistCogdoMazeGameAI
 from toontown.cogdominium.DistCogdoFlyingGameAI import DistCogdoFlyingGameAI
@@ -223,7 +223,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI.DistributedObjectAI):
         return task.done
 
     def __addToon(self, toonId):
-        if not self.air.doId2do.has_key(toonId):
+        if toonId not in self.air.doId2do:
             self.notify.warning('addToon() - no toon for doId: %d' % toonId)
             return
 
@@ -241,7 +241,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI.DistributedObjectAI):
         if self.toonIds.count(toonId):
             self.toonIds[self.toonIds.index(toonId)] = None
 
-        if self.responses.has_key(toonId):
+        if toonId in self.responses:
             del self.responses[toonId]
 
         event = self.air.getAvatarExitEvent(toonId)
@@ -476,7 +476,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI.DistributedObjectAI):
             else:
                 name = None
                 while name is None or name in IntGames:
-                    name = random.choice(CogdoGames.keys())
+                    name = random.choice(list(CogdoGames.keys()))
                 gameCtor = CogdoGames[name]
             game = gameCtor(self.air, self)
             game.setExteriorZone(self.extZoneId)
@@ -525,12 +525,12 @@ class DistributedCogdoInteriorAI(DistributedObjectAI.DistributedObjectAI):
 
     def _gameDone(self):
         self.__calcLaff()
-        for (toonId, reward) in self._rewardedLaff.iteritems():
+        for (toonId, reward) in self._rewardedLaff.items():
             if reward:
                 av = self.air.doId2do.get(toonId)
                 av.toonUp(reward)
 
-        for (toonId, penalty) in self._penaltyLaff.iteritems():
+        for (toonId, penalty) in self._penaltyLaff.items():
             if penalty:
                 av = self.air.doId2do.get(toonId)
                 if config.GetBool('want-cogdo-maze-no-sad', 1):
@@ -573,7 +573,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI.DistributedObjectAI):
                         self._rewardedLaff[toonId] = reward
 
                 if self._rewardedLaff:
-                    self.air.writeServerEvent('CogdoLaffReward', self._rewardedLaff.keys(), 'Awarded %s Laff for difficulty %s and score %s' % (reward, self._game.getDifficulty(), score))
+                    self.air.writeServerEvent('CogdoLaffReward', list(self._rewardedLaff.keys()), 'Awarded %s Laff for difficulty %s and score %s' % (reward, self._game.getDifficulty(), score))
 
             penalty = self._game.getDifficulty() * CogdoGameConsts.LaffPenalty
             for toonId in self.toons:
@@ -581,7 +581,7 @@ class DistributedCogdoInteriorAI(DistributedObjectAI.DistributedObjectAI):
                     self._penaltyLaff[toonId] = penalty
 
             if self._penaltyLaff:
-                self.air.writeServerEvent('CogdoLaffPenalty', self._penaltyLaff.keys(), 'Penalized %s Laff for difficulty %s (did not reach exit)' % (penalty, self._game.getDifficulty()))
+                self.air.writeServerEvent('CogdoLaffPenalty', list(self._penaltyLaff.keys()), 'Penalized %s Laff for difficulty %s (did not reach exit)' % (penalty, self._game.getDifficulty()))
 
     def toonBarrelRoomIntroDone(self):
         avId = self.air.getAvatarIdFromSender()

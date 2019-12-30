@@ -13,7 +13,7 @@ from pandac.PandaModules import Point3, Vec4, NodePath, TextNode, Mat4
 from toontown.toonbase import ToontownGlobals
 from toontown.battle.BattleProps import globalPropPool
 from toontown.battle.BattleSounds import globalBattleSoundCache
-import PartyGlobals
+from . import PartyGlobals
 
 class PartyCogManager:
 

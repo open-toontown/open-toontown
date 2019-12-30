@@ -1,9 +1,9 @@
 from libotp import *
 from direct.interval.IntervalGlobal import *
 from direct.showbase.DirectObject import DirectObject
-from RewardPanel import *
-from BattleSounds import *
-import MovieCamera
+from .RewardPanel import *
+from .BattleSounds import *
+from . import MovieCamera
 from direct.directnotify import DirectNotifyGlobal
 import types
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieToonVictory')
@@ -84,7 +84,7 @@ def doToonVictory(localToonActive, toons, rewardToonIds, rewardDicts, deathList,
     countToons = 0
     uberListNew = []
     for t in toons:
-        if isinstance(t, types.IntType):
+        if isinstance(t, int):
             t = base.cr.doId2do.get(t)
         if t:
             toonList.append(t)

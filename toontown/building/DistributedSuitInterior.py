@@ -1,7 +1,7 @@
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
-from ElevatorConstants import *
-import ElevatorUtils
+from .ElevatorConstants import *
+from . import ElevatorUtils
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownBattleGlobals
 from direct.directnotify import DirectNotifyGlobal
@@ -142,13 +142,13 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
         self.ignore(toon.uniqueName('disable'))
 
     def __finishInterval(self, name):
-        if self.activeIntervals.has_key(name):
+        if name in self.activeIntervals:
             interval = self.activeIntervals[name]
             if interval.isPlaying():
                 interval.finish()
 
     def __cleanupIntervals(self):
-        for interval in self.activeIntervals.values():
+        for interval in list(self.activeIntervals.values()):
             interval.finish()
 
         self.activeIntervals = {}
@@ -184,7 +184,7 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
         self.toons = []
         for toonId in toonIds:
             if toonId != 0:
-                if self.cr.doId2do.has_key(toonId):
+                if toonId in self.cr.doId2do:
                     toon = self.cr.doId2do[toonId]
                     toon.stopSmooth()
                     self.toons.append(toon)
@@ -202,7 +202,7 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
         self.suits = []
         self.joiningReserves = []
         for suitId in suitIds:
-            if self.cr.doId2do.has_key(suitId):
+            if suitId in self.cr.doId2do:
                 suit = self.cr.doId2do[suitId]
                 self.suits.append(suit)
                 suit.fsm.request('Battle')
@@ -216,7 +216,7 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
         self.reserveSuits = []
         for index in range(len(reserveIds)):
             suitId = reserveIds[index]
-            if self.cr.doId2do.has_key(suitId):
+            if suitId in self.cr.doId2do:
                 suit = self.cr.doId2do[suitId]
                 self.reserveSuits.append((suit, values[index]))
             else:

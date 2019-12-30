@@ -1,4 +1,4 @@
-import CatalogItem
+from . import CatalogItem
 from pandac.PandaModules import *
 import types
 from direct.distributed.PyDatagram import PyDatagram
@@ -10,9 +10,9 @@ class CatalogItemList:
         self.store = store
         self.__blob = None
         self.__list = None
-        if isinstance(source, types.StringType):
+        if isinstance(source, bytes):
             self.__blob = source
-        elif isinstance(source, types.ListType):
+        elif isinstance(source, list):
             self.__list = source[:]
         elif isinstance(source, CatalogItemList):
             if source.store == store:

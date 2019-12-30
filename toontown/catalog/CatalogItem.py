@@ -209,7 +209,7 @@ class CatalogItem:
         mailbox.acceptItem(self, index, callback)
 
     def discardItem(self, mailbox, index, callback):
-        print 'Item discardItem'
+        print('Item discardItem')
         mailbox.discardItem(self, index, callback)
 
     def acceptItemCleanup(self):
@@ -323,7 +323,7 @@ class CatalogItem:
         dg.addUint8(self.specialEventId)
 
     def getTypeCode(self):
-        import CatalogItemTypes
+        from . import CatalogItemTypes
         return CatalogItemTypes.CatalogItemTypes[self.__class__]
 
     def applyColor(self, model, colorDesc):
@@ -333,7 +333,7 @@ class CatalogItem:
             matches = model.findAllMatches(partName)
             if color == None:
                 matches.hide()
-            elif isinstance(color, types.StringType):
+            elif isinstance(color, bytes):
                 tex = loader.loadTexture(color)
                 tex.setMinfilter(Texture.FTLinearMipmapLinear)
                 tex.setMagfilter(Texture.FTLinear)
@@ -404,7 +404,7 @@ class CatalogItem:
 
 
 def encodeCatalogItem(dg, item, store):
-    import CatalogItemTypes
+    from . import CatalogItemTypes
     flags = item.getTypeCode()
     if item.isSaleItem():
         flags |= CatalogItemTypes.CatalogItemSaleFlag
@@ -422,10 +422,10 @@ def encodeCatalogItem(dg, item, store):
 
 def decodeCatalogItem(di, versionNumber, store):
     global CatalogReverseType
-    import CatalogItemTypes
+    from . import CatalogItemTypes
     if CatalogReverseType == None:
         CatalogReverseType = {}
-        for itemClass, index in CatalogItemTypes.CatalogItemTypes.items():
+        for itemClass, index in list(CatalogItemTypes.CatalogItemTypes.items()):
             CatalogReverseType[index] = itemClass
 
     startIndex = di.getCurrentIndex()
@@ -439,11 +439,11 @@ def decodeCatalogItem(di, versionNumber, store):
             code = di.getUint8()
         itemClass = CatalogReverseType[typeIndex]
         item = itemClass(di, versionNumber, store=store)
-    except Exception, e:
+    except Exception as e:
         CatalogItem.notify.warning('Invalid catalog item in stream: %s, %s' % (sys.exc_info()[0], e))
         d = Datagram(di.getDatagram().getMessage()[startIndex:])
         d.dumpHex(Notify.out())
-        import CatalogInvalidItem
+        from . import CatalogInvalidItem
         return CatalogInvalidItem.CatalogInvalidItem()
 
     if flags & CatalogItemTypes.CatalogItemSaleFlag:
@@ -459,8 +459,8 @@ def getItem(blob, store = 0):
     try:
         versionNumber = di.getUint8()
         return decodeCatalogItem(di, versionNumber, store)
-    except Exception, e:
+    except Exception as e:
         CatalogItem.notify.warning('Invalid catalog item: %s, %s' % (sys.exc_info()[0], e))
         dg.dumpHex(Notify.out())
-        import CatalogInvalidItem
+        from . import CatalogInvalidItem
         return CatalogInvalidItem.CatalogInvalidItem()

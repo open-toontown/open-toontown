@@ -2,8 +2,8 @@ from otp.ai.AIBaseGlobal import *
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import ClockDelta
-from FireworkShow import FireworkShow
-from FireworkShows import getShowDuration
+from .FireworkShow import FireworkShow
+from .FireworkShows import getShowDuration
 import random
 from direct.task import Task
 

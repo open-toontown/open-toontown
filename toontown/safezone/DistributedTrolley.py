@@ -2,7 +2,7 @@ from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
 from direct.task.Task import Task
 from direct.interval.IntervalGlobal import *
-from TrolleyConstants import *
+from .TrolleyConstants import *
 from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
@@ -61,7 +61,7 @@ class DistributedTrolley(DistributedObject.DistributedObject):
         for i in range(self.numKeys):
             key = self.keys[i]
             key.setTwoSided(1)
-            ref = self.trolleyCar.attachNewNode('key' + `i` + 'ref')
+            ref = self.trolleyCar.attachNewNode('key' + repr(i) + 'ref')
             ref.setPosHpr(key, 0, 0, 0, 0, 0, 0)
             self.keyRef.append(ref)
             self.keyInit.append(key.getTransform())
@@ -72,7 +72,7 @@ class DistributedTrolley(DistributedObject.DistributedObject):
         self.frontWheelRef = []
         for i in range(self.numFrontWheels):
             wheel = self.frontWheels[i]
-            ref = self.trolleyCar.attachNewNode('frontWheel' + `i` + 'ref')
+            ref = self.trolleyCar.attachNewNode('frontWheel' + repr(i) + 'ref')
             ref.setPosHpr(wheel, 0, 0, 0, 0, 0, 0)
             self.frontWheelRef.append(ref)
             self.frontWheelInit.append(wheel.getTransform())
@@ -83,7 +83,7 @@ class DistributedTrolley(DistributedObject.DistributedObject):
         self.backWheelRef = []
         for i in range(self.numBackWheels):
             wheel = self.backWheels[i]
-            ref = self.trolleyCar.attachNewNode('backWheel' + `i` + 'ref')
+            ref = self.trolleyCar.attachNewNode('backWheel' + repr(i) + 'ref')
             ref.setPosHpr(wheel, 0, 0, 0, 0, 0, 0)
             self.backWheelRef.append(ref)
             self.backWheelInit.append(wheel.getTransform())
@@ -218,7 +218,7 @@ class DistributedTrolley(DistributedObject.DistributedObject):
                 else:
                     self.notify.warning("Can't board the trolley because it doesn't exist")
                     self.sendUpdate('requestExit')
-            if self.cr.doId2do.has_key(avId):
+            if avId in self.cr.doId2do:
                 toon = self.cr.doId2do[avId]
                 toon.stopSmooth()
                 toon.wrtReparentTo(self.trolleyCar)
@@ -256,7 +256,7 @@ class DistributedTrolley(DistributedObject.DistributedObject):
     def emptySlot(self, index, avId, timestamp):
         if avId == 0:
             pass
-        elif self.cr.doId2do.has_key(avId):
+        elif avId in self.cr.doId2do:
             toon = self.cr.doId2do[avId]
             toon.setHpr(self.trolleyCar, 90, 0, 0)
             toon.wrtReparentTo(render)
@@ -402,5 +402,5 @@ class DistributedTrolley(DistributedObject.DistributedObject):
             keyList.append(key)
 
         for key in keyList:
-            if self.__toonTracks.has_key(key):
+            if key in self.__toonTracks:
                 self.clearToonTrack(key)

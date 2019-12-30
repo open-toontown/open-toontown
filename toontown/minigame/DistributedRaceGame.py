@@ -1,14 +1,14 @@
 from pandac.PandaModules import *
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.distributed.ClockDelta import *
-from DistributedMinigame import *
+from .DistributedMinigame import *
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.task.Task import Task
 from toontown.toonbase import ToontownTimer
-import RaceGameGlobals
+from . import RaceGameGlobals
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 
@@ -474,7 +474,7 @@ class DistributedRaceGame(DistributedMinigame):
             return 0
 
     def anyAvatarWon(self):
-        for position in self.avatarPositions.values():
+        for position in list(self.avatarPositions.values()):
             if position >= RaceGameGlobals.NumberToWin:
                 self.notify.debug('anyAvatarWon: Somebody won')
                 return 1
@@ -665,10 +665,10 @@ class DistributedRaceGame(DistributedMinigame):
         return Task.done
 
     def moveCamera(self):
-        bestPosIdx = self.avatarPositions.values()[0]
+        bestPosIdx = list(self.avatarPositions.values())[0]
         best_lane = 0
         cur_lane = 0
-        for pos in self.avatarPositions.values():
+        for pos in list(self.avatarPositions.values()):
             if pos > bestPosIdx:
                 bestPosIdx = pos
                 best_lane = cur_lane

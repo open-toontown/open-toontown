@@ -7,12 +7,12 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from toontown.minigame import Purchase
 from otp.avatar import DistributedAvatar
-import SkyUtil
+from . import SkyUtil
 from direct.task.Task import Task
-import Hood
+from . import Hood
 from toontown.estate import EstateLoader
 from toontown.estate import HouseGlobals
-import ZoneUtil
+from . import ZoneUtil
 
 class EstateHood(Hood.Hood):
     notify = DirectNotifyGlobal.directNotify.newCategory('EstateHood')

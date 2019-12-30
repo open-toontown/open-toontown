@@ -1,10 +1,10 @@
 from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from ElevatorConstants import *
-from ElevatorUtils import *
-import DistributedElevator
-import DistributedElevatorExt
+from .ElevatorConstants import *
+from .ElevatorUtils import *
+from . import DistributedElevator
+from . import DistributedElevatorExt
 from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM

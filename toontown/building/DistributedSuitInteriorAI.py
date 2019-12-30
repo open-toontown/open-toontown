@@ -1,7 +1,7 @@
 from toontown.toonbase.ToontownBattleGlobals import *
 from otp.ai.AIBaseGlobal import *
 from direct.distributed.ClockDelta import *
-from ElevatorConstants import *
+from .ElevatorConstants import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObjectAI
@@ -97,7 +97,7 @@ class DistributedSuitInteriorAI(DistributedObjectAI.DistributedObjectAI):
         return
 
     def __addToon(self, toonId):
-        if not self.air.doId2do.has_key(toonId):
+        if toonId not in self.air.doId2do:
             self.notify.warning('addToon() - no toon for doId: %d' % toonId)
             return
         event = self.air.getAvatarExitEvent(toonId)
@@ -111,7 +111,7 @@ class DistributedSuitInteriorAI(DistributedObjectAI.DistributedObjectAI):
             self.toons.remove(toonId)
         if self.toonIds.count(toonId):
             self.toonIds[self.toonIds.index(toonId)] = None
-        if self.responses.has_key(toonId):
+        if toonId in self.responses:
             del self.responses[toonId]
         event = self.air.getAvatarExitEvent(toonId)
         if self.avatarExitEvents.count(event):

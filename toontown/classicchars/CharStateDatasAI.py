@@ -5,7 +5,7 @@ from direct.directnotify import DirectNotifyGlobal
 import random
 from direct.task import Task
 from toontown.toonbase import ToontownGlobals
-import CCharChatter, CCharPaths
+from . import CCharChatter, CCharPaths
 CHATTY_DURATION = 120.0
 
 class CharLonelyStateAI(StateData.StateData):

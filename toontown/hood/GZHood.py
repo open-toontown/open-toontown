@@ -1,9 +1,9 @@
 from pandac.PandaModules import *
-import ToonHood
+from . import ToonHood
 from toontown.safezone import GZSafeZoneLoader
 from toontown.toonbase.ToontownGlobals import *
 from toontown.racing import DistributedVehicle
-import SkyUtil
+from . import SkyUtil
 
 class GZHood(ToonHood.ToonHood):
 

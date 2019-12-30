@@ -1,6 +1,6 @@
-import GardenGlobals
+from . import GardenGlobals
 from direct.directnotify import DirectNotifyGlobal
-import FlowerBase
+from . import FlowerBase
 
 class FlowerBasket:
     notify = DirectNotifyGlobal.directNotify.newCategory('FlowerBasket')

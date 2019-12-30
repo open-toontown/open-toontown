@@ -4,14 +4,14 @@ from libtoontown import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from toontown.toonbase import ToontownGlobals
-import cPickle
-import ToonInterior
+import pickle
+from . import ToonInterior
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObject
 from direct.fsm import State
 import random
-import ToonInteriorColors
+from . import ToonInteriorColors
 from toontown.hood import ZoneUtil
 from toontown.toon import ToonDNA
 from toontown.toon import ToonHead
@@ -138,7 +138,7 @@ class DistributedToonInterior(DistributedObject.DistributedObject):
         self.block = block
 
     def setToonData(self, toonData):
-        savedBy = cPickle.loads(toonData)
+        savedBy = pickle.loads(toonData)
         self.savedBy = savedBy
 
     def buildTrophy(self):
@@ -158,7 +158,7 @@ class DistributedToonInterior(DistributedObject.DistributedObject):
     def buildFrame(self, name, dnaTuple):
         frame = loader.loadModel('phase_3.5/models/modules/trophy_frame')
         dna = ToonDNA.ToonDNA()
-        apply(dna.newToonFromProperties, dnaTuple)
+        dna.newToonFromProperties(*dnaTuple)
         head = ToonHead.ToonHead()
         head.setupHead(dna)
         head.setPosHprScale(0, -0.05, -0.05, 180, 0, 0, 0.55, 0.02, 0.55)

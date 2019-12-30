@@ -13,7 +13,7 @@ class DistributedAnimDoor(DistributedDoor.DistributedDoor):
         base.animDoor = self
 
     def getBuilding(self):
-        if not self.__dict__.has_key('building'):
+        if 'building' not in self.__dict__:
             if self.doorType == DoorTypes.EXT_ANIM_STANDARD:
                 searchStr = '**/??' + str(self.block) + ':animated_building_*_DNARoot;+s'
                 self.notify.debug('searchStr=%s' % searchStr)
@@ -52,7 +52,7 @@ class DistributedAnimDoor(DistributedDoor.DistributedDoor):
             self.notify.error('setTriggerName doorTYpe=%s' % self.doorType)
 
     def getAnimBuilding(self):
-        if not self.__dict__.has_key('animBuilding'):
+        if 'animBuilding' not in self.__dict__:
             if self.doorType == DoorTypes.EXT_ANIM_STANDARD:
                 bldg = self.getBuilding()
                 key = bldg.getParent().getParent()

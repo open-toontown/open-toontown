@@ -7,7 +7,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
 from otp.avatar.Avatar import teleportNotify
-import ToonAvatarDetailPanel
+from . import ToonAvatarDetailPanel
 from toontown.toonbase import TTLocalizer
 from toontown.hood import ZoneUtil
 globalTeleport = None
@@ -121,7 +121,7 @@ class ToonTeleportPanel(DirectFrame):
         hasManager = hasattr(base.cr, 'playerFriendsManager')
         if self.avId == myId:
             self.fsm.request('self')
-        elif base.cr.doId2do.has_key(self.avId):
+        elif self.avId in base.cr.doId2do:
             self.fsm.request('checkAvailability')
         elif base.cr.isFriend(self.avId):
             if base.cr.isFriendOnline(self.avId):
@@ -248,7 +248,7 @@ class ToonTeleportPanel(DirectFrame):
             teleportNotify.debug('enterTeleport: unknownHood')
             self.fsm.request('unknownHood', [hoodId])
         elif canonicalHoodId not in base.cr.hoodMgr.getAvailableZones():
-            print 'hoodId %d not ready' % hoodId
+            print('hoodId %d not ready' % hoodId)
             self.fsm.request('unavailableHood', [hoodId])
         else:
             if shardId == base.localAvatar.defaultShard:

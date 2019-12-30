@@ -19,7 +19,7 @@ class ToonChatGarbler(ChatGarbler.ChatGarbler):
     def garble(self, toon, message):
         newMessage = ''
         animalType = toon.getStyle().getType()
-        if ToonChatGarbler.animalSounds.has_key(animalType):
+        if animalType in ToonChatGarbler.animalSounds:
             wordlist = ToonChatGarbler.animalSounds[animalType]
         else:
             wordlist = ToonChatGarbler.animalSounds['default']
@@ -35,7 +35,7 @@ class ToonChatGarbler(ChatGarbler.ChatGarbler):
     def garbleSingle(self, toon, message):
         newMessage = ''
         animalType = toon.getStyle().getType()
-        if ToonChatGarbler.animalSounds.has_key(animalType):
+        if animalType in ToonChatGarbler.animalSounds:
             wordlist = ToonChatGarbler.animalSounds[animalType]
         else:
             wordlist = ToonChatGarbler.animalSounds['default']

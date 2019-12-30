@@ -1,6 +1,6 @@
 from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
-import MovingPlatform
+from . import MovingPlatform
 from otp.level import BasicEntities
 
 class ConveyorBelt(BasicEntities.NodePathEntity):
@@ -21,7 +21,7 @@ class ConveyorBelt(BasicEntities.NodePathEntity):
         self.numTreads = int(self.length / self.treadLength) + 3
         self.beltNode = self.attachNewNode('belt')
         self.treads = []
-        for i in xrange(self.numTreads):
+        for i in range(self.numTreads):
             mp = MovingPlatform.MovingPlatform()
             mp.parentingNode = render.attachNewNode('parentTarget')
             mp.setupCopyModel('conv%s-%s' % (self.getParentToken(), i), treadModel, self.floorName, parentingNode=mp.parentingNode)
@@ -47,7 +47,7 @@ class ConveyorBelt(BasicEntities.NodePathEntity):
         treadsIval = Parallel(name='treads')
         treadPeriod = self.treadLength / abs(self.speed)
         startY = -self.treadLength
-        for i in xrange(self.numTreads):
+        for i in range(self.numTreads):
             periodsToEnd = self.numTreads - i
             periodsFromStart = self.numTreads - periodsToEnd
             ival = Sequence()

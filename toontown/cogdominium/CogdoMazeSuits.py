@@ -5,8 +5,8 @@ from direct.task.Task import Task
 from toontown.battle import BattleParticles
 from toontown.battle import MovieUtil
 from toontown.minigame.MazeSuit import MazeSuit
-from CogdoMazeGameObjects import CogdoMazeSplattable
-import CogdoMazeGameGlobals as Globals
+from .CogdoMazeGameObjects import CogdoMazeSplattable
+from . import CogdoMazeGameGlobals as Globals
 import random
 
 class CogdoMazeSuit(MazeSuit, FSM, CogdoMazeSplattable):
@@ -19,7 +19,7 @@ class CogdoMazeSuit(MazeSuit, FSM, CogdoMazeSplattable):
         MazeSuit.__init__(self, serialNum, maze, randomNumGen, data['cellWalkPeriod'], difficulty, data['dnaName'], startTile=startTile, walkSameDirectionProb=Globals.SuitWalkSameDirectionProb, walkTurnAroundProb=Globals.SuitWalkTurnAroundProb, uniqueRandomNumGen=False, walkAnimName=walkAnimName)
         FSM.__init__(self, 'CogdoMazeSuit')
         CogdoMazeSplattable.__init__(self, self.suit, '%s-%i' % (Globals.SuitCollisionName, self.serialNum), 1.5)
-        if data.has_key('scale'):
+        if 'scale' in data:
             self.suit.setScale(data['scale'])
         self.hp = data['hp']
         self.type = cogdoSuitType

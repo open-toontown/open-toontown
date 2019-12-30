@@ -7,10 +7,10 @@ from direct.interval.MetaInterval import Sequence, Parallel
 from direct.distributed.ClockDelta import globalClockDelta
 from toontown.toonbase import ToontownGlobals
 from toontown.effects import DustCloud
-import CogdoFlyingGameGlobals as Globals
-import CogdoUtil
-from CogdoFlyingObjects import CogdoFlyingGatherable
-from CogdoFlyingUtil import swapAvatarShadowPlacer
+from . import CogdoFlyingGameGlobals as Globals
+from . import CogdoUtil
+from .CogdoFlyingObjects import CogdoFlyingGatherable
+from .CogdoFlyingUtil import swapAvatarShadowPlacer
 
 class CogdoFlyingPlayer(FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogdoFlyingPlayer')

@@ -3,8 +3,8 @@ from direct.gui.DirectGui import DirectLabel, DirectFrame, DGG
 from direct.showbase.PythonUtil import bound as clamp
 from pandac.PandaModules import TextNode, NodePath
 from toontown.toonbase import ToontownGlobals
-import CogdoUtil
-import CogdoFlyingGameGlobals as Globals
+from . import CogdoUtil
+from . import CogdoFlyingGameGlobals as Globals
 
 class CogdoFlyingProgressGui(DirectFrame):
 
@@ -60,7 +60,7 @@ class CogdoFlyingProgressGui(DirectFrame):
         return self._laffMeterModel.find('**/' + toon.style.getType() + 'head')
 
     def update(self):
-        for toon, marker in self._toonMarkers.items():
+        for toon, marker in list(self._toonMarkers.items()):
             progress = clamp((toon.getY() - self._levelStartY) / self._levelDistance, self._levelStartY, self._levelEndY)
             marker.setZ(clamp(self._lineStart + self._lineDistance * progress, self._lineStart, self._lineEnd))
 

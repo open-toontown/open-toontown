@@ -2,7 +2,7 @@ from direct.directnotify import DirectNotifyGlobal
 from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
 from toontown.fishing import FishGlobals
-import GardenGlobals
+from . import GardenGlobals
 from direct.actor import Actor
 import random
 
@@ -43,9 +43,9 @@ class DirectRegion(NodePath):
             self.cCamNode.setScene(self.cRender)
             self.fishSwimCam = self.fishSwimCamera.attachNewNode(self.cCamNode)
             cm = CardMaker('displayRegionCard')
-            apply(cm.setFrame, self.bounds)
+            cm.setFrame(*self.bounds)
             self.card = card = self.attachNewNode(cm.generate())
-            apply(card.setColor, self.color)
+            card.setColor(*self.color)
             newBounds = card.getTightBounds()
             ll = render2d.getRelativePoint(card, newBounds[0])
             ur = render2d.getRelativePoint(card, newBounds[1])
@@ -53,7 +53,7 @@ class DirectRegion(NodePath):
              ur.getX(),
              ll.getZ(),
              ur.getZ()]
-            newBounds = map(lambda x: max(0.0, min(1.0, (x + 1.0) / 2.0)), newBounds)
+            newBounds = [max(0.0, min(1.0, (x + 1.0) / 2.0)) for x in newBounds]
             self.cDr = base.win.makeDisplayRegion(*newBounds)
             self.cDr.setSort(10)
             self.cDr.setClearColor(card.getColor())
@@ -120,8 +120,8 @@ class SpecialsPhoto(NodePath):
         actor.setDepthWrite(1)
         if not hasattr(self, 'specialsDisplayRegion'):
             self.specialsDisplayRegion = DirectRegion(parent=self)
-            apply(self.specialsDisplayRegion.setBounds, self.backBounds)
-            apply(self.specialsDisplayRegion.setColor, self.backColor)
+            self.specialsDisplayRegion.setBounds(*self.backBounds)
+            self.specialsDisplayRegion.setColor(*self.backColor)
         frame = self.specialsDisplayRegion.load()
         pitch = frame.attachNewNode('pitch')
         rotate = pitch.attachNewNode('rotate')

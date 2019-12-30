@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-import ZoneUtil
+from . import ZoneUtil
 from toontown.building import DistributedBuildingMgrAI
 from toontown.suit import DistributedSuitPlannerAI
 from toontown.safezone import ButterflyGlobals
@@ -49,7 +49,7 @@ class HoodDataAI:
         self.buildingManagers = []
         ButterflyGlobals.clearIndexes(self.zoneId)
         del self.fishingPonds
-        for distObj in self.doId2do.values():
+        for distObj in list(self.doId2do.values()):
             distObj.requestDelete()
 
         del self.doId2do

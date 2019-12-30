@@ -90,7 +90,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.pages[self.currPageIndex].exit()
         base.render.show()
         setBlackBackground = 0
-        for obj in base.cr.doId2do.values():
+        for obj in list(base.cr.doId2do.values()):
             if isinstance(obj, DistributedFireworkShow.DistributedFireworkShow) or isinstance(obj, DistributedPartyFireworksActivity.DistributedPartyFireworksActivity):
                 setBlackBackground = 1
 

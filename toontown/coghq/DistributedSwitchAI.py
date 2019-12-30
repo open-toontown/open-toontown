@@ -1,6 +1,6 @@
 from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
-import DistributedSwitchBase
+from . import DistributedSwitchBase
 from direct.task import Task
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State

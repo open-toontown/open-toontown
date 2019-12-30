@@ -20,7 +20,7 @@ class DistributedCountryClubAI(DistributedObjectAI.DistributedObjectAI):
         self.elevatorList = []
         self.battleExpAggreg = battleExpAggreg
         self.layout = CountryClubLayout.CountryClubLayout(self.countryClubId, self.floorNum, self.layoutIndex)
-        for i in xrange(self.layout.getNumRooms()):
+        for i in range(self.layout.getNumRooms()):
             if i:
                 self.blockedRooms.append(i)
 

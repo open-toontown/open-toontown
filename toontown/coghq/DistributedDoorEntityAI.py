@@ -1,7 +1,7 @@
 from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import DirectObject
-import DistributedDoorEntityBase
+from . import DistributedDoorEntityBase
 from direct.distributed import DistributedObjectAI
 from otp.level import DistributedEntityAI
 from direct.fsm import FourStateAI

@@ -86,7 +86,7 @@ class TownBattleSOSPetInfoPanel(StateData.StateData):
 
     def enter(self, petProxyId):
         self.petProxyId = petProxyId
-        if not base.cr.doId2do.has_key(petProxyId):
+        if petProxyId not in base.cr.doId2do:
             self.notify.warning('petProxyId %s not in doId2do!' % petProxyId)
             return
         self.petProxy = base.cr.doId2do[petProxyId]
@@ -109,7 +109,7 @@ class TownBattleSOSPetInfoPanel(StateData.StateData):
         return
 
     def __handleTrickMenuEvent(self, textId):
-        if PetTricks.ScId2trickId.has_key(textId):
+        if textId in PetTricks.ScId2trickId:
             trickId = PetTricks.ScId2trickId[textId]
             doneStatus = {'mode': 'OK',
              'trickId': trickId}

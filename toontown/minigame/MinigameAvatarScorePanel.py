@@ -8,7 +8,7 @@ class MinigameAvatarScorePanel(DirectFrame):
 
     def __init__(self, avId, avName):
         self.avId = avId
-        if base.cr.doId2do.has_key(self.avId):
+        if self.avId in base.cr.doId2do:
             self.avatar = base.cr.doId2do[self.avId]
         else:
             self.avatar = None

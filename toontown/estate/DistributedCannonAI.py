@@ -6,7 +6,7 @@ from direct.task import Task
 from toontown.minigame import CannonGameGlobals
 from direct.distributed import DistributedObjectAI
 from toontown.minigame import Trajectory
-import CannonGlobals
+from . import CannonGlobals
 
 class DistributedCannonAI(DistributedObjectAI.DistributedObjectAI):
     notify = directNotify.newCategory('DistributedCannonAI')

@@ -638,7 +638,7 @@ class ToonHead(Actor.Actor):
                 lp = self.__eyes.find('**/joint_pupilL*')
                 rp = self.__eyes.find('**/joint_pupilR*')
             if lp.isEmpty() or rp.isEmpty():
-                print 'Unable to locate pupils.'
+                print('Unable to locate pupils.')
             else:
                 leye = self.__eyes.attachNewNode('leye')
                 reye = self.__eyes.attachNewNode('reye')

@@ -304,7 +304,7 @@ class Playground(Place.Place):
         lines = LineSegs()
         lines.setColor(1, 0, 0, 1)
         from toontown.classicchars import CCharPaths
-        for name, pointDef in paths.items():
+        for name, pointDef in list(paths.items()):
             self.showDebugPointText(name, pointDef[0])
             for connectTo in pointDef[1]:
                 toDef = paths[connectTo]
@@ -408,7 +408,7 @@ class Playground(Place.Place):
         elif ds == 'incomplete':
             self.fsm.request('DFAReject')
         else:
-            self.notify.error('Unknown done status for DownloadForceAcknowledge: ' + `doneStatus`)
+            self.notify.error('Unknown done status for DownloadForceAcknowledge: ' + repr(doneStatus))
 
     def enterHFA(self, requestStatus):
         self.acceptOnce(self.hfaDoneEvent, self.enterHFACallback, [requestStatus])
@@ -432,7 +432,7 @@ class Playground(Place.Place):
         elif doneStatus['mode'] == 'incomplete':
             self.fsm.request('HFAReject')
         else:
-            self.notify.error('Unknown done status for HealthForceAcknowledge: ' + `doneStatus`)
+            self.notify.error('Unknown done status for HealthForceAcknowledge: ' + repr(doneStatus))
 
     def enterHFAReject(self):
         self.fsm.request('walk')
@@ -456,7 +456,7 @@ class Playground(Place.Place):
         elif doneStatus['mode'] == 'incomplete':
             self.fsm.request('NPCFAReject')
         else:
-            self.notify.error('Unknown done status for NPCForceAcknowledge: ' + `doneStatus`)
+            self.notify.error('Unknown done status for NPCForceAcknowledge: ' + repr(doneStatus))
 
     def enterNPCFAReject(self):
         self.fsm.request('walk')

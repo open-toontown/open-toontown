@@ -1,13 +1,13 @@
 from direct.interval.IntervalGlobal import *
-from BattleBase import *
-from BattleProps import *
-from BattleSounds import *
-import BattleParticles
-from RewardPanel import *
-import MovieCamera
+from .BattleBase import *
+from .BattleProps import *
+from .BattleSounds import *
+from . import BattleParticles
+from .RewardPanel import *
+from . import MovieCamera
 from direct.directnotify import DirectNotifyGlobal
-import MovieUtil
-import MovieNPCSOS
+from . import MovieUtil
+from . import MovieNPCSOS
 from toontown.toonbase import ToontownBattleGlobals
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieSound')
 soundFiles = ('AA_sound_bikehorn.mp3', 'AA_sound_whistle.mp3', 'AA_sound_bugle.mp3', 'AA_sound_aoogah.mp3', 'AA_sound_elephant.mp3', 'SZ_DD_foghorn.mp3', 'AA_sound_Opera_Singer.mp3')
@@ -129,7 +129,7 @@ def __doSoundsLevel(sounds, delay, hitCount, npcs):
     deathTracks = Parallel()
     for sound in sounds:
         toon = sound['toon']
-        if sound.has_key('npc'):
+        if 'npc' in sound:
             toon = sound['npc']
         level = sound['level']
         targets = sound['target']

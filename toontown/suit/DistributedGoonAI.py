@@ -1,9 +1,9 @@
 from otp.ai.AIBaseGlobal import *
-from GoonGlobals import *
+from .GoonGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import SuitBattleGlobals
 from toontown.coghq import DistributedCrushableEntityAI
-import GoonPathData
+from . import GoonPathData
 from direct.distributed import ClockDelta
 import random
 from direct.task import Task
@@ -62,7 +62,7 @@ class DistributedGoonAI(DistributedCrushableEntityAI.DistributedCrushableEntityA
             if not hasattr(self.level, 'goonStunRequests'):
                 self.level.goonStunRequests = {}
             if taskMgr.hasTaskNamed(self.taskName('GoonBombCheck')):
-                if self.level.goonStunRequests.has_key(avId):
+                if avId in self.level.goonStunRequests:
                     self.level.goonStunRequests[avId] = self.level.goonStunRequests[avId] + 1
                 else:
                     self.level.goonStunRequests[avId] = 1

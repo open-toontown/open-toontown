@@ -217,7 +217,7 @@ class CogThief(DirectObject):
             return
         if not hasattr(self.game, 'barrels'):
             return
-        if self.goalId not in xrange(len(self.game.barrels)):
+        if self.goalId not in range(len(self.game.barrels)):
             return
         if not self.lastThinkTime:
             self.lastThinkTime = globalClock.getFrameTime()
@@ -396,7 +396,7 @@ class CogThief(DirectObject):
 
     def seeFriends(self):
         self.clearVisibleList()
-        for cogIndex in self.game.cogInfo.keys():
+        for cogIndex in list(self.game.cogInfo.keys()):
             if cogIndex == self.cogIndex:
                 continue
             if self.sameGoal(cogIndex):

@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from PurchaseManagerConstants import *
+from .PurchaseManagerConstants import *
 from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal

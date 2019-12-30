@@ -34,23 +34,23 @@ class DistCogdoCraneGameAI(CogdoCraneGameBase, DistCogdoLevelGameAI, PM.NodePath
         cs = PM.CollisionInvSphere(0, 0, 0, 42)
         cn.addSolid(cs)
         self.attachNewNode(cn)
-        for i in xrange(CogdoGameConsts.MaxPlayers):
+        for i in range(CogdoGameConsts.MaxPlayers):
             crane = DistCogdoCraneAI(self.air, self, i)
             crane.generateWithRequired(self.zoneId)
             self._cranes[i] = crane
 
-        for i in xrange(len(self._moneyBags)):
+        for i in range(len(self._moneyBags)):
             mBag = DistCogdoCraneMoneyBagAI(self.air, self, i)
             mBag.generateWithRequired(self.zoneId)
             self._moneyBags[i] = mBag
 
     def exitLoaded(self):
-        for i in xrange(len(self._moneyBags)):
+        for i in range(len(self._moneyBags)):
             if self._moneyBags[i]:
                 self._moneyBags[i].requestDelete()
                 self._moneyBags[i] = None
 
-        for i in xrange(CogdoGameConsts.MaxPlayers):
+        for i in range(CogdoGameConsts.MaxPlayers):
             if self._cranes[i]:
                 self._cranes[i].requestDelete()
                 self._cranes[i] = None
@@ -59,10 +59,10 @@ class DistCogdoCraneGameAI(CogdoCraneGameBase, DistCogdoLevelGameAI, PM.NodePath
 
     def enterGame(self):
         DistCogdoLevelGameAI.enterGame(self)
-        for i in xrange(self.getNumPlayers()):
+        for i in range(self.getNumPlayers()):
             self._cranes[i].request('Controlled', self.getToonIds()[i])
 
-        for i in xrange(len(self._moneyBags)):
+        for i in range(len(self._moneyBags)):
             if self._moneyBags[i]:
                 self._moneyBags[i].request('Initial')
 

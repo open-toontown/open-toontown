@@ -1,10 +1,10 @@
 from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import *
-import ToonHood
+from . import ToonHood
 from toontown.town import TTTownLoader
 from toontown.safezone import TTSafeZoneLoader
 from toontown.toonbase.ToontownGlobals import *
-import SkyUtil
+from . import SkyUtil
 from direct.directnotify import DirectNotifyGlobal
 
 class TTHood(ToonHood.ToonHood):

@@ -1,8 +1,8 @@
 import os
 from direct.task.Task import Task
-import cPickle
+import pickle
 from otp.ai.AIBaseGlobal import *
-import DistributedBuildingAI, HQBuildingAI, GagshopBuildingAI, PetshopBuildingAI
+from . import DistributedBuildingAI, HQBuildingAI, GagshopBuildingAI, PetshopBuildingAI
 from toontown.building.KartShopBuildingAI import KartShopBuildingAI
 from toontown.building import DistributedAnimBuildingAI
 from direct.directnotify import DirectNotifyGlobal
@@ -28,13 +28,13 @@ class DistributedBuildingMgrAI:
 
     def cleanup(self):
         taskMgr.remove(str(self.branchID) + '_delayed_save-timer')
-        for building in self.__buildings.values():
+        for building in list(self.__buildings.values()):
             building.cleanup()
 
         self.__buildings = {}
 
     def isValidBlockNumber(self, blockNumber):
-        return self.__buildings.has_key(blockNumber)
+        return blockNumber in self.__buildings
 
     def delayedSaveTask(self, task):
         self.save()
@@ -46,7 +46,7 @@ class DistributedBuildingMgrAI:
 
     def getSuitBlocks(self):
         blocks = []
-        for i in self.__buildings.values():
+        for i in list(self.__buildings.values()):
             if i.isSuitBlock():
                 blocks.append(i.getBlock()[0])
 
@@ -57,7 +57,7 @@ class DistributedBuildingMgrAI:
 
     def getCogdoBlocks(self):
         blocks = []
-        for i in self.__buildings.values():
+        for i in list(self.__buildings.values()):
             if i.isCogdo():
                 blocks.append(i.getBlock()[0])
 
@@ -65,7 +65,7 @@ class DistributedBuildingMgrAI:
 
     def getEstablishedSuitBlocks(self):
         blocks = []
-        for i in self.__buildings.values():
+        for i in list(self.__buildings.values()):
             if i.isEstablishedSuitBlock():
                 blocks.append(i.getBlock()[0])
 
@@ -73,7 +73,7 @@ class DistributedBuildingMgrAI:
 
     def getToonBlocks(self):
         blocks = []
-        for i in self.__buildings.values():
+        for i in list(self.__buildings.values()):
             if isinstance(i, HQBuildingAI.HQBuildingAI):
                 continue
             if not i.isSuitBlock():
@@ -82,7 +82,7 @@ class DistributedBuildingMgrAI:
         return blocks
 
     def getBuildings(self):
-        return self.__buildings.values()
+        return list(self.__buildings.values())
 
     def getFrontDoorPoint(self, blockNumber):
         return self.__buildings[blockNumber].getFrontDoorPoint()
@@ -237,13 +237,13 @@ class DistributedBuildingMgrAI:
     def saveTo(self, file, block=None):
         if block:
             pickleData = block.getPickleData()
-            cPickle.dump(pickleData, file)
+            pickle.dump(pickleData, file)
         else:
-            for i in self.__buildings.values():
+            for i in list(self.__buildings.values()):
                 if isinstance(i, HQBuildingAI.HQBuildingAI):
                     continue
                 pickleData = i.getPickleData()
-                cPickle.dump(pickleData, file)
+                pickle.dump(pickleData, file)
 
     def fastSave(self, block):
         return
@@ -280,7 +280,7 @@ class DistributedBuildingMgrAI:
         blocks = {}
         try:
             while 1:
-                pickleData = cPickle.load(file)
+                pickleData = pickle.load(file)
                 blocks[int(pickleData['block'])] = pickleData
 
         except EOFError:

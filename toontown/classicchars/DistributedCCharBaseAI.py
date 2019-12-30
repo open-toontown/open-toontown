@@ -34,7 +34,7 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
         r = random.random()
         fixedAvId = 1000000006
         if r < 0.3:
-            avId = random.randrange(1L << 32)
+            avId = random.randrange(1 << 32)
         else:
             if r < 0.6:
                 players = self.air.doFindAllOfType('DistributedToonAI')[0]
@@ -56,7 +56,7 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
             if msg is SetChat:
                 length = rrange(1024)
                 s = ''
-                for i in xrange(length):
+                for i in range(length):
                     s += chr(rrange(1 << 8))
 
                 self.setNearbyAvatarChat(s)
@@ -156,7 +156,7 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def __avatarSpoke(self, avId):
         now = globalClock.getRealTime()
-        if self.nearbyAvatarInfoDict.has_key(avId):
+        if avId in self.nearbyAvatarInfoDict:
             self.nearbyAvatarInfoDict[avId]['lastChatTime'] = now
             self.__interestingAvatarEventOccured()
 

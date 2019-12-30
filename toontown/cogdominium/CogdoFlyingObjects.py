@@ -3,9 +3,9 @@ from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import Sequence, Func, Parallel, Wait, LerpHprInterval, LerpScaleInterval, LerpFunctionInterval
 from otp.otpbase import OTPGlobals
 from toontown.toonbase import ToontownGlobals
-from CogdoGameGatherable import CogdoGameGatherable, CogdoMemo
-import CogdoFlyingGameGlobals as Globals
-import CogdoUtil
+from .CogdoGameGatherable import CogdoGameGatherable, CogdoMemo
+from . import CogdoFlyingGameGlobals as Globals
+from . import CogdoUtil
 from direct.particles import ParticleEffect
 from direct.particles import Particles
 from direct.particles import ForceGroup
@@ -17,7 +17,7 @@ class CogdoFlyingGatherableFactory:
         self._memoModel = CogdoUtil.loadModel('memo', 'shared').find('**/memo')
         self._propellerModel = CogdoUtil.loadFlyingModel('propellers').find('**/mesh')
         self._powerUpModels = {}
-        for type, modelName in Globals.Level.PowerupType2Model.items():
+        for type, modelName in list(Globals.Level.PowerupType2Model.items()):
             model = CogdoUtil.loadFlyingModel(modelName).find('**/' + Globals.Level.PowerupType2Node[type])
             self._powerUpModels[type] = model
             model.setTransparency(True)
@@ -78,7 +78,7 @@ class CogdoFlyingGatherableFactory:
         del self._memoModel
         self._propellerModel.removeNode()
         del self._propellerModel
-        for model in self._powerUpModels.values():
+        for model in list(self._powerUpModels.values()):
             model.removeNode()
 
         del self._powerUpModels

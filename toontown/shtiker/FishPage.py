@@ -1,5 +1,5 @@
 from toontown.toonbase import ToontownGlobals
-import ShtikerPage
+from . import ShtikerPage
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
@@ -86,7 +86,7 @@ class FishPage(ShtikerPage.ShtikerPage):
             self.trophies = []
             hOffset = -0.5
             vOffset = 0.4
-            for level, trophyDesc in FishGlobals.TrophyDict.items():
+            for level, trophyDesc in list(FishGlobals.TrophyDict.items()):
                 trophy = FishingTrophy(-1)
                 trophy.nameLabel['text'] = trophyDesc[0]
                 trophy.reparentTo(self.trophyFrame)

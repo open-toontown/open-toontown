@@ -1,7 +1,7 @@
 from otp.ai.AIBase import *
 from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
-from ElevatorConstants import *
+from .ElevatorConstants import *
 from direct.distributed import DistributedObjectAI
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
@@ -210,7 +210,7 @@ class DistributedElevatorFSMAI(DistributedObjectAI.DistributedObjectAI, FSM):
         self.accepting = 1
 
     def exitWaitCountdown(self):
-        print 'exit wait countdown'
+        print('exit wait countdown')
         self.accepting = 0
         taskMgr.remove(self.uniqueName('countdown-timer'))
         self.newTrip()
@@ -232,7 +232,7 @@ class DistributedElevatorFSMAI(DistributedObjectAI.DistributedObjectAI, FSM):
 
     def enterClosed(self):
         if hasattr(self, 'doId'):
-            print self.doId
+            print(self.doId)
         self.d_setState('Closed')
 
     def exitClosed(self):
@@ -242,7 +242,7 @@ class DistributedElevatorFSMAI(DistributedObjectAI.DistributedObjectAI, FSM):
         for i in range(len(self.seats)):
             self.seats[i] = None
 
-        print self.seats
+        print(self.seats)
         self.d_setState('WaitEmpty')
         self.accepting = 1
         return

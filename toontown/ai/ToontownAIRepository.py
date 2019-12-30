@@ -226,7 +226,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.welcomeValleyManager.createWelcomeValleyZones()
 
         # Assign the initial suit buildings.
-        for suitPlanner in self.suitPlanners.values():
+        for suitPlanner in list(self.suitPlanners.values()):
             suitPlanner.assignInitialSuitBuildings()
 
     def genDNAFileName(self, zoneId):
@@ -258,7 +258,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         found = vfs.resolveFilename(filename, searchPath)
         if not found:
             self.notify.warning('lookupDNAFileName - %s not found on:' % dnaFileName)
-            print searchPath
+            print(searchPath)
         else:
             return filename.getFullpath()
 
@@ -287,7 +287,7 @@ class ToontownAIRepository(ToontownInternalRepository):
                 kartPads.append(viewPad)
                 kartPadGroups.append(dnaData)
 
-        for i in xrange(dnaData.getNumChildren()):
+        for i in range(dnaData.getNumChildren()):
             foundKartPads, foundKartPadGroups = self.findRacingPads(dnaData.at(i), zoneId, area, type, overrideDNAZone)
             kartPads.extend(foundKartPads)
             kartPadGroups.extend(foundKartPadGroups)
@@ -306,7 +306,7 @@ class ToontownAIRepository(ToontownInternalRepository):
             leaderBoard.generateWithRequired(zoneId)
             leaderBoards.append(leaderBoard)
 
-        for i in xrange(dnaData.getNumChildren()):
+        for i in range(dnaData.getNumChildren()):
             foundLeaderBoards = self.findLeaderBoards(dnaData.at(i), zoneId)
             leaderBoards.extend(foundLeaderBoards)
 

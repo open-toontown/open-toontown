@@ -30,17 +30,17 @@ class DistributedPartyWinterCatchActivity(DistributedPartyCatchActivity):
         return
 
     def handleToonJoined(self, toonId):
-        if not self.toonSDs.has_key(toonId):
+        if toonId not in self.toonSDs:
             toonSD = WinterPartyCatchActivityToonSD.WinterPartyCatchActivityToonSD(toonId, self)
             self.toonSDs[toonId] = toonSD
             toonSD.load()
         self.notify.debug('handleToonJoined : currentState = %s' % self.activityFSM.state)
         self.cr.doId2do[toonId].useLOD(500)
         if self.activityFSM.state == 'Active':
-            if self.toonSDs.has_key(toonId):
+            if toonId in self.toonSDs:
                 self.toonSDs[toonId].enter()
             if base.localAvatar.doId == toonId:
                 base.localAvatar.b_setParent(self._avatarNodePathParentToken)
                 self.putLocalAvatarInActivity()
-            if self.toonSDs.has_key(toonId):
+            if toonId in self.toonSDs:
                 self.toonSDs[toonId].fsm.request('rules')

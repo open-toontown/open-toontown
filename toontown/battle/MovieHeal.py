@@ -1,17 +1,17 @@
 from direct.interval.IntervalGlobal import *
-from BattleProps import *
-from BattleSounds import *
-from BattleBase import *
+from .BattleProps import *
+from .BattleSounds import *
+from .BattleBase import *
 from direct.directnotify import DirectNotifyGlobal
-import MovieCamera
+from . import MovieCamera
 import random
-import MovieUtil
-import BattleParticles
-import HealJokes
+from . import MovieUtil
+from . import BattleParticles
+from . import HealJokes
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToontownBattleGlobals import AvPropDamage
 from toontown.toon import NPCToons
-import MovieNPCSOS
+from . import MovieNPCSOS
 from toontown.effects import Splash
 from direct.task import Task
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieHeal')
@@ -166,7 +166,7 @@ def __healTickle(heal, hasInteractivePropHealBonus):
 
 def __healJoke(heal, hasInteractivePropHealBonus):
     npcId = 0
-    if heal.has_key('npcId'):
+    if 'npcId' in heal:
         npcId = heal['npcId']
         toon = NPCToons.createLocalNPC(npcId)
         if toon == None:
@@ -257,7 +257,7 @@ def __healSmooch(heal, hasInteractivePropHealBonus):
 
 def __healDance(heal, hasInteractivePropHealBonus):
     npcId = 0
-    if heal.has_key('npcId'):
+    if 'npcId' in heal:
         npcId = heal['npcId']
         toon = NPCToons.createLocalNPC(npcId)
         if toon == None:
@@ -340,7 +340,7 @@ def __healSprinkle(heal, hasInteractivePropHealBonus):
 
 def __healJuggle(heal, hasInteractivePropHealBonus):
     npcId = 0
-    if heal.has_key('npcId'):
+    if 'npcId' in heal:
         npcId = heal['npcId']
         toon = NPCToons.createLocalNPC(npcId)
         if toon == None:
@@ -388,7 +388,7 @@ def __healDive(heal, hasInteractivePropHealBonus):
     splash = Splash.Splash(render)
     splash.reparentTo(render)
     npcId = 0
-    if heal.has_key('npcId'):
+    if 'npcId' in heal:
         npcId = heal['npcId']
         toon = NPCToons.createLocalNPC(npcId)
         if toon == None:

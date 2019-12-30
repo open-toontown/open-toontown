@@ -354,12 +354,12 @@ class DirectNewsFrame(DirectObject.DirectObject):
         cacheIndexFilename = Filename(self.newsDir, self.CacheIndexFilename)
         try:
             file = open(cacheIndexFilename.toOsSpecific(), 'w')
-        except IOError, e:
+        except IOError as e:
             self.notify.warning('error opening news cache file %s: %s' % (cacheIndexFilename, str(e)))
             return
 
-        for filename, (size, date) in self.newsCache.items():
-            print >> file, '%s\t%s\t%s' % (filename, size, date)
+        for filename, (size, date) in list(self.newsCache.items()):
+            print('%s\t%s\t%s' % (filename, size, date), file=file)
 
     def handleNewIssueOut(self):
         if hasattr(self, 'createdTime') and base.cr.inGameNewsMgr.getLatestIssue() < self.createdTime:

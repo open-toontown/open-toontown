@@ -6,12 +6,12 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from toontown.shtiker import PurchaseManagerAI
 from toontown.shtiker import NewbiePurchaseManagerAI
-import MinigameCreatorAI
+from . import MinigameCreatorAI
 from direct.task import Task
 import random
-import MinigameGlobals
+from . import MinigameGlobals
 from direct.showbase import PythonUtil
-import TravelGameGlobals
+from . import TravelGameGlobals
 from toontown.toonbase import ToontownGlobals
 EXITED = 0
 EXPECTED = 1
@@ -226,7 +226,7 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
             self.setGameAbort()
 
         self.__barrier = ToonBarrier('waitClientsReady', self.uniqueName('waitClientsReady'), self.avIdList, READY_TIMEOUT, allAvatarsReady, handleTimeout)
-        for avId in self.stateDict.keys():
+        for avId in list(self.stateDict.keys()):
             if self.stateDict[avId] == READY:
                 self.__barrier.clear(avId)
 
@@ -269,7 +269,7 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
             self.frameworkFSM.request('frameworkCleanup')
 
         self.__barrier = ToonBarrier('waitClientsExit', self.uniqueName('waitClientsExit'), self.avIdList, EXIT_TIMEOUT, allAvatarsExited, handleTimeout)
-        for avId in self.stateDict.keys():
+        for avId in list(self.stateDict.keys()):
             if self.stateDict[avId] == EXITED:
                 self.__barrier.clear(avId)
 
@@ -334,7 +334,7 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
             votesToUse = self.currentVotes
         votesArray = []
         for avId in self.avIdList:
-            if votesToUse.has_key(avId):
+            if avId in votesToUse:
                 votesArray.append(votesToUse[avId])
             else:
                 self.notify.warning('votesToUse=%s does not have avId=%d' % (votesToUse, avId))
@@ -371,7 +371,7 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
         else:
             self.notify.debug('last minigame, handling newbies')
             if ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY in simbase.air.holidayManager.currentHolidays or ToontownGlobals.JELLYBEAN_TROLLEY_HOLIDAY_MONTH in simbase.air.holidayManager.currentHolidays:
-                votesArray = map(lambda x: MinigameGlobals.JellybeanTrolleyHolidayScoreMultiplier * x, votesArray)
+                votesArray = [MinigameGlobals.JellybeanTrolleyHolidayScoreMultiplier * x for x in votesArray]
             for id in self.newbieIdList:
                 pm = NewbiePurchaseManagerAI.NewbiePurchaseManagerAI(self.air, id, self.avIdList, scoreList, self.minigameId, self.trolleyZone)
                 MinigameCreatorAI.acquireMinigameZone(self.zoneId)
@@ -432,7 +432,7 @@ class DistributedMinigameAI(DistributedObjectAI.DistributedObjectAI):
     def getStartingVotes(self):
         retval = []
         for avId in self.avIdList:
-            if self.startingVotes.has_key(avId):
+            if avId in self.startingVotes:
                 retval.append(self.startingVotes[avId])
             else:
                 self.notify.warning('how did this happen? avId=%d not in startingVotes %s' % (avId, self.startingVotes))

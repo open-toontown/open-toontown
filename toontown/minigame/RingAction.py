@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-import RingTrack
+from . import RingTrack
 
 class RingAction:
     notify = DirectNotifyGlobal.directNotify.newCategory('RingAction')

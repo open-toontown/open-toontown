@@ -3,7 +3,7 @@ from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
-import DistributedSuitBase
+from . import DistributedSuitBase
 from toontown.toonbase import ToontownGlobals
 from toontown.battle import MovieUtil
 
@@ -271,19 +271,19 @@ class DistributedLawbotBossSuit(DistributedSuitBase.DistributedSuitBase):
         return model
 
     def cleanupIntervals(self):
-        for interval in self.activeIntervals.values():
+        for interval in list(self.activeIntervals.values()):
             interval.finish()
 
         self.activeIntervals = {}
 
     def clearInterval(self, name, finish = 1):
-        if self.activeIntervals.has_key(name):
+        if name in self.activeIntervals:
             ival = self.activeIntervals[name]
             if finish:
                 ival.finish()
             else:
                 ival.pause()
-            if self.activeIntervals.has_key(name):
+            if name in self.activeIntervals:
                 del self.activeIntervals[name]
         else:
             self.notify.debug('interval: %s already cleared' % name)
@@ -306,7 +306,7 @@ class DistributedLawbotBossSuit(DistributedSuitBase.DistributedSuitBase):
 
     def exitPreThrowProsecute(self):
         throwName = self.uniqueName('preThrowProsecute')
-        if self.activeIntervals.has_key(throwName):
+        if throwName in self.activeIntervals:
             self.activeIntervals[throwName].pause()
             del self.activeIntervals[throwName]
 
@@ -324,7 +324,7 @@ class DistributedLawbotBossSuit(DistributedSuitBase.DistributedSuitBase):
 
     def exitPostThrowProsecute(self):
         throwName = self.uniqueName('postThrowProsecute')
-        if self.activeIntervals.has_key(throwName):
+        if throwName in self.activeIntervals:
             self.activeIntervals[throwName].finish()
             del self.activeIntervals[throwName]
 
@@ -346,7 +346,7 @@ class DistributedLawbotBossSuit(DistributedSuitBase.DistributedSuitBase):
 
     def exitPreThrowAttack(self):
         throwName = self.uniqueName('preThrowAttack')
-        if self.activeIntervals.has_key(throwName):
+        if throwName in self.activeIntervals:
             self.activeIntervals[throwName].pause()
             del self.activeIntervals[throwName]
 
@@ -368,7 +368,7 @@ class DistributedLawbotBossSuit(DistributedSuitBase.DistributedSuitBase):
 
     def exitPostThrowAttack(self):
         throwName = self.uniqueName('postThrowAttack')
-        if self.activeIntervals.has_key(throwName):
+        if throwName in self.activeIntervals:
             self.activeIntervals[throwName].finish()
             del self.activeIntervals[throwName]
 

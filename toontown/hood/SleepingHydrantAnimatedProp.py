@@ -1,4 +1,4 @@
-import AnimatedProp
+from . import AnimatedProp
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
 import math

@@ -1,6 +1,6 @@
 from pandac.PandaModules import *
 from toontown.toonbase.ToonBaseGlobal import *
-import DistributedSZTreasure
+from . import DistributedSZTreasure
 from direct.task.Task import Task
 import math
 import random

@@ -1,4 +1,4 @@
-import PurchaseManager
+from . import PurchaseManager
 from toontown.quest import QuestParser
 from toontown.toon import NPCToons
 
