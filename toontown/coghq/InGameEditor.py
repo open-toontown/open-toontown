@@ -89,7 +89,8 @@ class InGameEditor(AppShell):
         menuBar.addmenuitem('Entity', 'separator')
         permanentTypes = self.level.entTypeReg.getPermanentTypeNames()
         entTypes = list(self.level.entTypes)
-        list(map(entTypes.remove, permanentTypes))
+        for permanentType in permanentTypes:
+            entTypes.remove(permanentType)
         entTypes.sort()
         numEntities = len(entTypes)
         cascadeMenu = ''
