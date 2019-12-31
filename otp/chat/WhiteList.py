@@ -14,8 +14,8 @@ class WhiteList:
         self.numWords = len(self.words)
 
     def cleanText(self, text):
-        text = text.strip('.,?!')
-        text = text.lower()
+        text = text.decode('utf-8').strip('.,?!')
+        text = text.lower().encode('utf-8')
         return text
 
     def isWord(self, text):

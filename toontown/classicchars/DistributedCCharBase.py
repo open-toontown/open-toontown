@@ -14,7 +14,6 @@ from toontown.toonbase.TTLocalizer import Donald, DonaldDock, WesternPluto, Plut
 from toontown.effects import DustCloud
 from . import CCharChatter
 from . import CCharPaths
-import string
 import copy
 
 class DistributedCCharBase(DistributedChar.DistributedChar):
@@ -180,7 +179,7 @@ class DistributedCCharBase(DistributedChar.DistributedChar):
             if '%' in str:
                 str = copy.deepcopy(str)
                 avName = avatar.getName()
-                str = string.replace(str, '%', avName)
+                str = str.replace('%', avName)
             track = Sequence()
             if category != CCharChatter.GOODBYE:
                 curHpr = self.getHpr()
