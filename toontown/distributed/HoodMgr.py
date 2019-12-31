@@ -2,7 +2,6 @@ from pandac.PandaModules import *
 from direct.showbase import DirectObject
 from direct.directnotify import DirectNotifyGlobal
 from toontown.launcher import DownloadForceAcknowledge
-import string
 import random
 from toontown.toonbase import ToontownGlobals
 from toontown.hood import ZoneUtil
@@ -926,7 +925,7 @@ class HoodMgr(DirectObject.DirectObject):
         return tunnelOriginList
 
     def extractGroupName(self, groupFullName):
-        return string.split(groupFullName, ':', 1)[0]
+        return groupFullName.split(':', 1)[0]
 
     def makeLinkTunnelName(self, hoodId, currentZone):
         return '**/toph_' + self.getNameFromId(hoodId) + '_' + str(currentZone)

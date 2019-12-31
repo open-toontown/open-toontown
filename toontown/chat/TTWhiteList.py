@@ -28,7 +28,7 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
         if not found:
             self.notify.info("Couldn't find whitelist data file!")
         data = vfs.readFile(filename, 1)
-        lines = data.split('\n')
+        lines = data.split(b'\n')
         WhiteList.__init__(self, lines)
         self.redownloadWhitelist()
         self.defaultWord = TTLocalizer.ChatGarblerDefault[0]
@@ -145,10 +145,10 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
         if not localFilename.exists():
             return
         data = vfs.readFile(localFilename, 1)
-        lines = data.split('\n')
+        lines = data.split(b'\n')
         self.words = []
         for line in lines:
-            self.words.append(line.strip('\n\r').lower())
+            self.words.append(line.strip(b'\n\r').lower())
 
         self.words.sort()
         self.numWords = len(self.words)
