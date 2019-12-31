@@ -506,7 +506,7 @@ class DistributedPairingGame(DistributedMinigame):
 
     def getCardPos(self, deckOrderIndex):
         col = deckOrderIndex % self.cardsPerRow
-        row = deckOrderIndex / self.cardsPerRow
+        row = deckOrderIndex // self.cardsPerRow
         x = col * self.xCardInc
         y = row * self.yCardInc
         return (x, y)
@@ -520,7 +520,7 @@ class DistributedPairingGame(DistributedMinigame):
 
     def calcBonusTraversal(self):
         self.bonusTraversal = []
-        halfRow = self.cardsPerRow / 2
+        halfRow = self.cardsPerRow // 2
         if self.cardsPerRow % 2:
             halfRow += 1
         for i in range(halfRow):

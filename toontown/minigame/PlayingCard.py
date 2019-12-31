@@ -32,7 +32,7 @@ class PlayingCardBase:
             self.rank = None
             self.turnDown()
         else:
-            self.suit = value / PlayingCardGlobals.MaxRank
+            self.suit = value // PlayingCardGlobals.MaxRank
             self.rank = value % PlayingCardGlobals.MaxRank
         self.setImage()
         return
