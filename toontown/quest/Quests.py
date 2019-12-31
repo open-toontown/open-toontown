@@ -18205,10 +18205,10 @@ class Reward:
         return None
 
     def sendRewardAI(self, av):
-        raise 'not implemented'
+        raise NotImplementedError
 
     def countReward(self, qrc):
-        raise 'not implemented'
+        raise NotImplementedError
 
     def getString(self):
         return 'undefined'

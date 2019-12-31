@@ -9,7 +9,7 @@ from toontown.building import SuitPlannerInteriorAI
 from toontown.battle import BattleBase
 from toontown.coghq import CogDisguiseGlobals
 from pandac.PandaModules import *
-from . import SuitDNA
+from toontown.suit import SuitDNA
 import random
 AllBossCogs = []
 

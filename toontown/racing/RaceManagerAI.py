@@ -1,10 +1,10 @@
 from direct.directnotify import DirectNotifyGlobal
-from . import DistributedRaceAI
+from toontown.racing import DistributedRaceAI
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.coghq import MintLayout
 from toontown.ai import HolidayBaseAI
 from direct.showbase import DirectObject
-from . import RaceGlobals
+from toontown.racing import RaceGlobals
 import os, pickle
 
 class RaceManagerAI(DirectObject.DirectObject):
