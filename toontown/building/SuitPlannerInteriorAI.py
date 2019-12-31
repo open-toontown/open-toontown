@@ -3,7 +3,7 @@ import random, functools
 from toontown.suit import SuitDNA
 from direct.directnotify import DirectNotifyGlobal
 from toontown.suit import DistributedSuitAI
-from . import SuitBuildingGlobals
+from toontown.building import SuitBuildingGlobals
 
 class SuitPlannerInteriorAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('SuitPlannerInteriorAI')

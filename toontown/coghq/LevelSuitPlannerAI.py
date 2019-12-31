@@ -2,7 +2,7 @@ from pandac.PandaModules import *
 from direct.showbase import DirectObject
 from toontown.suit import SuitDNA
 from direct.directnotify import DirectNotifyGlobal
-from . import LevelBattleManagerAI
+from toontown.coghq import LevelBattleManagerAI
 import random
 
 class LevelSuitPlannerAI(DirectObject.DirectObject):
