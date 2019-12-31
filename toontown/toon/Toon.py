@@ -510,6 +510,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.setTag('pieCode', str(ToontownGlobals.PieCodeToon))
         self.setFont(ToontownGlobals.getToonFont())
         self.soundChatBubble = base.loader.loadSfx('phase_3/audio/sfx/GUI_balloon_popup.mp3')
+        self.swimBobSeq = None
         self.animFSM = ClassicFSM('Toon', [State('off', self.enterOff, self.exitOff),
          State('neutral', self.enterNeutral, self.exitNeutral),
          State('victory', self.enterVictory, self.exitVictory),
@@ -1659,17 +1660,19 @@ class Toon(Avatar.Avatar, ToonHead):
         Emote.globalEmote.releaseAll(self, 'exitSwim')
 
     def startBobSwimTask(self):
-        swimTaskName = self.taskName('swimBobTask')
         taskMgr.remove('swimTask')
-        taskMgr.remove(swimTaskName)
+        if self.swimBobSeq:
+            self.swimBobSeq.finish()
+            self.swimBobSeq = None
         self.getGeomNode().setZ(4.0)
         self.nametag3d.setZ(5.0)
-        newTask = Task.loop(self.getGeomNode().lerpPosXYZ(0, -3, 3, 1, blendType='easeInOut'), self.getGeomNode().lerpPosXYZ(0, -3, 4, 1, blendType='easeInOut'))
-        taskMgr.add(newTask, swimTaskName)
+        self.swimBobSeq = Sequence(self.getGeomNode().posInterval(1, Point3(0, -3, 3), startPos=Point3(0, -3, 4), blendType='easeInOut'), self.getGeomNode().posInterval(1, Point3(0, -3, 4), startPos=Point3(0, -3, 3), blendType='easeInOut'))
+        self.swimBobSeq.loop()
 
     def stopBobSwimTask(self):
-        swimTaskName = self.taskName('swimBobTask')
-        taskMgr.remove(swimTaskName)
+        if self.swimBobSeq:
+            self.swimBobSeq.finish()
+            self.swimBobSeq = None
         self.getGeomNode().setPos(0, 0, 0)
         self.nametag3d.setZ(1.0)
 
