@@ -7,6 +7,7 @@ from toontown.friends import ToontownFriendSecret
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from otp.otpbase import OTPGlobals
+import functools
 FLPPets = 1
 FLPOnline = 2
 FLPAll = 3
@@ -574,13 +575,13 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
             friendButton.destroy()
             del self.friends[friendPair]
 
-        newFriends.sort(compareFriends)
-        petFriends.sort(compareFriends)
-        freeChatOneRef.sort(compareFriends)
-        speedChatOneRef.sort(compareFriends)
-        freeChatDouble.sort(compareFriends)
-        speedChatDouble.sort(compareFriends)
-        offlineFriends.sort(compareFriends)
+        newFriends.sort(key=functools.cmp_to_key(compareFriends))
+        petFriends.sort(key=functools.cmp_to_key(compareFriends))
+        freeChatOneRef.sort(key=functools.cmp_to_key(compareFriends))
+        speedChatOneRef.sort(key=functools.cmp_to_key(compareFriends))
+        freeChatDouble.sort(key=functools.cmp_to_key(compareFriends))
+        speedChatDouble.sort(key=functools.cmp_to_key(compareFriends))
+        offlineFriends.sort(key=functools.cmp_to_key(compareFriends))
         for friendPair in newFriends:
             if friendPair not in self.friends:
                 friendButton = self.makeFriendButton(friendPair)

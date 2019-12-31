@@ -3,7 +3,6 @@ from libotp import *
 from direct.gui.DirectGui import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-import string
 from otp.otpbase import OTPLocalizer
 from otp.otpbase import OTPGlobals
 from otp.uberdog import RejectCode
@@ -449,7 +448,7 @@ class FriendSecret(DirectFrame, StateData.StateData):
 
     def __enterSecret(self, secret):
         self.enterSecret.set('')
-        secret = string.strip(secret)
+        secret = secret.strip()
         if not secret:
             self.exit()
             return

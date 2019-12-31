@@ -13,7 +13,7 @@ class DelayDeletable:
             self.notify.error('cannot acquire DelayDelete "%s" on %s because it is in state %s' % (name, self.__class__.__name__, ESNum2Str[self.activeState]))
         if self.getDelayDeleteCount() == 0:
             self.cr._addDelayDeletedDO(self)
-        token = next(DelayDeletable.DelayDeleteSerialGen)
+        token = DelayDeletable.DelayDeleteSerialGen.next()
         self._token2delayDeleteName[token] = name
         return token
 

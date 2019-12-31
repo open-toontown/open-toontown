@@ -1,6 +1,7 @@
 import os
 import time
 import datetime
+import functools
 from pandac.PandaModules import Filename, DSearchPath, TextNode
 from pandac.PandaModules import HTTPClient, Ramfile, DocumentSpec
 from direct.showbase import DirectObject
@@ -123,7 +124,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
             return fileA.getFilename().compareTo(fileB.getFilename())
 
         homeFileNames = list(homeFileNames)
-        homeFileNames.sort(cmp=fileCmp)
+        homeFileNames.sort(key=functools.cmp_to_key(fileCmp))
         self.notify.debug('returned homeFileNames=%s' % homeFileNames)
         return homeFileNames
 
@@ -391,8 +392,8 @@ class DirectNewsFrame(DirectObject.DirectObject):
         majorVer = 1
         minorVer = 0
         for entry in self.newsIndexEntries:
-            if 'aaver' in entry and dateStr in entry:
-                parts = entry.split('_')
+            if b'aaver' in entry and dateStr.encode('utf-8') in entry:
+                parts = entry.split(b'_')
                 if len(parts) > 5:
                     try:
                         majorVer = int(parts[5])

@@ -5,7 +5,7 @@ from toontown.battle import SuitBattleGlobals
 from toontown.coghq import CogDisguiseGlobals
 import random
 from toontown.toon import NPCToons
-import copy, string
+import copy
 from toontown.hood import ZoneUtil
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import TTLocalizer
@@ -18164,7 +18164,7 @@ def getNpcLocationDialog(fromNpcId, toNpcId):
 def fillInQuestNames(text, avName = None, fromNpcId = None, toNpcId = None):
     text = copy.deepcopy(text)
     if avName != None:
-        text = string.replace(text, '_avName_', avName)
+        text = text.replace('_avName_', avName)
     if toNpcId:
         if toNpcId == ToonHQ:
             toNpcName = TTLocalizer.QuestsHQOfficerFillin
@@ -18179,10 +18179,10 @@ def fillInQuestNames(text, avName = None, fromNpcId = None, toNpcId = None):
         else:
             toNpcName = str(NPCToons.getNPCName(toNpcId))
             where, buildingName, streetDesc = getNpcLocationDialog(fromNpcId, toNpcId)
-        text = string.replace(text, '_toNpcName_', toNpcName)
-        text = string.replace(text, '_where_', where)
-        text = string.replace(text, '_buildingName_', buildingName)
-        text = string.replace(text, '_streetDesc_', streetDesc)
+        text = text.replace('_toNpcName_', toNpcName)
+        text = text.replace('_where_', where)
+        text = text.replace('_buildingName_', buildingName)
+        text = text.replace('_streetDesc_', streetDesc)
     return text
 
 
