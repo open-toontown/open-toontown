@@ -8,6 +8,7 @@ from . import MovieUtil
 from . import MovieNPCSOS
 from .MovieUtil import calcAvgSuitPos
 from direct.showutil import Effects
+import functools
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieDrop')
 hitSoundFiles = ('AA_drop_flowerpot.mp3', 'AA_drop_sandbag.mp3', 'AA_drop_anvil.mp3', 'AA_drop_bigweight.mp3', 'AA_drop_safe.mp3', 'AA_drop_piano.mp3', 'AA_drop_boat.mp3')
 missSoundFiles = ('AA_drop_flowerpot_miss.mp3', 'AA_drop_sandbag_miss.mp3', 'AA_drop_anvil_miss.mp3', 'AA_drop_bigweight_miss.mp3', 'AA_drop_safe_miss.mp3', 'AA_drop_piano_miss.mp3', 'AA_drop_boat_miss.mp3')
@@ -68,7 +69,7 @@ def doDrops(drops):
             return -1
         return 0
 
-    suitDrops.sort(compFunc)
+    suitDrops.sort(key=functools.cmp_to_key(compFunc))
     delay = 0.0
     mtrack = Parallel(name='toplevel-drop')
     npcDrops = {}

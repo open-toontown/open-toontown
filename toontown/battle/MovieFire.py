@@ -7,6 +7,7 @@ from toontown.toon.ToonDNA import *
 from toontown.suit.SuitDNA import *
 from direct.directnotify import DirectNotifyGlobal
 import random
+import functools
 from . import MovieCamera
 from . import MovieUtil
 from .MovieUtil import calcAvgSuitPos
@@ -45,7 +46,7 @@ def doFires(fires):
         elif len(a) < len(b):
             return -1
         return 0
-    suitFires.sort(compFunc)
+    suitFires.sort(key=functools.cmp_to_key(compFunc))
 
     totalHitDict = {}
     singleHitDict = {}

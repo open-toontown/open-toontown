@@ -28,6 +28,7 @@ from toontown.toon import Toon
 from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
 import copy
+import functools
 from toontown.toonbase import TTLocalizer
 from toontown.toon import NPCToons
 camPos = Point3(14, 0, 10)
@@ -778,7 +779,7 @@ class Movie(DirectObject.DirectObject):
                 return -1
             return 0
 
-        self.toonAttackDicts.sort(compFunc)
+        self.toonAttackDicts.sort(key=functools.cmp_to_key(compFunc))
         return
 
     def __findToonAttack(self, track):
