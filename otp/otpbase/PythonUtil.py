@@ -1,7 +1,8 @@
 import builtins
 import sys
+import math
 
-__all__ = ['enumerate', 'nonRepeatingRandomList', 'describeException', 'pdir', 'choice', 'cmp']
+__all__ = ['enumerate', 'nonRepeatingRandomList', 'describeException', 'pdir', 'choice', 'cmp', 'lerp', 'triglerp']
 
 if not hasattr(builtins, 'enumerate'):
     def enumerate(L):
@@ -130,6 +131,21 @@ def pdir(obj, str = None, width = None,
         _pdir(obj, str, width, fTruncate, lineWidth, wantPrivate)
         print()
 
+def lerp(v0, v1, t):
+    """
+    returns a value lerped between v0 and v1, according to t
+    t == 0 maps to v0, t == 1 maps to v1
+    """
+    return v0 + ((v1 - v0) * t)
+
+def triglerp(v0, v1, t):
+    """
+    lerp using the curve of sin(-pi/2) -> sin(pi/2)
+    """
+    x = lerp(-math.pi/2, math.pi/2, t)
+    v = math.sin(x)
+    return lerp(v0, v1, (v + 1.) / 2.)
+
 def choice(condition, ifTrue, ifFalse):
     # equivalent of C++ (condition ? ifTrue : ifFalse)
     if condition:
@@ -158,5 +174,7 @@ def cmp(a, b):
 
 builtins.pdir = pdir
 builtins.isClient = isClient
+builtins.lerp = lerp
+builtins.triglerp = triglerp
 builtins.choice = choice
 builtins.cmp = cmp

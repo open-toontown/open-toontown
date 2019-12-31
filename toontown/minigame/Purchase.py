@@ -1,3 +1,4 @@
+from libotp import *
 from .PurchaseBase import *
 from direct.task.Task import Task
 from toontown.toon import ToonHead

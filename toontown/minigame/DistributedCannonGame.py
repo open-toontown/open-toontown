@@ -272,7 +272,7 @@ class DistributedCannonGame(DistributedMinigame):
 
     def getTowerPosition(self):
         yRange = TOWER_Y_RANGE
-        yMin = yRange * 0.3
+        yMin = int(yRange * 0.3)
         yMax = yRange
         if self.DEBUG_TOWER_RANGE:
             if self.DEBUG_TOWER_NEAR:
