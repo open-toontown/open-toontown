@@ -110,7 +110,7 @@ class TrackPage(ShtikerPage.ShtikerPage):
         for index in range(1, MAX_FRAMES + 1):
             frame = self.trackFrames[index - 1]
             col = (index - 1) % 6
-            row = int((index - 1) / 6)
+            row = (index - 1) // 6
             frame.setPos(colPos[col], 0, rowPos[row])
             frame.setScale(0.39)
 
