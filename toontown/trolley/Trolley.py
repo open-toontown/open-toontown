@@ -64,6 +64,7 @@ class Trolley(StateData.StateData):
                 ['start'])],
             'start', 'final')
         self.parentFSM = parentFSM
+        self.leavingCameraSeq = None
         return None
 
     def load(self):
@@ -180,7 +181,8 @@ class Trolley(StateData.StateData):
         return None
 
     def enterTrolleyLeaving(self):
-        camera.lerpPosHprXYZHPR(0, 18.55, 3.75, -180, 0, 0, 3, blendType='easeInOut', task='leavingCamera')
+        self.leavingCameraSeq = camera.posHprInterval(3, (0, 18.55, 3.75), (-180, 0, 0), blendType='easeInOut', name='leavingCamera')
+        self.leavingCameraSeq.start()
         self.acceptOnce('playMinigame', self.handlePlayMinigame)
         return None
 
@@ -194,7 +196,9 @@ class Trolley(StateData.StateData):
 
     def exitTrolleyLeaving(self):
         self.ignore('playMinigame')
-        taskMgr.remove('leavingCamera')
+        if self.leavingCameraSeq:
+            self.leavingCameraSeq.finish()
+            self.leavingCameraSeq = None
         return None
 
     def enterExiting(self):

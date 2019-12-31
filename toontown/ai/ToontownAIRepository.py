@@ -43,6 +43,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.districtName = districtName
         self.doLiveUpdates = config.GetBool('want-live-updates', True)
         self.wantCogdominiums = config.GetBool('want-cogdominiums', True)
+        self.useAllMinigames = config.GetBool('want-all-minigames', True)
         self.districtId = None
         self.district = None
         self.districtStats = None
@@ -50,6 +51,8 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.zoneDataStore = None
         self.petMgr = None
         self.suitInvasionManager = None
+        self.zoneAllocator = None
+        self.zoneId2owner = {}
         self.questManager = None
         self.promotionMgr = None
         self.cogPageManager = None
@@ -108,6 +111,9 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         # Create our suit invasion manager...
         self.suitInvasionManager = SuitInvasionManagerAI(self)
+
+        # Create our zone allocator...
+        self.zoneAllocator = UniqueIdAllocator(ToontownGlobals.DynamicZonesBegin, ToontownGlobals.DynamicZonesEnd)
 
         # Create our quest manager...
         self.questManager = QuestManagerAI(self)
@@ -329,6 +335,19 @@ class ToontownAIRepository(ToontownInternalRepository):
 
     def decrementPopulation(self):
         self.districtStats.b_setAvatarCount(self.districtStats.getAvatarCount() - 1)
+
+    def allocateZone(self, owner=None):
+        zoneId = self.zoneAllocator.allocate()
+        if owner:
+            self.zoneId2owner[zoneId] = owner
+
+        return zoneId
+
+    def deallocateZone(self, zone):
+        if self.zoneId2owner.get(zone):
+            del self.zoneId2owner[zone]
+
+        self.zoneAllocator.free(zone)
 
     def sendQueryToonMaxHp(self, avId, callback):
         pass  # TODO?

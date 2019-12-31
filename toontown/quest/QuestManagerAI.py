@@ -24,3 +24,6 @@ class QuestManagerAI:
 
     def toonKilledCogdo(self, toon, difficulty, numFloors, zoneId, activeToons):
         pass  # TODO
+
+    def toonPlayedMinigame(self, toon, toons):
+        pass  # TODO
