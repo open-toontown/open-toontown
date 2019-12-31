@@ -9,6 +9,7 @@ class DistributedDGFlower(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
+        self.flowerRaiseSeq = None
 
     def generate(self):
         DistributedObject.DistributedObject.generate(self)
@@ -33,7 +34,9 @@ class DistributedDGFlower(DistributedObject.DistributedObject):
 
     def disable(self):
         DistributedObject.DistributedObject.disable(self)
-        taskMgr.remove(self.taskName('DG-flowerRaise'))
+        if self.flowerRaiseSeq:
+            self.flowerRaiseSeq.finish()
+            self.flowerRaiseSeq = None
         taskMgr.remove(self.taskName('DG-flowerSpin'))
         self.ignore('enterbigFlowerTrigger')
         self.ignore('exitbigFlowerTrigger')
@@ -57,4 +60,5 @@ class DistributedDGFlower(DistributedObject.DistributedObject):
 
     def setHeight(self, newHeight):
         pos = self.bigFlower.getPos()
-        self.bigFlower.lerpPos(pos[0], pos[1], newHeight, 0.5, task=self.taskName('DG-flowerRaise'))
+        self.flowerRaiseSeq = self.bigFlower.posInterval(0.5, (pos[0], pos[1], newHeight), name=self.taskName('DG-flowerRaise'))
+        self.flowerRaiseSeq.start()
