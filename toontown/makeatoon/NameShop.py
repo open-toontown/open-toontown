@@ -13,7 +13,6 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from toontown.toontowngui import TTDialog
 import re
-import string
 from toontown.toonbase import TTLocalizer
 from . import NameGenerator
 import random
@@ -537,8 +536,8 @@ class NameShop(StateData.StateData):
 
         def match(npcName, name = name):
             name = TextEncoder().encodeWtext(name)
-            name = string.strip(name)
-            return TextEncoder.upper(npcName) == TextEncoder.upper(name)
+            name = name.strip()
+            return TextEncoder.upper(npcName) == TextEncoder.upper(name.decode('utf-8'))
 
         for npcId in list(NPCToons.NPCToonDict.keys()):
             npcName = NPCToons.NPCToonDict[npcId][1]
@@ -774,10 +773,10 @@ class NameShop(StateData.StateData):
         self.notify.debug('__typedAName')
         self.nameEntry['focus'] = 0
         name = self.nameEntry.get()
-        name = TextEncoder().decodeText(name)
+        name = TextEncoder().decodeText(name.encode('utf-8'))
         name = name.strip()
         name = TextEncoder().encodeWtext(name)
-        self.nameEntry.enterText(name)
+        self.nameEntry.enterText(name.decode('utf-8'))
         problem = self.nameIsValid(self.nameEntry.get())
         if problem:
             self.rejectName(problem)
