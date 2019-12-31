@@ -23,7 +23,7 @@ class VineBat(NodePath, DirectObject):
         bat3 = gameAssets.find('**/bat3')
         bat2 = gameAssets.find('**/bat2')
         bat1 = gameAssets.find('**/bat__1')
-        seqNode = SequenceNode.SequenceNode('bat')
+        seqNode = SequenceNode('bat')
         seqNode.addChild(bat1.node())
         seqNode.addChild(bat2.node())
         seqNode.addChild(bat3.node())

@@ -45,8 +45,8 @@ def convertValueToGagTrackAndLevel(value):
 
 
 def convertRankToGagTrackAndLevel(rank):
-    track = int(rank % (ToontownBattleGlobals.MAX_TRACK_INDEX + 1))
-    level = rank / (ToontownBattleGlobals.MAX_TRACK_INDEX + 1)
+    track = rank % (ToontownBattleGlobals.MAX_TRACK_INDEX + 1)
+    level = int(rank / (ToontownBattleGlobals.MAX_TRACK_INDEX + 1))
     return (track, level)
 
 

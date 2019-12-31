@@ -187,7 +187,7 @@ class MazeSuit(DirectObject):
         if curTic < self.nextThinkTic:
             return []
         else:
-            r = list(range(self.nextThinkTic, curTic + 1, self.ticPeriod))
+            r = list(range(int(self.nextThinkTic), curTic + 1, self.ticPeriod))
             self.lastTicBeforeRender = r[-1]
             return r
 
