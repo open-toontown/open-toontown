@@ -78,6 +78,7 @@ class DistributedCannonGame(DistributedMinigame):
         self.downPressed = 0
         self.cannonMoving = 0
         self.modelCount = 14
+        self.introCameraSeq = None
 
     def getTitle(self):
         return TTLocalizer.CannonGameTitle
@@ -693,23 +694,13 @@ class DistributedCannonGame(DistributedMinigame):
          trajectory,
          towerList))
         timeOfImpact, hitWhat = self.__calcToonImpact(trajectory, towerList)
-        return {'startPos': startPos,
-         'startHpr': startHpr,
-         'startVel': startVel,
-         'trajectory': trajectory,
-         'timeOfImpact': timeOfImpact,
-         'hitWhat': hitWhat}
+        return startPos, startHpr, startVel, trajectory, timeOfImpact, hitWhat
 
     def __fireCannonTask(self, task):
         launchTime = task.fireTime
         avId = task.avId
         self.notify.debug('FIRING CANNON FOR AVATAR ' + str(avId))
-        flightResults = self.__calcFlightResults(avId, launchTime)
-        if not isClient():
-            print('EXECWARNING DistributedCannonGame: %s' % flightResults)
-            printStack()
-        for key in flightResults:
-            exec("%s = flightResults['%s']" % (key, key))
+        startPos, startHpr, startVel, trajectory, timeOfImpact, hitWhat = self.__calcFlightResults(avId, launchTime)
 
         self.notify.debug('start position: ' + str(startPos))
         self.notify.debug('start velocity: ' + str(startVel))
@@ -932,7 +923,9 @@ class DistributedCannonGame(DistributedMinigame):
 
     def __stopIntro(self):
         taskMgr.remove(self.INTRO_TASK_NAME)
-        taskMgr.remove(self.INTRO_TASK_NAME_CAMERA_LERP)
+        if self.introCameraSeq:
+            self.introCameraSeq.finish()
+            self.introCameraSeq = None
         camera.wrtReparentTo(render)
 
     def __spawnCameraLookAtLerp(self, targetPos, targetLookAt, duration):
@@ -940,10 +933,12 @@ class DistributedCannonGame(DistributedMinigame):
         oldHpr = camera.getHpr()
         camera.setPos(targetPos)
         camera.lookAt(targetLookAt)
-        targetHpr = camera.getHpr()
+        targetQuat = Quat()
+        targetQuat.setHpr(camera.getHpr())
         camera.setPos(oldPos)
         camera.setHpr(oldHpr)
-        camera.lerpPosHpr(Point3(targetPos), targetHpr, duration, blendType='easeInOut', task=self.INTRO_TASK_NAME_CAMERA_LERP)
+        self.introCameraSeq = camera.posQuatInterval(duration, Point3(targetPos), targetQuat, blendType='easeInOut', name=self.INTRO_TASK_NAME_CAMERA_LERP)
+        self.introCameraSeq.start()
 
     def __taskLookInWater(self, task):
         task.data['cannonCenter'] = Point3(0, CANNON_Y, CANNON_Z)
@@ -988,6 +983,6 @@ class DistributedCannonGame(DistributedMinigame):
         camera.reparentTo(lerpNode)
         camera.setPos(relCamPos)
         camera.setHpr(relCamHpr)
-        lerpNode.lerpHpr(endRotation, self.T_TOONHEAD2CANNONBACK, blendType='easeInOut', task=self.INTRO_TASK_NAME_CAMERA_LERP)
-        camera.lerpPos(endPos, self.T_TOONHEAD2CANNONBACK, blendType='easeInOut', task=self.INTRO_TASK_NAME_CAMERA_LERP)
+        self.introCameraSeq = Parallel(lerpNode.hprInterval(self.T_TOONHEAD2CANNONBACK, endRotation, blendType='easeInOut', name=self.INTRO_TASK_NAME_CAMERA_LERP), camera.posInterval(self.T_TOONHEAD2CANNONBACK, endPos, blendType='easeInOut', name=self.INTRO_TASK_NAME_CAMERA_LERP))
+        self.introCameraSeq.start()
         return Task.done
