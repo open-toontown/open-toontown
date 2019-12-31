@@ -2,6 +2,7 @@ from pandac.PandaModules import *
 from toontown.toonbase.ToontownBattleGlobals import *
 from direct.task.Timer import *
 import math
+import functools
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
@@ -157,7 +158,7 @@ def findToonAttack(toons, attacks, track):
             return -1
         return 0
 
-    foundAttacks.sort(compFunc)
+    foundAttacks.sort(key=functools.cmp_to_key(compFunc))
     return foundAttacks
 
 
