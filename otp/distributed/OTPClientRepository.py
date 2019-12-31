@@ -1867,15 +1867,15 @@ class OTPClientRepository(ClientRepositoryBase):
             return 0
 
     def listActiveShards(self):
-        list = []
+        activeShards = []
         for s in list(self.activeDistrictMap.values()):
             if s.available:
-                list.append((s.doId,
+                activeShards.append((s.doId,
                  s.name,
                  s.avatarCount,
                  s.newAvatarCount))
 
-        return list
+        return activeShards
 
     def getPlayerAvatars(self):
         return [ i for i in list(self.doId2do.values()) if isinstance(i, DistributedPlayer) ]

@@ -33,7 +33,7 @@ class IssueFrameV2(IssueFrame.IssueFrame):
 
     def isSectionInIndex(self, sectionIdent):
         for name in self.newsIndexEntries:
-            if sectionIdent in name and self.dateStr in name:
+            if sectionIdent.encode('utf-8') in name and self.dateStr.encode('utf-8') in name:
                 return True
 
         return False
