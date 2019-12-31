@@ -255,7 +255,7 @@ class DistributedVineGameAI(DistributedMinigameAI):
             newPosZ = 0
         if newVelX is not None and (newVelX < -1000 or newVelX > 1000):
             newVelX = 0
-        if newVelZ < -1000 or newVelZ > 1000:
+        if newVelZ is not None and (newVelZ < -1000 or newVelZ > 1000):
             newVelZ = 0
         newInfo = [newVineIndex,
          newVineT,
