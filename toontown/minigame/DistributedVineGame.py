@@ -351,7 +351,7 @@ class DistributedVineGame(DistributedMinigame):
         if newPosZ < -100 or newPosZ > 1000:
             self.notify.warning('invalid posZ for %d, forcing to 0' % avId)
             newPosZ = 0
-        if newVelX < -1000 or newVelX > 1000:
+        if newVelX is not None and (newVelX < -1000 or newVelX > 1000):
             self.notify.warning('invalid velX %s for %d, forcing to 0' % (newVelX, avId))
             newVelX = 0
         if newVelZ < -1000 or newVelZ > 1000:

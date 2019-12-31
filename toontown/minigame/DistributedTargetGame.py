@@ -56,7 +56,7 @@ def getRingPoints(segCount, centerX, centerY, radius, thickness = 2.0, wideX = 1
 def addRing(attachNode, color, vertexCount, radius, layer = 0, thickness = 1.0):
     targetGN = GeomNode('target Circle')
     zFloat = 0.025
-    targetCircleShape = getRingPoints(5 + vertexCount, 0.0, 0.0, radius, thickness)
+    targetCircleShape = getRingPoints(5 + int(vertexCount), 0.0, 0.0, radius, thickness)
     gFormat = GeomVertexFormat.getV3cp()
     targetCircleVertexData = GeomVertexData('holds my vertices', gFormat, Geom.UHDynamic)
     targetCircleVertexWriter = GeomVertexWriter(targetCircleVertexData, 'vertex')
@@ -82,7 +82,7 @@ def addRing(attachNode, color, vertexCount, radius, layer = 0, thickness = 1.0):
 def addCircle(attachNode, color, vertexCount, radius, layer = 0):
     targetGN = GeomNode('target Circle')
     zFloat = 0.025
-    targetCircleShape = getCirclePoints(5 + vertexCount, 0.0, 0.0, radius)
+    targetCircleShape = getCirclePoints(5 + int(vertexCount), 0.0, 0.0, radius)
     gFormat = GeomVertexFormat.getV3cp()
     targetCircleVertexData = GeomVertexData('holds my vertices', gFormat, Geom.UHDynamic)
     targetCircleVertexWriter = GeomVertexWriter(targetCircleVertexData, 'vertex')
@@ -1154,7 +1154,7 @@ class DistributedTargetGame(DistributedMinigame):
                 self.ticker = 0.0
                 powerDiv = 0.05
                 self.power -= 1.0 + 0.2 * (self.power * powerDiv * (self.power * powerDiv))
-            if timeDiff > 0.5:
+            if timeDiff is not None and timeDiff > 0.5:
                 self.power = self.powerBar['value']
                 self.signalLaunch = 0
                 if self.power > 120:

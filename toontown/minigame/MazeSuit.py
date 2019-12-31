@@ -66,7 +66,7 @@ class MazeSuit(DirectObject):
         self.startWalkAnim()
         self.occupiedTiles = [(self.nextTX, self.nextTY)]
         n = 20
-        self.nextThinkTic = self.serialNum * self.ticFreq / n
+        self.nextThinkTic = int(self.serialNum * self.ticFreq / n)
         self.fromPos = Point3(0, 0, 0)
         self.toPos = Point3(0, 0, 0)
         self.fromHpr = Point3(0, 0, 0)
@@ -187,7 +187,7 @@ class MazeSuit(DirectObject):
         if curTic < self.nextThinkTic:
             return []
         else:
-            r = list(range(int(self.nextThinkTic), curTic + 1, self.ticPeriod))
+            r = list(range(self.nextThinkTic, curTic + 1, self.ticPeriod))
             self.lastTicBeforeRender = r[-1]
             return r
 
