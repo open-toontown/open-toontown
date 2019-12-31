@@ -24,7 +24,7 @@ from . import TravelGameGlobals
 ALLOW_TEMP_MINIGAMES = simbase.config.GetBool('allow-temp-minigames', False)
 if ALLOW_TEMP_MINIGAMES:
     from toontown.minigame.TempMinigameAI import *
-simbase.forcedMinigameId = simbase.config.GetInt('minigame-id', ToontownGlobals.TwoDGameId)
+simbase.forcedMinigameId = simbase.config.GetInt('minigame-id', 0)
 RequestMinigame = {}
 MinigameZoneRefs = {}
 
