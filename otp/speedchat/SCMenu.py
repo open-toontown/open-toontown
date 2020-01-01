@@ -362,40 +362,35 @@ class SCMenu(SCObject, NodePath):
         return len(self.__members)
 
     def __getitem__(self, index):
+        if isinstance(index, slice):
+            if isinstance(self.__members, tuple):
+                self.__members = list(self.__members)
+            return self.__members[index.start:index.stop]
         return self.__members[index]
 
     def __setitem__(self, index, value):
         if isinstance(self.__members, tuple):
             self.__members = list(self.__members)
-        removedMember = self.__members[index]
-        self.__members[index] = value
-        self.privMemberListChanged(added=[value], removed=[removedMember])
+        if isinstance(index, slice):
+            removedMembers = self.__members[index.start:index.stop]
+            self.__members[index.start:index.stop] = list(value)
+            self.privMemberListChanged(added=list(value), removed=removedMembers)
+        else:
+            removedMember = self.__members[index]
+            self.__members[index] = value
+            self.privMemberListChanged(added=[value], removed=[removedMember])
 
     def __delitem__(self, index):
         if isinstance(self.__members, tuple):
             self.__members = list(self.__members)
-        removedMember = self.__members[index]
-        del self.__members[index]
-        self.privMemberListChanged(removed=[removedMember])
-
-    def __getslice__(self, i, j):
-        if isinstance(self.__members, tuple):
-            self.__members = list(self.__members)
-        return self.__members[i:j]
-
-    def __setslice__(self, i, j, s):
-        if isinstance(self.__members, tuple):
-            self.__members = list(self.__members)
-        removedMembers = self.__members[i:j]
-        self.__members[i:j] = list(s)
-        self.privMemberListChanged(added=list(s), removed=removedMembers)
-
-    def __delslice__(self, i, j):
-        if isinstance(self.__members, tuple):
-            self.__members = list(self.__members)
-        removedMembers = self.__members[i:j]
-        del self.__members[i:j]
-        self.privMemberListChanged(removed=removedMembers)
+        if isinstance(index, slice):
+            removedMembers = self.__members[index.start:index.stop]
+            del self.__members[index.start:index.stop]
+            self.privMemberListChanged(removed=removedMembers)
+        else:
+            removedMember = self.__members[index]
+            del self.__members[index]
+            self.privMemberListChanged(removed=[removedMember])
 
     def __iadd__(self, other):
         if isinstance(self.__members, tuple):
