@@ -607,8 +607,8 @@ class LoadAvatarOperation(AvatarOperation):
         cleanupDatagram.addUint32(self.avId)
         datagram = PyDatagram()
         datagram.addServerHeader(channel, self.loginManager.air.ourChannel, CLIENTAGENT_ADD_POST_REMOVE)
-        datagram.addUint16(datagram.getLength())
-        datagram.appendData(datagram.getMessage())
+        datagram.addUint16(cleanupDatagram.getLength())
+        datagram.appendData(cleanupDatagram.getMessage())
         self.loginManager.air.send(datagram)
 
         self.loginManager.air.sendActivate(self.avId, 0, 0, self.loginManager.air.dclassesByName['DistributedToonUD'])
