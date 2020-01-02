@@ -24,6 +24,7 @@ from toontown.hood.MMHoodDataAI import MMHoodDataAI
 from toontown.hood.TTHoodDataAI import TTHoodDataAI
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.quest.QuestManagerAI import QuestManagerAI
+from toontown.racing import RaceGlobals
 from toontown.racing.DistributedLeaderBoardAI import DistributedLeaderBoardAI
 from toontown.racing.DistributedRacePadAI import DistributedRacePadAI
 from toontown.racing.DistributedViewPadAI import DistributedViewPadAI
@@ -281,8 +282,14 @@ class ToontownAIRepository(ToontownInternalRepository):
         kartPads, kartPadGroups = [], []
         if type in dnaData.getName():
             if type == 'racing_pad':
+                nameSplit = dnaData.getName().split('_')
                 racePad = DistributedRacePadAI(self)
                 racePad.setArea(area)
+                racePad.index = int(nameSplit[2])
+                racePad.genre = nameSplit[3]
+                trackInfo = RaceGlobals.getNextRaceInfo(-1, racePad.genre, racePad.index)
+                racePad.setTrackInfo([trackInfo[0], trackInfo[1]])
+                racePad.laps = trackInfo[2]
                 racePad.generateWithRequired(zoneId)
                 kartPads.append(racePad)
                 kartPadGroups.append(dnaData)

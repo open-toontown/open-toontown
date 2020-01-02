@@ -19,8 +19,10 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
     def __init__(self, air):
         DistributedKartPadAI.__init__(self, air)
         FSM.__init__(self, 'DistributedRacePadAI')
+        self.genre = 'urban'
         self.state = 'Off'
         self.trackInfo = [0, 0]
+        self.laps = 3
 
     def setState(self, state):
         self.state = state
@@ -34,6 +36,9 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
 
     def getState(self):
         return self.state, globalClockDelta.getRealNetworkTime()
+
+    def setTrackInfo(self, trackInfo):
+        self.trackInfo = [trackInfo[0], trackInfo[1]]
 
     def getTrackInfo(self):
         return self.trackInfo
