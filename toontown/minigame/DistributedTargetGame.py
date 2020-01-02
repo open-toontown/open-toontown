@@ -927,7 +927,7 @@ class DistributedTargetGame(DistributedMinigame):
         self.gravity = 4
         newHpr = Point3(0, -68, 0)
         newPos = Point3(0, self.CAMERA_Y + self.TOON_Y + 15, 15)
-        camera.lerpPosHpr(newPos, newHpr, 2.5, blendType='easeInOut', task=self.FLY2FALL_CAM_TASK)
+        camera.posHprInterval(2.5, newPos, newHpr, blendType='easeInOut', name=self.FLY2FALL_CAM_TASK).start()
         open = self.umbrella.find('**/open_umbrella')
         open.show()
         closed = self.umbrella.find('**/closed_umbrella')
@@ -1017,7 +1017,7 @@ class DistributedTargetGame(DistributedMinigame):
             self.localTrack.append(Parallel(Func(base.localAvatar.b_setAnimState, 'victory', 1.0), Func(self.playSound, 'score')))
         newHpr = Point3(180, 10, 0)
         newPos = Point3(0, -(self.CAMERA_Y + self.TOON_Y + 12), 1)
-        camera.lerpPosHpr(newPos, newHpr, 5.0, blendType='easeInOut', task=self.SCORE_CAM_TASK)
+        camera.posHprInterval(5.0, newPos, newHpr, blendType='easeInOut', name=self.SCORE_CAM_TASK).start()
         self.help.hide()
         self.localTrack.start()
         return
