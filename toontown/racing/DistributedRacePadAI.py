@@ -1,14 +1,24 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import globalClockDelta
+from direct.fsm.FSM import FSM
 
 from toontown.racing.DistributedKartPadAI import DistributedKartPadAI
 
 
-class DistributedRacePadAI(DistributedKartPadAI):
+class DistributedRacePadAI(DistributedKartPadAI, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRacePadAI')
+    defaultTransitions = {'Off': ['WaitEmpty'],
+                          'WaitEmpty': ['WaitCountdown', 'Off'],
+                          'WaitCountdown': ['WaitEmpty',
+                                            'WaitBoarding',
+                                            'Off',
+                                            'AllAboard'],
+                          'WaitBoarding': ['AllAboard', 'WaitEmpty', 'Off'],
+                          'AllAboard': ['Off', 'WaitEmpty', 'WaitCountdown']}
 
     def __init__(self, air):
         DistributedKartPadAI.__init__(self, air)
+        FSM.__init__(self, 'DistributedRacePadAI')
         self.state = 'Off'
         self.trackInfo = [0, 0]
 
@@ -29,4 +39,5 @@ class DistributedRacePadAI(DistributedKartPadAI):
         return self.trackInfo
 
     def request(self, state):
+        FSM.request(self, state)
         self.b_setState(state)
