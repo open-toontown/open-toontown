@@ -524,7 +524,7 @@ dclass CallbackObject {
 struct PotentialAvatar {
   uint32 avNum;
   string avName;
-  string avDNA;
+  blob avDNA;
   uint8 avPosition;
   uint8 nameState;
 };
