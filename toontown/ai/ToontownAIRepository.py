@@ -27,6 +27,8 @@ from toontown.quest.QuestManagerAI import QuestManagerAI
 from toontown.racing import RaceGlobals
 from toontown.racing.DistributedLeaderBoardAI import DistributedLeaderBoardAI
 from toontown.racing.DistributedRacePadAI import DistributedRacePadAI
+from toontown.racing.DistributedStartingBlockAI import DistributedStartingBlockAI
+from toontown.racing.DistributedStartingBlockAI import DistributedViewingBlockAI
 from toontown.racing.DistributedViewPadAI import DistributedViewPadAI
 from toontown.racing.RaceManagerAI import RaceManagerAI
 from toontown.shtiker.CogPageManagerAI import CogPageManagerAI
@@ -307,8 +309,22 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         return kartPads, kartPadGroups
 
-    def findStartingBlocks(self, dnaData, kartPad):
-        return []  # TODO
+    def findStartingBlocks(self, dnaData, pad):
+        startingBlocks = []
+        for i in range(dnaData.getNumChildren()):
+            groupName = dnaData.getName()
+            block = dnaData.at(i)
+            blockName = block.getName()
+            if 'starting_block' in blockName:
+                cls = DistributedStartingBlockAI if 'racing_pad' in groupName else DistributedViewingBlockAI
+                x, y, z = block.getPos()
+                h, p, r = block.getHpr()
+                padLocationId = int(blockName[-1])
+                startingBlock = cls(self, pad, x, y, z, h, p, r, padLocationId)
+                startingBlock.generateWithRequired(pad.zoneId)
+                startingBlocks.append(startingBlock)
+
+        return startingBlocks
 
     def findLeaderBoards(self, dnaData, zoneId):
         leaderBoards = []
