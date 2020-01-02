@@ -19,3 +19,12 @@ class DistributedKartPadAI(DistributedObjectAI):
 
     def addStartingBlock(self, startingBlock):
         self.startingBlocks.append(startingBlock)
+
+    def addAvBlock(self, avId, startingBlock, paid):
+        pass
+
+    def removeAvBlock(self, avId, startingBlock):
+        pass
+
+    def kartMovieDone(self):
+        pass

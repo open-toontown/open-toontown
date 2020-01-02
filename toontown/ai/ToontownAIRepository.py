@@ -309,7 +309,7 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         return kartPads, kartPadGroups
 
-    def findStartingBlocks(self, dnaData, pad):
+    def findStartingBlocks(self, dnaData, kartPad):
         startingBlocks = []
         for i in range(dnaData.getNumChildren()):
             groupName = dnaData.getName()
@@ -320,8 +320,8 @@ class ToontownAIRepository(ToontownInternalRepository):
                 x, y, z = block.getPos()
                 h, p, r = block.getHpr()
                 padLocationId = int(blockName[-1])
-                startingBlock = cls(self, pad, x, y, z, h, p, r, padLocationId)
-                startingBlock.generateWithRequired(pad.zoneId)
+                startingBlock = cls(self, kartPad, x, y, z, h, p, r, padLocationId)
+                startingBlock.generateWithRequired(kartPad.zoneId)
                 startingBlocks.append(startingBlock)
 
         return startingBlocks
