@@ -8,6 +8,7 @@ class DistributedKartPadAI(DistributedObjectAI):
     def __init__(self, air):
         DistributedObjectAI.__init__(self, air)
         self.area = None
+        self.index = -1
 
     def setArea(self, area):
         self.area = area
