@@ -112,6 +112,19 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
         if task:
             return task.done
 
+    def enterRace(self, task):
+        trackId, raceType = self.trackInfo
+        circuitLoop = []
+        if raceType == RaceGlobals.Circuit:
+            circuitLoop = RaceGlobals.getCircuitLoop(trackId)
+
+        raceZone = self.air.raceMgr.createRace(trackId, raceType, self.laps, self.avIds, circuitLoop=circuitLoop[1:], circuitPoints={}, circuitTimes={})
+        for startingBlock in self.startingBlocks:
+            self.sendUpdateToAvatarId(startingBlock.avId, 'setRaceZone', [raceZone])
+            startingBlock.raceExit()
+
+        return task.done
+
     def addAvBlock(self, avId, startingBlock, paid):
         av = self.air.doId2do.get(avId)
         if not av:
