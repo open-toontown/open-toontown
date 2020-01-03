@@ -1,7 +1,6 @@
 from pandac.PandaModules import *
 from direct.particles import ParticleEffect
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase import AppRunnerGlobal
 import os
 
 class Drift(NodePath):
@@ -15,19 +14,14 @@ class Drift(NodePath):
         self.assign(parent.attachNewNode('drift'))
         self.effect = ParticleEffect.ParticleEffect()
         particleSearchPath = DSearchPath()
-        if AppRunnerGlobal.appRunner:
-            particleSearchPath.appendDirectory(Filename.expandFrom('$TT_3_5_ROOT/phase_3.5/etc'))
-        else:
-            basePath = os.path.expandvars('$TOONTOWN') or './toontown'
-            particleSearchPath.appendDirectory(Filename.fromOsSpecific(basePath + '/src/effects'))
-            particleSearchPath.appendDirectory(Filename('phase_3.5/etc'))
-            particleSearchPath.appendDirectory(Filename('phase_4/etc'))
-            particleSearchPath.appendDirectory(Filename('phase_5/etc'))
-            particleSearchPath.appendDirectory(Filename('phase_6/etc'))
-            particleSearchPath.appendDirectory(Filename('phase_7/etc'))
-            particleSearchPath.appendDirectory(Filename('phase_8/etc'))
-            particleSearchPath.appendDirectory(Filename('phase_9/etc'))
-            particleSearchPath.appendDirectory(Filename('.'))
+        if __debug__:
+            particleSearchPath.appendDirectory(Filename('resources/phase_3.5/etc'))
+            particleSearchPath.appendDirectory(Filename('resources/phase_4/etc'))
+            particleSearchPath.appendDirectory(Filename('resources/phase_5/etc'))
+            particleSearchPath.appendDirectory(Filename('resources/phase_6/etc'))
+            particleSearchPath.appendDirectory(Filename('resources/phase_7/etc'))
+            particleSearchPath.appendDirectory(Filename('resources/phase_8/etc'))
+            particleSearchPath.appendDirectory(Filename('resources/phase_9/etc'))
         pfile = Filename('drift.ptf')
         found = vfs.resolveFilename(pfile, particleSearchPath)
         if not found:

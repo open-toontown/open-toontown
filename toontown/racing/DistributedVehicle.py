@@ -1,4 +1,5 @@
 from pandac.PandaModules import *
+from libotp import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from direct.gui.DirectGui import *
@@ -904,7 +905,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
             driftMin = self.surfaceModifiers[self.groundType]['driftMin'] * 0.2
             if self.skidding:
                 driftMin = self.surfaceModifiers[self.groundType]['driftMin']
-        for i in range(numFrames):
+        for i in range(int(numFrames)):
             self.physicsMgr.doPhysics(self.physicsDt)
             curVelocity = self.actorNode.getPhysicsObject().getVelocity()
             idealVelocity = curHeading * curSpeed
