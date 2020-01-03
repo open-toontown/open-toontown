@@ -128,8 +128,8 @@ class TimeManager(DistributedObject.DistributedObject):
         self.attemptCount += 1
         self.notify.info('Clock sync roundtrip took %0.3f ms' % (elapsed * 1000.0))
         self.notify.info('AI time delta is %s from server delta' % PythonUtil.formatElapsedSeconds(aiTimeSkew))
-        average = (self.start + end) / 2.0 - self.extraSkew
-        uncertainty = (end - self.start) / 2.0 + abs(self.extraSkew)
+        average = (self.start + end) // 2.0 - self.extraSkew
+        uncertainty = (end - self.start) // 2.0 + abs(self.extraSkew)
         globalClockDelta.resynchronize(average, timestamp, uncertainty)
         self.notify.info('Local clock uncertainty +/- %.3f s' % globalClockDelta.getUncertainty())
         if globalClockDelta.getUncertainty() > self.maxUncertainty:
