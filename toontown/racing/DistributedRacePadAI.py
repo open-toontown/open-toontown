@@ -31,6 +31,7 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
     def delete(self):
         taskMgr.remove(self.uniqueName('changeTrack'))
         taskMgr.remove(self.uniqueName('countdownTask'))
+        taskMgr.remove(self.uniqueName('enterRaceTask'))
         DistributedKartPadAI.delete(self)
 
     def request(self, state):
@@ -75,6 +76,13 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
     def exitWaitCountdown(self):
         taskMgr.remove(self.uniqueName('countdownTask'))
 
+    def enterAllAboard(self):
+        taskMgr.doMethodLater(KartGlobals.ENTER_RACE_TIME, self.enterRace, self.uniqueName('enterRaceTask'))
+
+    def exitAllAboard(self):
+        self.avIds = []
+        taskMgr.remove(self.uniqueName('enterRaceTask'))
+
     def changeTrack(self, task):
         trackInfo = RaceGlobals.getNextRaceInfo(self.trackInfo[0], self.genre, self.index)
         trackId, raceType = trackInfo[0], trackInfo[1]
@@ -84,6 +92,25 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
         self.b_setTrackInfo([trackId, raceType])
         self.laps = trackInfo[2]
         return task.again
+
+    def considerAllAboard(self, task=None):
+        for startingBlock in self.startingBlocks:
+            if startingBlock.currentMovie:
+                if not self.state == 'WaitBoarding':
+                    self.request('WaitBoarding')
+                return
+
+        if self.trackInfo[1] in (RaceGlobals.ToonBattle, RaceGlobals.Circuit) and len(self.avIds) < 2:
+            for startingBlock in self.startingBlocks:
+                if startingBlock.avId != 0:
+                    startingBlock.normalExit()
+
+            self.request('WaitEmpty')
+            return
+
+        self.request('AllAboard')
+        if task:
+            return task.done
 
     def addAvBlock(self, avId, startingBlock, paid):
         av = self.air.doId2do.get(avId)
@@ -115,4 +142,4 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
         if len(self.avIds) == 0 and not self.state == 'WaitEmpty':
             self.request('WaitEmpty')
         if self.state == 'WaitBoarding':
-            self.considerAllAboard(0)
+            self.considerAllAboard()
