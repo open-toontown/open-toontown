@@ -5,6 +5,7 @@ from direct.fsm.FSM import FSM
 from toontown.racing import RaceGlobals
 from toontown.racing.DistributedKartPadAI import DistributedKartPadAI
 from toontown.racing.KartShopGlobals import KartGlobals
+from toontown.racing.RaceManagerAI import CircuitRaceHolidayMgr
 
 
 class DistributedRacePadAI(DistributedKartPadAI, FSM):
@@ -27,6 +28,15 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
         self.laps = 3
         self.avIds = []
 
+    def delete(self):
+        taskMgr.remove(self.uniqueName('changeTrack'))
+        taskMgr.remove(self.uniqueName('countdownTask'))
+        DistributedKartPadAI.delete(self)
+
+    def request(self, state):
+        FSM.request(self, state)
+        self.b_setState(state)
+
     def setState(self, state):
         self.state = state
 
@@ -41,14 +51,39 @@ class DistributedRacePadAI(DistributedKartPadAI, FSM):
         return self.state, globalClockDelta.getRealNetworkTime()
 
     def setTrackInfo(self, trackInfo):
-        self.trackInfo = [trackInfo[0], trackInfo[1]]
+        self.trackInfo = trackInfo
+
+    def d_setTrackInfo(self, trackInfo):
+        self.sendUpdate('setTrackInfo', [trackInfo])
+
+    def b_setTrackInfo(self, trackInfo):
+        self.setTrackInfo(trackInfo)
+        self.d_setTrackInfo(trackInfo)
 
     def getTrackInfo(self):
         return self.trackInfo
 
-    def request(self, state):
-        FSM.request(self, state)
-        self.b_setState(state)
+    def enterWaitEmpty(self):
+        taskMgr.doMethodLater(RaceGlobals.TrackSignDuration, self.changeTrack, self.uniqueName('changeTrack'))
+
+    def exitWaitEmpty(self):
+        taskMgr.remove(self.uniqueName('changeTrack'))
+
+    def enterWaitCountdown(self):
+        taskMgr.doMethodLater(KartGlobals.COUNTDOWN_TIME, self.considerAllAboard, self.uniqueName('countdownTask'))
+
+    def exitWaitCountdown(self):
+        taskMgr.remove(self.uniqueName('countdownTask'))
+
+    def changeTrack(self, task):
+        trackInfo = RaceGlobals.getNextRaceInfo(self.trackInfo[0], self.genre, self.index)
+        trackId, raceType = trackInfo[0], trackInfo[1]
+        if raceType == RaceGlobals.ToonBattle and bboard.get(CircuitRaceHolidayMgr.PostName):
+            raceType = RaceGlobals.Circuit
+
+        self.b_setTrackInfo([trackId, raceType])
+        self.laps = trackInfo[2]
+        return task.again
 
     def addAvBlock(self, avId, startingBlock, paid):
         av = self.air.doId2do.get(avId)
