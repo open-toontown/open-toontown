@@ -1,3 +1,6 @@
+from direct.distributed.ClockDelta import globalClockDelta
+
+
 class Racer:
 
     def __init__(self, race, air, avId, zoneId):
@@ -9,4 +12,15 @@ class Racer:
         self.avatar.takeOutKart(self.zoneId)
         self.kart = self.avatar.kart
         self.finished = False
+        self.maxLap = 0
+        self.lapT = 0.0
+        self.baseTime = 0.0
+        self.totalTime = 0.0
+        self.exited = False
         self.exitEvent = self.air.getAvatarExitEvent(self.avId)
+        self.race.accept(self.exitEvent, self.race.unexpectedExit, [self.avId])
+
+    def setLapT(self, numLaps, t, timestamp):
+        self.maxLap = numLaps
+        self.lapT = t
+        self.totalTime = globalClockDelta.networkToLocalTime(timestamp) - self.baseTime

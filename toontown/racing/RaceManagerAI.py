@@ -322,7 +322,7 @@ class RaceManagerAI(DirectObject.DirectObject):
             self.notify.debug('already has grandtouring')
             self.notify.debug('trophies %s' % trophies)
             self.notify.debug('GrandTouring: already has grand touring %s' % trophies[RaceGlobals.GrandTouring])
-        for i in range(1, RaceGlobals.NumTrophies / RaceGlobals.TrophiesPerCup + 1):
+        for i in range(1, RaceGlobals.NumTrophies // RaceGlobals.TrophiesPerCup + 1):
             cupNum = (trophies[:RaceGlobals.NumTrophies].count(1) + addTrophyCount) / (i * RaceGlobals.TrophiesPerCup)
             self.notify.debug('cupNum: %s' % cupNum)
             trophyIndex = RaceGlobals.TrophyCups[i - 1]
