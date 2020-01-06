@@ -52,17 +52,6 @@ notify-level-chan warning
 notify-level-gobj warning
 notify-level-loader warning
 notify-timestamp #t
-vfs-mount phase_3.mf . 0
-vfs-mount phase_3.5.mf . 0
-vfs-mount phase_4.mf . 0
-vfs-mount phase_5.mf . 0
-vfs-mount phase_5.5.mf . 0
-vfs-mount phase_6.mf . 0
-vfs-mount phase_7.mf . 0
-vfs-mount phase_8.mf . 0
-vfs-mount phase_9.mf . 0
-vfs-mount phase_10.mf . 0
-vfs-mount phase_11.mf . 0
 default-model-extension .bam
 decompressor-step-time 0.5
 extractor-step-time 0.5
@@ -81,8 +70,6 @@ merge-lod-bundles 0
 early-event-sphere 1
 accept-clock-skew 1
 extra-ssl-handshake-time 20.0
-clock-mode limited
-clock-frame-rate 120
 prefer-parasite-buffer 0
 audio-library-name miles_audio
 cursor-filename phase_3/models/gui/toonmono.cur
@@ -98,6 +85,7 @@ server-type prod
 want-dev 0
 schellgames-dev 0
 text-minfilter linear_mipmap_linear
+gc-save-all 0
 
 # TEMP
 fake-playtoken dev
