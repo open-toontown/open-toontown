@@ -810,7 +810,7 @@ class DistributedRaceGame(DistributedMinigame):
         posQuat = Quat()
         posQuat.setHpr((posH[3], 0, 0))
         walkSeq = Sequence(Func(avatar.setAnimState, 'walk', 1),
-                           avatar.posQuatInterval(time, posH[:3], posQuat, other=self.raceBoard),
+                           avatar.posQuatInterval(time, (posH[0], posH[1], posH[2]), posQuat, other=self.raceBoard),
                            Func(stopWalk))
         walkSeq.start()
 
@@ -821,22 +821,22 @@ class DistributedRaceGame(DistributedMinigame):
         pos2 = self.posHprArray[lane][currentPlace + 2 * step]
         pos3 = self.posHprArray[lane][place]
 
-        def startRun(task):
-            task.avatar.setAnimState('run', 1)
-            return Task.done
+        def stopRun(raceBoard = self.raceBoard, pos3 = pos3):
+            avatar.setAnimState('neutral', 1)
+            avatar.setPosHpr(raceBoard, pos3[0], pos3[1], pos3[2], pos3[3], 0, 0)
 
-        startRunTask = Task(startRun, 'startRun-' + str(lane))
-        startRunTask.avatar = avatar
-
-        def stopRun(task, raceBoard = self.raceBoard, pos3 = pos3):
-            task.avatar.setAnimState('neutral', 1)
-            task.avatar.setPosHpr(raceBoard, pos3[0], pos3[1], pos3[2], pos3[3], 0, 0)
-            return Task.done
-
-        stopRunTask = Task(stopRun, 'stopRun-' + str(lane))
-        stopRunTask.avatar = avatar
-        runTask = Task.sequence(startRunTask, avatar.lerpPosHpr(pos1[0], pos1[1], pos1[2], pos1[3], 0, 0, time / 3.0, other=self.raceBoard), avatar.lerpPosHpr(pos2[0], pos2[1], pos2[2], pos2[3], 0, 0, time / 3.0, other=self.raceBoard), avatar.lerpPosHpr(pos3[0], pos3[1], pos3[2], pos3[3], 0, 0, time / 3.0, other=self.raceBoard), stopRunTask)
-        taskMgr.add(runTask, 'runAvatar-' + str(lane))
+        pos1Quat = Quat()
+        pos1Quat.setHpr((pos1[3], 0, 0))
+        pos2Quat = Quat()
+        pos2Quat.setHpr((pos2[3], 0, 0))
+        pos3Quat = Quat()
+        pos3Quat.setHpr((pos3[3], 0, 0))
+        runSeq = Sequence(Func(avatar.setAnimState, 'run', 1),
+                          avatar.posQuatInterval(time / 3.0, (pos1[0], pos1[1], pos1[2]), pos1Quat, other=self.raceBoard),
+                          avatar.posQuatInterval(time / 3.0, (pos2[0], pos2[1], pos2[2]), pos2Quat, other=self.raceBoard),
+                          avatar.posQuatInterval(time / 3.0, (pos3[0], pos3[1], pos3[2]), pos3Quat, other=self.raceBoard),
+                          Func(stopRun))
+        runSeq.start()
 
     def setAvatarChoice(self, choice):
         self.notify.error('setAvatarChoice should not be called on the client')
