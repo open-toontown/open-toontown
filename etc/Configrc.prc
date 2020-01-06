@@ -1,23 +1,14 @@
-want-render2dp 1
-text-encoding utf8
 direct-wtext 0
-text-never-break-before ,.-:?!;
 ime-aware 1
 ime-hide 1
-textures-power-2 down
 collect-tcp 1
-collect-tcp-interval 0.2
 server-version sv1.0.47.38
-server-version-suffix
 model-path resources
 dc-file etc/toon.dc
 dc-file etc/otp.dc
 window-title Toontown
 verify-ssl 0
-ssl-cipher-list DEFAULT
-chan-config-sanity-check #f
 require-window 0
-language english
 icon-filename phase_3/models/gui/toontown.ico
 dx-management 1
 tt-specific-login 1
@@ -39,7 +30,6 @@ depth-bits 24
 win-size 800 600
 fullscreen #t
 early-random-seed 1
-ssl-cipher-list DEFAULT
 respect-prev-transform 1
 default-directnotify-level info
 notify-level-collide warning
