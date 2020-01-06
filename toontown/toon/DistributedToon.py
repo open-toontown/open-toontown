@@ -2600,7 +2600,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         return self.uniqueName('zombieCheck')
 
     def _doZombieCheck(self, task = None):
-        self._lastZombieContext = next(self._zombieCheckSerialGen)
+        self._lastZombieContext = self._zombieCheckSerialGen.next()
         self.cr.timeManager.checkAvOnDistrict(self, self._lastZombieContext)
         taskMgr.doMethodLater(60.0, self._doZombieCheck, self._getZombieCheckTaskName())
 
