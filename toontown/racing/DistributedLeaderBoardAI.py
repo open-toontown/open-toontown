@@ -35,7 +35,11 @@ class DistributedLeaderBoardAI(DistributedObjectAI):
         self.subscriptions.append(subscription)
 
     def handleUpdateRaceRecord(self, record):
-        self.notify.info('handleUpdateRaceRecord TODO')
+        trackId, period = record
+        if trackId not in self.records:
+            return
+
+        self.records[trackId][period] = [(x[0], x[3]) for x in self.air.raceMgr.getRecords(trackId, period)]
 
     def updateDisplay(self):
         self.currentIndex += 1

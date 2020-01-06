@@ -11,3 +11,4 @@ whitelist/
 *.jpg
 .idea
 *.buildings
+*.trackRecords

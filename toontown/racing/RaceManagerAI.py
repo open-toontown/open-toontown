@@ -323,7 +323,7 @@ class RaceManagerAI(DirectObject.DirectObject):
             self.notify.debug('trophies %s' % trophies)
             self.notify.debug('GrandTouring: already has grand touring %s' % trophies[RaceGlobals.GrandTouring])
         for i in range(1, RaceGlobals.NumTrophies // RaceGlobals.TrophiesPerCup + 1):
-            cupNum = (trophies[:RaceGlobals.NumTrophies].count(1) + addTrophyCount) / (i * RaceGlobals.TrophiesPerCup)
+            cupNum = (trophies[:RaceGlobals.NumTrophies].count(1) + addTrophyCount) // (i * RaceGlobals.TrophiesPerCup)
             self.notify.debug('cupNum: %s' % cupNum)
             trophyIndex = RaceGlobals.TrophyCups[i - 1]
             if cupNum and not trophies[trophyIndex]:
@@ -545,8 +545,8 @@ class RaceManagerAI(DirectObject.DirectObject):
                     newTrophies.append(totalTrophyIndex)
                     self.air.writeServerEvent('kartingTrophy', avId, '%s' % totalTrophyIndex)
                     self.notify.debug('trophy: ' + TTLocalizer.KartTrophyDescriptions[totalTrophyIndex])
-        for i in range(1, RaceGlobals.NumTrophies / RaceGlobals.TrophiesPerCup + 1):
-            cupNum = trophies[:RaceGlobals.NumTrophies].count(1) / (i * RaceGlobals.TrophiesPerCup)
+        for i in range(1, RaceGlobals.NumTrophies // RaceGlobals.TrophiesPerCup + 1):
+            cupNum = trophies[:RaceGlobals.NumTrophies].count(1) // (i * RaceGlobals.TrophiesPerCup)
             self.notify.debug('cupNum: %s' % cupNum)
             trophyIndex = RaceGlobals.TrophyCups[i - 1]
             if cupNum and not trophies[trophyIndex]:
@@ -610,7 +610,7 @@ class RaceManagerAI(DirectObject.DirectObject):
             backup = self.filename + '.bu'
             if os.path.exists(self.filename):
                 os.rename(self.filename, backup)
-            file = open(self.filename, 'w')
+            file = open(self.filename, 'wb')
             file.seek(0)
             pickle.dump(self.trackRecords, file)
             file.close()
@@ -624,12 +624,12 @@ class RaceManagerAI(DirectObject.DirectObject):
 
     def loadRecords(self):
         try:
-            file = open(self.filename + '.bu', 'r')
+            file = open(self.filename + '.bu', 'rb')
             if os.path.exists(self.filename):
                 os.remove(self.filename)
         except IOError:
             try:
-                file = open(self.filename, 'r')
+                file = open(self.filename, 'rb')
             except IOError:
                 return self.getRecordTimes()
 
