@@ -1,6 +1,7 @@
 from pandac.PandaModules import *
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.distributed.ClockDelta import *
+from direct.interval.IntervalGlobal import *
 from .DistributedMinigame import *
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
@@ -498,6 +499,7 @@ class DistributedRaceGame(DistributedMinigame):
                 self.positionInPlace(diceInstance, i, dicePosition)
                 diceInstance.setP(-90)
                 diceInstance.setZ(0.05)
+                diceInstance.setDepthOffset(1)
 
         return Task.done
 
@@ -533,7 +535,7 @@ class DistributedRaceGame(DistributedMinigame):
         self.notify.debug('in enterMoveAvatars:')
         tasks = []
         self.avatarPositionsCopy = self.avatarPositions.copy()
-        for i in range(0, len(choiceList) / self.numPlayers):
+        for i in range(0, len(choiceList) // self.numPlayers):
             startIndex = i * self.numPlayers
             endIndex = startIndex + self.numPlayers
             self.choiceList = choiceList[startIndex:endIndex]
@@ -702,10 +704,11 @@ class DistributedRaceGame(DistributedMinigame):
         camera_lookat_idx = min(RaceGameGlobals.NumberToWin - 6, localToonPosition)
         posLookAt = self.posHprArray[self.localAvLane][camera_lookat_idx]
         camera.lookAt(posLookAt[0], posLookAt[1], posLookAt[2])
-        CamHpr = camera.getHpr()
+        CamQuat = Quat()
+        CamQuat.setHpr(camera.getHpr())
         camera.setPos(savedCamPos)
         camera.setHpr(savedCamHpr)
-        camera.lerpPosHpr(CamPos[0], CamPos[1], CamPos[2], CamHpr[0], CamHpr[1], CamHpr[2], 0.75)
+        camera.posQuatInterval(0.75, CamPos, CamQuat).start()
 
     def getWalkDuration(self, squares_walked):
         walkDuration = abs(squares_walked / 1.2)
@@ -795,29 +798,23 @@ class DistributedRaceGame(DistributedMinigame):
         place = min(place, len(self.posHprArray[lane]) - 1)
         posH = self.posHprArray[lane][place]
 
-        def startWalk(task):
-            task.avatar.setAnimState('walk', 1)
-            return Task.done
-
-        startWalkTask = Task(startWalk, 'startWalk-' + str(lane))
-        startWalkTask.avatar = avatar
-
-        def stopWalk(task, raceBoard = self.raceBoard, posH = posH):
-            task.avatar.setAnimState('neutral', 1)
+        def stopWalk(raceBoard = self.raceBoard, posH = posH):
+            avatar.setAnimState('neutral', 1)
             if raceBoard.isEmpty():
-                task.avatar.setPosHpr(0, 0, 0, 0, 0, 0)
+                avatar.setPosHpr(0, 0, 0, 0, 0, 0)
             else:
-                task.avatar.setPosHpr(raceBoard, posH[0], posH[1], posH[2], posH[3], 0, 0)
-            return Task.done
+                avatar.setPosHpr(raceBoard, posH[0], posH[1], posH[2], posH[3], 0, 0)
 
-        stopWalkTask = Task(stopWalk, 'stopWalk-' + str(lane))
-        stopWalkTask.avatar = avatar
-        walkTask = Task.sequence(startWalkTask, avatar.lerpPosHpr(posH[0], posH[1], posH[2], posH[3], 0, 0, time, other=self.raceBoard), stopWalkTask)
-        taskMgr.add(walkTask, 'walkAvatar-' + str(lane))
+        posQuat = Quat()
+        posQuat.setHpr((posH[3], 0, 0))
+        walkSeq = Sequence(Func(avatar.setAnimState, 'walk', 1),
+                           avatar.posQuatInterval(time, posH[:3], posQuat, other=self.raceBoard),
+                           Func(stopWalk))
+        walkSeq.start()
 
     def runInPlace(self, avatar, lane, currentPlace, newPlace, time):
         place = min(newPlace, len(self.posHprArray[lane]) - 1)
-        step = (place - currentPlace) / 3
+        step = (place - currentPlace) // 3
         pos1 = self.posHprArray[lane][currentPlace + step]
         pos2 = self.posHprArray[lane][currentPlace + 2 * step]
         pos3 = self.posHprArray[lane][place]
@@ -856,6 +853,7 @@ class DistributedRaceGame(DistributedMinigame):
             posHpr = self.posHprArray[row][pos]
             marker.setPosHpr(self.raceBoard, posHpr[0], posHpr[1], posHpr[2], posHpr[3] + 180, 0, 0.025)
             marker.setScale(0.7)
+            marker.setDepthOffset(1)
             self.chanceMarkers.append(marker)
             row += 1
 
