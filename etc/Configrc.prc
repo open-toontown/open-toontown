@@ -31,7 +31,6 @@ downloader-byte-rate 125000
 downloader-frequency 0.1
 http-connect-timeout 20
 http-timeout 30
-contents-xml-dl-attempts 2
 load-display pandagl
 aux-display pandagl
 aux-display pandadx9
@@ -39,8 +38,6 @@ aux-display tinydisplay
 depth-bits 24
 win-size 800 600
 fullscreen #t
-compress-channels #f
-display-lists 0
 early-random-seed 1
 ssl-cipher-list DEFAULT
 respect-prev-transform 1
@@ -50,6 +47,7 @@ notify-level-chan warning
 notify-level-gobj warning
 notify-level-loader warning
 notify-timestamp #t
+notify-integrate #f
 default-model-extension .bam
 decompressor-step-time 0.5
 extractor-step-time 0.5
@@ -68,18 +66,12 @@ merge-lod-bundles 0
 early-event-sphere 1
 accept-clock-skew 1
 extra-ssl-handshake-time 20.0
-prefer-parasite-buffer 0
-audio-library-name miles_audio
+audio-library-name null
 cursor-filename phase_3/models/gui/toonmono.cur
-audio-loader mp3
-audio-loader midi
-audio-loader wav
-audio-software-midi #t
 audio-sfx-active #t
 audio-music-active #t
 audio-master-sfx-volume 1
 audio-master-music-volume 1
-server-type prod
 want-dev 0
 schellgames-dev 0
 text-minfilter linear_mipmap_linear
