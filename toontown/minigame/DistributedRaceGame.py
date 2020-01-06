@@ -634,7 +634,9 @@ class DistributedRaceGame(DistributedMinigame):
     def showChanceCard(self, task):
         base.playSfx(task.cardSound)
         self.chanceCard.reparentTo(render)
-        self.chanceCard.lerpPosHpr(19.62, 13.41, 13.14, 270, 0, -85.24, 1.0, other=camera, task='cardLerp')
+        quat = Quat()
+        quat.setHpr((270, 0, -85.24))
+        self.chanceCard.posQuatInterval(1.0, (19.62, 13.41, 13.14), quat, other=camera, name='cardLerp').start()
         return Task.done
 
     def hideChanceMarker(self, task):
