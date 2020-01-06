@@ -11,6 +11,9 @@ class Racer:
         self.avatar = self.air.doId2do.get(self.avId)
         self.avatar.takeOutKart(self.zoneId)
         self.kart = self.avatar.kart
+        self.hasGag = False
+        self.gagType = None
+        self.anvilTarget = False
         self.finished = False
         self.maxLap = 0
         self.lapT = 0.0
