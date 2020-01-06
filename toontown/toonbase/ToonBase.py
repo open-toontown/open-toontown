@@ -27,8 +27,6 @@ class ToonBase(OTPBase.OTPBase):
             music = Settings.getMusic()
             sfx = Settings.getSfx()
             toonChatSounds = Settings.getToonChatSounds()
-            musicVol = Settings.getMusicVolume()
-            sfxVol = Settings.getSfxVolume()
             resList = [(640, 480),
              (800, 600),
              (1024, 768),
@@ -43,8 +41,6 @@ class ToonBase(OTPBase.OTPBase):
             loadPrcFileData('toonBase Settings Window FullScreen', 'fullscreen %s' % mode)
             loadPrcFileData('toonBase Settings Music Active', 'audio-music-active %s' % music)
             loadPrcFileData('toonBase Settings Sound Active', 'audio-sfx-active %s' % sfx)
-            loadPrcFileData('toonBase Settings Music Volume', 'audio-master-music-volume %s' % musicVol)
-            loadPrcFileData('toonBase Settings Sfx Volume', 'audio-master-sfx-volume %s' % sfxVol)
             loadPrcFileData('toonBase Settings Toon Chat Sounds', 'toon-chat-sounds %s' % toonChatSounds)
         OTPBase.OTPBase.__init__(self)
         if not self.isMainWindowOpen():

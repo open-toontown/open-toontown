@@ -44,14 +44,6 @@ class Settings:
         return 1
 
     @staticmethod
-    def getMusicVolume():
-        return 1
-
-    @staticmethod
-    def getSfxVolume():
-        return 1
-
-    @staticmethod
     def setResolutionDimensions(_, __):
         pass
 

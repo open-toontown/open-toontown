@@ -12,12 +12,8 @@ require-window 0
 icon-filename phase_3/models/gui/toontown.ico
 dx-management 1
 tt-specific-login 1
-decompressor-buffer-size 32768
-extractor-buffer-size 32768
 patcher-buffer-size 512000
-downloader-timeout 15
 downloader-timeout-retries 4
-downloader-disk-write-frequency 4
 downloader-byte-rate 125000
 downloader-frequency 0.1
 http-connect-timeout 20
@@ -27,8 +23,6 @@ aux-display pandagl
 aux-display pandadx9
 aux-display tinydisplay
 depth-bits 24
-win-size 800 600
-fullscreen #t
 early-random-seed 1
 respect-prev-transform 1
 default-directnotify-level info
@@ -43,7 +37,6 @@ decompressor-step-time 0.5
 extractor-step-time 0.5
 required-login playToken
 server-failover 80 443
-want-fog #t
 dx-use-rangebased-fog #t
 aspect-ratio 1.333333
 on-screen-debug-font ImpressBT.ttf
@@ -60,8 +53,6 @@ audio-library-name null
 cursor-filename phase_3/models/gui/toonmono.cur
 audio-sfx-active #t
 audio-music-active #t
-audio-master-sfx-volume 1
-audio-master-music-volume 1
 want-dev 0
 schellgames-dev 0
 text-minfilter linear_mipmap_linear
