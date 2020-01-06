@@ -6,7 +6,6 @@ ime-aware 1
 ime-hide 1
 textures-power-2 down
 paranoid-clock 1
-lock-to-one-cpu 1
 collect-tcp 1
 collect-tcp-interval 0.2
 server-version sv1.0.47.38
