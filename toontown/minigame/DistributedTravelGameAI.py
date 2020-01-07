@@ -3,6 +3,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from . import TravelGameGlobals
 from toontown.toonbase import ToontownGlobals
+import functools
 
 class DistributedTravelGameAI(DistributedMinigameAI):
     notify = directNotify.newCategory('DistributedTravelGameAI')
@@ -107,7 +108,7 @@ class DistributedTravelGameAI(DistributedMinigameAI):
             else:
                 return 1
 
-        self.directionVotes.sort(voteCompare, reverse=True)
+        self.directionVotes.sort(key=functools.cmp_to_key(voteCompare), reverse=True)
         winningVotes = self.directionVotes[0][1]
         self.winningDirections = []
         self.notify.debug('self.directionVotes = %s' % self.directionVotes)

@@ -821,7 +821,7 @@ class DistributedTargetGame(DistributedMinigame):
                 open.setScale(1.5)
                 closed = umbrella.find('**/closed_umbrella')
                 closed.show()
-                hand = toon.find('**/joint_Rhold')
+                hand = toon.getRightHands()[0]
                 ce = CompassEffect.make(NodePath(), CompassEffect.PRot)
                 closed.node().setEffect(ce)
                 closed.setHpr(0.0, 90.0, 35.0)
