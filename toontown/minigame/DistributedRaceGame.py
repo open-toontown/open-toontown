@@ -274,6 +274,8 @@ class DistributedRaceGame(DistributedMinigame):
          -2.96)
         self.timer = None
         self.timerStartTime = None
+        self.walkSeqs = {}
+        self.runSeqs = {}
         return None
 
     def getTitle(self):
@@ -774,8 +776,16 @@ class DistributedRaceGame(DistributedMinigame):
                 avatar = self.getAvatar(avId)
                 if avatar:
                     lane = str(self.avIdList.index(avId))
-                    taskMgr.remove('runAvatar-' + lane)
-                    taskMgr.remove('walkAvatar-' + lane)
+                    if lane in list(self.runSeqs.keys()):
+                        runSeq = self.runSeqs[lane]
+                        if runSeq:
+                            runSeq.finish()
+                        del self.runSeqs[lane]
+                    if lane in list(self.walkSeqs.keys()):
+                        walkSeq = self.walkSeqs[lane]
+                        if walkSeq:
+                            walkSeq.finish()
+                        del self.walkSeqs[lane]
                     avatar.setAnimState('jump', 1.0)
 
         taskMgr.doMethodLater(4.0, self.gameOverCallback, 'playMovie')
@@ -812,6 +822,7 @@ class DistributedRaceGame(DistributedMinigame):
         walkSeq = Sequence(Func(avatar.setAnimState, 'walk', 1),
                            avatar.posQuatInterval(time, (posH[0], posH[1], posH[2]), posQuat, other=self.raceBoard),
                            Func(stopWalk))
+        self.walkSeqs[str(lane)] = walkSeq
         walkSeq.start()
 
     def runInPlace(self, avatar, lane, currentPlace, newPlace, time):
@@ -836,6 +847,7 @@ class DistributedRaceGame(DistributedMinigame):
                           avatar.posQuatInterval(time / 3.0, (pos2[0], pos2[1], pos2[2]), pos2Quat, other=self.raceBoard),
                           avatar.posQuatInterval(time / 3.0, (pos3[0], pos3[1], pos3[2]), pos3Quat, other=self.raceBoard),
                           Func(stopRun))
+        self.runSeqs[str(lane)] = runSeq
         runSeq.start()
 
     def setAvatarChoice(self, choice):
