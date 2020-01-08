@@ -6,6 +6,7 @@ from toontown.minigame import DistributedMinigameAI
 from toontown.minigame import MinigameGlobals
 from toontown.minigame import IceGameGlobals
 from toontown.ai.ToonBarrier import ToonBarrier
+import functools
 
 class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
     notify = directNotify.newCategory('DistributedIceGameAI')
@@ -174,7 +175,7 @@ class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
             else:
                 return 0
 
-        sortedByDistance.sort(cmp=compareDistance)
+        sortedByDistance.sort(key=functools.cmp_to_key(compareDistance))
         self.scoresAsList = []
         totalPointsAdded = 0
         for index in range(len(self.avIdList)):

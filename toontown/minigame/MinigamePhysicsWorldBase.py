@@ -41,6 +41,9 @@ class MinigamePhysicsWorldBase:
         self.useQuickStep = False
         self.deterministic = True
         self.numStepsInSimulateTask = 0
+        self.collisionEventName = 'ode-collision-%s' % id(self)
+        self.space.setCollisionEvent(self.collisionEventName)
+        self.accept(self.collisionEventName, self.__handleCollision)
 
     def delete(self):
         self.notify.debug('Max Collision Count was %s' % self.maxColCount)
@@ -85,6 +88,7 @@ class MinigamePhysicsWorldBase:
         self.space.destroy()
         self.world = None
         self.space = None
+        self.ignore(self.collisionEventName)
         return
 
     def setupSimulation(self):
@@ -133,8 +137,14 @@ class MinigamePhysicsWorldBase:
                 else:
                     pandaNodePathGeom.setPos(0.0, 0.0, -100.0)
 
+    def __handleCollision(self, entry):
+        self.colEntries.append(entry)
+
     def simulate(self):
-        self.colCount = self.space.autoCollide()
+        self.colEntries = []
+        self.space.autoCollide()
+        eventMgr.doEvents()
+        self.colCount = len(self.colEntries)
         if self.maxColCount < self.colCount:
             self.maxColCount = self.colCount
             self.notify.debug('New Max Collision Count %s' % self.maxColCount)
@@ -156,11 +166,10 @@ class MinigamePhysicsWorldBase:
                 pandaNodePathGeom.setPos(odeBody.getPosition())
                 pandaNodePathGeom.setQuat(Quat(odeBody.getQuaternion()[0], odeBody.getQuaternion()[1], odeBody.getQuaternion()[2], odeBody.getQuaternion()[3]))
 
-    def getOrderedContacts(self, count):
-        c0 = self.space.getContactId(count, 0)
-        c1 = self.space.getContactId(count, 1)
+    def getOrderedContacts(self, entry):
+        c0 = self.space.getCollideId(entry.getGeom1())
+        c1 = self.space.getCollideId(entry.getGeom2())
         if c0 > c1:
-            chold = c1
-            c1 = c0
-            c0 = chold
-        return (c0, c1)
+            return c1, c0
+        else:
+            return c0, c1
