@@ -10,12 +10,14 @@ from toontown.ai.NewsManagerAI import NewsManagerAI
 from toontown.ai.WelcomeValleyManagerAI import WelcomeValleyManagerAI
 from toontown.building.DistributedTrophyMgrAI import DistributedTrophyMgrAI
 from toontown.catalog.CatalogManagerAI import CatalogManagerAI
+from toontown.coghq.FactoryManagerAI import FactoryManagerAI
 from toontown.coghq.PromotionManagerAI import PromotionManagerAI
 from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
 from toontown.distributed.ToontownDistrictStatsAI import ToontownDistrictStatsAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 from toontown.hood import ZoneUtil
 from toontown.hood.BRHoodDataAI import BRHoodDataAI
+from toontown.hood.CSHoodDataAI import CSHoodDataAI
 from toontown.hood.DDHoodDataAI import DDHoodDataAI
 from toontown.hood.DGHoodDataAI import DGHoodDataAI
 from toontown.hood.DLHoodDataAI import DLHoodDataAI
@@ -62,6 +64,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.promotionMgr = None
         self.cogPageManager = None
         self.raceMgr = None
+        self.factoryMgr = None
         self.timeManager = None
         self.newsManager = None
         self.welcomeValleyManager = None
@@ -131,6 +134,9 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         # Create our race manager...
         self.raceMgr = RaceManagerAI(self)
+
+        # Create our factory manager...
+        self.factoryMgr = FactoryManagerAI(self)
 
     def createGlobals(self):
         """
@@ -238,6 +244,12 @@ class ToontownAIRepository(ToontownInternalRepository):
             (ToontownGlobals.PajamaPlace, 1, 1)
         )
         self.generateHood(DLHoodDataAI, ToontownGlobals.DonaldsDreamland)
+
+        # Sellbot HQ
+        self.zoneTable[ToontownGlobals.SellbotHQ] = (
+            (ToontownGlobals.SellbotHQ, 0, 1), (ToontownGlobals.SellbotFactoryExt, 0, 1)
+        )
+        self.generateHood(CSHoodDataAI, ToontownGlobals.SellbotHQ)
 
         # Chip 'n Dale's MiniGolf
         self.zoneTable[ToontownGlobals.GolfZone] = (
