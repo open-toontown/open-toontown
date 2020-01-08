@@ -1,6 +1,5 @@
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.PythonUtil import lineInfo
-import string
 from direct.directnotify import DirectNotifyGlobal
 
 class Entity(DirectObject):
@@ -60,7 +59,7 @@ class Entity(DirectObject):
         return self.getZoneEntity().getNodePath()
 
     def privGetSetter(self, attrib):
-        setFuncName = 'set%s%s' % (string.upper(attrib[0]), attrib[1:])
+        setFuncName = 'set%s%s' % (attrib[0].upper(), attrib[1:])
         if hasattr(self, setFuncName):
             return getattr(self, setFuncName)
         return None

@@ -1,4 +1,3 @@
-import string
 from direct.interval.IntervalGlobal import *
 from .Entity import Entity
 from pandac.PandaModules import Vec3
@@ -22,7 +21,7 @@ class PropSpinner(Entity):
             nameParts = name.split('_')
             axis = nameParts[2]
             rate = 0
-            neg = string.upper(nameParts[3][0]) == 'N'
+            neg = nameParts[3][0].upper() == 'N'
             if neg:
                 nameParts[3] = nameParts[3][1:]
             try:
