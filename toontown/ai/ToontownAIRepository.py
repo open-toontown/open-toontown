@@ -22,6 +22,7 @@ from toontown.hood.DLHoodDataAI import DLHoodDataAI
 from toontown.hood.GSHoodDataAI import GSHoodDataAI
 from toontown.hood.GZHoodDataAI import GZHoodDataAI
 from toontown.hood.MMHoodDataAI import MMHoodDataAI
+from toontown.hood.OZHoodDataAI import OZHoodDataAI
 from toontown.hood.TTHoodDataAI import TTHoodDataAI
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.quest.QuestManagerAI import QuestManagerAI
@@ -218,6 +219,12 @@ class ToontownAIRepository(ToontownInternalRepository):
             (ToontownGlobals.MapleStreet, 1, 1), (ToontownGlobals.OakStreet, 1, 1)
         )
         self.generateHood(DGHoodDataAI, ToontownGlobals.DaisyGardens)
+
+        # Chip 'n Dale's Acorn Acres
+        self.zoneTable[ToontownGlobals.OutdoorZone] = (
+            (ToontownGlobals.OutdoorZone, 1, 0),
+        )
+        self.generateHood(OZHoodDataAI, ToontownGlobals.OutdoorZone)
 
         # Goofy Speedway
         self.zoneTable[ToontownGlobals.GoofySpeedway] = (

@@ -4,13 +4,13 @@ from toontown.toonbase import ToontownGlobals
 from toontown.safezone import OZTreasurePlannerAI
 from toontown.racing import DistributedStartingBlockAI
 from pandac.PandaModules import *
+from libtoontown import *
 from toontown.racing.RaceGlobals import *
 from toontown.classicchars import DistributedGoofySpeedwayAI
 from toontown.safezone import DistributedPicnicBasketAI
 from toontown.classicchars import DistributedChipAI
 from toontown.classicchars import DistributedDaleAI
 from toontown.distributed import DistributedTimerAI
-import string
 from toontown.safezone import DistributedPicnicTableAI
 from toontown.safezone import DistributedChineseCheckersAI
 from toontown.safezone import DistributedCheckersAI
@@ -134,14 +134,14 @@ class OZHoodDataAI(HoodDataAI.HoodDataAI):
     def findAndCreateGameTables(self, dnaGroup, zoneId, area, overrideDNAZone = 0, type = 'game_table'):
         picnicTables = []
         picnicTableGroups = []
-        if isinstance(dnaGroup, DNAGroup) and string.find(dnaGroup.getName(), type) >= 0:
+        if isinstance(dnaGroup, DNAGroup) and dnaGroup.getName().find(type) >= 0:
             if type == 'game_table':
                 nameInfo = dnaGroup.getName().split('_')
                 pos = Point3(0, 0, 0)
                 hpr = Point3(0, 0, 0)
                 for i in range(dnaGroup.getNumChildren()):
                     childDnaGroup = dnaGroup.at(i)
-                    if string.find(childDnaGroup.getName(), 'game_table') >= 0:
+                    if childDnaGroup.getName().find('game_table') >= 0:
                         pos = childDnaGroup.getPos()
                         hpr = childDnaGroup.getHpr()
                         break
@@ -160,14 +160,14 @@ class OZHoodDataAI(HoodDataAI.HoodDataAI):
     def findAndCreatePicnicTables(self, dnaGroup, zoneId, area, overrideDNAZone = 0, type = 'picnic_table'):
         picnicTables = []
         picnicTableGroups = []
-        if isinstance(dnaGroup, DNAGroup) and string.find(dnaGroup.getName(), type) >= 0:
+        if isinstance(dnaGroup, DNAGroup) and dnaGroup.getName().find(type) >= 0:
             if type == 'picnic_table':
                 nameInfo = dnaGroup.getName().split('_')
                 pos = Point3(0, 0, 0)
                 hpr = Point3(0, 0, 0)
                 for i in range(dnaGroup.getNumChildren()):
                     childDnaGroup = dnaGroup.at(i)
-                    if string.find(childDnaGroup.getName(), 'picnic_table') >= 0:
+                    if childDnaGroup.getName().find('picnic_table') >= 0:
                         pos = childDnaGroup.getPos()
                         hpr = childDnaGroup.getHpr()
                         break
@@ -219,7 +219,7 @@ class OZHoodDataAI(HoodDataAI.HoodDataAI):
         startingBlocks = []
         for i in range(dnaRacingPadGroup.getNumChildren()):
             dnaGroup = dnaRacingPadGroup.at(i)
-            if string.find(dnaGroup.getName(), 'starting_block') >= 0:
+            if dnaGroup.getName().find('starting_block') >= 0:
                 padLocation = dnaGroup.getName().split('_')[2]
                 pos = dnaGroup.getPos()
                 hpr = dnaGroup.getHpr()
