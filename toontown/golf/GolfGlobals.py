@@ -398,7 +398,7 @@ for key in TrophyRequirements:
     NumTrophies += len(TrophyRequirements[key])
 
 NumCups = 3
-TrophiesPerCup = NumTrophies / NumCups
+TrophiesPerCup = NumTrophies // NumCups
 
 def calcTrophyListFromHistory(history):
     retval = []

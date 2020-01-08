@@ -6,6 +6,7 @@ from pandac.PandaModules import *
 from direct.fsm.FSM import FSM
 from toontown.ai.ToonBarrier import *
 from toontown.golf import GolfGlobals
+import functools
 INITIAL = 0
 EXITED = 1
 EXPECTED = 2
@@ -682,9 +683,9 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
                 return -1
 
         if GolfGlobals.TIME_TIE_BREAKER:
-            totalScores.sort(scoreCompareWithTime)
+            totalScores.sort(key=functools.cmp_to_key(scoreCompareWithTime))
         else:
-            totalScores.sort(scoreCompareNoTime)
+            totalScores.sort(key=functools.cmp_to_key(scoreCompareNoTime))
         curRank = 0
         oldScore = 0
         oldTime = 0
