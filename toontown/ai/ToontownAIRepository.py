@@ -255,6 +255,9 @@ class ToontownAIRepository(ToontownInternalRepository):
         else:
             phase = ToontownGlobals.streetPhaseMap[canonicalHoodId]
 
+        if 'outdoor_zone' in hood or 'golf_zone' in hood:
+            phase = '6'
+
         return 'phase_%s/dna/%s_%s.dna' % (phase, hood, canonicalZoneId)
 
     def lookupDNAFileName(self, dnaFileName):

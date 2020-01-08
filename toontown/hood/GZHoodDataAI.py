@@ -7,7 +7,6 @@ from libtoontown import *
 from toontown.racing.RaceGlobals import *
 from toontown.classicchars import DistributedGoofySpeedwayAI
 from toontown.safezone import DistributedGolfKartAI
-import string
 if __debug__:
     import pdb
 
@@ -109,7 +108,7 @@ class GZHoodDataAI(HoodDataAI.HoodDataAI):
     def findAndCreateGolfKarts(self, dnaGroup, zoneId, area, overrideDNAZone = 0, type = 'golf_kart'):
         golfKarts = []
         golfKartGroups = []
-        if isinstance(dnaGroup, DNAGroup) and string.find(dnaGroup.getName(), type) >= 0:
+        if isinstance(dnaGroup, DNAGroup) and dnaGroup.getName().find(type) >= 0:
             golfKartGroups.append(dnaGroup)
             if type == 'golf_kart':
                 nameInfo = dnaGroup.getName().split('_')
@@ -118,7 +117,7 @@ class GZHoodDataAI(HoodDataAI.HoodDataAI):
                 hpr = Point3(0, 0, 0)
                 for i in range(dnaGroup.getNumChildren()):
                     childDnaGroup = dnaGroup.at(i)
-                    if string.find(childDnaGroup.getName(), 'starting_block') >= 0:
+                    if childDnaGroup.getName().find('starting_block') >= 0:
                         padLocation = dnaGroup.getName().split('_')[2]
                         pos = childDnaGroup.getPos()
                         hpr = childDnaGroup.getHpr()
@@ -163,7 +162,7 @@ class GZHoodDataAI(HoodDataAI.HoodDataAI):
         startingBlocks = []
         for i in range(dnaRacingPadGroup.getNumChildren()):
             dnaGroup = dnaRacingPadGroup.at(i)
-            if string.find(dnaGroup.getName(), 'starting_block') >= 0:
+            if dnaGroup.getName().find('starting_block') >= 0:
                 padLocation = dnaGroup.getName().split('_')[2]
                 pos = dnaGroup.getPos()
                 hpr = dnaGroup.getHpr()
