@@ -18,7 +18,7 @@ class SpeedMonitor:
         taskMgr.remove(self._trackTask)
 
     def _allocToken(self):
-        return 'speedMonitorToken-%s-%s-%s' % (self._name, id(self), next(SpeedMonitor.SerialGen))
+        return 'speedMonitorToken-%s-%s-%s' % (self._name, id(self), SpeedMonitor.SerialGen.next())
 
     def addNodepath(self, nodepath):
         token = self._allocToken()

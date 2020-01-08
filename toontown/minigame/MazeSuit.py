@@ -8,6 +8,7 @@ from toontown.suit import Suit
 from toontown.suit import SuitDNA
 from toontown.toonbase import ToontownGlobals
 from . import MazeGameGlobals
+import functools
 
 class MazeSuit(DirectObject):
     COLL_SPHERE_NAME = 'MazeSuitSphere'
@@ -233,7 +234,7 @@ class MazeSuit(DirectObject):
             updateTics = suitList[i].getThinkTimestampTics(curTic)
             suitUpdates.extend(list(zip(updateTics, [i] * len(updateTics))))
 
-        suitUpdates.sort(lambda a, b: a[0] - b[0])
+        suitUpdates.sort(key=functools.cmp_to_key(lambda a, b: a[0] - b[0]))
         if len(suitUpdates) > 0:
             curTic = 0
             for i in range(len(suitUpdates)):

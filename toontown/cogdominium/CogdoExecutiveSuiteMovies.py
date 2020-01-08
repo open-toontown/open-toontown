@@ -50,8 +50,6 @@ class CogdoExecutiveSuiteIntro(CogdoGameMovie):
         for part in suit.getHeadParts():
             part.hide()
 
-        suit.loop('neutral')
-
     def load(self):
         self.notify.debug('load()')
         CogdoGameMovie.load(self)
