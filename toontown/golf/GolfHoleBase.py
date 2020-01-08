@@ -209,7 +209,7 @@ class GolfHoleBase:
         frameCount = 0
         lift = 0
         startTime = GolfGlobals.BALL_CONTACT_FRAME / 24
-        startFrame = startTime * self.FPS
+        startFrame = int(startTime * self.FPS)
         for frame in range(startFrame):
             self.simulate()
             self.setTimeIntoCycle(self.swingTime + float(frameCount) * self.DTAStep)
@@ -334,14 +334,13 @@ class GolfHoleBase:
             self.ballRayBody.setPosition(bp[0], bp[1], bp[2])
             self.skyRay.setPosition(bp[0], bp[1], 50.0)
 
-    def getOrderedContacts(self, count):
-        c0 = self.space.getContactId(count, 0)
-        c1 = self.space.getContactId(count, 1)
+    def getOrderedContacts(self, entry):
+        c0 = self.space.getCollideId(entry.getGeom1())
+        c1 = self.space.getCollideId(entry.getGeom2())
         if c0 > c1:
-            chold = c1
-            c1 = c0
-            c0 = chold
-        return (c0, c1)
+            return c1, c0
+        else:
+            return c0, c1
 
     def postStep(self):
         if self.canRender:
@@ -352,11 +351,9 @@ class GolfHoleBase:
         skyRayHitPos = None
         ballRayHitPos = None
         bp = self.curGolfBall().getPosition()
-        for count in range(self.colCount):
-            c0, c1 = self.getOrderedContacts(count)
-            x = self.space.getContactData(count * 3 + 0)
-            y = self.space.getContactData(count * 3 + 1)
-            z = self.space.getContactData(count * 3 + 2)
+        for entry in self.colEntries:
+            c0, c1 = self.getOrderedContacts(entry)
+            x, y, z = entry.getContactPoint(0)
             if c0 == GolfGlobals.OOB_RAY_COLLIDE_ID or c1 == GolfGlobals.OOB_RAY_COLLIDE_ID:
                 rayCount += 1
                 if self.canRender:
@@ -382,10 +379,9 @@ class GolfHoleBase:
                         self.greenIn = self.frame
                         self.llv = self.curGolfBall().getLinearVel()
                 elif GolfGlobals.BALL_COLLIDE_ID in [c0, c1] and GolfGlobals.HOLE_CUP_COLLIDE_ID in [c0, c1]:
-                    zCon = self.space.getContactData(count * 3 + 2)
                     self.ballTouchedHoleFrame = self.frame
                     ballUndersideZ = self.curGolfBall().getPosition()[2] - 0.05
-                    if zCon < ballUndersideZ:
+                    if z < ballUndersideZ:
                         if not self.ballInHoleFrame:
                             self.ballInHoleFrame = self.frame
                     if self.ballFirstTouchedHoleFrame < self.ballLastTouchedGrass:
@@ -406,9 +402,6 @@ class GolfHoleBase:
                     self.ballLastTouchedGrass = self.frame
             elif self.canRender:
                 if c0 == GolfGlobals.TOON_RAY_COLLIDE_ID or c1 == GolfGlobals.TOON_RAY_COLLIDE_ID:
-                    x = self.space.getContactData(count * 3 + 0)
-                    y = self.space.getContactData(count * 3 + 1)
-                    z = self.space.getContactData(count * 3 + 2)
                     self.toonRayCollisionCallback(x, y, z)
                 if GolfGlobals.CAMERA_RAY_COLLIDE_ID in [c0, c1] and GolfGlobals.WINDMILL_BASE_COLLIDE_ID in [c0, c1]:
                     self.translucentCurFrame.append(self.windmillFanNodePath)
