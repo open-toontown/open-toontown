@@ -20,6 +20,7 @@ from toontown.hood.DDHoodDataAI import DDHoodDataAI
 from toontown.hood.DGHoodDataAI import DGHoodDataAI
 from toontown.hood.DLHoodDataAI import DLHoodDataAI
 from toontown.hood.GSHoodDataAI import GSHoodDataAI
+from toontown.hood.GZHoodDataAI import GZHoodDataAI
 from toontown.hood.MMHoodDataAI import MMHoodDataAI
 from toontown.hood.TTHoodDataAI import TTHoodDataAI
 from toontown.pets.PetManagerAI import PetManagerAI
@@ -230,6 +231,12 @@ class ToontownAIRepository(ToontownInternalRepository):
             (ToontownGlobals.PajamaPlace, 1, 1)
         )
         self.generateHood(DLHoodDataAI, ToontownGlobals.DonaldsDreamland)
+
+        # Chip 'n Dale's MiniGolf
+        self.zoneTable[ToontownGlobals.GolfZone] = (
+            (ToontownGlobals.GolfZone, 1, 0),
+        )
+        self.generateHood(GZHoodDataAI, ToontownGlobals.GolfZone)
 
         # Welcome Valley zones
         self.welcomeValleyManager.createWelcomeValleyZones()
