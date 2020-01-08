@@ -146,7 +146,7 @@ class DistributedGolfKartAI(DistributedObjectAI.DistributedObjectAI):
 
     def clearFullNow(self, seatIndex):
         avId = self.seats[seatIndex]
-        if avId == 0:
+        if not avId:
             self.notify.warning('Clearing an empty seat index: ' + str(seatIndex) + ' ... Strange...')
         else:
             self.seats[seatIndex] = None
@@ -291,8 +291,9 @@ class DistributedGolfKartAI(DistributedObjectAI.DistributedObjectAI):
         if numPlayers > 0:
             for seatIndex in range(len(self.seats)):
                 avId = self.seats[seatIndex]
-                avIdList.append(avId)
-                self.clearFullNow(seatIndex)
+                if avId:
+                    avIdList.append(avId)
+                    self.clearFullNow(seatIndex)
 
             golfZone = GolfManagerAI.GolfManagerAI().readyGolfCourse(avIdList, self.golfCourse)
             for avId in avIdList:
