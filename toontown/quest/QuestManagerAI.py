@@ -27,3 +27,9 @@ class QuestManagerAI:
 
     def toonPlayedMinigame(self, toon, toons):
         pass  # TODO
+
+    def toonRecoveredCogSuitPart(self, av, zoneId, avList):
+        pass  # TODO
+
+    def toonDefeatedFactory(self, toon, factoryId, activeVictors):
+        pass  # TODO
