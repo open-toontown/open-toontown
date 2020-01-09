@@ -1,5 +1,4 @@
 from toontown.suit import SuitDNA
-import types
 from toontown.toonbase import TTLocalizer
 from direct.showbase import PythonUtil
 from otp.otpbase import OTPGlobals
@@ -516,6 +515,6 @@ def asNumber(bitstring):
 
 
 def dept2deptIndex(dept):
-    if type(dept) == bytes:
+    if type(dept) == str:
         dept = SuitDNA.suitDepts.index(dept)
     return dept
