@@ -3,8 +3,10 @@ from toontown.battle import BattlePlace
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from toontown.toonbase import ToontownGlobals
+from toontown.hood import ZoneUtil
 from pandac.PandaModules import *
 from libotp import *
+from libtoontown import *
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 
 class CogHQExterior(BattlePlace.BattlePlace):
@@ -74,6 +76,8 @@ class CogHQExterior(BattlePlace.BattlePlace):
         self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.nodeList, self.zoneId)
         how = requestStatus['how']
         self.fsm.request(how, [requestStatus])
+        if base.cr.astronSupport and self.zoneId != ToontownGlobals.BossbotHQ:
+            self.handleInterests()
 
     def exit(self):
         self.fsm.requestFinalState()
@@ -134,3 +138,27 @@ class CogHQExterior(BattlePlace.BattlePlace):
     def exitSquished(self):
         taskMgr.remove(base.localAvatar.uniqueName('finishSquishTask'))
         base.localAvatar.laffMeter.stop()
+
+    if config.GetBool('astron-support', True):
+        def handleInterests(self):
+            # First, we need to load the DNA file for this Cog HQ.
+            dnaStore = DNAStorage()
+            dnaFileName = self.genDNAFileName(self.zoneId)
+            loadDNAFileAI(dnaStore, dnaFileName)
+
+            # Next, we need to collect all of the visgroup zone IDs.
+            self.zoneVisDict = {}
+            for i in range(dnaStore.getNumDNAVisGroupsAI()):
+                groupFullName = dnaStore.getDNAVisGroupName(i)
+                visGroup = dnaStore.getDNAVisGroupAI(i)
+                visZoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
+                visZoneId = ZoneUtil.getTrueZoneId(visZoneId, self.zoneId)
+                visibles = []
+                for i in range(visGroup.getNumVisibles()):
+                    visibles.append(int(visGroup.getVisibleName(i)))
+
+                visibles.append(ZoneUtil.getBranchZone(visZoneId))
+                self.zoneVisDict[visZoneId] = visibles
+
+            # Finally, we want interest in all visgroups due to this being a Cog HQ.
+            base.cr.sendSetZoneMsg(self.zoneId, list(self.zoneVisDict.values())[0])
