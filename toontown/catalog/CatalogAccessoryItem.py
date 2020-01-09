@@ -3,7 +3,7 @@ from .CatalogAccessoryItemGlobals import *
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.toon import ToonDNA
-import random, types
+import random
 from direct.showbase import PythonUtil
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
@@ -231,7 +231,7 @@ class CatalogAccessoryItem(CatalogItem.CatalogItem):
     def applyColor(self, model, color):
         if model == None or color == None:
             return
-        if isinstance(color, bytes):
+        if isinstance(color, str):
             tex = loader.loadTexture(color)
             tex.setMinfilter(Texture.FTLinearMipmapLinear)
             tex.setMagfilter(Texture.FTLinear)

@@ -1,4 +1,3 @@
-import types
 import time
 from pandac.PandaModules import *
 from direct.distributed.ClockDelta import *
@@ -467,7 +466,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             dclass = self.dclassesByName[dclassName]
             pad.avatar.updateAllRequiredFields(dclass, di)
             gotData = 1
-        if isinstance(pad.func, bytes):
+        if isinstance(pad.func, str):
             messenger.send(pad.func, list((gotData, pad.avatar) + pad.args))
         else:
             pad.func(*(gotData, pad.avatar) + pad.args)

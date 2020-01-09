@@ -3,7 +3,6 @@ from direct.interval.IntervalGlobal import *
 from otp.otpbase import OTPLocalizer
 from toontown.toonbase import TTLocalizer
 from otp.otpbase import OTPLocalizer
-import types
 from direct.showbase import PythonUtil
 from pandac.PandaModules import *
 from libotp import *
@@ -563,7 +562,7 @@ class TTEmote(Emote.Emote):
         self.unlockStateChangeMsg()
 
     def disable(self, index, toon):
-        if isinstance(index, bytes):
+        if isinstance(index, str):
             index = OTPLocalizer.EmoteFuncDict[index]
         self.emoteFunc[index][1] = self.emoteFunc[index][1] + 1
         if toon is base.localAvatar:
@@ -571,7 +570,7 @@ class TTEmote(Emote.Emote):
                 self.emoteEnableStateChanged()
 
     def enable(self, index, toon):
-        if isinstance(index, bytes):
+        if isinstance(index, str):
             index = OTPLocalizer.EmoteFuncDict[index]
         self.emoteFunc[index][1] = self.emoteFunc[index][1] - 1
         if toon is base.localAvatar:

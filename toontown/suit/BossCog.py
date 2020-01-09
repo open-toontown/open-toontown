@@ -14,7 +14,6 @@ from . import SuitDNA
 from toontown.battle import BattleProps
 from direct.showbase.PythonUtil import Functor
 import string
-import types
 GenericModel = 'phase_9/models/char/bossCog'
 ModelDict = {'s': 'phase_9/models/char/sellbotBoss',
  'm': 'phase_10/models/char/cashbotBoss',
@@ -535,7 +534,7 @@ class BossCog(Avatar.Avatar):
             self.raised = 1
         elif anim == 'Fb_fall':
             ival = Parallel(ActorInterval(self, 'Fb_fall'), Sequence(SoundInterval(self.reelSfx, node=self), SoundInterval(self.deathSfx)))
-        elif isinstance(anim, bytes):
+        elif isinstance(anim, str):
             ival = ActorInterval(self, anim)
         else:
             ival = anim

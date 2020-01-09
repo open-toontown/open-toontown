@@ -25,7 +25,6 @@ from toontown.effects import DustCloud
 from direct.showbase.PythonUtil import Functor
 from toontown.distributed import DelayDelete
 from . import AccessoryGlobals
-import types
 import importlib
 import functools
 
@@ -2196,7 +2195,7 @@ class Toon(Avatar.Avatar, ToonHead):
             for partName, pieceNames in pieces:
                 part = self.getPart(partName, lodName)
                 if part:
-                    if type(pieceNames) == bytes:
+                    if type(pieceNames) == str:
                         pieceNames = (pieceNames,)
                     for pieceName in pieceNames:
                         npc = part.findAllMatches('**/%s;+s' % pieceName)

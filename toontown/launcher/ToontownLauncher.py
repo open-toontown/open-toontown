@@ -1,7 +1,6 @@
 import os
 import sys
 import time
-import types
 
 ltime = 1 and time.localtime()
 logSuffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000,  ltime[1], ltime[2],
@@ -152,7 +151,7 @@ class ToontownLauncher(LauncherBase):
         t = type(value)
         if t == int:
             WindowsRegistry.setIntValue(self.toontownRegistryKey, name, value)
-        elif t == bytes:
+        elif t == str:
             WindowsRegistry.setStringValue(self.toontownRegistryKey, name, value)
         else:
             self.notify.warning('setRegistry: Invalid type for registry value: ' + repr(value))

@@ -16,7 +16,6 @@ from direct.tkwidgets import Valuator
 from direct.tkwidgets import VectorWidgets
 from otp.level import LevelConstants
 from direct.directtools import DirectSession
-import types
 import Pmw
 
 class InGameEditor(AppShell):
@@ -376,7 +375,7 @@ class InGameEditor(AppShell):
         label = Label(frame, text=attribName, width=15, anchor=W, justify=LEFT)
         label.pack(side=LEFT, expand=0)
         for choice in params.get('choiceSet', []):
-            if type(choice) is bytes:
+            if type(choice) is str:
                 choiceStr = choice
             else:
                 choiceStr = repr(choice)
@@ -427,7 +426,7 @@ class InGameEditor(AppShell):
                 print('SENDING', value)
                 self.level.setAttribEdit(entId, attribName, value)
 
-            if type(choice) is bytes:
+            if type(choice) is str:
                 labelStr = choice
             else:
                 labelStr = repr(choice)

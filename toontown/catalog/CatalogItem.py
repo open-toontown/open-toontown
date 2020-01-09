@@ -5,7 +5,6 @@ from toontown.toonbase import ToontownGlobals
 from direct.interval.IntervalGlobal import *
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
-import types
 import sys
 CatalogReverseType = None
 CatalogItemVersion = 8
@@ -333,7 +332,7 @@ class CatalogItem:
             matches = model.findAllMatches(partName)
             if color == None:
                 matches.hide()
-            elif isinstance(color, bytes):
+            elif isinstance(color, str):
                 tex = loader.loadTexture(color)
                 tex.setMinfilter(Texture.FTLinearMipmapLinear)
                 tex.setMagfilter(Texture.FTLinear)
