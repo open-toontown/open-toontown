@@ -1,3 +1,4 @@
+from libotp import *
 from direct.interval.IntervalGlobal import *
 from .BattleProps import *
 from .BattleSounds import *
