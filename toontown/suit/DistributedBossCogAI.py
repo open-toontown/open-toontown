@@ -403,9 +403,9 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         random.shuffle(toons)
         numToons = min(len(toons), 8)
         if numToons < 4:
-            numToonsB = numToons / 2
+            numToonsB = numToons // 2
         else:
-            numToonsB = (numToons + random.choice([0, 1])) / 2
+            numToonsB = (numToons + random.choice([0, 1])) // 2
         teamA = toons[numToonsB:numToons]
         teamB = toons[:numToonsB]
         loose = toons[numToons:]
@@ -575,7 +575,7 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
         joinedReserves = []
         if len(self.reserveSuits) > 0 and len(activeSuits) < 4:
-            hpPercent = 100 - totalHp / totalMaxHp * 100.0
+            hpPercent = 100 - totalHp // totalMaxHp * 100.0
             for info in self.reserveSuits:
                 if info[1] <= hpPercent and len(activeSuits) < 4:
                     suits.append(info[0])
