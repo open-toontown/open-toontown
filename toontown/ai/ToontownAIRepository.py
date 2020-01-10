@@ -19,8 +19,8 @@ from toontown.distributed.ToontownDistrictStatsAI import ToontownDistrictStatsAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 from toontown.hood import ZoneUtil
 from toontown.hood.BRHoodDataAI import BRHoodDataAI
-from toontown.hood.CashbotHQDataAI import CashbotHQDataAI
 from toontown.hood.CSHoodDataAI import CSHoodDataAI
+from toontown.hood.CashbotHQDataAI import CashbotHQDataAI
 from toontown.hood.DDHoodDataAI import DDHoodDataAI
 from toontown.hood.DGHoodDataAI import DGHoodDataAI
 from toontown.hood.DLHoodDataAI import DLHoodDataAI
