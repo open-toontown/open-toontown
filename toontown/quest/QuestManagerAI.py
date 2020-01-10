@@ -33,3 +33,6 @@ class QuestManagerAI:
 
     def toonDefeatedFactory(self, toon, factoryId, activeVictors):
         pass  # TODO
+
+    def toonDefeatedMint(self, toon, mintId, activeVictors):
+        pass  # TODO
