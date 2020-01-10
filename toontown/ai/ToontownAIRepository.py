@@ -12,6 +12,7 @@ from toontown.building.DistributedTrophyMgrAI import DistributedTrophyMgrAI
 from toontown.catalog.CatalogManagerAI import CatalogManagerAI
 from toontown.coghq.CogSuitManagerAI import CogSuitManagerAI
 from toontown.coghq.FactoryManagerAI import FactoryManagerAI
+from toontown.coghq.LawOfficeManagerAI import LawOfficeManagerAI
 from toontown.coghq.MintManagerAI import MintManagerAI
 from toontown.coghq.PromotionManagerAI import PromotionManagerAI
 from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
@@ -26,6 +27,7 @@ from toontown.hood.DGHoodDataAI import DGHoodDataAI
 from toontown.hood.DLHoodDataAI import DLHoodDataAI
 from toontown.hood.GSHoodDataAI import GSHoodDataAI
 from toontown.hood.GZHoodDataAI import GZHoodDataAI
+from toontown.hood.LawbotHQDataAI import LawbotHQDataAI
 from toontown.hood.MMHoodDataAI import MMHoodDataAI
 from toontown.hood.OZHoodDataAI import OZHoodDataAI
 from toontown.hood.TTHoodDataAI import TTHoodDataAI
@@ -69,6 +71,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.raceMgr = None
         self.factoryMgr = None
         self.mintMgr = None
+        self.lawMgr = None
         self.cogSuitMgr = None
         self.timeManager = None
         self.newsManager = None
@@ -145,6 +148,9 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         # Create our mint manager...
         self.mintMgr = MintManagerAI(self)
+
+        # Create our law office manager...
+        self.lawMgr = LawOfficeManagerAI(self)
 
         # Create our Cog suit manager...
         self.cogSuitMgr = CogSuitManagerAI(self)
@@ -267,6 +273,12 @@ class ToontownAIRepository(ToontownInternalRepository):
             (ToontownGlobals.CashbotHQ, 0, 1),
         )
         self.generateHood(CashbotHQDataAI, ToontownGlobals.CashbotHQ)
+
+        # Lawbot HQ
+        self.zoneTable[ToontownGlobals.LawbotHQ] = (
+            (ToontownGlobals.LawbotHQ, 0, 1),
+        )
+        self.generateHood(LawbotHQDataAI, ToontownGlobals.LawbotHQ)
 
         # Chip 'n Dale's MiniGolf
         self.zoneTable[ToontownGlobals.GolfZone] = (
