@@ -430,5 +430,8 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         self.zoneAllocator.free(zone)
 
+    def trueUniqueName(self, idString):
+        return self.uniqueName(idString)
+
     def sendQueryToonMaxHp(self, avId, callback):
         pass  # TODO?

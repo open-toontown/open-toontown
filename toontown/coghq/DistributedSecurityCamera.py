@@ -314,9 +314,9 @@ class DistributedSecurityCamera(BasicEntities.DistributedNodePathEntity):
         self.trackShape = []
         wideX = 1
         wideY = 1
-        self.trackShape = getCirclePoints(5 + draw * 12.0, 0.0, 0.0, self.radius, wideX, wideY)
+        self.trackShape = getCirclePoints(int(5 + draw * 12.0), 0.0, 0.0, self.radius, wideX, wideY)
         self.trackShapeFloor = []
-        self.trackShapeFloor = getCirclePoints(5 + draw * 50.0, 0.0, 0.0, self.radius, wideX, wideY)
+        self.trackShapeFloor = getCirclePoints(int(5 + draw * 50.0), 0.0, 0.0, self.radius, wideX, wideY)
         if self.trackBeamGN:
             self.trackBeamGN.removeAllGeoms()
         if self.trackFloorGN:

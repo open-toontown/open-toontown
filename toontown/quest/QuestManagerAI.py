@@ -36,3 +36,6 @@ class QuestManagerAI:
 
     def toonDefeatedMint(self, toon, mintId, activeVictors):
         pass  # TODO
+
+    def toonDefeatedStage(self, toon, stageId, activeVictors):
+        pass  # TODO
