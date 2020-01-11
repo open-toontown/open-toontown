@@ -513,7 +513,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
                 toonLevel = toon.getNumPromotions(self.dept)
                 totalCogSuitLevels += toonLevel
                 totalNumToons += 1
-                if toon.cogLevels > highestCogSuitLevel:
+                if toonLevel > highestCogSuitLevel:
                     highestCogSuitLevel = toonLevel
 
         if not totalNumToons:
