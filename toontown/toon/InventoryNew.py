@@ -327,9 +327,9 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
                 credit = min(credit, maxCredit)
             credit = int(credit * 10 + 0.5)
             if credit % 10 == 0:
-                credit /= 10
+                credit //= 10
             else:
-                credit /= 10.0
+                credit //= 10.0
         if self.detailCredit == credit:
             return
         if credit != None:
