@@ -6,6 +6,7 @@ from direct.showbase.PythonUtil import Functor
 from direct.showbase.PythonUtil import StackTrace
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
+from libotp import *
 from direct.fsm import FSM
 from direct.fsm import ClassicFSM
 from direct.fsm import State
@@ -27,6 +28,7 @@ from toontown.toon import NPCToons
 from direct.task import Task
 import random
 import math
+import functools
 from toontown.coghq import CogDisguiseGlobals
 from toontown.building import ElevatorConstants
 from toontown.toonbase import ToontownTimer
@@ -88,7 +90,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         self.notify.debug('----- announceGenerate')
         DistributedBossCog.DistributedBossCog.announceGenerate(self)
         self.setName(TTLocalizer.LawbotBossName)
-        nameInfo = TTLocalizer.BossCogNameWithDept % {'name': self.name,
+        nameInfo = TTLocalizer.BossCogNameWithDept % {'name': self._name,
          'dept': SuitDNA.getDeptFullname(self.style.dept)}
         self.setDisplayName(nameInfo)
         self.piesRestockSfx = loader.loadSfx('phase_5/audio/sfx/LB_receive_evidence.mp3')
@@ -1348,7 +1350,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
 
         newCollisionNode.setIntoCollideMask(newCollideMask)
         threshold = 0.1
-        planes.sort(lambda p1, p2: p1.compareTo(p2, threshold))
+        planes.sort(key=functools.cmp_to_key(lambda p1, p2: p1.compareTo(p2, threshold)))
         lastPlane = None
         for plane in planes:
             if lastPlane == None or plane.compareTo(lastPlane, threshold) != 0:
@@ -1586,7 +1588,7 @@ class DistributedLawbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         return bossTrack
 
     def __makeWitnessToon(self):
-        dnaNetString = 't\x1b\x00\x01\x01\x00\x03\x00\x03\x01\x10\x13\x00\x13\x13'
+        dnaNetString = b't\x1b\x00\x01\x01\x00\x03\x00\x03\x01\x10\x13\x00\x13\x13'
         npc = Toon.Toon()
         npc.setDNAString(dnaNetString)
         npc.setName(TTLocalizer.WitnessToonName)
