@@ -36,6 +36,7 @@ class MoleHill(NodePath):
         self.moleHead.reparentTo(self.mole)
         moleColName = 'moleCol-%d-%s' % (self.moleField.doId, self.index)
         moleSphere = CollisionSphere(0, 0, 0, 1.0)
+        moleSphere.setTangible(0)
         collNode = CollisionNode(moleColName)
         collNode.setIntoCollideMask(ToontownGlobals.WallBitmask)
         collNode.addSolid(moleSphere)
