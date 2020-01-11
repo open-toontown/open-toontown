@@ -11,6 +11,7 @@ from toontown.ai.WelcomeValleyManagerAI import WelcomeValleyManagerAI
 from toontown.building.DistributedTrophyMgrAI import DistributedTrophyMgrAI
 from toontown.catalog.CatalogManagerAI import CatalogManagerAI
 from toontown.coghq.CogSuitManagerAI import CogSuitManagerAI
+from toontown.coghq.CountryClubManagerAI import CountryClubManagerAI
 from toontown.coghq.FactoryManagerAI import FactoryManagerAI
 from toontown.coghq.LawOfficeManagerAI import LawOfficeManagerAI
 from toontown.coghq.MintManagerAI import MintManagerAI
@@ -20,6 +21,7 @@ from toontown.distributed.ToontownDistrictStatsAI import ToontownDistrictStatsAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 from toontown.hood import ZoneUtil
 from toontown.hood.BRHoodDataAI import BRHoodDataAI
+from toontown.hood.BossbotHQDataAI import BossbotHQDataAI
 from toontown.hood.CSHoodDataAI import CSHoodDataAI
 from toontown.hood.CashbotHQDataAI import CashbotHQDataAI
 from toontown.hood.DDHoodDataAI import DDHoodDataAI
@@ -69,6 +71,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.promotionMgr = None
         self.cogPageManager = None
         self.raceMgr = None
+        self.countryClubMgr = None
         self.factoryMgr = None
         self.mintMgr = None
         self.lawMgr = None
@@ -142,6 +145,9 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         # Create our race manager...
         self.raceMgr = RaceManagerAI(self)
+
+        # Create our country club manager...
+        self.countryClubMgr = CountryClubManagerAI(self)
 
         # Create our factory manager...
         self.factoryMgr = FactoryManagerAI(self)
@@ -261,6 +267,12 @@ class ToontownAIRepository(ToontownInternalRepository):
             (ToontownGlobals.PajamaPlace, 1, 1)
         )
         self.generateHood(DLHoodDataAI, ToontownGlobals.DonaldsDreamland)
+
+        # Bossbot HQ
+        self.zoneTable[ToontownGlobals.BossbotHQ] = (
+            (ToontownGlobals.BossbotHQ, 0, 0),
+        )
+        self.generateHood(BossbotHQDataAI, ToontownGlobals.BossbotHQ)
 
         # Sellbot HQ
         self.zoneTable[ToontownGlobals.SellbotHQ] = (
