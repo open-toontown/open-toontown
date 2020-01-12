@@ -101,7 +101,7 @@ def getItemText(textId):
     value = resistanceDict[menuIndex]['values'][itemIndex]
     text = resistanceDict[menuIndex]['itemText']
     if menuIndex is RESISTANCE_TOONUP:
-        if value is -1:
+        if value == -1:
             value = TTL.ResistanceToonupItemMax
     elif menuIndex is RESISTANCE_RESTOCK:
         value = resistanceDict[menuIndex]['extra'][itemIndex]

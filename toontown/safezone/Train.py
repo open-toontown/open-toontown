@@ -110,7 +110,7 @@ class Train(DirectObject):
         self.__getCars()
         trainShouldStop = random.randrange(0, 4)
         nextRun = Sequence(Func(self.__showStart))
-        if trainShouldStop is 0:
+        if trainShouldStop == 0:
             waitTime = 3
             totalTime = random.randrange(4, (self.MarkDelta - waitTime) / 2)
             sfxStopTime = 4.3

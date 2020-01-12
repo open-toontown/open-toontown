@@ -20,7 +20,7 @@ def makePanel(toon, showToonName):
     panel.initialiseoptions(RewardPanel)
     panel.setTransparency(1)
     panel.hide()
-    if showToonName is 1:
+    if showToonName == 1:
         panel.avNameLabel = DirectLabel(parent=panel, relief=None, pos=Vec3(0, 0, 0.3), text=toon.getName(), text_scale=0.08)
     return panel
 
