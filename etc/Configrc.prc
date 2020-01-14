@@ -49,7 +49,7 @@ merge-lod-bundles 0
 early-event-sphere 1
 accept-clock-skew 1
 extra-ssl-handshake-time 20.0
-audio-library-name null
+audio-library-name p3openal_audio
 cursor-filename phase_3/models/gui/toonmono.cur
 audio-sfx-active #t
 audio-music-active #t
