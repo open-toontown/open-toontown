@@ -35,7 +35,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
         self.golfSpotSmoother.setSmoothMode(SmoothMover.SMOn)
         self.smoothStarted = 0
         self.__broadcastPeriod = 0.2
-        if self.index > len(self.positions):
+        if self.index and self.index > len(self.positions):
             self.notify.error('Invalid index %d' % index)
         self.fadeTrack = None
         self.setupPowerBar()

@@ -315,6 +315,8 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
             foodModel.setScale(newScale)
 
         def foodDetach(self = self, diner = diner):
+            if not diner.getRightHand().getNumChildren():
+                return
             foodModel = diner.getRightHand().getChild(0)
             (foodModel.reparentTo(serviceLoc),)
             (foodModel.setPosHpr(0, 0, 0, 0, 0, 0),)
