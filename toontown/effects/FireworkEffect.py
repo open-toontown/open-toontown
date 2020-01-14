@@ -21,13 +21,13 @@ from toontown.effects.SkullBurst import SkullBurst
 from toontown.effects.SkullFlash import SkullFlash
 from toontown.effects.TrailExplosion import TrailExplosion
 from toontown.effects.IceCream import IceCream
-trailSfxNames = ['phase_4/audio/sfx/firework_whistle_01.mp3', 'phase_4/audio/sfx/firework_whistle_02.mp3']
-burstSfxNames = ['phase_4/audio/sfx/firework_explosion_01.mp3',
- 'phase_4/audio/sfx/firework_explosion_02.mp3',
- 'phase_4/audio/sfx/firework_explosion_03.mp3',
- 'phase_4/audio/sfx/firework_distance_01.mp3',
- 'phase_4/audio/sfx/firework_distance_02.mp3',
- 'phase_4/audio/sfx/firework_distance_03.mp3']
+trailSfxNames = ['phase_4/audio/sfx/firework_whistle_01.ogg', 'phase_4/audio/sfx/firework_whistle_02.ogg']
+burstSfxNames = ['phase_4/audio/sfx/firework_explosion_01.ogg',
+ 'phase_4/audio/sfx/firework_explosion_02.ogg',
+ 'phase_4/audio/sfx/firework_explosion_03.ogg',
+ 'phase_4/audio/sfx/firework_distance_01.ogg',
+ 'phase_4/audio/sfx/firework_distance_02.ogg',
+ 'phase_4/audio/sfx/firework_distance_03.ogg']
 
 class FireworkEffect(NodePath):
 

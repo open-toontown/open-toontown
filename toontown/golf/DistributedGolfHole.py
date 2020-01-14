@@ -302,24 +302,24 @@ class DistributedGolfHole(DistributedPhysicsWorld.DistributedPhysicsWorld, FSM, 
         self.hardSurfaceNodePath.flattenStrong()
 
     def loadSounds(self):
-        self.hitBallSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Hit_Ball.mp3')
-        self.holeInOneSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Hole_In_One.mp3')
-        self.holeInTwoPlusSfx = loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_fall.mp3')
-        self.ballGoesInStartSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Ball_Goes_In_Start.wav')
-        self.ballGoesInLoopSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Ball_Goes_In_Loop.wav')
-        self.ballGoesToRestSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Ball_Rest_In_Cup.mp3')
-        self.kickedOutSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Sad_Noise_Kicked_Off_Hole.mp3')
+        self.hitBallSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Hit_Ball.ogg')
+        self.holeInOneSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Hole_In_One.ogg')
+        self.holeInTwoPlusSfx = loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_fall.ogg')
+        self.ballGoesInStartSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Ball_Goes_In_Start.ogg')
+        self.ballGoesInLoopSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Ball_Goes_In_Loop.ogg')
+        self.ballGoesToRestSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Ball_Rest_In_Cup.ogg')
+        self.kickedOutSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Sad_Noise_Kicked_Off_Hole.ogg')
         self.crowdBuildupSfx = []
         self.crowdApplauseSfx = []
         self.crowdMissSfx = []
         for i in range(4):
-            self.crowdBuildupSfx.append(loader.loadSfx('phase_6/audio/sfx/Golf_Crowd_Buildup.mp3'))
-            self.crowdApplauseSfx.append(loader.loadSfx('phase_6/audio/sfx/Golf_Crowd_Applause.mp3'))
-            self.crowdMissSfx.append(loader.loadSfx('phase_6/audio/sfx/Golf_Crowd_Miss.mp3'))
+            self.crowdBuildupSfx.append(loader.loadSfx('phase_6/audio/sfx/Golf_Crowd_Buildup.ogg'))
+            self.crowdApplauseSfx.append(loader.loadSfx('phase_6/audio/sfx/Golf_Crowd_Applause.ogg'))
+            self.crowdMissSfx.append(loader.loadSfx('phase_6/audio/sfx/Golf_Crowd_Miss.ogg'))
 
-        self.bumpHardSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Hit_Barrier_3.mp3')
-        self.bumpMoverSfx = loader.loadSfx('phase_4/audio/sfx/Golf_Hit_Barrier_2.mp3')
-        self.bumpWindmillSfx = loader.loadSfx('phase_4/audio/sfx/Golf_Hit_Barrier_1.mp3')
+        self.bumpHardSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Hit_Barrier_3.ogg')
+        self.bumpMoverSfx = loader.loadSfx('phase_4/audio/sfx/Golf_Hit_Barrier_2.ogg')
+        self.bumpWindmillSfx = loader.loadSfx('phase_4/audio/sfx/Golf_Hit_Barrier_1.ogg')
 
     def setup(self):
         self.notify.debug('setup golf hole')

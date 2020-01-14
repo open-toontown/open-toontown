@@ -266,7 +266,7 @@ class DistributedTargetGame(DistributedMinigame):
          score3Label,
          score4Label]
         self.scoreboard.hide()
-        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_Diving.mid')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_Diving.ogg')
         self.sndAmbience = None
         self.skyListLow = []
         self.skyListMid = []
@@ -360,25 +360,25 @@ class DistributedTargetGame(DistributedMinigame):
             self.umbrella.instanceTo(hand)
 
         self.remoteUmbrellas = {}
-        self.addSound('wind1', 'target_cloud.mp3', 'phase_4/audio/sfx/')
-        self.addSound('trampoline', 'target_trampoline_2.mp3', 'phase_4/audio/sfx/')
-        self.addSound('launch', 'target_launch.mp3', 'phase_4/audio/sfx/')
-        self.addSound('miss', 'target_Lose.mp3', 'phase_4/audio/sfx/')
-        self.addSound('score', 'target_happydance.mp3', 'phase_4/audio/sfx/')
-        self.addSound('impact', 'target_impact_grunt1.mp3', 'phase_4/audio/sfx/')
-        self.addSound('umbrella', 'target_chute.mp3', 'phase_4/audio/sfx/')
-        self.addSound('bounce', 'target_impact_only.mp3', 'phase_4/audio/sfx/')
-        self.flySound = loader.loadSfx('phase_4/audio/sfx/target_wind_fly_loop.wav')
+        self.addSound('wind1', 'target_cloud.ogg', 'phase_4/audio/sfx/')
+        self.addSound('trampoline', 'target_trampoline_2.ogg', 'phase_4/audio/sfx/')
+        self.addSound('launch', 'target_launch.ogg', 'phase_4/audio/sfx/')
+        self.addSound('miss', 'target_Lose.ogg', 'phase_4/audio/sfx/')
+        self.addSound('score', 'target_happydance.ogg', 'phase_4/audio/sfx/')
+        self.addSound('impact', 'target_impact_grunt1.ogg', 'phase_4/audio/sfx/')
+        self.addSound('umbrella', 'target_chute.ogg', 'phase_4/audio/sfx/')
+        self.addSound('bounce', 'target_impact_only.ogg', 'phase_4/audio/sfx/')
+        self.flySound = loader.loadSfx('phase_4/audio/sfx/target_wind_fly_loop.ogg')
         self.flySound.setVolume(0.0)
         self.flySound.setPlayRate(1.0)
         self.flySound.setLoop(True)
         self.flySound.play()
-        self.rubberSound = loader.loadSfx('phase_4/audio/sfx/target_stretching_aim_loop.mp3')
+        self.rubberSound = loader.loadSfx('phase_4/audio/sfx/target_stretching_aim_loop.ogg')
         self.rubberSound.setVolume(0.0)
         self.rubberSound.setPlayRate(1.0)
         self.rubberSound.setLoop(True)
         self.rubberSound.play()
-        self.flutterSound = loader.loadSfx('phase_4/audio/sfx/target_wind_float_clothloop.wav')
+        self.flutterSound = loader.loadSfx('phase_4/audio/sfx/target_wind_float_clothloop.ogg')
         self.flutterSound.setVolume(1.0)
         self.flutterSound.setPlayRate(1.0)
         self.flutterSound.setLoop(True)

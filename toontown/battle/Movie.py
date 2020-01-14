@@ -357,9 +357,9 @@ class Movie(DirectObject.DirectObject):
         self.tutorialTom.setName(TTLocalizer.NPCToonNames[20000])
         self.tutorialTom.uniqueName = uniqueName
         if base.config.GetString('language', 'english') == 'japanese':
-            self.tomDialogue03 = base.loader.loadSfx('phase_3.5/audio/dial/CC_tom_movie_tutorial_reward01.mp3')
-            self.tomDialogue04 = base.loader.loadSfx('phase_3.5/audio/dial/CC_tom_movie_tutorial_reward02.mp3')
-            self.tomDialogue05 = base.loader.loadSfx('phase_3.5/audio/dial/CC_tom_movie_tutorial_reward03.mp3')
+            self.tomDialogue03 = base.loader.loadSfx('phase_3.5/audio/dial/CC_tom_movie_tutorial_reward01.ogg')
+            self.tomDialogue04 = base.loader.loadSfx('phase_3.5/audio/dial/CC_tom_movie_tutorial_reward02.ogg')
+            self.tomDialogue05 = base.loader.loadSfx('phase_3.5/audio/dial/CC_tom_movie_tutorial_reward03.ogg')
             self.musicVolume = base.config.GetFloat('tutorial-music-volume', 0.5)
         else:
             self.tomDialogue03 = None

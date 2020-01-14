@@ -56,9 +56,9 @@ class DistributedLaserField(BattleBlocker.BattleBlocker):
         self.gridGame = 'some game'
         self.gridGameText = ' '
         self.activeLF = 1
-        self.successSound = loader.loadSfx('phase_11/audio/sfx/LB_capacitor_discharge_3.mp3')
+        self.successSound = loader.loadSfx('phase_11/audio/sfx/LB_capacitor_discharge_3.ogg')
         self.successTrack = Parallel(SoundInterval(self.successSound, node=self, volume=0.8))
-        self.failSound = loader.loadSfx('phase_11/audio/sfx/LB_sparks_1.mp3')
+        self.failSound = loader.loadSfx('phase_11/audio/sfx/LB_sparks_1.ogg')
         self.failTrack = Parallel(SoundInterval(self.failSound, node=self, volume=0.8))
         return
 

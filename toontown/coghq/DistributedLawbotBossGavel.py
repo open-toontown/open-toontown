@@ -36,7 +36,7 @@ class DistributedLawbotBossGavel(DistributedObject.DistributedObject, FSM.FSM):
         self.name = 'gavel-%s' % self.doId
         self.loadModel(self.modelPath, self.modelFindString)
         self.nodePath.wrtReparentTo(render)
-        self.gavelSfx = loader.loadSfx('phase_11/audio/sfx/LB_gavel.mp3')
+        self.gavelSfx = loader.loadSfx('phase_11/audio/sfx/LB_gavel.ogg')
         tempTuple = ToontownGlobals.LawbotBossGavelPosHprs[self.index]
         self.nodePath.setPosHpr(*tempTuple)
         self.origHpr = Point3(tempTuple[3], tempTuple[4], tempTuple[5])

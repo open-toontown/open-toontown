@@ -102,11 +102,11 @@ class RaceGUI:
         self.raceTimeDelta = 0
         self.raceModeReady = False
         self.resultModeReady = False
-        self.gagCycleSound = base.loader.loadSfx('phase_3.5/audio/sfx/tick_counter.mp3')
+        self.gagCycleSound = base.loader.loadSfx('phase_3.5/audio/sfx/tick_counter.ogg')
         if hasattr(self.gagCycleSound, 'setPlayRate'):
             self.gagCycleSound.setPlayRate(0.2)
         self.gagCycleSound.setLoop(1)
-        self.gagAcquireSound = base.loader.loadSfx('phase_6/audio/sfx/SZ_MM_gliss.mp3')
+        self.gagAcquireSound = base.loader.loadSfx('phase_6/audio/sfx/SZ_MM_gliss.ogg')
         self.disable()
         return
 

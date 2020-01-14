@@ -118,7 +118,7 @@ class TwoDEnemy(DirectObject):
                 self.propTrack = Sequence(ActorInterval(self.suit.prop, 'propeller', startFrame=8, endFrame=25, playRate=2.0))
                 self.animTrack = Sequence(ActorInterval(self.suit, 'landing', startFrame=8, endFrame=28, playRate=0.5), ActorInterval(self.suit, 'landing', startFrame=8, endFrame=28, playRate=-0.5))
                 self.moveIval = Sequence(Func(setIsGoingUp, True), getForwardIval('easeInOut'), Func(setIsGoingUp, False), getBackwardIval('easeInOut'))
-                self.suitSound = base.loader.loadSfx('phase_4/audio/sfx/TB_propeller.wav')
+                self.suitSound = base.loader.loadSfx('phase_4/audio/sfx/TB_propeller.ogg')
             else:
                 self.isMovingLeftRight = True
                 self.moveIval = Sequence(Func(self.setHeading, finalPos, initPos), getForwardIval('noBlend'), Func(self.setHeading, initPos, finalPos), getBackwardIval('noBlend'))
@@ -229,8 +229,8 @@ class TwoDEnemy(DirectObject):
         self.collNodePath.reparentTo(self.deathSuit)
         treasureSpawnPoint = Point3(self.suit.getX(), self.suit.getY(), self.suit.getZ() + self.suit.height / 2.0)
         gearPoint = Point3(0, 0, self.suit.height / 2.0 + 2.0)
-        spinningSound = base.loader.loadSfx('phase_3.5/audio/sfx/Cog_Death.mp3')
-        deathSound = base.loader.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.mp3')
+        spinningSound = base.loader.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
+        deathSound = base.loader.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.ogg')
         smallGears = BattleParticles.createParticleEffect(file='gearExplosionSmall')
         singleGear = BattleParticles.createParticleEffect('GearExplosion', numParticles=1)
         smallGearExplosion = BattleParticles.createParticleEffect('GearExplosion', numParticles=10)

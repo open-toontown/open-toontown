@@ -51,7 +51,7 @@ StomperProps = [{'path': '**/stomper_GRP_01/stomper_cylinder_01',
  {'path': '**/stomper_GRP_12/stomper_cylinder_034',
   'motion': 'up'}]
 StomperHaltTime = 7.3
-StomperSound = 'phase_9/audio/sfx/CHQ_FACT_stomper_raise.mp3'
+StomperSound = 'phase_9/audio/sfx/CHQ_FACT_stomper_raise.ogg'
 MaxToons = 4
 BarrelRoomModel = 'phase_5/models/cogdominium/tt_m_ara_cbr_barrelRoom'
 BarrelRoomModelPos = (0, 0, 0)
@@ -89,8 +89,8 @@ BarrelCollParams = (0,
  0,
  2,
  2.0)
-BarrelBumpSound = 'phase_4/audio/sfx/Golf_Hit_Barrier_2.mp3'
-BarrelGrabSound = 'phase_4/audio/sfx/SZ_DD_treasure.mp3'
+BarrelBumpSound = 'phase_4/audio/sfx/Golf_Hit_Barrier_2.ogg'
+BarrelGrabSound = 'phase_4/audio/sfx/SZ_DD_treasure.ogg'
 StateHidden, StateAvailable, StateUsed, StateCrushed = list(range(4))
 
 def numBarrels():

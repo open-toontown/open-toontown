@@ -129,10 +129,10 @@ class DistributedLawbotCannon(DistributedObject.DistributedObject):
         self.cannon.reparentTo(self.nodePath)
         self.kartColNode = CollisionNode(self.uniqueName('KartColNode'))
         self.kartNode = self.nodePath.attachNewNode(self.kartColNode)
-        self.sndCannonMove = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.mp3')
-        self.sndCannonFire = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.mp3')
-        self.sndHitGround = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_hit_dirt.mp3')
-        self.sndHitChair = base.loader.loadSfx('phase_11/audio/sfx/LB_toon_jury.mp3')
+        self.sndCannonMove = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.ogg')
+        self.sndCannonFire = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.ogg')
+        self.sndHitGround = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_hit_dirt.ogg')
+        self.sndHitChair = base.loader.loadSfx('phase_11/audio/sfx/LB_toon_jury.ogg')
         self.cannon.hide()
         self.flashingLabel = None
         return

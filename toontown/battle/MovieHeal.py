@@ -15,7 +15,7 @@ from . import MovieNPCSOS
 from toontown.effects import Splash
 from direct.task import Task
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieHeal')
-soundFiles = ('AA_heal_tickle.mp3', 'AA_heal_telljoke.mp3', 'AA_heal_smooch.mp3', 'AA_heal_happydance.mp3', 'AA_heal_pixiedust.mp3', 'AA_heal_juggle.mp3', 'AA_heal_High_Dive.mp3')
+soundFiles = ('AA_heal_tickle.ogg', 'AA_heal_telljoke.ogg', 'AA_heal_smooch.ogg', 'AA_heal_happydance.ogg', 'AA_heal_pixiedust.ogg', 'AA_heal_juggle.ogg', 'AA_heal_High_Dive.ogg')
 healPos = Point3(0, 0, 0)
 healHpr = Vec3(180.0, 0, 0)
 runHealTime = 1.0

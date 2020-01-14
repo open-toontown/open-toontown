@@ -295,7 +295,7 @@ class DistributedFishingSpot(DistributedObject.DistributedObject):
             self.ripples.setScale(0.4)
             self.ripples.hide()
         if self.splashSounds == None:
-            self.splashSounds = (base.loader.loadSfx('phase_4/audio/sfx/TT_splash1.mp3'), base.loader.loadSfx('phase_4/audio/sfx/TT_splash2.mp3'))
+            self.splashSounds = (base.loader.loadSfx('phase_4/audio/sfx/TT_splash1.ogg'), base.loader.loadSfx('phase_4/audio/sfx/TT_splash2.ogg'))
         return
 
     def __placeAvatar(self):

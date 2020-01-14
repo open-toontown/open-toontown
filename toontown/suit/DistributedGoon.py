@@ -41,9 +41,9 @@ class DistributedGoon(DistributedCrushableEntity.DistributedCrushableEntity, Goo
         self.animMultiplier = 1.0
         self.isDead = 0
         self.isStunned = 0
-        self.collapseSound = loader.loadSfx('phase_9/audio/sfx/CHQ_GOON_hunker_down.mp3')
-        self.recoverSound = loader.loadSfx('phase_9/audio/sfx/CHQ_GOON_rattle_shake.mp3')
-        self.attackSound = loader.loadSfx('phase_9/audio/sfx/CHQ_GOON_tractor_beam_alarmed.mp3')
+        self.collapseSound = loader.loadSfx('phase_9/audio/sfx/CHQ_GOON_hunker_down.ogg')
+        self.recoverSound = loader.loadSfx('phase_9/audio/sfx/CHQ_GOON_rattle_shake.ogg')
+        self.attackSound = loader.loadSfx('phase_9/audio/sfx/CHQ_GOON_tractor_beam_alarmed.ogg')
         return
 
     def announceGenerate(self):

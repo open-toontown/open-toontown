@@ -383,7 +383,7 @@ class DistributedPicnicBasket(DistributedObject.DistributedObject):
         basketTrack = Sequence(
             Func(self.basket.show),
             SoundInterval(
-                globalBattleSoundCache.getSound('GUI_balloon_popup.mp3'),
+                globalBattleSoundCache.getSound('GUI_balloon_popup.ogg'),
                 node=self.basket),
             Func(self.basket.reparentTo, self.tablecloth),
             Func(self.basket.setPos, 0, 0, 0.2),
@@ -450,7 +450,7 @@ class DistributedPicnicBasket(DistributedObject.DistributedObject):
                 scale=Point3(0.1, 0.1, 0.1),
                 duration=0.2),
             SoundInterval(
-                globalBattleSoundCache.getSound('GUI_balloon_popup.mp3'),
+                globalBattleSoundCache.getSound('GUI_balloon_popup.ogg'),
                 node=self.basket),
             Wait(0.2),
             LerpPosInterval(
@@ -472,7 +472,7 @@ class DistributedPicnicBasket(DistributedObject.DistributedObject):
             foodTrack = Sequence(
                 Func(self.food[seat].show),
                 SoundInterval(
-                    globalBattleSoundCache.getSound('GUI_balloon_popup.mp3'),
+                    globalBattleSoundCache.getSound('GUI_balloon_popup.ogg'),
                     node=self.food[seat]),
                 Func(self.food[seat].reparentTo, self.tablecloth),
                 Func(self.food[seat].setHpr, 45, 0, 0),
@@ -539,7 +539,7 @@ class DistributedPicnicBasket(DistributedObject.DistributedObject):
                 scale=Point3(0.1, 0.1, 0.1),
                 duration=0.2),
             SoundInterval(
-                globalBattleSoundCache.getSound('GUI_balloon_popup.mp3'),
+                globalBattleSoundCache.getSound('GUI_balloon_popup.ogg'),
                 node=self.food[seat]),
             Wait(0.2),
             LerpPosInterval(

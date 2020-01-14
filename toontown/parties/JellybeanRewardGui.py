@@ -38,8 +38,8 @@ class JellybeanRewardGui(DirectFrame):
          publicPartyGui.find('**/startButton_inactive')), geom_pos=(-0.39, 0.0, 0.125), command=self._close)
         publicPartyGui.removeNode()
         del publicPartyGui
-        self.countSound = base.loader.loadSfx('phase_13/audio/sfx/tick_counter_short.mp3')
-        self.overMaxSound = base.loader.loadSfx('phase_13/audio/sfx/tick_counter_overflow.mp3')
+        self.countSound = base.loader.loadSfx('phase_13/audio/sfx/tick_counter_short.ogg')
+        self.overMaxSound = base.loader.loadSfx('phase_13/audio/sfx/tick_counter_overflow.ogg')
         return
 
     def showReward(self, earnedAmount, jarAmount, message):

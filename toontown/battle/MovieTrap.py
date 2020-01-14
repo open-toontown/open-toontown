@@ -188,7 +188,7 @@ def __createThrownTrapMultiTrack(trap, propList, propName, propPos = None, propH
         slideTrack = Parallel(moveTrack, animTrack)
         motionTrack = Sequence(throwingTrack, slideTrack)
         hprTrack = LerpHprInterval(thrownProp, 1.7, hpr=Point3(0, 0, 0))
-        soundTrack = getSoundTrack('TL_banana.mp3', node=toon)
+        soundTrack = getSoundTrack('TL_banana.ogg', node=toon)
         scaleTrack = LerpScaleInterval(thrownProp, 1.7, scale=MovieUtil.PNT3_ONE)
         throwTrack.append(Wait(0.25))
         throwTrack.append(Func(thrownProp.wrtReparentTo, suit))
@@ -200,7 +200,7 @@ def __createThrownTrapMultiTrack(trap, propList, propName, propPos = None, propH
         throwingTrack = createThrowingTrack(thrownProp, trapPoint, duration=throwDuration, parent=battle)
         hprTrack = LerpHprInterval(thrownProp, 0.9, hpr=Point3(0, 90, 0))
         scaleTrack = LerpScaleInterval(thrownProp, 0.9, scale=MovieUtil.PNT3_ONE)
-        soundTrack = getSoundTrack('TL_dynamite.mp3', delay=0.8, duration=0.7, node=suit)
+        soundTrack = getSoundTrack('TL_dynamite.ogg', delay=0.8, duration=0.7, node=suit)
         throwTrack.append(Wait(0.2))
         throwTrack.append(Parallel(throwingTrack, hprTrack, scaleTrack, soundTrack))
     elif trapName == 'marbles':
@@ -214,7 +214,7 @@ def __createThrownTrapMultiTrack(trap, propList, propName, propPos = None, propH
         moveTrack = Sequence(Func(thrownProp.wrtReparentTo, suit), Func(thrownProp.setHpr, Point3(94, 0, 0)), LerpPosInterval(thrownProp, flingDuration, pos=landPoint, other=suit), LerpPosInterval(thrownProp, rollDuration, pos=throwPoint, other=suit))
         animTrack = ActorInterval(thrownProp, propName, startTime=throwDelay + 0.9)
         scaleTrack = LerpScaleInterval(thrownProp, throwDuration, scale=MovieUtil.PNT3_ONE)
-        soundTrack = getSoundTrack('TL_marbles.mp3', delay=0.1, node=toon)
+        soundTrack = getSoundTrack('TL_marbles.ogg', delay=0.1, node=toon)
         throwTrack.append(Wait(0.2))
         throwTrack.append(Parallel(moveTrack, animTrack, scaleTrack, soundTrack))
     elif trapName == 'rake':
@@ -224,7 +224,7 @@ def __createThrownTrapMultiTrack(trap, propList, propName, propPos = None, propH
         throwingTrack = createThrowingTrack(thrownProp, trapPoint, duration=throwDuration, parent=suit)
         hprTrack = LerpHprInterval(thrownProp, throwDuration, hpr=VBase3(63.43, -90.0, 63.43))
         scaleTrack = LerpScaleInterval(thrownProp, 0.9, scale=Point3(0.7, 0.7, 0.7))
-        soundTrack = SoundInterval(globalBattleSoundCache.getSound('TL_rake_throw_only.mp3'), duration=1.1, node=suit)
+        soundTrack = SoundInterval(globalBattleSoundCache.getSound('TL_rake_throw_only.ogg'), duration=1.1, node=suit)
         throwTrack.append(Wait(0.2))
         throwTrack.append(Parallel(throwingTrack, hprTrack, scaleTrack, soundTrack))
     else:
@@ -343,10 +343,10 @@ def __createPlacedTrapMultiTrack(trap, prop, propName, propPos = None, propHpr =
     toonTrack.append(Func(toon.loop, 'neutral'))
     toonTrack.append(Func(toon.setHpr, battle, origHpr))
     if propName == 'quicksand':
-        propSound = globalBattleSoundCache.getSound('TL_quicksand.mp3')
+        propSound = globalBattleSoundCache.getSound('TL_quicksand.ogg')
     else:
-        propSound = globalBattleSoundCache.getSound('TL_trap_door.mp3')
-    buttonSound = globalBattleSoundCache.getSound('AA_drop_trigger_box.mp3')
+        propSound = globalBattleSoundCache.getSound('TL_trap_door.ogg')
+    buttonSound = globalBattleSoundCache.getSound('AA_drop_trigger_box.ogg')
     soundTrack = Sequence(Wait(2.3), SoundInterval(buttonSound, duration=0.67, node=toon), Wait(0.3), SoundInterval(propSound, duration=0.5, node=toon))
     return Parallel(trapTracks, toonTrack, soundTrack)
 
@@ -572,11 +572,11 @@ def __createPlacedGroupTrapTrack(trap, prop, propName, centerSuit, propPos = Non
     toonTrack.append(Func(toon.loop, 'neutral'))
     toonTrack.append(Func(toon.setHpr, battle, origHpr))
     if propName == 'quicksand':
-        propSound = globalBattleSoundCache.getSound('TL_quicksand.mp3')
+        propSound = globalBattleSoundCache.getSound('TL_quicksand.ogg')
     elif propName == 'traintrack':
-        propSound = globalBattleSoundCache.getSound('TL_train_track_appear.mp3')
+        propSound = globalBattleSoundCache.getSound('TL_train_track_appear.ogg')
     else:
-        propSound = globalBattleSoundCache.getSound('TL_trap_door.mp3')
-    buttonSound = globalBattleSoundCache.getSound('AA_drop_trigger_box.mp3')
+        propSound = globalBattleSoundCache.getSound('TL_trap_door.ogg')
+    buttonSound = globalBattleSoundCache.getSound('AA_drop_trigger_box.ogg')
     soundTrack = Sequence(Wait(2.3), Parallel(SoundInterval(buttonSound, duration=0.67, node=toon), SoundInterval(propSound, node=toon)))
     return Parallel(trapTracks, toonTrack, soundTrack)

@@ -24,8 +24,8 @@ class EstateLoader(SafeZoneLoader.SafeZoneLoader):
          State.State('house', self.enterHouse, self.exitHouse, ['quietZone']),
          State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['house', 'estate']),
          State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
-        self.musicFile = 'phase_4/audio/bgm/TC_nbrhood.mid'
-        self.activityMusicFile = 'phase_3.5/audio/bgm/TC_SZ_activity.mid'
+        self.musicFile = 'phase_4/audio/bgm/TC_nbrhood.ogg'
+        self.activityMusicFile = 'phase_3.5/audio/bgm/TC_SZ_activity.ogg'
         self.dnaFile = 'phase_5.5/dna/estate_1.dna'
         self.safeZoneStorageDNAFile = None
         self.cloudSwitch = 0
@@ -47,12 +47,12 @@ class EstateLoader(SafeZoneLoader.SafeZoneLoader):
 
     def load(self):
         SafeZoneLoader.SafeZoneLoader.load(self)
-        self.music = base.loader.loadMusic('phase_4/audio/bgm/TC_nbrhood.mid')
-        self.underwaterSound = base.loader.loadSfx('phase_4/audio/sfx/AV_ambient_water.mp3')
-        self.swimSound = base.loader.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.mp3')
-        self.submergeSound = base.loader.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.mp3')
-        self.birdSound = list(map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.mp3']))
-        self.cricketSound = list(map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.mp3', 'phase_4/audio/sfx/SZ_TC_bird2.mp3', 'phase_4/audio/sfx/SZ_TC_bird3.mp3']))
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/TC_nbrhood.ogg')
+        self.underwaterSound = base.loader.loadSfx('phase_4/audio/sfx/AV_ambient_water.ogg')
+        self.swimSound = base.loader.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.ogg')
+        self.submergeSound = base.loader.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.ogg')
+        self.birdSound = list(map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg', 'phase_4/audio/sfx/SZ_TC_bird3.ogg']))
+        self.cricketSound = list(map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg', 'phase_4/audio/sfx/SZ_TC_bird3.ogg']))
         if base.goonsEnabled:
             invModel = loader.loadModel('phase_3.5/models/gui/inventory_icons')
             self.invModels = []

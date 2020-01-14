@@ -57,8 +57,8 @@ class DistributedPicnicTable(DistributedNode.DistributedNode):
          None,
          None]
         self.haveAnimated = []
-        self.winSound = base.loader.loadSfx('phase_6/audio/sfx/KART_Applause_1.mp3')
-        self.happyDance = base.loader.loadSfx('phase_5/audio/sfx/AA_heal_happydance.mp3')
+        self.winSound = base.loader.loadSfx('phase_6/audio/sfx/KART_Applause_1.ogg')
+        self.happyDance = base.loader.loadSfx('phase_5/audio/sfx/AA_heal_happydance.ogg')
         self.accept('stoppedAsleep', self.handleSleep)
         base.localAvatar.startSleepWatch(self.handleSleep)
         self.__toonTracks = {}

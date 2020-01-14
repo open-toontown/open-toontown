@@ -494,12 +494,12 @@ class Pet(Avatar.Avatar):
 
     def getTeleportInSoundInterval(self):
         if not self.soundTeleportIn:
-            self.soundTeleportIn = loader.loadSfx('phase_5/audio/sfx/teleport_reappear.mp3')
+            self.soundTeleportIn = loader.loadSfx('phase_5/audio/sfx/teleport_reappear.ogg')
         return SoundInterval(self.soundTeleportIn)
 
     def getTeleportOutSoundInterval(self):
         if not self.soundTeleportOut:
-            self.soundTeleportOut = loader.loadSfx('phase_5/audio/sfx/teleport_disappear.mp3')
+            self.soundTeleportOut = loader.loadSfx('phase_5/audio/sfx/teleport_disappear.ogg')
         return SoundInterval(self.soundTeleportOut)
 
     def enterWalk(self):

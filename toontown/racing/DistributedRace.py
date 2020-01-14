@@ -35,9 +35,9 @@ class DistributedRace(DistributedObject.DistributedObject):
     WinEvent = 'RaceWinEvent'
     BGM_BaseDir = 'phase_6/audio/bgm/'
     SFX_BaseDir = 'phase_6/audio/sfx/'
-    SFX_StartBoop = SFX_BaseDir + 'KART_raceStart1.mp3'
-    SFX_StartBoop2 = SFX_BaseDir + 'KART_raceStart2.mp3'
-    SFX_Applause = SFX_BaseDir + 'KART_Applause_%d.mp3'
+    SFX_StartBoop = SFX_BaseDir + 'KART_raceStart1.ogg'
+    SFX_StartBoop2 = SFX_BaseDir + 'KART_raceStart2.ogg'
+    SFX_Applause = SFX_BaseDir + 'KART_Applause_%d.ogg'
 
     def __init__(self, cr):
         self.qbox = loader.loadModel('phase_6/models/karting/qbox')
@@ -70,8 +70,8 @@ class DistributedRace(DistributedObject.DistributedObject):
         self.hasFog = False
         self.dummyNode = None
         self.fog = None
-        self.bananaSound = base.loader.loadSfx('phase_6/audio/sfx/KART_tossBanana.mp3')
-        self.anvilFall = base.loader.loadSfx('phase_6/audio/sfx/KART_Gag_Hit_Anvil.mp3')
+        self.bananaSound = base.loader.loadSfx('phase_6/audio/sfx/KART_tossBanana.ogg')
+        self.anvilFall = base.loader.loadSfx('phase_6/audio/sfx/KART_Gag_Hit_Anvil.ogg')
         self.accept('leaveRace', self.leaveRace)
         self.toonsToLink = []
         self.curveTs = []

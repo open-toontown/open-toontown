@@ -13,8 +13,8 @@ from toontown.toonbase import ToontownBattleGlobals
 import random
 import functools
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieSquirt')
-hitSoundFiles = ('AA_squirt_flowersquirt.mp3', 'AA_squirt_glasswater.mp3', 'AA_squirt_neonwatergun.mp3', 'AA_squirt_seltzer.mp3', 'firehose_spray.mp3', 'AA_throw_stormcloud.mp3', 'AA_squirt_Geyser.mp3')
-missSoundFiles = ('AA_squirt_flowersquirt_miss.mp3', 'AA_squirt_glasswater_miss.mp3', 'AA_squirt_neonwatergun_miss.mp3', 'AA_squirt_seltzer_miss.mp3', 'firehose_spray.mp3', 'AA_throw_stormcloud_miss.mp3', 'AA_squirt_Geyser.mp3')
+hitSoundFiles = ('AA_squirt_flowersquirt.ogg', 'AA_squirt_glasswater.ogg', 'AA_squirt_neonwatergun.ogg', 'AA_squirt_seltzer.ogg', 'firehose_spray.ogg', 'AA_throw_stormcloud.ogg', 'AA_squirt_Geyser.ogg')
+missSoundFiles = ('AA_squirt_flowersquirt_miss.ogg', 'AA_squirt_glasswater_miss.ogg', 'AA_squirt_neonwatergun_miss.ogg', 'AA_squirt_seltzer_miss.ogg', 'firehose_spray.ogg', 'AA_throw_stormcloud_miss.ogg', 'AA_squirt_Geyser.ogg')
 sprayScales = [0.2,
  0.3,
  0.1,

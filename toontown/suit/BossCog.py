@@ -81,22 +81,22 @@ class BossCog(Avatar.Avatar):
                 self.initializeNametag3d()
 
     def generateBossCog(self):
-        self.throwSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_frisbee_gears.mp3')
-        self.swingSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_swipe.mp3')
-        self.spinSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_spin.mp3')
-        self.rainGearsSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_raining_gears.mp3')
-        self.swishSfx = loader.loadSfx('phase_5/audio/sfx/General_throw_miss.mp3')
-        self.boomSfx = loader.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.mp3')
-        self.deathSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_big_death.mp3')
-        self.upSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_raise_up.mp3')
-        self.downSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_collapse.mp3')
-        self.reelSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_reeling_backwards.mp3')
-        self.birdsSfx = loader.loadSfx('phase_4/audio/sfx/SZ_TC_bird1.mp3')
-        self.dizzyAlert = loader.loadSfx('phase_5/audio/sfx/AA_sound_aoogah.mp3')
-        self.grunt = loader.loadSfx('phase_9/audio/sfx/Boss_COG_VO_grunt.mp3')
-        self.murmur = loader.loadSfx('phase_9/audio/sfx/Boss_COG_VO_murmur.mp3')
-        self.statement = loader.loadSfx('phase_9/audio/sfx/Boss_COG_VO_statement.mp3')
-        self.question = loader.loadSfx('phase_9/audio/sfx/Boss_COG_VO_question.mp3')
+        self.throwSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_frisbee_gears.ogg')
+        self.swingSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_swipe.ogg')
+        self.spinSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_spin.ogg')
+        self.rainGearsSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_raining_gears.ogg')
+        self.swishSfx = loader.loadSfx('phase_5/audio/sfx/General_throw_miss.ogg')
+        self.boomSfx = loader.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.ogg')
+        self.deathSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_big_death.ogg')
+        self.upSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_raise_up.ogg')
+        self.downSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_collapse.ogg')
+        self.reelSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_reeling_backwards.ogg')
+        self.birdsSfx = loader.loadSfx('phase_4/audio/sfx/SZ_TC_bird1.ogg')
+        self.dizzyAlert = loader.loadSfx('phase_5/audio/sfx/AA_sound_aoogah.ogg')
+        self.grunt = loader.loadSfx('phase_9/audio/sfx/Boss_COG_VO_grunt.ogg')
+        self.murmur = loader.loadSfx('phase_9/audio/sfx/Boss_COG_VO_murmur.ogg')
+        self.statement = loader.loadSfx('phase_9/audio/sfx/Boss_COG_VO_statement.ogg')
+        self.question = loader.loadSfx('phase_9/audio/sfx/Boss_COG_VO_question.ogg')
         self.dialogArray = [self.grunt,
          self.murmur,
          self.statement,
@@ -279,8 +279,8 @@ class BossCog(Avatar.Avatar):
             self.closedHpr = closedHpr
             self.uniqueName = uniqueName
             self.ival = 0
-            self.openSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_door_open.mp3')
-            self.closeSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_door_close.mp3')
+            self.openSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_door_open.ogg')
+            self.closeSfx = loader.loadSfx('phase_9/audio/sfx/CHQ_VP_door_close.ogg')
             self.request('Closed')
 
         def filterOpening(self, request, args):

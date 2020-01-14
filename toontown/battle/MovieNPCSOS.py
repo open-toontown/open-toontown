@@ -12,7 +12,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toon import NPCToons
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieNPCSOS')
-soundFiles = ('AA_heal_tickle.mp3', 'AA_heal_telljoke.mp3', 'AA_heal_smooch.mp3', 'AA_heal_happydance.mp3', 'AA_heal_pixiedust.mp3', 'AA_heal_juggle.mp3')
+soundFiles = ('AA_heal_tickle.ogg', 'AA_heal_telljoke.ogg', 'AA_heal_smooch.ogg', 'AA_heal_happydance.ogg', 'AA_heal_pixiedust.ogg', 'AA_heal_juggle.ogg')
 offset = Point3(0, 4.0, 0)
 
 def __cogsMiss(attack, level, hp):

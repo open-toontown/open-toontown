@@ -40,7 +40,7 @@ class PartyCogActivityPlayer:
         self.splat = globalPropPool.getProp(splatName)
         self.splat.setBillboardPointEye()
         self.splatType = globalPropPool.getPropType(splatName)
-        self.pieHitSound = globalBattleSoundCache.getSound('AA_wholepie_only.mp3')
+        self.pieHitSound = globalBattleSoundCache.getSound('AA_wholepie_only.ogg')
         return
 
     def destroy(self):

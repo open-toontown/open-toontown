@@ -79,11 +79,11 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             chatMgr = ToontownChatManager.ToontownChatManager(cr, self)
             talkAssistant = TTTalkAssistant.TTTalkAssistant()
             LocalAvatar.LocalAvatar.__init__(self, cr, chatMgr, talkAssistant, passMessagesThrough=True)
-            self.soundRun = base.loader.loadSfx('phase_3.5/audio/sfx/AV_footstep_runloop.wav')
-            self.soundWalk = base.loader.loadSfx('phase_3.5/audio/sfx/AV_footstep_walkloop.wav')
-            self.soundWhisper = base.loader.loadSfx('phase_3.5/audio/sfx/GUI_whisper_3.mp3')
-            self.soundPhoneRing = base.loader.loadSfx('phase_3.5/audio/sfx/telephone_ring.mp3')
-            self.soundSystemMessage = base.loader.loadSfx('phase_3/audio/sfx/clock03.mp3')
+            self.soundRun = base.loader.loadSfx('phase_3.5/audio/sfx/AV_footstep_runloop.ogg')
+            self.soundWalk = base.loader.loadSfx('phase_3.5/audio/sfx/AV_footstep_walkloop.ogg')
+            self.soundWhisper = base.loader.loadSfx('phase_3.5/audio/sfx/GUI_whisper_3.ogg')
+            self.soundPhoneRing = base.loader.loadSfx('phase_3.5/audio/sfx/telephone_ring.ogg')
+            self.soundSystemMessage = base.loader.loadSfx('phase_3/audio/sfx/clock03.ogg')
             self.positionExaminer = PositionExaminer.PositionExaminer()
             friendsGui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
             friendsButtonNormal = friendsGui.find('**/FriendsBox_Closed')
@@ -1409,7 +1409,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             changeString = TTLocalizer.GardeningNoSkill
         else:
             changeString = '+%s %s' % (change, TTLocalizer.GardeningWaterSkill)
-        self.waterTrack = Sequence(Wait(0.0), Func(self.changeButtonText, self.wateringCanButtonFake, changeString), SoundInterval(globalBattleSoundCache.getSound('GUI_balloon_popup.mp3'), node=self), Wait(1.0), Func(self.hideWateringCanButtonFake, 1))
+        self.waterTrack = Sequence(Wait(0.0), Func(self.changeButtonText, self.wateringCanButtonFake, changeString), SoundInterval(globalBattleSoundCache.getSound('GUI_balloon_popup.ogg'), node=self), Wait(1.0), Func(self.hideWateringCanButtonFake, 1))
         self.waterTrack.start()
 
     def levelShovel(self, change = 1):
@@ -1423,7 +1423,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         plant = base.cr.doId2do.get(self.shovelRelatedDoId)
         if plant:
             self.holdShovelText = plant.getShovelAction()
-        self.shovelTrack = Sequence(Wait(0.0), Func(self.changeButtonText, self.shovelButtonFake, changeString), SoundInterval(globalBattleSoundCache.getSound('GUI_balloon_popup.mp3'), node=self), Wait(1.0), Func(self.hideShovelButtonFake, 1))
+        self.shovelTrack = Sequence(Wait(0.0), Func(self.changeButtonText, self.shovelButtonFake, changeString), SoundInterval(globalBattleSoundCache.getSound('GUI_balloon_popup.ogg'), node=self), Wait(1.0), Func(self.hideShovelButtonFake, 1))
         self.shovelTrack.start()
 
     def setGuiConflict(self, con):

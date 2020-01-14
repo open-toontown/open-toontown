@@ -85,7 +85,7 @@ def shootFireworkRing(x, y, z, color1, color2, amp):
     f.addParticles(p0)
     f.setPos(x, y, z)
     f.setHpr(0, random.random() * 180, random.random() * 180)
-    sfx = loader.loadSfx('phase_4/audio/sfx/firework_distance_03.mp3')
+    sfx = loader.loadSfx('phase_4/audio/sfx/firework_distance_03.ogg')
     t = Sequence(Func(f.start, render, render), Func(sfx.play), Wait(0.5), Func(p0.setBirthRate, 3), Wait(1.5), Func(f.cleanup), name=getNextSequenceName('shootFireworkRing'))
     t.start()
 
@@ -124,14 +124,14 @@ def shootFireworkRocket(x, y, z, color1, color2, amp):
     gravityForceGroup.addForce(force0)
     f.addForceGroup(gravityForceGroup)
     f.setPos(x, y, z)
-    sfxName = random.choice(('phase_4/audio/sfx/firework_whistle_01.mp3', 'phase_4/audio/sfx/firework_whistle_02.mp3'))
+    sfxName = random.choice(('phase_4/audio/sfx/firework_whistle_01.ogg', 'phase_4/audio/sfx/firework_whistle_02.ogg'))
     sfx = loader.loadSfx(sfxName)
     t = Sequence(Func(f.start, render, render), Func(sfx.play), LerpPosInterval(f, 2.0, Vec3(x, y, z + 20 * amp), blendType='easeInOut'), Func(p0.setBirthRate, 3), Wait(0.5), Func(f.cleanup), name=getNextSequenceName('shootFirework'))
     t.start()
 
 
 def shootPop(x, y, z, color1, color2, amp):
-    sfxName = random.choice(('phase_4/audio/sfx/firework_distance_01.mp3', 'phase_4/audio/sfx/firework_distance_02.mp3', 'phase_4/audio/sfx/firework_distance_03.mp3'))
+    sfxName = random.choice(('phase_4/audio/sfx/firework_distance_01.ogg', 'phase_4/audio/sfx/firework_distance_02.ogg', 'phase_4/audio/sfx/firework_distance_03.ogg'))
     sfx = loader.loadSfx(sfxName)
     t = Sequence(Func(sfx.play), Wait(3), name=getNextSequenceName('shootFireworkRocket'))
     t.start()
@@ -180,7 +180,7 @@ def shootFireworkCircleGeneric(x, y, z, color1, color2, amp, poolSize):
     circleForceGroup.addForce(force1)
     f.addForceGroup(circleForceGroup)
     f.setPos(x, y, z)
-    sfxName = random.choice(('phase_4/audio/sfx/firework_explosion_01.mp3', 'phase_4/audio/sfx/firework_explosion_02.mp3', 'phase_4/audio/sfx/firework_explosion_03.mp3'))
+    sfxName = random.choice(('phase_4/audio/sfx/firework_explosion_01.ogg', 'phase_4/audio/sfx/firework_explosion_02.ogg', 'phase_4/audio/sfx/firework_explosion_03.ogg'))
     sfx = loader.loadSfx(sfxName)
     t = Sequence(Func(f.start, render, render), Func(sfx.play), Wait(0.5), Func(p0.setBirthRate, 3), Wait(0.5), Func(p0.renderer.setCenterColor, color2), Func(p0.renderer.setEdgeColor, color2), Wait(1.5), Func(f.cleanup), name=getNextSequenceName('shootFireworkCircle'))
     t.start()
@@ -220,7 +220,7 @@ def shootFireworkCircleSprite(x, y, z, color, texture, amp):
     circleForceGroup.addForce(force1)
     f.addForceGroup(circleForceGroup)
     f.setPos(x, y, z)
-    sfxName = random.choice(('phase_4/audio/sfx/firework_explosion_01.mp3', 'phase_4/audio/sfx/firework_explosion_02.mp3', 'phase_4/audio/sfx/firework_explosion_03.mp3'))
+    sfxName = random.choice(('phase_4/audio/sfx/firework_explosion_01.ogg', 'phase_4/audio/sfx/firework_explosion_02.ogg', 'phase_4/audio/sfx/firework_explosion_03.ogg'))
     sfx = loader.loadSfx(sfxName)
     t = Sequence(Func(f.start, render, render), Func(sfx.play), Wait(0.5), Func(p0.setBirthRate, 3), Wait(2.0), Func(f.cleanup), name=getNextSequenceName('shootFireworkSprite'))
     t.start()

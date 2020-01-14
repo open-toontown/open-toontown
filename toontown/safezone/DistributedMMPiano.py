@@ -30,8 +30,8 @@ class DistributedMMPiano(DistributedObject.DistributedObject):
         self.accept('enterlarge_round_keyboard_collisions', self.__handleOnFloor)
         self.accept('exitlarge_round_keyboard_collisions', self.__handleOffFloor)
         self.accept('entero7', self.__handleChangeDirectionButton)
-        self.speedUpSound = base.loader.loadSfx('phase_6/audio/sfx/SZ_MM_gliss.mp3')
-        self.changeDirectionSound = base.loader.loadSfx('phase_6/audio/sfx/SZ_MM_cymbal.mp3')
+        self.speedUpSound = base.loader.loadSfx('phase_6/audio/sfx/SZ_MM_gliss.ogg')
+        self.changeDirectionSound = base.loader.loadSfx('phase_6/audio/sfx/SZ_MM_cymbal.ogg')
         self.__setupSpin()
         DistributedObject.DistributedObject.generate(self)
 

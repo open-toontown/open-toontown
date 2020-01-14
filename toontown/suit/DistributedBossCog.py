@@ -549,10 +549,10 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.rightDoor = self.elevatorModel.find('**/right-door')
         if self.rightDoor.isEmpty():
             self.rightDoor = self.elevatorModel.find('**/right_door')
-        self.openSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.mp3')
-        self.finalOpenSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.mp3')
-        self.closeSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.mp3')
-        self.finalCloseSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.mp3')
+        self.openSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
+        self.finalOpenSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
+        self.closeSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_sliding.ogg')
+        self.finalCloseSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_door_open_final.ogg')
         self.openDoors = ElevatorUtils.getOpenInterval(self, self.leftDoor, self.rightDoor, self.openSfx, self.finalOpenSfx, self.elevatorType)
         self.closeDoors = ElevatorUtils.getCloseInterval(self, self.leftDoor, self.rightDoor, self.closeSfx, self.finalCloseSfx, self.elevatorType)
         self.closeDoors.start()
@@ -908,11 +908,11 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
             self.zapLocalToon(ToontownGlobals.BossCogAreaAttack)
 
     def loadEnvironment(self):
-        self.elevatorMusic = base.loader.loadMusic('phase_7/audio/bgm/tt_elevator.mid')
-        self.stingMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.mid')
-        self.battleOneMusic = base.loader.loadMusic('phase_3.5/audio/bgm/encntr_general_bg.mid')
-        self.battleThreeMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.mid')
-        self.epilogueMusic = base.loader.loadMusic('phase_9/audio/bgm/encntr_hall_of_fame.mid')
+        self.elevatorMusic = base.loader.loadMusic('phase_7/audio/bgm/tt_elevator.ogg')
+        self.stingMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+        self.battleOneMusic = base.loader.loadMusic('phase_3.5/audio/bgm/encntr_general_bg.ogg')
+        self.battleThreeMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_suit_winning_indoor.ogg')
+        self.epilogueMusic = base.loader.loadMusic('phase_9/audio/bgm/encntr_hall_of_fame.ogg')
 
     def unloadEnvironment(self):
         pass

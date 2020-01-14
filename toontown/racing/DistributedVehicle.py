@@ -65,14 +65,14 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
           'windResistance': 0.2,
           'particleColor': Vec4(1.0, 1.0, 1.0, 1.0)}}
     SFX_BaseDir = 'phase_6/audio/sfx/'
-    SFX_WallHits = [SFX_BaseDir + 'KART_Hitting_Wood_Fence.mp3',
-     SFX_BaseDir + 'KART_Hitting_Wood_Fence_1.mp3',
-     SFX_BaseDir + 'KART_Hitting_Metal_Fence.mp3',
-     SFX_BaseDir + 'KART_Hitting_Wall.mp3']
-    SFX_SkidLoop_Grass = SFX_BaseDir + 'KART_Skidding_On_Grass.wav'
-    SFX_SkidLoop_Asphalt = SFX_BaseDir + 'KART_Skidding_On_Asphalt.wav'
-    SFX_TurboStart = SFX_BaseDir + 'KART_turboStart.mp3'
-    SFX_TurboLoop = SFX_BaseDir + 'KART_turboLoop.wav'
+    SFX_WallHits = [SFX_BaseDir + 'KART_Hitting_Wood_Fence.ogg',
+     SFX_BaseDir + 'KART_Hitting_Wood_Fence_1.ogg',
+     SFX_BaseDir + 'KART_Hitting_Metal_Fence.ogg',
+     SFX_BaseDir + 'KART_Hitting_Wall.ogg']
+    SFX_SkidLoop_Grass = SFX_BaseDir + 'KART_Skidding_On_Grass.ogg'
+    SFX_SkidLoop_Asphalt = SFX_BaseDir + 'KART_Skidding_On_Asphalt.ogg'
+    SFX_TurboStart = SFX_BaseDir + 'KART_turboStart.ogg'
+    SFX_TurboLoop = SFX_BaseDir + 'KART_turboLoop.ogg'
     AvId2kart = {}
 
     @classmethod

@@ -173,11 +173,11 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         self.tableGeom = self.tableGroup.find('**/Geometry')
         self.setupDiners()
         self.setupChairCols()
-        self.squirtSfx = loader.loadSfx('phase_4/audio/sfx/AA_squirt_seltzer_miss.mp3')
-        self.hitBossSfx = loader.loadSfx('phase_5/audio/sfx/SA_watercooler_spray_only.mp3')
+        self.squirtSfx = loader.loadSfx('phase_4/audio/sfx/AA_squirt_seltzer_miss.ogg')
+        self.hitBossSfx = loader.loadSfx('phase_5/audio/sfx/SA_watercooler_spray_only.ogg')
         self.hitBossSoundInterval = SoundInterval(self.hitBossSfx, node=self.boss, volume=1.0)
-        self.serveFoodSfx = loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_bell_for_trolley.mp3')
-        self.pitcherMoveSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.mp3')
+        self.serveFoodSfx = loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_bell_for_trolley.ogg')
+        self.pitcherMoveSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.ogg')
 
     def setupDiners(self):
         for i in range(self.numDiners):
@@ -371,8 +371,8 @@ class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, Banq
         locator = self.tableGroup.find('**/chair_%d' % (chairIndex + 1))
         deathSuit = diner.getLoseActor()
         ival = Sequence(Func(self.notify.debug, 'before actorinterval sit-lose'), ActorInterval(diner, 'sit-lose'), Func(self.notify.debug, 'before deathSuit.setHpr'), Func(deathSuit.setHpr, diner.getHpr()), Func(self.notify.debug, 'before diner.hide'), Func(diner.hide), Func(self.notify.debug, 'before deathSuit.reparentTo'), Func(deathSuit.reparentTo, self.chairLocators[chairIndex]), Func(self.notify.debug, 'befor ActorInterval lose'), ActorInterval(deathSuit, 'lose', duration=MovieUtil.SUIT_LOSE_DURATION), Func(self.notify.debug, 'before remove deathsuit'), Func(removeDeathSuit, diner, deathSuit, name='remove-death-suit-%d-%d' % (chairIndex, self.index)), Func(self.notify.debug, 'diner.stash'), Func(diner.stash))
-        spinningSound = base.loader.loadSfx('phase_3.5/audio/sfx/Cog_Death.mp3')
-        deathSound = base.loader.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.mp3')
+        spinningSound = base.loader.loadSfx('phase_3.5/audio/sfx/Cog_Death.ogg')
+        deathSound = base.loader.loadSfx('phase_3.5/audio/sfx/ENC_cogfall_apart.ogg')
         deathSoundTrack = Sequence(Wait(0.8), SoundInterval(spinningSound, duration=1.2, startTime=1.5, volume=0.2, node=deathSuit), SoundInterval(spinningSound, duration=3.0, startTime=0.6, volume=0.8, node=deathSuit), SoundInterval(deathSound, volume=0.32, node=deathSuit))
         intervalName = 'dinerDie-%d-%d' % (self.index, chairIndex)
         deathIval = Parallel(ival, deathSoundTrack)

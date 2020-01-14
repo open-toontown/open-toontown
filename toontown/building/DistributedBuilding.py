@@ -346,20 +346,20 @@ class DistributedBuilding(DistributedObject.DistributedObject):
         if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: COGBUILDING: Cog Take Over')
         if self.cogDropSound == None:
-            self.cogDropSound = base.loader.loadSfx(self.TAKEOVER_SFX_PREFIX + 'cogbldg_drop.mp3')
-            self.cogLandSound = base.loader.loadSfx(self.TAKEOVER_SFX_PREFIX + 'cogbldg_land.mp3')
-            self.cogSettleSound = base.loader.loadSfx(self.TAKEOVER_SFX_PREFIX + 'cogbldg_settle.mp3')
-            self.openSfx = base.loader.loadSfx('phase_5/audio/sfx/elevator_door_open.mp3')
+            self.cogDropSound = base.loader.loadSfx(self.TAKEOVER_SFX_PREFIX + 'cogbldg_drop.ogg')
+            self.cogLandSound = base.loader.loadSfx(self.TAKEOVER_SFX_PREFIX + 'cogbldg_land.ogg')
+            self.cogSettleSound = base.loader.loadSfx(self.TAKEOVER_SFX_PREFIX + 'cogbldg_settle.ogg')
+            self.openSfx = base.loader.loadSfx('phase_5/audio/sfx/elevator_door_open.ogg')
         return
 
     def loadAnimToToonSfx(self):
         if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: COGBUILDING: Toon Take Over')
         if self.cogWeakenSound == None:
-            self.cogWeakenSound = base.loader.loadSfx(self.TAKEOVER_SFX_PREFIX + 'cogbldg_weaken.mp3')
-            self.toonGrowSound = base.loader.loadSfx(self.TAKEOVER_SFX_PREFIX + 'toonbldg_grow.mp3')
-            self.toonSettleSound = base.loader.loadSfx(self.TAKEOVER_SFX_PREFIX + 'toonbldg_settle.mp3')
-            self.openSfx = base.loader.loadSfx('phase_5/audio/sfx/elevator_door_open.mp3')
+            self.cogWeakenSound = base.loader.loadSfx(self.TAKEOVER_SFX_PREFIX + 'cogbldg_weaken.ogg')
+            self.toonGrowSound = base.loader.loadSfx(self.TAKEOVER_SFX_PREFIX + 'toonbldg_grow.ogg')
+            self.toonSettleSound = base.loader.loadSfx(self.TAKEOVER_SFX_PREFIX + 'toonbldg_settle.ogg')
+            self.openSfx = base.loader.loadSfx('phase_5/audio/sfx/elevator_door_open.ogg')
         return
 
     def unloadSfx(self):

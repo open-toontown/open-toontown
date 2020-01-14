@@ -17,10 +17,10 @@ class DistributedCashbotBossSafe(DistributedCashbotBossObject.DistributedCashbot
         DistributedCashbotBossObject.DistributedCashbotBossObject.__init__(self, cr)
         NodePath.__init__(self, 'object')
         self.index = None
-        self.flyToMagnetSfx = loader.loadSfx('phase_5/audio/sfx/TL_rake_throw_only.mp3')
-        self.hitMagnetSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_safe.mp3')
+        self.flyToMagnetSfx = loader.loadSfx('phase_5/audio/sfx/TL_rake_throw_only.ogg')
+        self.hitMagnetSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_safe.ogg')
         self.toMagnetSoundInterval = Parallel(SoundInterval(self.flyToMagnetSfx, duration=ToontownGlobals.CashbotBossToMagnetTime, node=self), Sequence(Wait(ToontownGlobals.CashbotBossToMagnetTime - 0.02), SoundInterval(self.hitMagnetSfx, duration=1.0, node=self)))
-        self.hitFloorSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_bigweight_miss.mp3')
+        self.hitFloorSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_bigweight_miss.ogg')
         self.hitFloorSoundInterval = SoundInterval(self.hitFloorSfx, node=self)
         return
 

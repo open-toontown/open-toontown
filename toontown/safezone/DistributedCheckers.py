@@ -87,9 +87,9 @@ class DistributedCheckers(DistributedNode.DistributedNode):
           29,
           30,
           31]]
-        self.knockSound = base.loader.loadSfx('phase_5/audio/sfx/GUI_knock_1.mp3')
-        self.clickSound = base.loader.loadSfx('phase_3/audio/sfx/GUI_balloon_popup.mp3')
-        self.moveSound = base.loader.loadSfx('phase_6/audio/sfx/CC_move.mp3')
+        self.knockSound = base.loader.loadSfx('phase_5/audio/sfx/GUI_knock_1.ogg')
+        self.clickSound = base.loader.loadSfx('phase_3/audio/sfx/GUI_balloon_popup.ogg')
+        self.moveSound = base.loader.loadSfx('phase_6/audio/sfx/CC_move.ogg')
         self.accept('stoppedAsleep', self.handleSleep)
         self.fsm = ClassicFSM.ClassicFSM('ChineseCheckers', [State.State('waitingToBegin', self.enterWaitingToBegin, self.exitWaitingToBegin, ['playing', 'gameOver']), State.State('playing', self.enterPlaying, self.exitPlaying, ['gameOver']), State.State('gameOver', self.enterGameOver, self.exitGameOver, ['waitingToBegin'])], 'waitingToBegin', 'waitingToBegin')
         x = self.boardNode.find('**/locator*')

@@ -12,7 +12,7 @@ from toontown.toonbase import ToontownGlobals
 
 class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStomper')
-    stomperSounds = ['phase_4/audio/sfx/CHQ_FACT_stomper_small.mp3', 'phase_9/audio/sfx/CHQ_FACT_stomper_med.mp3', 'phase_9/audio/sfx/CHQ_FACT_stomper_large.mp3']
+    stomperSounds = ['phase_4/audio/sfx/CHQ_FACT_stomper_small.ogg', 'phase_9/audio/sfx/CHQ_FACT_stomper_med.ogg', 'phase_9/audio/sfx/CHQ_FACT_stomper_large.ogg']
     stomperModels = ['phase_9/models/cogHQ/square_stomper']
 
     def __init__(self, cr):

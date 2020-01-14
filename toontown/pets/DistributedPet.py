@@ -236,11 +236,11 @@ class DistributedPet(DistributedSmoothNode.DistributedSmoothNode, Pet.Pet, PetBa
             self.addActive()
             self.startBlink()
             if not self.swallowSfx:
-                self.swallowSfx = loader.loadSfx('phase_5.5/audio/sfx/beg_eat_swallow.mp3')
+                self.swallowSfx = loader.loadSfx('phase_5.5/audio/sfx/beg_eat_swallow.ogg')
             if not self.callSfx:
-                self.callSfx = loader.loadSfx('phase_5.5/audio/sfx/call_pet.mp3')
+                self.callSfx = loader.loadSfx('phase_5.5/audio/sfx/call_pet.ogg')
             if not self.petSfx:
-                self.petSfx = loader.loadSfx('phase_5.5/audio/sfx/pet_the_pet.mp3')
+                self.petSfx = loader.loadSfx('phase_5.5/audio/sfx/pet_the_pet.ogg')
             self.handleMoodChange()
             self.accept(self.mood.getDominantMoodChangeEvent(), self.handleMoodChange)
             self.accept(self.mood.getMoodChangeEvent(), self.moodComponentChanged)

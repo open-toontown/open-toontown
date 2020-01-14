@@ -65,7 +65,7 @@ class TwoDGameToonSD(StateData.StateData):
             self.toon.pose(anim, 0)
 
         self.battleMgr = TwoDBattleMgr.TwoDBattleMgr(self.game, self.toon)
-        self.squishSound = base.loader.loadSfx('phase_3.5/audio/dial/AV_' + self.toon.style.getAnimal() + '_exclaim.mp3')
+        self.squishSound = base.loader.loadSfx('phase_3.5/audio/dial/AV_' + self.toon.style.getAnimal() + '_exclaim.ogg')
 
     def destroy(self):
         if self.fallBackIval != None:

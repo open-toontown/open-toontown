@@ -16,7 +16,7 @@ class DistributedTreasure(DistributedObject.DistributedObject):
         self.dropShadow = None
         self.modelFindString = None
         self.grabSoundPath = None
-        self.rejectSoundPath = 'phase_4/audio/sfx/ring_miss.mp3'
+        self.rejectSoundPath = 'phase_4/audio/sfx/ring_miss.ogg'
         self.playSoundForRemoteToons = 1
         self.scale = 1.0
         self.shadow = 1

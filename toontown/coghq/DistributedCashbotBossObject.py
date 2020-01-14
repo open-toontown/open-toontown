@@ -26,9 +26,9 @@ class DistributedCashbotBossObject(DistributedSmoothNode.DistributedSmoothNode, 
         self.physicsActivated = 0
         self.toMagnetSoundInterval = Sequence()
         self.hitFloorSoundInterval = Sequence()
-        self.hitBossSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_safe_miss.mp3')
+        self.hitBossSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_safe_miss.ogg')
         self.hitBossSoundInterval = SoundInterval(self.hitBossSfx)
-        self.touchedBossSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_sandbag.mp3')
+        self.touchedBossSfx = loader.loadSfx('phase_5/audio/sfx/AA_drop_sandbag.ogg')
         self.touchedBossSoundInterval = SoundInterval(self.touchedBossSfx, duration=0.8)
         self.lerpInterval = None
         return

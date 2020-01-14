@@ -34,8 +34,8 @@ class DistributedCrate(DistributedCrushableEntity.DistributedCrushableEntity):
         self.stuckToCrate = 0
         self.upPressed = 0
         self.isPushing = 0
-        self.creakSound = loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_crate_effort.mp3')
-        self.pushSound = loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_crate_sliding.mp3')
+        self.creakSound = loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_crate_effort.ogg')
+        self.pushSound = loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_crate_sliding.ogg')
         return
 
     def disable(self):

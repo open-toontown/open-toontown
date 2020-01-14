@@ -117,16 +117,16 @@ class DistributedPairingGame(DistributedMinigame):
         self.__textGen = TextNode('ringGame')
         self.__textGen.setFont(ToontownGlobals.getSignFont())
         self.__textGen.setAlign(TextNode.ACenter)
-        self.sndPerfect = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_all_matched.mp3')
+        self.sndPerfect = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_all_matched.ogg')
         self.calcBonusTraversal()
-        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_Pairing.mid')
-        self.matchSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_match.mp3')
-        self.matchWithBonusSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_match_bonus_both.mp3')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_Pairing.ogg')
+        self.matchSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_match.ogg')
+        self.matchWithBonusSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_match_bonus_both.ogg')
         self.signalSfx = []
         for i in range(4):
-            self.signalSfx.append(base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_jumping_signal.mp3'))
+            self.signalSfx.append(base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_jumping_signal.ogg'))
 
-        self.bonusMovesSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_bonus_moves.mp3')
+        self.bonusMovesSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_pairing_bonus_moves.ogg')
         return
 
     def unload(self):

@@ -70,11 +70,11 @@ class DistCogdoCrane(DistributedObject.DistributedObject, FSM.FSM):
         self.heldObject = None
         self.craneAdviceLabel = None
         self.magnetAdviceLabel = None
-        self.atLimitSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.mp3')
-        self.magnetOnSfx = base.loader.loadSfx('phase_10/audio/sfx/CBHQ_CFO_magnet_on.mp3')
-        self.magnetLoopSfx = base.loader.loadSfx('phase_10/audio/sfx/CBHQ_CFO_magnet_loop.wav')
+        self.atLimitSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.ogg')
+        self.magnetOnSfx = base.loader.loadSfx('phase_10/audio/sfx/CBHQ_CFO_magnet_on.ogg')
+        self.magnetLoopSfx = base.loader.loadSfx('phase_10/audio/sfx/CBHQ_CFO_magnet_loop.ogg')
         self.magnetSoundInterval = Parallel(SoundInterval(self.magnetOnSfx), Sequence(Wait(0.5), Func(base.playSfx, self.magnetLoopSfx, looping=1)))
-        self.craneMoveSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_elevator_up_down.mp3')
+        self.craneMoveSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_elevator_up_down.ogg')
         self.fadeTrack = None
         return
 

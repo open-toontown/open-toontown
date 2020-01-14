@@ -11,8 +11,8 @@ class DistributedBarrelBase(BasicEntities.DistributedNodePathEntity, BarrelBase.
     def __init__(self, cr):
         self.rewardPerGrabMax = 0
         BasicEntities.DistributedNodePathEntity.__init__(self, cr)
-        self.grabSoundPath = 'phase_4/audio/sfx/SZ_DD_treasure.mp3'
-        self.rejectSoundPath = 'phase_4/audio/sfx/ring_miss.mp3'
+        self.grabSoundPath = 'phase_4/audio/sfx/SZ_DD_treasure.ogg'
+        self.rejectSoundPath = 'phase_4/audio/sfx/ring_miss.ogg'
         self.animTrack = None
         self.shadow = 0
         self.barrelScale = 0.5

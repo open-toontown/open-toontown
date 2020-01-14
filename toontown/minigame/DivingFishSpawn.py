@@ -85,7 +85,7 @@ class DivingFishSpawn(DirectObject):
             fish.loop('anim')
             fish.setScale(1.4)
             cSphere = CollisionSphere(0, 0, 0, 1)
-            fishSoundName = 'Piano_Tuna.mp3'
+            fishSoundName = 'Piano_Tuna.ogg'
             if self.direction == -1:
                 fish.setH(0)
             else:

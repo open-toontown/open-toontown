@@ -57,21 +57,21 @@ backgroundNodePath.setScale(render2d, VBase3(1))
 backgroundNodePath.find('**/fg').setBin('fixed', 20)
 backgroundNodePath.find('**/bg').setBin('fixed', 10)
 base.graphicsEngine.renderFrame()
-DirectGuiGlobals.setDefaultRolloverSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_rollover.mp3'))
-DirectGuiGlobals.setDefaultClickSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.mp3'))
+DirectGuiGlobals.setDefaultRolloverSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
+DirectGuiGlobals.setDefaultClickSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 DirectGuiGlobals.setDefaultDialogGeom(loader.loadModel('phase_3/models/gui/dialog_box_gui'))
 from . import TTLocalizer
 from otp.otpbase import OTPGlobals
 OTPGlobals.setDefaultProductPrefix(TTLocalizer.ProductPrefix)
 if base.musicManagerIsValid:
-    music = base.musicManager.getSound('phase_3/audio/bgm/tt_theme.mid')
+    music = base.musicManager.getSound('phase_3/audio/bgm/tt_theme.ogg')
     if music:
         music.setLoop(1)
         music.setVolume(0.9)
         music.play()
     print('ToontownStart: Loading default gui sounds')
-    DirectGuiGlobals.setDefaultRolloverSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_rollover.mp3'))
-    DirectGuiGlobals.setDefaultClickSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.mp3'))
+    DirectGuiGlobals.setDefaultRolloverSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
+    DirectGuiGlobals.setDefaultClickSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 else:
     music = None
 from . import ToontownLoader

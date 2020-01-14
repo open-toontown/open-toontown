@@ -107,7 +107,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
         cn.setIntoCollideMask(ToontownGlobals.WallBitmask)
         self.trigger = self.root.attachNewNode(cn)
         self.trigger.stash()
-        self.hitBallSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Hit_Ball.mp3')
+        self.hitBallSfx = loader.loadSfx('phase_6/audio/sfx/Golf_Hit_Ball.ogg')
 
     def cleanup(self):
         if self.swingInterval:
@@ -738,10 +738,10 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
         if flyBallCode == ToontownGlobals.PieCodeBossCog:
             self.notify.debug('changing color to %s' % self.ballColor)
             splat.setColor(self.ballColor)
-        sound = loader.loadSfx('phase_11/audio/sfx/LB_evidence_miss.mp3')
+        sound = loader.loadSfx('phase_11/audio/sfx/LB_evidence_miss.ogg')
         vol = 1.0
         if flyBallCode == ToontownGlobals.PieCodeBossCog:
-            sound = loader.loadSfx('phase_4/audio/sfx/Golf_Hit_Barrier_1.mp3')
+            sound = loader.loadSfx('phase_4/audio/sfx/Golf_Hit_Barrier_1.ogg')
         soundIval = SoundInterval(sound, node=splat, volume=vol)
         if flyBallCode == ToontownGlobals.PieCodeBossCog and localAvatar.doId == throwerId:
             vol = 1.0

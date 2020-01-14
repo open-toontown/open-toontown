@@ -331,7 +331,7 @@ class DistributedGardenPlot(DistributedLawnDecor.DistributedLawnDecor):
         self.movie.start()
 
     def generatePlaceItemTrack(self, toon, item):
-        sound = loader.loadSfx('phase_5.5/audio/sfx/burrow.mp3')
+        sound = loader.loadSfx('phase_5.5/audio/sfx/burrow.ogg')
         sound.setPlayRate(0.5)
         placeItemTrack = Parallel()
         placeItemTrack.append(Sequence(ActorInterval(toon, 'start-dig'), Parallel(ActorInterval(toon, 'loop-dig', loop=1, duration=5.13), Sequence(Wait(0.25), SoundInterval(sound, node=toon, duration=0.55), Wait(0.8), SoundInterval(sound, node=toon, duration=0.55), Wait(1.35), SoundInterval(sound, node=toon, duration=0.55))), ActorInterval(toon, 'start-dig', playRate=-1), Func(toon.loop, 'neutral'), Func(toon.detachShovel)))

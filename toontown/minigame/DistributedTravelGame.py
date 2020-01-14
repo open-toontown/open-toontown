@@ -109,12 +109,12 @@ class DistributedTravelGame(DistributedMinigame):
         self.minigameLabels = []
         self.minigameIcons = []
         self.bonusLabels = []
-        self.trolleyAwaySfx = base.loader.loadSfx('phase_4/audio/sfx/SZ_trolley_away.mp3')
-        self.trolleyBellSfx = base.loader.loadSfx('phase_4/audio/sfx/SZ_trolley_bell.mp3')
-        self.turntableRotateSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_turntble_rotate_2.mp3')
-        self.wonGameSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_bonus.mp3')
-        self.lostGameSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_no_bonus_2.mp3')
-        self.noWinnerSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_no_bonus.mp3')
+        self.trolleyAwaySfx = base.loader.loadSfx('phase_4/audio/sfx/SZ_trolley_away.ogg')
+        self.trolleyBellSfx = base.loader.loadSfx('phase_4/audio/sfx/SZ_trolley_bell.ogg')
+        self.turntableRotateSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_turntble_rotate_2.ogg')
+        self.wonGameSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_bonus.ogg')
+        self.lostGameSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_no_bonus_2.ogg')
+        self.noWinnerSfx = base.loader.loadSfx('phase_4/audio/sfx/MG_sfx_travel_game_no_bonus.ogg')
         self.boardIndex = 0
         self.avNames = []
         self.disconnectedAvIds = []
@@ -235,7 +235,7 @@ class DistributedTravelGame(DistributedMinigame):
         turnTable.removeNode()
         self.loadGui()
         self.introMovie = self.getIntroMovie()
-        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_Travel.mid')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_Travel.ogg')
         self.flashWinningBeansTrack = None
         return
 

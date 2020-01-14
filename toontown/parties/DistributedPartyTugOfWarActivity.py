@@ -222,8 +222,8 @@ class DistributedPartyTugOfWarActivity(DistributedPartyTeamActivity):
         return
 
     def loadSounds(self):
-        self.splashSound = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_splash.mp3')
-        self.whistleSound = base.loader.loadSfx('phase_4/audio/sfx/AA_sound_whistle.mp3')
+        self.splashSound = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_splash.ogg')
+        self.whistleSound = base.loader.loadSfx('phase_4/audio/sfx/AA_sound_whistle.ogg')
 
     def loadIntervals(self):
         self.updateIdealRateInterval = Sequence()

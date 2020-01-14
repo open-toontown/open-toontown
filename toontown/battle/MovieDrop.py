@@ -10,8 +10,8 @@ from .MovieUtil import calcAvgSuitPos
 from direct.showutil import Effects
 import functools
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieDrop')
-hitSoundFiles = ('AA_drop_flowerpot.mp3', 'AA_drop_sandbag.mp3', 'AA_drop_anvil.mp3', 'AA_drop_bigweight.mp3', 'AA_drop_safe.mp3', 'AA_drop_piano.mp3', 'AA_drop_boat.mp3')
-missSoundFiles = ('AA_drop_flowerpot_miss.mp3', 'AA_drop_sandbag_miss.mp3', 'AA_drop_anvil_miss.mp3', 'AA_drop_bigweight_miss.mp3', 'AA_drop_safe_miss.mp3', 'AA_drop_piano_miss.mp3', 'AA_drop_boat_miss.mp3')
+hitSoundFiles = ('AA_drop_flowerpot.ogg', 'AA_drop_sandbag.ogg', 'AA_drop_anvil.ogg', 'AA_drop_bigweight.ogg', 'AA_drop_safe.ogg', 'AA_drop_piano.ogg', 'AA_drop_boat.ogg')
+missSoundFiles = ('AA_drop_flowerpot_miss.ogg', 'AA_drop_sandbag_miss.ogg', 'AA_drop_anvil_miss.ogg', 'AA_drop_bigweight_miss.ogg', 'AA_drop_safe_miss.ogg', 'AA_drop_piano_miss.ogg', 'AA_drop_boat_miss.ogg')
 tDropShadow = 1.3
 tSuitDodges = 2.45 + tDropShadow
 tObjectAppears = 3.0 + tDropShadow
@@ -99,12 +99,12 @@ def __getSoundTrack(level, hitSuit, node = None):
         soundEffect = globalBattleSoundCache.getSound(missSoundFiles[level])
     soundTrack = Sequence()
     if soundEffect:
-        buttonSound = globalBattleSoundCache.getSound('AA_drop_trigger_box.mp3')
+        buttonSound = globalBattleSoundCache.getSound('AA_drop_trigger_box.ogg')
         fallingSound = None
         buttonDelay = tButtonPressed - 0.3
         fallingDuration = 1.5
         if not level == UBER_GAG_LEVEL_INDEX:
-            fallingSound = globalBattleSoundCache.getSound('incoming_whistleALT.mp3')
+            fallingSound = globalBattleSoundCache.getSound('incoming_whistleALT.ogg')
         soundTrack.append(Wait(buttonDelay))
         soundTrack.append(SoundInterval(buttonSound, duration=0.67, node=node))
         if fallingSound:
@@ -407,7 +407,7 @@ def __createSuitTrack(drop, delay, level, alreadyDodged, alreadyTeased, target, 
         suitTrack.append(updateHealthBar)
         suitGettingHit = Parallel(suitReact)
         if level == UBER_GAG_LEVEL_INDEX:
-            gotHitSound = globalBattleSoundCache.getSound('AA_drop_boat_cog.mp3')
+            gotHitSound = globalBattleSoundCache.getSound('AA_drop_boat_cog.ogg')
             suitGettingHit.append(SoundInterval(gotHitSound, node=toon))
         suitTrack.append(suitGettingHit)
         bonusTrack = None

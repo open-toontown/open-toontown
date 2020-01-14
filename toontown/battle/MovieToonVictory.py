@@ -79,7 +79,7 @@ def doToonVictory(localToonActive, toons, rewardToonIds, rewardDicts, deathList,
         track.append(Func(NametagGlobals.setOnscreenChatForced, 1))
     camTrack = Sequence()
     endTrack = Sequence()
-    danceSound = globalBattleSoundCache.getSound('ENC_Win.mp3')
+    danceSound = globalBattleSoundCache.getSound('ENC_Win.ogg')
     toonList = []
     countToons = 0
     uberListNew = []

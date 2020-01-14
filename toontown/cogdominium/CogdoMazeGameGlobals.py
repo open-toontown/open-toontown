@@ -171,24 +171,24 @@ WaterCoolerCollisionName = 'WaterCooler_Collision'
 WaterCoolerShowEventName = 'CogdoMazeWaterCooler_Show'
 WaterCoolerHideEventName = 'CogdoMazeWaterCooler_Hide'
 AudioCutoff = 75.0
-MusicFiles = {'normal': 'phase_9/audio/bgm/CHQ_FACT_bg.mid',
- 'timeRunningOut': 'phase_7/audio/bgm/encntr_suit_winning_indoor.mid'}
-SfxFiles = {'toonHitByDrop': 'phase_5/audio/sfx/tt_s_ara_cmg_toonHit.mp3',
- 'toonHit': 'phase_4/audio/sfx/MG_cannon_hit_dirt.mp3',
- 'getMemo': 'phase_4/audio/sfx/MG_maze_pickup.mp3',
- 'drop': 'phase_5/audio/sfx/tt_s_ara_cmg_itemHitsFloor.mp3',
- 'throw': 'phase_3.5/audio/sfx/AA_pie_throw_only.mp3',
- 'splat': 'phase_5/audio/sfx/SA_watercooler_spray_only.mp3',
- 'cogSpin': 'phase_3.5/audio/sfx/Cog_Death.mp3',
- 'cogDeath': 'phase_3.5/audio/sfx/ENC_cogfall_apart.mp3',
- 'bossCogAngry': 'phase_5/audio/sfx/tt_s_ara_cmg_bossCogAngry.mp3',
- 'cogStomp': 'phase_5/audio/sfx/tt_s_ara_cmg_cogStomp.mp3',
- 'quake': 'phase_5/audio/sfx/tt_s_ara_cmg_groundquake.mp3',
- 'waterCoolerFill': 'phase_5/audio/sfx/tt_s_ara_cmg_waterCoolerFill.mp3',
- 'lose': 'phase_4/audio/sfx/MG_lose.mp3',
- 'win': 'phase_4/audio/sfx/MG_win.mp3',
- 'cogDialogue': 'phase_3.5/audio/dial/COG_VO_statement.mp3',
- 'toonDialogue': 'phase_3.5/audio/dial/AV_dog_long.mp3'}
+MusicFiles = {'normal': 'phase_9/audio/bgm/CHQ_FACT_bg.ogg',
+ 'timeRunningOut': 'phase_7/audio/bgm/encntr_suit_winning_indoor.ogg'}
+SfxFiles = {'toonHitByDrop': 'phase_5/audio/sfx/tt_s_ara_cmg_toonHit.ogg',
+ 'toonHit': 'phase_4/audio/sfx/MG_cannon_hit_dirt.ogg',
+ 'getMemo': 'phase_4/audio/sfx/MG_maze_pickup.ogg',
+ 'drop': 'phase_5/audio/sfx/tt_s_ara_cmg_itemHitsFloor.ogg',
+ 'throw': 'phase_3.5/audio/sfx/AA_pie_throw_only.ogg',
+ 'splat': 'phase_5/audio/sfx/SA_watercooler_spray_only.ogg',
+ 'cogSpin': 'phase_3.5/audio/sfx/Cog_Death.ogg',
+ 'cogDeath': 'phase_3.5/audio/sfx/ENC_cogfall_apart.ogg',
+ 'bossCogAngry': 'phase_5/audio/sfx/tt_s_ara_cmg_bossCogAngry.ogg',
+ 'cogStomp': 'phase_5/audio/sfx/tt_s_ara_cmg_cogStomp.ogg',
+ 'quake': 'phase_5/audio/sfx/tt_s_ara_cmg_groundquake.ogg',
+ 'waterCoolerFill': 'phase_5/audio/sfx/tt_s_ara_cmg_waterCoolerFill.ogg',
+ 'lose': 'phase_4/audio/sfx/MG_lose.ogg',
+ 'win': 'phase_4/audio/sfx/MG_win.ogg',
+ 'cogDialogue': 'phase_3.5/audio/dial/COG_VO_statement.ogg',
+ 'toonDialogue': 'phase_3.5/audio/dial/AV_dog_long.ogg'}
 MessageLabelPos = (0.0, 0.0, -0.4)
 MemoGuiPos = (-0.85, 0, -0.9)
 MemoGuiTextScale = 0.1

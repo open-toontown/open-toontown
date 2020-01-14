@@ -18,8 +18,8 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.__init__(self, cr)
         self.toons = []
         self.activeIntervals = {}
-        self.openSfx = base.loader.loadSfx('phase_5/audio/sfx/elevator_door_open.mp3')
-        self.closeSfx = base.loader.loadSfx('phase_5/audio/sfx/elevator_door_close.mp3')
+        self.openSfx = base.loader.loadSfx('phase_5/audio/sfx/elevator_door_open.ogg')
+        self.closeSfx = base.loader.loadSfx('phase_5/audio/sfx/elevator_door_close.ogg')
         self.suits = []
         self.reserveSuits = []
         self.joiningReserves = []
@@ -53,8 +53,8 @@ class DistributedSuitInterior(DistributedObject.DistributedObject):
          120,
          12,
          38]
-        self.waitMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_toon_winning_indoor.mid')
-        self.elevatorMusic = base.loader.loadMusic('phase_7/audio/bgm/tt_elevator.mid')
+        self.waitMusic = base.loader.loadMusic('phase_7/audio/bgm/encntr_toon_winning_indoor.ogg')
+        self.elevatorMusic = base.loader.loadMusic('phase_7/audio/bgm/tt_elevator.ogg')
         self.fsm = ClassicFSM.ClassicFSM('DistributedSuitInterior', [State.State('WaitForAllToonsInside', self.enterWaitForAllToonsInside, self.exitWaitForAllToonsInside, ['Elevator']),
          State.State('Elevator', self.enterElevator, self.exitElevator, ['Battle']),
          State.State('Battle', self.enterBattle, self.exitBattle, ['Resting', 'Reward', 'ReservesJoining']),

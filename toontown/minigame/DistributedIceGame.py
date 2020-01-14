@@ -114,7 +114,7 @@ class DistributedIceGame(DistributedMinigame.DistributedMinigame, DistributedIce
     def load(self):
         self.notify.debug('load')
         DistributedMinigame.DistributedMinigame.load(self)
-        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_IceGame.mid')
+        self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_IceGame.ogg')
         self.gameBoard = loader.loadModel('phase_4/models/minigames/ice_game_icerink')
         background = loader.loadModel('phase_4/models/minigames/ice_game_2d')
         background.reparentTo(self.gameBoard)
@@ -168,22 +168,22 @@ class DistributedIceGame(DistributedMinigame.DistributedMinigame, DistributedIce
             self.obstacles.append(newObstacle)
             index += 1
 
-        self.countSound = loader.loadSfx('phase_3.5/audio/sfx/tick_counter.mp3')
-        self.treasureGrabSound = loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_bananas.mp3')
-        self.penaltyGrabSound = loader.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.mp3')
+        self.countSound = loader.loadSfx('phase_3.5/audio/sfx/tick_counter.ogg')
+        self.treasureGrabSound = loader.loadSfx('phase_4/audio/sfx/MG_sfx_vine_game_bananas.ogg')
+        self.penaltyGrabSound = loader.loadSfx('phase_4/audio/sfx/MG_cannon_fire_alt.ogg')
         self.tireSounds = []
         for tireIndex in range(4):
-            tireHit = loader.loadSfx('phase_4/audio/sfx/Golf_Hit_Barrier_1.mp3')
-            wallHit = loader.loadSfx('phase_4/audio/sfx/MG_maze_pickup.mp3')
-            obstacleHit = loader.loadSfx('phase_4/audio/sfx/Golf_Hit_Barrier_2.mp3')
+            tireHit = loader.loadSfx('phase_4/audio/sfx/Golf_Hit_Barrier_1.ogg')
+            wallHit = loader.loadSfx('phase_4/audio/sfx/MG_maze_pickup.ogg')
+            obstacleHit = loader.loadSfx('phase_4/audio/sfx/Golf_Hit_Barrier_2.ogg')
             self.tireSounds.append({'tireHit': tireHit,
              'wallHit': wallHit,
              'obstacleHit': obstacleHit})
 
-        self.arrowRotateSound = loader.loadSfx('phase_4/audio/sfx/MG_sfx_ice_force_rotate.wav')
-        self.arrowUpSound = loader.loadSfx('phase_4/audio/sfx/MG_sfx_ice_force_increase_3sec.mp3')
-        self.arrowDownSound = loader.loadSfx('phase_4/audio/sfx/MG_sfx_ice_force_decrease_3sec.mp3')
-        self.scoreCircleSound = loader.loadSfx('phase_4/audio/sfx/MG_sfx_ice_scoring_1.mp3')
+        self.arrowRotateSound = loader.loadSfx('phase_4/audio/sfx/MG_sfx_ice_force_rotate.ogg')
+        self.arrowUpSound = loader.loadSfx('phase_4/audio/sfx/MG_sfx_ice_force_increase_3sec.ogg')
+        self.arrowDownSound = loader.loadSfx('phase_4/audio/sfx/MG_sfx_ice_force_decrease_3sec.ogg')
+        self.scoreCircleSound = loader.loadSfx('phase_4/audio/sfx/MG_sfx_ice_scoring_1.ogg')
 
     def unload(self):
         self.notify.debug('unload')
