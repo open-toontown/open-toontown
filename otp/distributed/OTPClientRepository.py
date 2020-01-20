@@ -175,8 +175,8 @@ class OTPClientRepository(ClientRepositoryBase):
         self.accountOldAuth = config.GetBool('%s-account-old-auth' % game.name,
                                              self.accountOldAuth)
         self.useNewTTDevLogin = base.config.GetBool('use-tt-specific-dev-login', False)
-        self.astronSupport = config.GetBool('astron-support', True)
-        if self.astronSupport:
+        astronSupport = config.GetBool('astron-support', True)
+        if astronSupport:
             self.loginInterface = LoginAstronAccount.LoginAstronAccount(self)
             self.notify.info('loginInterface: LoginAstronAccount')
         elif self.useNewTTDevLogin:
@@ -426,7 +426,7 @@ class OTPClientRepository(ClientRepositoryBase):
         self.__pendingMessages = {}
         self.__doId2pendingInterest = {}
         self.centralLogger = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CENTRAL_LOGGER, 'CentralLogger')
-        if self.astronSupport:
+        if astronSupport:
             self.astronLoginManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_ASTRON_LOGIN_MANAGER, 'AstronLoginManager')
 
     def startLeakDetector(self):
@@ -524,7 +524,7 @@ class OTPClientRepository(ClientRepositoryBase):
             return
 
         self.startReaderPollTask()
-        if not self.astronSupport:
+        if not astronSupport:
             self.startHeartbeat()
         newInstall = launcher.getIsNewInstallation()
         newInstall = base.config.GetBool('new-installation', newInstall)
@@ -946,7 +946,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterWaitForAvatarList(self):
-        if not self.astronSupport:
+        if not astronSupport:
             self.handler = self.handleWaitForAvatarList
         self._requestAvatarList()
 
@@ -958,7 +958,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def sendGetAvatarsMsg(self):
-        if self.astronSupport:
+        if astronSupport:
             self.astronLoginManager.sendRequestAvatarList()
         else:
             datagram = PyDatagram()
@@ -1077,7 +1077,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def sendCreateAvatarMsg(self, avDNA, avName, avPosition):
-        if self.astronSupport:
+        if astronSupport:
             self.astronLoginManager.sendCreateAvatar(avDNA, avName, avPosition)
         else:
             datagram = PyDatagram()
@@ -1106,14 +1106,14 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterWaitForDeleteAvatarResponse(self, potAv):
-        if not self.astronSupport:
+        if not astronSupport:
             self.handler = self.handleWaitForDeleteAvatarResponse
         self.sendDeleteAvatarMsg(potAv.id)
         self.waitForDatabaseTimeout(requestName='WaitForDeleteAvatarResponse')
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def sendDeleteAvatarMsg(self, avId):
-        if self.astronSupport:
+        if astronSupport:
             self.astronLoginManager.sendRequestRemoveAvatar(avId)
         else:
             datagram = PyDatagram()
@@ -1157,7 +1157,7 @@ class OTPClientRepository(ClientRepositoryBase):
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterWaitForSetAvatarResponse(self, potAv):
-        if not self.astronSupport:
+        if not astronSupport:
             self.handler = self.handleWaitForSetAvatarResponse
         self.sendSetAvatarMsg(potAv)
         self.waitForDatabaseTimeout(requestName='WaitForSetAvatarResponse')
@@ -1177,7 +1177,7 @@ class OTPClientRepository(ClientRepositoryBase):
     def sendSetAvatarIdMsg(self, avId):
         if avId != self.__currentAvId:
             self.__currentAvId = avId
-            if self.astronSupport:
+            if astronSupport:
                 self.astronLoginManager.sendRequestPlayAvatar(avId)
             else:
                 datagram = PyDatagram()
@@ -1446,7 +1446,7 @@ class OTPClientRepository(ClientRepositoryBase):
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def enterWaitOnEnterResponses(self, shardId, hoodId, zoneId, avId):
         self.cleanGameExit = False
-        if not self.astronSupport:
+        if not astronSupport:
             self.handler = self.handleWaitOnEnterResponses
         self.handlerArgs = {'hoodId': hoodId,
          'zoneId': zoneId,
@@ -2078,7 +2078,7 @@ class OTPClientRepository(ClientRepositoryBase):
             di = DatagramIterator(dg, di.getCurrentIndex())
             self.deferredGenerates.append((CLIENT_DONE_INTEREST_RESP, (dg, di)))
         else:
-            if self.astronSupport:
+            if astronSupport:
                 # Play back generates, if necessary.
                 # First, create a new DatagramIterator using
                 # the Datagram from DatagramIterator di, and

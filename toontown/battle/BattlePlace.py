@@ -96,7 +96,7 @@ class BattlePlace(Place.Place):
     def doEnterZone(self, newZoneId):
         if newZoneId != self.zoneId:
             if newZoneId != None:
-                if base.cr.astronSupport:
+                if astronSupport:
                     if hasattr(self, 'zoneVisDict'):
                         visList = self.zoneVisDict[newZoneId]
                     else:
