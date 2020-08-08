@@ -10,5 +10,6 @@ whitelist/
 *.DS_Store
 *.jpg
 .idea
+venv/
 *.buildings
 *.trackRecords
