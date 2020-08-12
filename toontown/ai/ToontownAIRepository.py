@@ -42,6 +42,7 @@ from toontown.racing.DistributedStartingBlockAI import DistributedStartingBlockA
 from toontown.racing.DistributedStartingBlockAI import DistributedViewingBlockAI
 from toontown.racing.DistributedViewPadAI import DistributedViewPadAI
 from toontown.racing.RaceManagerAI import RaceManagerAI
+from toontown.safezone.SafeZoneManagerAI import SafeZoneManagerAI
 from toontown.shtiker.CogPageManagerAI import CogPageManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
 from toontown.toon import NPCToons
@@ -82,6 +83,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.inGameNewsMgr = None
         self.catalogManager = None
         self.trophyMgr = None
+        self.safeZoneManager = None
         self.zoneTable = {}
         self.dnaStoreMap = {}
         self.dnaDataMap = {}
@@ -195,6 +197,10 @@ class ToontownAIRepository(ToontownInternalRepository):
         # Generate our trophy manager...
         self.trophyMgr = DistributedTrophyMgrAI(self)
         self.trophyMgr.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
+
+        # Generate our safezone manager...
+        self.safeZoneManager = SafeZoneManagerAI(self)
+        self.safeZoneManager.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
 
     def generateHood(self, hoodConstructor, zoneId):
         # Bossbot HQ doesn't use DNA, so we skip over that.
