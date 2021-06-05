@@ -13,3 +13,4 @@ whitelist/
 venv/
 *.buildings
 *.trackRecords
+PPYTHON_PATH
