@@ -14,6 +14,7 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
         self.friendsList = []
         self.DISLname = ''
         self.DISLid = 0
+        self.accessLevel = 0
 
     if __dev__:
 
@@ -108,6 +109,9 @@ class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.Pl
 
     def setDISLid(self, id):
         self.DISLid = id
+
+    def setAccessLevel(self, accessLevel):
+        self.accessLevel = accessLevel
 
     def d_setFriendsList(self, friendsList):
         self.sendUpdate('setFriendsList', [friendsList])

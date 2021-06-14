@@ -7,6 +7,8 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
 from direct.distributed.PyDatagram import *
 
+from otp.otpbase import OTPGlobals
+
 from toontown.makeatoon.NameGenerator import NameGenerator
 from toontown.toon.ToonDNA import ToonDNA
 from toontown.toonbase import TTLocalizer
@@ -43,15 +45,37 @@ class DeveloperAccountDB(AccountDB):
         # Check if this play token exists in the dbm:
         if str(playToken) not in self.dbm:
             # It is not, so we'll associate them with a brand new account object.
+            # Get the default access level from config.
+            accessLevel = config.GetString('default-access-level', "SYSTEM_ADMIN")
+            if accessLevel not in OTPGlobals.AccessLevelName2Int:
+                self.loginManager.notify.warning(f'Access Level "{accessLevel}" isn\'t defined.  Reverting back to SYSTEM_ADMIN')
+                accessLevel = "SYSTEM_ADMIN"
+
             callback({'success': True,
                       'accountId': 0,
-                      'databaseId': playToken})
+                      'databaseId': playToken,
+                      'accessLevel': accessLevel})
         else:
-            # We already have an account object, so we'll just return what we have.
-            callback({'success': True,
-                      'accountId': int(self.dbm[playToken]),
-                      'databaseId': playToken})
+            def handleAccount(dclass, fields):
+                if dclass != self.loginManager.air.dclassesByName['AstronAccountUD']:
+                    result = {'success': False,
+                              'reason': 'Your account object (%s) was not found in the database!' % dclass}
+                else:
+                    # We already have an account object, so we'll just return what we have.
+                    result = {'success': True,
+                              'accountId': int(self.dbm[playToken]),
+                              'databaseId': playToken,
+                              'accessLevel': fields.get('ACCESS_LEVEL', 'NO_ACCESS')}
 
+                callback(result)
+
+            # Query the account from Astron to verify its existance. We need to get
+            # the ACCESS_LEVEL field anyways.
+            # TODO: Add a timeout timer?
+            self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId,
+                                                          int(self.dbm[playToken]), handleAccount,
+                                                          self.loginManager.air.dclassesByName['AstronAccountUD'],
+                                                          ('ACCESS_LEVEL',))
 
 class GameOperation:
 
@@ -89,6 +113,7 @@ class LoginOperation(GameOperation):
             return
 
         self.databaseId = result.get('databaseId', 0)
+        self.accessLevel = result.get('accessLevel', 0)
         accountId = result.get('accountId', 0)
         if accountId:
             self.accountId = accountId
@@ -114,7 +139,8 @@ class LoginOperation(GameOperation):
                         'ACCOUNT_AV_SET_DEL': [],
                         'CREATED': time.ctime(),
                         'LAST_LOGIN': time.ctime(),
-                        'ACCOUNT_ID': str(self.databaseId)}
+                        'ACCOUNT_ID': str(self.databaseId),
+                        'ACCESS_LEVEL': self.accessLevel}
 
         self.loginManager.air.dbInterface.createObject(self.loginManager.air.dbId,
                                                        self.loginManager.air.dclassesByName['AstronAccountUD'],
@@ -161,6 +187,13 @@ class LoginOperation(GameOperation):
 
         # set client state to established, thus un-sandboxing the sender
         self.loginManager.air.setClientState(self.sender, 2)
+
+         # Update the last login timestamp.
+        self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.accountId,
+                                                       self.loginManager.air.dclassesByName['AstronAccountUD'],
+                                                       {'LAST_LOGIN': time.ctime(),
+                                                        'ACCOUNT_ID': str(self.databaseId),
+                                                        'ACCESS_LEVEL': self.accessLevel})
 
         responseData = {
             'returnCode': 0,
@@ -600,8 +633,11 @@ class LoadAvatarOperation(AvatarOperation):
         self.__handleSetAvatar()
 
     def __handleSetAvatar(self):
+        # Get the client channel.
         channel = self.loginManager.GetAccountConnectionChannel(self.sender)
 
+         # We will first assign a POST_REMOVE that will unload the
+         # avatar in the event of them disconnecting while we are working.
         cleanupDatagram = PyDatagram()
         cleanupDatagram.addServerHeader(self.avId, channel, STATESERVER_OBJECT_DELETE_RAM)
         cleanupDatagram.addUint32(self.avId)
@@ -611,7 +647,12 @@ class LoadAvatarOperation(AvatarOperation):
         datagram.appendData(cleanupDatagram.getMessage())
         self.loginManager.air.send(datagram)
 
-        self.loginManager.air.sendActivate(self.avId, 0, 0, self.loginManager.air.dclassesByName['DistributedToonUD'])
+        # Get the avatar's "true" access (that is, the integer value that corresponds to the assigned string value).
+        accessLevel = self.account.get('ACCESS_LEVEL', 'NO_ACCESS')
+        accessLevel = OTPGlobals.AccessLevelName2Int.get(accessLevel, 0)
+
+        self.loginManager.air.sendActivate(self.avId, 0, 0, self.loginManager.air.dclassesByName['DistributedToonUD'],
+                                           {'setAccessLevel': (accessLevel,)})
 
         datagram = PyDatagram()
         datagram.addServerHeader(channel, self.loginManager.air.ourChannel, CLIENTAGENT_OPEN_CHANNEL)
