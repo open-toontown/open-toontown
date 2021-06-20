@@ -1,6 +1,6 @@
-import dbm
 import json
 import time
+import os
 from datetime import datetime
 
 from direct.directnotify import DirectNotifyGlobal
@@ -22,28 +22,33 @@ class AccountDB:
     def __init__(self, loginManager):
         self.loginManager = loginManager
 
-        # Setup the dbm:
-        accountDbFile = config.GetString('accountdb-local-file', 'astron/databases/accounts.db')
-        self.dbm = dbm.open(accountDbFile, 'c')
-
     def lookup(self, playToken, callback):
         raise NotImplementedError('lookup')  # Must be overridden by subclass.
 
     def storeAccountId(self, databaseId, accountId, callback):
-        self.dbm[databaseId] = str(accountId)
-        if hasattr(self.dbm, 'sync') and self.dbm.sync:
-            self.dbm.sync()
-            callback(True)
-        else:
-            self.loginManager.notify.warning('Unable to associate user %s with account %s!' % (databaseId, accountId))
-            callback(False)
+        raise NotImplementedError('storeAccountId')  # Must be overridden by subclass.
 
 
 class DeveloperAccountDB(AccountDB):
 
+    def __init__(self, loginManager):
+        AccountDB.__init__(self, loginManager)
+
+        # Setup the accountToId dictionary
+        self.accountDbFilePath = config.GetString('accountdb-local-file', 'astron/databases/accounts.json')
+        # Load the JSON file if it exists.
+        if os.path.exists(self.accountDbFilePath):
+            with open(self.accountDbFilePath, 'r') as file:
+                self.accountToId = json.load(file)
+        else:
+            # If not, create a blank file.
+            self.accountToId = {}
+            with open(self.accountDbFilePath, 'w') as file:
+                json.dump(self.accountToId, file)
+
     def lookup(self, playToken, callback):
-        # Check if this play token exists in the dbm:
-        if str(playToken) not in self.dbm:
+        # Check if this play token exists in the accountsToId:
+        if playToken not in self.accountToId:
             # It is not, so we'll associate them with a brand new account object.
             # Get the default access level from config.
             accessLevel = config.GetString('default-access-level', "SYSTEM_ADMIN")
@@ -63,7 +68,7 @@ class DeveloperAccountDB(AccountDB):
                 else:
                     # We already have an account object, so we'll just return what we have.
                     result = {'success': True,
-                              'accountId': int(self.dbm[playToken]),
+                              'accountId': self.accountToId[playToken],
                               'databaseId': playToken,
                               'accessLevel': fields.get('ACCESS_LEVEL', 'NO_ACCESS')}
 
@@ -73,9 +78,19 @@ class DeveloperAccountDB(AccountDB):
             # the ACCESS_LEVEL field anyways.
             # TODO: Add a timeout timer?
             self.loginManager.air.dbInterface.queryObject(self.loginManager.air.dbId,
-                                                          int(self.dbm[playToken]), handleAccount,
+                                                          self.accountToId[playToken], handleAccount,
                                                           self.loginManager.air.dclassesByName['AstronAccountUD'],
                                                           ('ACCESS_LEVEL',))
+
+    def storeAccountId(self, databaseId, accountId, callback):
+        if databaseId not in self.accountToId:
+            self.accountToId[databaseId] = accountId
+            with open(self.accountDbFilePath, 'w') as file:
+                json.dump(self.accountToId, file, indent=2)
+            callback(True)
+        else:
+            self.loginManager.notify.warning(f"Attempted to store user {databaseId} with account {accountId} even though it already exists!")
+            callback(False)
 
 class GameOperation:
 

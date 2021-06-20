@@ -11,6 +11,7 @@ whitelist/
 *.jpg
 .idea
 venv/
+*.json
 *.buildings
 *.trackRecords
 PPYTHON_PATH
