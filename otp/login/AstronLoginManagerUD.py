@@ -103,10 +103,23 @@ class GameOperation:
         self.callback = callback
 
     def _handleDone(self):
+        # Deletes the sender from either sender2loginOperation or account2operation
+        # depending on the type of operation we are running.
         if self.__class__.__name__ == 'LoginOperation':
             del self.loginManager.sender2loginOperation[self.sender]
         else:
             del self.loginManager.account2operation[self.sender]
+
+    def _handleCloseConnection(self, reason=''):
+        # Closes either the sender connection or the sender account
+        # depending on the type of operation we are running, and then
+        # finishes off this operation.
+        if self.__class__.__name__ == 'LoginOperation':
+            self.loginManager.closeConnection(self.sender, reason=reason)
+        else:
+            self.loginManager.closeConnection(self.sender, reason=reason, isAccount=True)
+
+        self._handleDone()
 
 
 class LoginOperation(GameOperation):
@@ -123,17 +136,25 @@ class LoginOperation(GameOperation):
         self.loginManager.accountDb.lookup(playToken, self.__handleLookup)
 
     def __handleLookup(self, result):
+        # This is a callback function that will be called by the lookup function
+        # of the AstronLoginManager's account DB interface. It processes the
+        # lookup function's result & determines which operation should run next.
         if not result.get('success'):
-            # TODO: Kill the connection
+            # The play token was rejected!
+            self.loginManager.air.writeServerEvent('play-token-rejected', self.sender, self.playToken)
+            self._handleCloseConnection(result.get('reason', 'The accounts database rejected your play token.'))
             return
 
+        # Grab the databaseId, accessLevel, and the accountId from the result.
         self.databaseId = result.get('databaseId', 0)
         self.accessLevel = result.get('accessLevel', 0)
         accountId = result.get('accountId', 0)
         if accountId:
+            # There is an account ID, so let's retrieve the associated account.
             self.accountId = accountId
             self.__handleRetrieveAccount()
         else:
+            # There is no account ID, so let's create a new account.
             self.__handleCreateAccount()
 
     def __handleRetrieveAccount(self):
