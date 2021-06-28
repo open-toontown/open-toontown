@@ -746,18 +746,47 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         # TODO: In the future, add more database interfaces & make this configurable.
         self.accountDb = DeveloperAccountDB(self)
 
+    def closeConnection(self, connectionId, reason='', forOperations=False, isAccount=False):
+        if forOperations:
+            if isAccount:
+                # Closes the account for duplicate operations.
+                operation = self.account2operation.get(connectionId)
+                if not operation:
+                    self.notify.warning('Tried to close account %s for duplicate operations, but none exist!' % connectionId)
+                    return
+            else:
+                # Closes the connection for duplicate operations.
+                operation = self.sender2loginOperation.get(connectionId)
+                if not operation:
+                    self.notify.warning('Tried to close connection %s for duplicate operations, but none exist!' % connectionId)
+                    return
+
+        # Sends CLIENTAGENT_EJECT to the given connectionId with the given reason.
+        datagram = PyDatagram()
+        if isAccount:
+            # Closes the account's connection.
+            datagram.addServerHeader(self.GetAccountConnectionChannel(connectionId), self.air.ourChannel, CLIENTAGENT_EJECT)
+        else:
+            datagram.addServerHeader(connectionId, self.air.ourChannel, CLIENTAGENT_EJECT)
+        datagram.addUint32(122)
+        if forOperations and not reason:
+            datagram.addString('An operation is already running: %s' % operation.__class__.__name__)
+        else:
+            datagram.addString(reason if reason else 'No reason specified.')
+        self.air.send(datagram)
+
     def runLoginOperation(self, playToken):
         # Runs a login operation on the sender. First, get the sender:
         sender = self.air.getMsgSender()
 
         # Is the sender already logged in?
         if sender >> 32:
-            # TODO kill connection
+            self.closeConnection(sender, reason='This account is already logged in.')
             return
 
         # Is the sender already logging in?
         if sender in list(self.sender2loginOperation.keys()):
-            # TODO kill connection
+            self.closeConnection(sender, forOperations=True)
             return
 
         # Run the login operation:
@@ -770,12 +799,12 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         sender = self.air.getAccountIdFromSender()
         if not sender:
             # Sender doesn't exist; not logged in.
-            # TODO KILL CONNECTION
+            self.closeConnection(sender, reason='Client is not logged in.', isAccount=True)
             return
 
         if sender in self.account2operation:
             # Sender is already currently running a game operation.
-            # TODO KILL CONNECTION
+            self.closeConnection(sender, forOperations=True, isAccount=True)
             return
 
         # Run the game operation:
@@ -818,7 +847,8 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         currentAvId = self.air.getAvatarIdFromSender()
         accId = self.air.getAccountIdFromSender()
         if currentAvId and avId:
-            # todo: kill the connection
+            # An avatar has already been chosen!
+            self.closeConnection(accountId, reason='An avatar is already chosen!', isAccount=True)
             return
         elif not currentAvId and not avId:
             # I don't think we need to do anything extra here
