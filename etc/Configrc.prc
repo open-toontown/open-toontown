@@ -38,7 +38,7 @@ extractor-step-time 0.5
 required-login playToken
 server-failover 80 443
 dx-use-rangebased-fog #t
-aspect-ratio 1.333333
+#aspect-ratio 1.333333
 on-screen-debug-font ImpressBT.ttf
 temp-hpr-fix 1
 vertex-buffers 0
