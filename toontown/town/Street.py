@@ -360,6 +360,8 @@ class Street(BattlePlace.BattlePlace):
                 else:
                     visZones = [self.loader.node2zone[x] for x in self.loader.nodeDict[newZoneId]]
                     visZones.append(ZoneUtil.getBranchZone(newZoneId))
+                    if newZoneId not in visZones:
+                        visZones.append(newZoneId)
                     base.cr.sendSetZoneMsg(newZoneId, visZones)
                 self.notify.debug('Entering Zone %d' % newZoneId)
             self.zoneId = newZoneId

@@ -102,6 +102,9 @@ class BattlePlace(Place.Place):
                     else:
                         visList = base.cr.playGame.getPlace().loader.zoneVisDict[newZoneId]
 
+                    if newZoneId not in visList:
+                        visList.append(newZoneId)
+
                     base.cr.sendSetZoneMsg(newZoneId, visList)
                 else:
                     base.cr.sendSetZoneMsg(newZoneId)
