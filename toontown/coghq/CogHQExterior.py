@@ -149,8 +149,8 @@ class CogHQExterior(BattlePlace.BattlePlace):
             # Next, we need to collect all of the visgroup zone IDs.
             self.zoneVisDict = {}
             for i in range(dnaStore.getNumDNAVisGroupsAI()):
-                groupFullName = dnaStore.getDNAVisGroupName(i)
                 visGroup = dnaStore.getDNAVisGroupAI(i)
+                groupFullName = visGroup.getName()
                 visZoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
                 visZoneId = ZoneUtil.getTrueZoneId(visZoneId, self.zoneId)
                 visibles = []
@@ -161,4 +161,8 @@ class CogHQExterior(BattlePlace.BattlePlace):
                 self.zoneVisDict[visZoneId] = visibles
 
             # Finally, we want interest in all visgroups due to this being a Cog HQ.
-            base.cr.sendSetZoneMsg(self.zoneId, list(self.zoneVisDict.values())[0])
+            visList = list(self.zoneVisDict.values())[0]
+            if self.zoneId not in visList:
+                visList.append(self.zoneId)
+
+            base.cr.sendSetZoneMsg(self.zoneId, visList)
