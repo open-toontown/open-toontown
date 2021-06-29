@@ -22,6 +22,11 @@ class TelemetryLimiter(DirectObject):
         self._objs[id] = obj
         self.accept(self._getDummyEventName(obj), self._dummyEventHandler)
 
+    if __astron__:
+        def hasObj(self, obj):
+            id = obj.getTelemetryLimiterId()
+            return id in self._objs
+
     def _getDummyEventName(self, obj):
         return '%s-%s-%s-%s' % (self.LeakDetectEventName,
          obj.getTelemetryLimiterId(),
@@ -80,7 +85,10 @@ class TLGatherAllAvs(DirectObject):
             self._handlePlayerArrive(av)
 
         self.accept(DistributedPlayer.GetPlayerGenerateEvent(), self._handlePlayerArrive)
-        self.accept(DistributedPlayer.GetPlayerNetworkDeleteEvent(), self._handlePlayerLeave)
+        if __astron__:
+            self.accept(DistributedPlayer.GetPlayerDeleteEvent(), self._handlePlayerLeave)
+        else:
+            self.accept(DistributedPlayer.GetPlayerNetworkDeleteEvent(), self._handlePlayerLeave)
 
     def _handlePlayerArrive(self, av):
         if av is not localAvatar:
@@ -94,14 +102,25 @@ class TLGatherAllAvs(DirectObject):
             self._avId2limits[av.doId] = limitList
             base.cr.telemetryLimiter.addObj(av)
 
-    def _handlePlayerLeave(self, av):
-        if av is not localAvatar:
-            base.cr.telemetryLimiter.removeObj(av)
-            for limit in self._avId2limits[av.doId]:
-                av.removeTelemetryLimit(limit)
+    if __astron__:
+        def _handlePlayerLeave(self, av):
+            if av is not localAvatar and base.cr.telemetryLimiter.hasObj(av) and av.doId in self._avId2limits:
+                base.cr.telemetryLimiter.removeObj(av)
+                for limit in self._avId2limits[av.doId]:
+                    av.removeTelemetryLimit(limit)
 
-            del self._avId2limits[av.doId]
-            del self._avs[av.doId]
+                del self._avId2limits[av.doId]
+                if av.doId in self._avs:
+                    del self._avs[av.doId]
+    else:
+        def _handlePlayerLeave(self, av):
+            if av is not localAvatar:
+                base.cr.telemetryLimiter.removeObj(av)
+                for limit in self._avId2limits[av.doId]:
+                    av.removeTelemetryLimit(limit)
+
+                del self._avId2limits[av.doId]
+                del self._avs[av.doId]
 
     def destroy(self):
         self.ignoreAll()
