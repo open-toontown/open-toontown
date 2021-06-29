@@ -229,7 +229,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             if self.WantOldGMNameBan:
                 self._checkOldGMName()
             messenger.send('avatarEntered', [self])
-            if config.GetBool('astron-support', True):
+            if __astron__:
                 self.sendUpdate('setDefaultShard', [self.air.districtId])
         if hasattr(self, 'gameAccess') and self.gameAccess != 2:
             if self.hat[0] != 0:
@@ -250,7 +250,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 self.b_setShoes(0, 0, 0)
         self.startPing()
 
-    if config.GetBool('astron-support', True):
+    if __astron__:
         def setLocation(self, parentId, zoneId):
             DistributedPlayerAI.DistributedPlayerAI.setLocation(self, parentId, zoneId)
             if self.isPlayerControlled():

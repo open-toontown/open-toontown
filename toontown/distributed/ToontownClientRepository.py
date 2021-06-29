@@ -178,7 +178,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         del self.okButton
         del self.acceptedText
         del self.acceptedBanner
-        if not astronSupport:
+        if not __astron__:
             datagram = PyDatagram()
             datagram.addUint16(CLIENT_SET_WISHNAME_CLEAR)
             datagram.addUint32(avatarChoice.id)
@@ -198,7 +198,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def __handleReject(self, avList, index):
         self.rejectDialog.cleanup()
-        if not astronSupport:
+        if not __astron__:
             datagram = PyDatagram()
             datagram.addUint16(CLIENT_SET_WISHNAME_CLEAR)
         avid = 0
@@ -208,7 +208,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
         if avid == 0:
             self.notify.error('Avatar rejected not found in avList.  Index is: ' + str(index))
-        if not astronSupport:
+        if not __astron__:
             datagram.addUint32(avid)
             datagram.addUint8(0)
             self.send(datagram)
@@ -321,7 +321,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.avCreate = MakeAToon.MakeAToon(self.loginFSM, avList, 'makeAToonComplete', index, self.isPaid())
         self.avCreate.load()
         self.avCreate.enter()
-        if not astronSupport:
+        if not __astron__:
             self.handler = self.handleCreateAvatar
         self.accept('makeAToonComplete', self.__handleMakeAToon, [avList, index])
         self.accept('nameShopCreateAvatar', self.sendCreateAvatarMsg)
@@ -369,7 +369,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             del self.newPotAv
         return
 
-    if not config.GetBool('astron-support', True):
+    if not __astron__:
         def handleAvatarResponseMsg(self, di):
             self.cleanupWaitingForDatabase()
             avatarId = di.getUint32()
@@ -523,7 +523,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.handlerArgs = {'hoodId': hoodId,
          'zoneId': zoneId,
          'avId': avId}
-        if not astronSupport:
+        if not __astron__:
             self.handler = self.handleTutorialQuestion
         self.__requestSkipTutorial(hoodId, zoneId, avId)
 
@@ -551,7 +551,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         return
 
     def enterTutorialQuestion(self, hoodId, zoneId, avId):
-        if not astronSupport:
+        if not __astron__:
             self.handler = self.handleTutorialQuestion
         self.__requestTutorial(hoodId, zoneId, avId)
 
@@ -611,7 +611,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.handler = self.handleCloseShard
         self._removeLocalAvFromStateServer()
 
-    if not config.GetBool('astron-support', True):
+    if not __astron__:
         def handleCloseShard(self, msgType, di):
             if msgType == CLIENT_CREATE_OBJECT_REQUIRED:
                 di2 = PyDatagramIterator(di)
@@ -870,7 +870,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.friendsListError = 0
 
     def sendGetFriendsListRequest(self):
-        if astronSupport:
+        if __astron__:
             print('sendGetFriendsListRequest TODO')
         else:
             self.friendsMapPending = 1
@@ -1097,12 +1097,12 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         return True
 
     def sendQuietZoneRequest(self):
-        if astronSupport:
+        if __astron__:
             self.sendSetZoneMsg(OTPGlobals.QuietZone, [])
         else:
             self.sendSetZoneMsg(OTPGlobals.QuietZone)
 
-    if not config.GetBool('astron-support', True):
+    if not __astron__:
         def handleQuietZoneGenerateWithRequired(self, di):
             parentId = di.getUint32()
             zoneId = di.getUint32()

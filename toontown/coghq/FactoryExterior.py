@@ -74,7 +74,7 @@ class FactoryExterior(BattlePlace.BattlePlace):
         self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.nodeList, self.zoneId)
         how = requestStatus['how']
         self.fsm.request(how, [requestStatus])
-        if base.cr.astronSupport and self.zoneId != ToontownGlobals.LawbotOfficeExt:
+        if __astron__ and self.zoneId != ToontownGlobals.LawbotOfficeExt:
             self.handleInterests()
 
     def exit(self):
@@ -158,7 +158,7 @@ class FactoryExterior(BattlePlace.BattlePlace):
         else:
             self.notify.error('Unknown mode: ' + where + ' in handleElevatorDone')
 
-    if config.GetBool('astron-support', True):
+    if __astron__:
         def handleInterests(self):
             # First, we need to load the DNA file for this Cog HQ.
             dnaStore = DNAStorage()

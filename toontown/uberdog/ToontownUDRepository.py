@@ -42,6 +42,6 @@ class ToontownUDRepository(ToontownInternalRepository):
                                                        globalClockRealTimeUponLogin=globalClock.getRealTime())
 
     def createGlobals(self):
-        if astronSupport:
+        if __astron__:
             # Create our Astron login manager...
             self.astronLoginManager = self.generateGlobalObject(OTP_DO_ID_ASTRON_LOGIN_MANAGER, 'AstronLoginManager')

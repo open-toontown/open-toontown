@@ -234,7 +234,7 @@ class LoginScreen(StateData.StateData, GuiScreen.GuiScreen):
     def exitShowConnectionProblemDialog(self):
         pass
 
-    if not config.GetBool('astron-support', True):
+    if not __astron__:
         def handleWaitForLoginResponse(self, msgType, di):
             if msgType == CLIENT_LOGIN_2_RESP:
                 self.handleLoginResponseMsg2(di)
@@ -495,7 +495,7 @@ class LoginScreen(StateData.StateData, GuiScreen.GuiScreen):
         self.notify.debug('result=%s' % result)
         return result
 
-    if not config.GetBool('astron-support', True):
+    if not __astron__:
         def handleLoginToontownResponse(self, di):
             self.notify.debug("handleLoginToontownResponse")
             if 1:

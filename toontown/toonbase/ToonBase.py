@@ -52,6 +52,8 @@ class ToonBase(OTPBase.OTPBase):
             sys.exit(1)
         self.disableShowbaseMouse()
         base.debugRunningMultiplier /= OTPGlobals.ToonSpeedFactor
+        __builtins__['__astron__'] = self.config.GetBool('astron-support', 1)
+        ToonBase.notify.info('__astron__ == %s' % __astron__)
         self.toonChatSounds = self.config.GetBool('toon-chat-sounds', 1)
         self.placeBeforeObjects = config.GetBool('place-before-objects', 1)
         self.endlessQuietZone = False

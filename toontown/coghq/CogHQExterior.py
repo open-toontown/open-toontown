@@ -76,7 +76,7 @@ class CogHQExterior(BattlePlace.BattlePlace):
         self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.nodeList, self.zoneId)
         how = requestStatus['how']
         self.fsm.request(how, [requestStatus])
-        if base.cr.astronSupport and self.zoneId != ToontownGlobals.BossbotHQ:
+        if __astron__ and self.zoneId != ToontownGlobals.BossbotHQ:
             self.handleInterests()
 
     def exit(self):
@@ -139,7 +139,7 @@ class CogHQExterior(BattlePlace.BattlePlace):
         taskMgr.remove(base.localAvatar.uniqueName('finishSquishTask'))
         base.localAvatar.laffMeter.stop()
 
-    if config.GetBool('astron-support', True):
+    if __astron__:
         def handleInterests(self):
             # First, we need to load the DNA file for this Cog HQ.
             dnaStore = DNAStorage()
