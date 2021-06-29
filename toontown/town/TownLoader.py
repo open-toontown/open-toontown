@@ -73,7 +73,7 @@ class TownLoader(StateData.StateData):
         del self.hood
         del self.nodeDict
         del self.zoneDict
-        if base.cr.astronSupport:
+        if astronSupport:
             del self.node2zone
         del self.fadeInDict
         del self.fadeOutDict
@@ -229,7 +229,7 @@ class TownLoader(StateData.StateData):
     def makeDictionaries(self, dnaStore):
         self.nodeDict = {}
         self.zoneDict = {}
-        if base.cr.astronSupport:
+        if astronSupport:
             self.node2zone = {}
         self.nodeList = []
         self.fadeInDict = {}
@@ -254,7 +254,7 @@ class TownLoader(StateData.StateData):
             self.nodeDict[zoneId] = []
             self.nodeList.append(groupNode)
             self.zoneDict[zoneId] = groupNode
-            if base.cr.astronSupport:
+            if astronSupport:
                 self.node2zone[groupNode] = zoneId
             fadeDuration = 0.5
             self.fadeOutDict[groupNode] = Sequence(Func(groupNode.setTransparency, 1), LerpColorScaleInterval(groupNode, fadeDuration, a0, startColorScale=a1), Func(groupNode.clearColorScale), Func(groupNode.clearTransparency), Func(groupNode.stash), name='fadeZone-' + str(zoneId), autoPause=1)

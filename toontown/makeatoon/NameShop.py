@@ -865,7 +865,7 @@ class NameShop(StateData.StateData):
 
     def checkNamePattern(self):
         self.notify.debug('checkNamePattern')
-        if base.cr.astronSupport:
+        if astronSupport:
             base.cr.astronLoginManager.sendSetNamePattern(self.avId,
                                                           self.nameIndices[0], self.nameFlags[0],
                                                           self.nameIndices[1], self.nameFlags[1],
@@ -953,14 +953,14 @@ class NameShop(StateData.StateData):
         self.notify.debug('checkNameTyped')
         if self._submitTypeANameAsPickAName():
             return
-        if not base.cr.astronSupport:
+        if not astronSupport:
             datagram = PyDatagram()
             datagram.addUint16(CLIENT_SET_WISHNAME)
         if justCheck:
             avId = 0
         else:
             avId = self.avId
-        if not base.cr.astronSupport:
+        if not astronSupport:
             datagram.addUint32(avId)
             datagram.addString(self.nameEntry.get())
             messenger.send('nameShopPost', [datagram])
@@ -1082,7 +1082,7 @@ class NameShop(StateData.StateData):
             self.requestingSkipTutorial = False
         if not self.avExists or self.avExists and self.avId == 'deleteMe':
             messenger.send('nameShopCreateAvatar', [style, '', self.index])
-            if base.cr.astronSupport:
+            if astronSupport:
                 self.accept('nameShopCreateAvatarDone', self.handleCreateAvatarResponseMsg)
         else:
             self.checkNameTyped()

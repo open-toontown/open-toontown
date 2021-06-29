@@ -22,6 +22,7 @@ class AIBase:
     def __init__(self):
         self.config = getConfigShowbase()
         __builtins__['__dev__'] = self.config.GetBool('want-dev', 0)
+        __builtins__['astronSupport'] = self.config.GetBool('astron-support', True)
         logStackDump = (self.config.GetBool('log-stack-dump', (not __dev__)) or self.config.GetBool('ai-log-stack-dump', (not __dev__)))
         uploadStackDump = self.config.GetBool('upload-stack-dump', 0)
         if logStackDump or uploadStackDump:
