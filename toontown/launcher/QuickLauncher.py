@@ -72,7 +72,6 @@ class QuickLauncher(LauncherBase):
         self.serverDbFileHash = HashVal()
         self.launcherFileDbHash = HashVal()
         self.DECREASE_BANDWIDTH = 0
-        self.httpChannel.setDownloadThrottle(0)
         self.webAcctParams = 'WEB_ACCT_PARAMS'
         self.parseWebAcctParams()
         self.showPhase = -1

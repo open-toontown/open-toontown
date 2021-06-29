@@ -16,3 +16,4 @@ venv/
 *.trackRecords
 PPYTHON_PATH
 local/
+errorCode
