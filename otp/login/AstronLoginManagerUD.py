@@ -265,7 +265,12 @@ class LoginOperation(GameOperation):
         self._handleDone()
 
     def getLastLoggedInStr(self):
-        return ''  # TODO
+        lastLoggedInStr = ''
+        if hasattr(self.loginManager.air, 'toontownTimeManager') and self.loginManager.air.toontownTimeManager:
+            lastLoggedInStr = datetime.strftime(self.loginManager.air.toontownTimeManager.getCurServerDateTime(),
+                                                self.loginManager.air.toontownTimeManager.formatStr)
+
+        return lastLoggedInStr
 
     def getAccountCreationDate(self):
         accountCreationDate = self.account.get('CREATED', '')

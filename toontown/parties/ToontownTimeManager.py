@@ -1,11 +1,10 @@
 import time
 from datetime import datetime, timedelta
 import pytz
-from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import TTLocalizer
 
-class ToontownTimeManager(DistributedObject.DistributedObject):
+class ToontownTimeManager:
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownTimeManager')
     ClockFormat = '%I:%M:%S %p'
     formatStr = '%Y-%m-%d %H:%M:%S'
