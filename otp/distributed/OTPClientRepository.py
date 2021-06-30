@@ -505,10 +505,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.startReaderPollTask()
         if not __astron__:
             self.startHeartbeat()
-        newInstall = launcher.getIsNewInstallation()
-        newInstall = base.config.GetBool('new-installation', newInstall)
-        if newInstall:
-            self.notify.warning('new installation')
         self.loginFSM.request('login')
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
@@ -524,7 +520,6 @@ class OTPClientRepository(ClientRepositoryBase):
     def __handleLoginDone(self, doneStatus):
         mode = doneStatus['mode']
         if mode == 'success':
-            self.setIsNotNewInstallation()
             self.loginFSM.request('waitForGameList')
         elif mode == 'getChatPassword':
             self.loginFSM.request('parentPassword')
@@ -570,7 +565,6 @@ class OTPClientRepository(ClientRepositoryBase):
     def __handleCreateAccountDone(self, doneStatus):
         mode = doneStatus['mode']
         if mode == 'success':
-            self.setIsNotNewInstallation()
             self.loginFSM.request('waitForGameList')
         elif mode == 'reject':
             self.loginFSM.request('reject')
@@ -1902,9 +1896,6 @@ class OTPClientRepository(ClientRepositoryBase):
 
     def __handleCancelWaiting(self, value):
         self.loginFSM.request('shutdown')
-
-    def setIsNotNewInstallation(self):
-        launcher.setIsNotNewInstallation()
 
     def renderFrame(self):
         gsg = base.win.getGsg()

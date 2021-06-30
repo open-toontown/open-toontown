@@ -34,14 +34,11 @@ class LauncherBase(DirectObject):
     GameLogFilenameKey = 'GAMELOG_FILENAME'
     PandaWindowOpenKey = 'PANDA_WINDOW_OPEN'
     PandaErrorCodeKey = 'PANDA_ERROR_CODE'
-    NewInstallationKey = 'IS_NEW_INSTALLATION'
     LastLoginKey = 'LAST_LOGIN'
     UserLoggedInKey = 'USER_LOGGED_IN'
     PaidUserLoggedInKey = 'PAID_USER_LOGGED_IN'
     ReferrerKey = 'REFERRER_CODE'
     PeriodTimeRemainingKey = 'PERIOD_TIME_REMAINING'
-    PeriodNameKey = 'PERIOD_NAME'
-    SwidKey = 'SWID'
     DISLTokenKey = 'DISLTOKEN'
 
     def __init__(self):
@@ -56,7 +53,9 @@ class LauncherBase(DirectObject):
             ltime[4],
             ltime[5])
         logPrefix = self.getLogFileName() + '-'
-        logfile = logPrefix + logSuffix + '.log'
+        if not os.path.exists('logs/'):
+            os.makedirs('logs/')
+        logfile = os.path.join('logs', logPrefix + logSuffix + '.log')
         self.errorfile = 'errorCode'
         log = open(logfile, 'a')
         logOut = LogAndOutput(sys.__stdout__, log)
@@ -72,7 +71,6 @@ class LauncherBase(DirectObject):
         if config.GetBool('log-private-info', 0):
             print('os.environ = ', os.environ)
         self.miniTaskMgr = MiniTaskManager()
-        self.setServerVersion(launcherConfig.GetString('server-version', 'no_version_set'))
         self.nout = MultiplexStream()
         Notify.ptr().setOstreamPtr(self.nout, 0)
         self.nout.addFile(Filename(logfile))
@@ -81,28 +79,24 @@ class LauncherBase(DirectObject):
             sys.stdout.console = True
             sys.stderr.console = True
         self.notify = directNotify.newCategory('Launcher')
-        self.clock = TrueClock.getGlobalPtr()
         self.logPrefix = logPrefix
         self.testServerFlag = self.getTestServerFlag()
         self.notify.info('isTestServer: %s' % self.testServerFlag)
-        self.gameServer = self.getGameServer()
-        self.notify.info('Game Server %s' % self.gameServer)
+        gameServer = self.getGameServer() or '127.0.0.1'
+        self.notify.info('Game Server %s' % gameServer)
         self.goUserName = ''
         self.lastLauncherMsg = None
         self.setRegistry(self.GameLogFilenameKey, logfile)
         self.showPhase = 3.5
         self.currentPhase = 4
-        if self.getServerVersion() == 'no_version_set':
+        serverVersion = launcherConfig.GetString('server-version', 'no_version_set')
+        if serverVersion == 'no_version_set':
             self.setPandaErrorCode(10)
-            self.notify.info('Aborting, Configrc did not run!')
+            self.notify.info('Aborting, config did not load!')
             sys.exit()
         self.launcherMessage(self.Localizer.LauncherStartingMessage)
         self.http = HTTPClient()
         self.foreground()
-        return
-
-    def getTime(self):
-        return self.clock.getShortTime()
 
     def isDummy(self):
         return 0
@@ -145,15 +139,6 @@ class LauncherBase(DirectObject):
         self.miniTaskMgr = None
         return task.done
 
-    def _addMiniTask(self, task, name):
-        if not self.miniTaskMgr:
-            self.notify.info('Restarting mini task manager.')
-            self.miniTaskMgr = MiniTaskManager()
-            from direct.task.TaskManagerGlobal import taskMgr
-            taskMgr.remove('miniTaskManager')
-            taskMgr.add(self._stepMiniTaskManager, 'miniTaskManager')
-        self.miniTaskMgr.add(task, name)
-
     def newTaskManager(self):
         self.taskMgrStarted = True
         if self.miniTaskMgr.running:
@@ -186,8 +171,6 @@ class LauncherBase(DirectObject):
             traceback.print_exc()
             sys.exit()
 
-        return
-
     def isDownloadComplete(self):
         return True
 
@@ -201,12 +184,6 @@ class LauncherBase(DirectObject):
 
     def recordPeriodTimeRemaining(self, secondsRemaining):
         self.setValue(self.PeriodTimeRemainingKey, int(secondsRemaining))
-
-    def recordPeriodName(self, periodName):
-        self.setValue(self.PeriodNameKey, periodName)
-
-    def recordSwid(self, swid):
-        self.setValue(self.SwidKey, swid)
 
     def getGoUserName(self):
         return self.goUserName
@@ -238,20 +215,6 @@ class LauncherBase(DirectObject):
         self.disconnectCode = newCode
         self.disconnectMsg = newMsg
 
-    def setServerVersion(self, version):
-        self.ServerVersion = version
-
-    def getServerVersion(self):
-        return self.ServerVersion
-
-    def getIsNewInstallation(self):
-        result = self.getValue(self.NewInstallationKey, 1)
-        result = base.config.GetBool('new-installation', result)
-        return result
-
-    def setIsNotNewInstallation(self):
-        self.setValue(self.NewInstallationKey, 0)
-
     def getLastLogin(self):
         return self.getValue(self.LastLoginKey, '')
 
@@ -276,7 +239,6 @@ class LauncherBase(DirectObject):
     def cleanup(self):
         self.notify.info('cleanup: cleaning up Launcher')
         self.ignoreAll()
-        del self.clock
         del self.http
 
     def getBlue(self):
