@@ -6,6 +6,7 @@ from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase import OTPGlobals
 from direct.showbase import PythonUtil
+from otp.otpbase.PythonUtil import describeException
 from direct.showbase import GarbageReport
 import base64
 import time
@@ -149,7 +150,7 @@ class TimeManager(DistributedObject.DistributedObject):
         self.sendUpdate('setDisconnectReason', [disconnectCode])
 
     def setExceptionInfo(self):
-        info = PythonUtil.describeException()
+        info = describeException()
         self.notify.info('Client exception: %s' % info)
         self.sendUpdate('setExceptionInfo', [info])
         self.cr.flush()
