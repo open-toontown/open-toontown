@@ -71,38 +71,14 @@ class LauncherBase(DirectObject):
         logErr = LogAndOutput(sys.__stderr__, log)
         sys.stdout = logOut
         sys.stderr = logErr
-        if sys.platform == 'darwin':
-            os.system('/usr/sbin/system_profiler >>' + logfile)
-        elif sys.platform == 'linux2':
-            os.system('cat /proc/cpuinfo >>' + logfile)
-            os.system('cat /proc/meminfo >>' + logfile)
-            os.system('/sbin/ifconfig -a >>' + logfile)
         print('\n\nStarting %s...' % self.GameName)
         print('Current time: ' + time.asctime(time.localtime(time.time())) + ' ' + time.tzname[0])
         print('sys.path = ', sys.path)
         print('sys.argv = ', sys.argv)
-        if len(sys.argv) >= self.ArgCount:
-            Configrc_args = sys.argv[self.ArgCount - 1]
-            print("generating configrc using: '" + Configrc_args + "'")
-        else:
-            Configrc_args = ''
-            print('generating standard configrc')
-        if 'PRC_EXECUTABLE_ARGS' in os.environ:
-            print('PRC_EXECUTABLE_ARGS is set to: ' + os.environ['PRC_EXECUTABLE_ARGS'])
-            print('Resetting PRC_EXECUTABLE_ARGS')
-        ExecutionEnvironment.setEnvironmentVariable('PRC_EXECUTABLE_ARGS', '-stdout ' + Configrc_args)
-        if 'CONFIG_CONFIG' in os.environ:
-            print('CONFIG_CONFIG is set to: ' + os.environ['CONFIG_CONFIG'])
-            print('Resetting CONFIG_CONFIG')
-        os.environ['CONFIG_CONFIG'] = ':_:configdir_.:configpath_:configname_Configrc.exe:configexe_1:configargs_-stdout ' + Configrc_args
-        cpMgr = ConfigPageManager.getGlobalPtr()
-        cpMgr.reloadImplicitPages()
         launcherConfig = DConfig
         builtins.config = launcherConfig
         if config.GetBool('log-private-info', 0):
             print('os.environ = ', os.environ)
-        elif '__COMPAT_LAYER' in os.environ:
-            print('__COMPAT_LAYER = %s' % (os.environ['__COMPAT_LAYER'],))
         self.miniTaskMgr = MiniTaskManager()
         self.setServerVersion(launcherConfig.GetString('server-version', 'no_version_set'))
         self.ServerVersionSuffix = launcherConfig.GetString('server-version-suffix', '')

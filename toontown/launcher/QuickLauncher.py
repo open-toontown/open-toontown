@@ -41,9 +41,6 @@ class QuickLauncher(LauncherBase):
     def setValue(self, key, value):
         os.environ[key] = str(value)
 
-    def getVerifyFiles(self):
-        return config.GetInt('launcher-verify', 0)
-
     def getTestServerFlag(self):
         return self.getValue('IS_TEST_SERVER', 0)
 
@@ -83,18 +80,6 @@ class QuickLauncher(LauncherBase):
             pass
 
         return value
-
-    def getCDDownloadPath(self, origPath, serverFilePath):
-        return '%s/%s/CD_%d/%s' % (origPath,
-         self.ServerVersion,
-         self.fromCD,
-         serverFilePath)
-
-    def getDownloadPath(self, origPath, serverFilePath):
-        return '%s/%s' % (origPath, serverFilePath)
-
-    def hashIsValid(self, serverHash, hashStr):
-        return serverHash.setFromDec(hashStr)
 
     def getAccountServer(self):
         return self.getValue('ACCOUNT_SERVER', '')
