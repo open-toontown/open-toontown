@@ -155,10 +155,6 @@ class LauncherBase(DirectObject):
         self.notify.info('DEPRECATED getRegistry: %s' % key)
         return None
 
-    def foregroundSleep(self):
-        if not self.backgrounded:
-            time.sleep(self.ForegroundSleepTime)
-
     def maybeStartGame(self):
         if not self.started and self.currentPhase >= self.showPhase:
             self.started = True

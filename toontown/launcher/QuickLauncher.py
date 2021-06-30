@@ -17,49 +17,11 @@ from toontown.toonbase import TTLocalizer
 class QuickLauncher(LauncherBase):
     GameName = 'Toontown'
     ArgCount = 3
-    LauncherPhases = [1,
-     2,
-     3,
-     3.5,
-     4,
-     5,
-     5.5,
-     6,
-     7,
-     8,
-     9,
-     10,
-     11,
-     12,
-     13]
-    TmpOverallMap = [0.01,
-     0.01,
-     0.23,
-     0.15,
-     0.12,
-     0.17,
-     0.08,
-     0.07,
-     0.05,
-     0.05,
-     0.017,
-     0.011,
-     0.01,
-     0.012,
-     0.01]
-    ForegroundSleepTime = 0.001
     Localizer = TTLocalizer
-    DecompressMultifiles = True
-    CompressionExt = 'bz2'
-    PatchExt = 'pch'
 
     def __init__(self):
         print('Running: ToontownQuickLauncher')
         self.toontownBlueKey = 'TOONTOWN_BLUE'
-        self.launcherMessageKey = 'LAUNCHER_MESSAGE'
-        self.game1DoneKey = 'GAME1_DONE'
-        self.game2DoneKey = 'GAME2_DONE'
-        self.tutorialCompleteKey = 'TUTORIAL_DONE'
         LauncherBase.__init__(self)
         self.useTTSpecificLogin = config.GetBool('tt-specific-login', 0)
         if self.useTTSpecificLogin:
@@ -67,138 +29,11 @@ class QuickLauncher(LauncherBase):
         else:
             self.toontownPlayTokenKey = 'PLAYTOKEN'
         print('useTTSpecificLogin=%s' % self.useTTSpecificLogin)
-        self.contentDir = '/'
-        self.webAcctParams = 'WEB_ACCT_PARAMS'
-        self.parseWebAcctParams()
+        self.secretNeedsParentPasswordKey = False
+        self.chatEligibleKey = True
         self.showPhase = -1
         self.maybeStartGame()
         self.mainLoop()
-
-    def resumeInstall(self):
-        for self.currentPhaseIndex in range(len(self.LauncherPhases)):
-            self.currentPhase = self.LauncherPhases[self.currentPhaseIndex]
-            self.currentPhaseName = self.Localizer.LauncherPhaseNames[self.currentPhase]
-            self.currentMfname = 'phase_%s.mf' % self.currentPhase
-            if sys.platform == 'darwin' and (self.currentMfname == 'phase_1.mf' or self.currentMfname == 'phase_2.mf'):
-                self.currentMfname = 'phase_%sOSX.mf' % self.currentPhase
-            if self.currentMfname in self.requiredInstallFiles:
-                self.requiredInstallFiles.remove(self.currentMfname)
-            else:
-                self.notify.warning('avoiding crash ValueError: list.remove(x): x not in list')
-            curVer, expectedSize, expectedMd5 = self.mfDetails[self.currentMfname]
-            self.curPhaseFile = Filename(self.topDir, Filename(self.currentMfname))
-            self.notify.info('working on: %s' % self.curPhaseFile)
-            if self.curPhaseFile.exists():
-                self.notify.info('file exists')
-                fileSize = self.curPhaseFile.getFileSize()
-                clientMd5 = HashVal()
-                clientMd5.hashFile(self.curPhaseFile)
-                self.notify.info('clientMd5: %s expectedMd5: %s' % (clientMd5, expectedMd5))
-                self.notify.info('clientSize: %s expectedSize: %s' % (fileSize, expectedSize))
-                if fileSize == expectedSize and clientMd5.asHex() == expectedMd5:
-                    self.notify.info('file is up to date')
-                    self.finalizePhase()
-                    continue
-                else:
-                    self.notify.info('file is not valid')
-                    self.resumeMultifileDownload()
-                    return
-            else:
-                self.notify.info('file does not exist - start download')
-                self.resumeMultifileDownload()
-                return
-
-        if not self.requiredInstallFiles:
-            self.notify.info('ALL PHASES COMPLETE')
-            messenger.send('launcherAllPhasesComplete')
-            self.cleanup()
-            return
-        raise Exception('Some phases not listed in LauncherPhases: %s' % self.requiredInstallFiles)
-
-    def getDecompressMultifile(self, mfname):
-        if not self.DecompressMultifiles:
-            self.decompressMultifileDone()
-        elif 1:
-            self.notify.info('decompressMultifile: Decompressing multifile: ' + mfname)
-            curVer, expectedSize, expectedMd5 = self.mfDetails[self.currentMfname]
-            localFilename = Filename(self.topDir, Filename('_%s.%s.%s' % (mfname, curVer, self.CompressionExt)))
-            self.decompressMultifile(mfname, localFilename, self.decompressMultifileDone)
-        else:
-            self.notify.info('decompressMultifile: Multifile already decompressed: %s' % mfname)
-            self.decompressMultifileDone()
-
-    def decompressMultifile(self, mfname, localFilename, callback):
-        self.notify.info('decompressMultifile: request: ' + localFilename.cStr())
-        self.launcherMessage(self.Localizer.LauncherDecompressingFile % {'name': self.currentPhaseName,
-         'current': self.currentPhaseIndex,
-         'total': self.numPhases})
-        task = Task(self.decompressMultifileTask)
-        task.mfname = mfname
-        task.mfFilename = Filename(self.topDir, Filename('_' + task.mfname))
-        task.mfFile = open(task.mfFilename.toOsSpecific(), 'wb')
-        task.localFilename = localFilename
-        task.callback = callback
-        task.lastUpdate = 0
-        task.decompressor = bz2.BZ2File(localFilename.toOsSpecific(), 'rb')
-        taskMgr.add(task, 'launcher-decompressMultifile')
-
-    def decompressMultifileTask(self, task):
-        data = task.decompressor.read(8192)
-        if data:
-            task.mfFile.write(data)
-            now = self.getTime()
-            if now - task.lastUpdate >= self.UserUpdateDelay:
-                task.lastUpdate = now
-                curSize = task.mfFilename.getFileSize()
-                curVer, expectedSize, expectedMd5 = self.mfDetails[self.currentMfname]
-                progress = curSize / float(expectedSize)
-                self.launcherMessage(self.Localizer.LauncherDecompressingPercent % {'name': self.currentPhaseName,
-                 'current': self.currentPhaseIndex,
-                 'total': self.numPhases,
-                 'percent': int(round(progress * 100))})
-                percentProgress = int(round(progress * self.decompressPercentage))
-                totalPercent = self.downloadPercentage + percentProgress
-                self.setPercentPhaseComplete(self.currentPhase, totalPercent)
-            self.foregroundSleep()
-            return Task.cont
-        else:
-            task.mfFile.close()
-            task.decompressor.close()
-            unlinked = task.localFilename.unlink()
-            if not unlinked:
-                self.notify.warning('unlink failed on file: %s' % task.localFilename.cStr())
-            realMf = Filename(self.topDir, Filename(self.currentMfname))
-            renamed = task.mfFilename.renameTo(realMf)
-            if not renamed:
-                self.notify.warning('rename failed on file: %s' % task.mfFilename.cStr())
-            self.launcherMessage(self.Localizer.LauncherDecompressingPercent % {'name': self.currentPhaseName,
-             'current': self.currentPhaseIndex,
-             'total': self.numPhases,
-             'percent': 100})
-            totalPercent = self.downloadPercentage + self.decompressPercentage
-            self.setPercentPhaseComplete(self.currentPhase, totalPercent)
-            self.notify.info('decompressMultifileTask: Decompress multifile done: ' + task.localFilename.cStr())
-            if self.dldb:
-                self.dldb.setClientMultifileDecompressed(task.mfname)
-            del task.decompressor
-            task.callback()
-            del task.callback
-            return Task.done
-
-    def decompressMultifileDone(self):
-        self.finalizePhase()
-        self.notify.info('Done updating multifiles in phase: ' + repr((self.currentPhase)))
-        self.progressSoFar += int(round(self.phaseOverallMap[self.currentPhase] * 100))
-        self.notify.info('progress so far ' + repr((self.progressSoFar)))
-        messenger.send('phaseComplete-' + repr((self.currentPhase)))
-        self.resumeInstall()
-
-    def finalizePhase(self):
-        mfFilename = Filename(self.topDir, Filename(self.currentMfname))
-        self.MakeNTFSFilesGlobalWriteable(mfFilename)
-        vfs = VirtualFileSystem.getGlobalPtr()
-        vfs.mount(mfFilename, '.', VirtualFileSystem.MFReadOnly)
-        self.setPercentPhaseComplete(self.currentPhase, 100)
 
     def getValue(self, key, default = None):
         return os.environ.get(key, default)
@@ -217,36 +52,6 @@ class QuickLauncher(LauncherBase):
 
     def getLogFileName(self):
         return 'toontown'
-
-    def parseWebAcctParams(self):
-        s = config.GetString('fake-web-acct-params', '')
-        if not s:
-            s = self.getRegistry(self.webAcctParams)
-        self.notify.info('webAcctParams = %s' % s)
-        self.setRegistry(self.webAcctParams, '')
-        l = s.split('&')
-        length = len(l)
-        dict = {}
-        for index in range(0, len(l)):
-            args = l[index].split('=')
-            if len(args) == 3:
-                name, value = args[-2:]
-                dict[name] = int(value)
-            elif len(args) == 2:
-                name, value = args
-                dict[name] = int(value)
-
-        if 'secretsNeedsParentPassword' in dict and 1:
-            self.secretNeedsParentPasswordKey = dict['secretsNeedsParentPassword']
-            self.notify.info('secretNeedsParentPassword = %d' % self.secretNeedsParentPasswordKey)
-        else:
-            self.notify.warning('no secretNeedsParentPassword token in webAcctParams')
-
-        if 'chatEligible' in dict:
-            self.chatEligibleKey = dict['chatEligible']
-            self.notify.info('chatEligibleKey = %d' % self.chatEligibleKey)
-        else:
-            self.notify.warning('no chatEligible token in webAcctParams')
 
     def getBlue(self):
         blue = self.getValue(self.toontownBlueKey)
