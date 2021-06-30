@@ -1,14 +1,13 @@
 import sys
 import os
 import time
-import string
 import builtins
 from panda3d.core import *
 from direct.showbase import DConfig
 from direct.showbase.MessengerGlobal import *
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.EventManagerGlobal import *
-from direct.task.MiniTask import MiniTask, MiniTaskManager
+from direct.task.MiniTask import MiniTaskManager
 from direct.directnotify.DirectNotifyGlobal import *
 
 class LogAndOutput:
@@ -33,8 +32,6 @@ class LogAndOutput:
 class LauncherBase(DirectObject):
     GameName = 'game'
     ArgCount = 6
-    win32con_FILE_PERSISTENT_ACLS = 8
-    InstallDirKey = 'INSTALL_DIR'
     GameLogFilenameKey = 'GAMELOG_FILENAME'
     PandaWindowOpenKey = 'PANDA_WINDOW_OPEN'
     PandaErrorCodeKey = 'PANDA_ERROR_CODE'
@@ -47,10 +44,6 @@ class LauncherBase(DirectObject):
     PeriodNameKey = 'PERIOD_NAME'
     SwidKey = 'SWID'
     DISLTokenKey = 'DISLTOKEN'
-    ProxyServerKey = 'PROXY_SERVER'
-    ProxyDirectHostsKey = 'PROXY_DIRECT_HOSTS'
-    launcherFileDbFilename = 'launcherFileDb'
-    webLauncherFlag = False
 
     def __init__(self):
         self.started = False
@@ -147,15 +140,6 @@ class LauncherBase(DirectObject):
     def isDummy(self):
         return 0
 
-    def getProductName(self):
-        config = getConfigExpress()
-        productName = config.GetString('product-name', '')
-        if productName and productName != 'DisneyOnline-US':
-            productName = '_%s' % productName
-        else:
-            productName = ''
-        return productName
-
     def background(self):
         self.notify.info('background: Launcher now operating in background')
         self.backgrounded = 1
@@ -174,10 +158,6 @@ class LauncherBase(DirectObject):
     def foregroundSleep(self):
         if not self.backgrounded:
             time.sleep(self.ForegroundSleepTime)
-
-    def forceSleep(self):
-        if not self.backgrounded:
-            time.sleep(3.0)
 
     def maybeStartGame(self):
         if not self.started and self.currentPhase >= self.showPhase:

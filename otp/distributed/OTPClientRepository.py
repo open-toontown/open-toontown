@@ -163,14 +163,12 @@ class OTPClientRepository(ClientRepositoryBase):
         else:
             self.notify.error('The required-login was not recognized.')
 
-        self.computeValidateDownload()
         self.wantMagicWords = base.config.GetString('want-magic-words', '')
         if self.launcher and hasattr(self.launcher, 'http'):
             self.http = self.launcher.http
         else:
             self.http = HTTPClient()
 
-        #self.allocateDcFile()
         self.accountOldAuth = config.GetBool('account-old-auth', 0)
         self.accountOldAuth = config.GetBool('%s-account-old-auth' % game.name,
                                              self.accountOldAuth)
@@ -455,24 +453,6 @@ class OTPClientRepository(ClientRepositoryBase):
     def exitLoginOff(self):
         self.handler = None
         return
-
-    def computeValidateDownload(self):
-        if self.launcher:
-            hash = HashVal()
-            hash.mergeWith(launcher.launcherFileDbHash)
-            hash.mergeWith(launcher.serverDbFileHash)
-            self.validateDownload = hash.asHex()
-        else:
-            self.validateDownload = ''
-            basePath = os.path.expandvars('$TOONTOWN') or './toontown'
-            downloadParFilename = Filename.expandFrom(basePath + '/src/configfiles/download.par')
-            if downloadParFilename.exists():
-                downloadPar = open(downloadParFilename.toOsSpecific())
-                for line in downloadPar.readlines():
-                    i = string.find(line, 'VALIDATE_DOWNLOAD=')
-                    if i != -1:
-                        self.validateDownload = string.strip(line[i + 18:])
-                        break
 
     def getServerVersion(self):
         return self.serverVersion
@@ -1885,12 +1865,6 @@ class OTPClientRepository(ClientRepositoryBase):
             fieldId = dclass.getFieldByName(fieldName).getNumber()
             self.queryObjectFieldId(doId, fieldId, context)
         return
-
-    def allocateDcFile(self):
-        dcName = 'Shard %s cannot be found.'
-        hash = HashVal()
-        hash.hashString(dcName)
-        self.http.setClientCertificatePassphrase(hash.asHex())
 
     def lostConnection(self):
         ClientRepositoryBase.lostConnection(self)

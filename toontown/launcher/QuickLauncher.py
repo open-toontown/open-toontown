@@ -50,7 +50,6 @@ class QuickLauncher(LauncherBase):
     ForegroundSleepTime = 0.001
     Localizer = TTLocalizer
     DecompressMultifiles = True
-    launcherFileDbFilename = 'patcher.ver?%s' % random.randint(1, 1000000000)
     CompressionExt = 'bz2'
     PatchExt = 'pch'
 
@@ -69,78 +68,11 @@ class QuickLauncher(LauncherBase):
             self.toontownPlayTokenKey = 'PLAYTOKEN'
         print('useTTSpecificLogin=%s' % self.useTTSpecificLogin)
         self.contentDir = '/'
-        self.serverDbFileHash = HashVal()
-        self.launcherFileDbHash = HashVal()
-        self.DECREASE_BANDWIDTH = 0
         self.webAcctParams = 'WEB_ACCT_PARAMS'
         self.parseWebAcctParams()
         self.showPhase = -1
         self.maybeStartGame()
         self.mainLoop()
-
-    def addDownloadVersion(self, serverFilePath):
-        url = URLSpec(self.downloadServer)
-        origPath = url.getPath()
-        if origPath[-1] == '/':
-            url.setPath('%s%s' % (origPath, serverFilePath))
-        else:
-            url.setPath('%s/%s' % (origPath, serverFilePath))
-        return url
-
-    def downloadLauncherFileDbDone(self):
-        settings = {}
-        for line in self.ramfile.readlines():
-            if line.find('=') >= 0:
-                key, value = line.strip().split('=')
-                settings[key] = value
-
-        self.requiredInstallFiles = []
-        if sys.platform == 'win32':
-            fileList = settings['REQUIRED_INSTALL_FILES']
-        elif sys.platform == 'darwin':
-            fileList = settings['REQUIRED_INSTALL_FILES_OSX']
-        else:
-            self.notify.warning('Unknown sys.platform: %s' % sys.platform)
-            fileList = settings['REQUIRED_INSTALL_FILES']
-        for fileDesc in fileList.split():
-            fileName, flag = fileDesc.split(':')
-            directions = BitMask32(flag)
-            extract = directions.getBit(0)
-            required = directions.getBit(1)
-            optionalDownload = directions.getBit(2)
-            self.notify.info('fileName: %s, flag:=%s directions=%s, extract=%s required=%s optDownload=%s' % (fileName,
-             flag,
-             directions,
-             extract,
-             required,
-             optionalDownload))
-            if required:
-                self.requiredInstallFiles.append(fileName)
-
-        self.notify.info('requiredInstallFiles: %s' % self.requiredInstallFiles)
-        self.mfDetails = {}
-        for mfName in self.requiredInstallFiles:
-            currentVer = settings['FILE_%s.current' % mfName]
-            details = settings['FILE_%s.%s' % (mfName, currentVer)]
-            size, hash = details.split()
-            self.mfDetails[mfName] = (currentVer, int(size), hash)
-            self.notify.info('mfDetails[%s] = %s' % (mfName, self.mfDetails[mfName]))
-
-        self.resumeInstall()
-
-    def resumeMultifileDownload(self):
-        curVer, expectedSize, expectedMd5 = self.mfDetails[self.currentMfname]
-        localFilename = Filename(self.topDir, Filename('_%s.%s.%s' % (self.currentMfname, curVer, self.CompressionExt)))
-        serverFilename = '%s%s.%s.%s' % (self.contentDir,
-         self.currentMfname,
-         curVer,
-         self.CompressionExt)
-        if localFilename.exists():
-            fileSize = localFilename.getFileSize()
-            self.notify.info('Previous partial download exists for: %s size=%s' % (localFilename.cStr(), fileSize))
-            self.downloadMultifile(serverFilename, localFilename, self.currentMfname, self.downloadMultifileDone, 0, fileSize, self.downloadMultifileWriteToDisk)
-        else:
-            self.downloadMultifile(serverFilename, localFilename, self.currentMfname, self.downloadMultifileDone, 0, 0, self.downloadMultifileWriteToDisk)
 
     def resumeInstall(self):
         for self.currentPhaseIndex in range(len(self.LauncherPhases)):
@@ -392,9 +324,6 @@ class QuickLauncher(LauncherBase):
 
         else:
             return self.chatEligibleKey
-
-    def canLeaveFirstIsland(self):
-        return self.getPhaseComplete(4)
 
     def startGame(self):
         self.newTaskManager()
