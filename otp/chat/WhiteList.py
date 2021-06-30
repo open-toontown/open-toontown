@@ -14,7 +14,10 @@ class WhiteList:
         self.numWords = len(self.words)
 
     def cleanText(self, text):
-        text = text.decode('utf-8').strip('.,?!')
+        if type(text) == bytes:
+            text = text.decode('utf-8').strip('.,?!')
+        else:
+            text = text.strip('.,?!')
         text = text.lower().encode('utf-8')
         return text
 
