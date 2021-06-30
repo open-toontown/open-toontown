@@ -31,7 +31,6 @@ class LogAndOutput:
 
 class LauncherBase(DirectObject):
     GameName = 'game'
-    ArgCount = 6
     GameLogFilenameKey = 'GAMELOG_FILENAME'
     PandaWindowOpenKey = 'PANDA_WINDOW_OPEN'
     PandaErrorCodeKey = 'PANDA_ERROR_CODE'
@@ -49,11 +48,6 @@ class LauncherBase(DirectObject):
         self.started = False
         self.taskMgrStarted = False
         self.pandaErrorCode = 0
-        self.WIN32 = os.name == 'nt'
-        if self.WIN32:
-            self.VISTA = sys.getwindowsversion()[3] == 2 and sys.getwindowsversion()[0] == 6
-        else:
-            self.VISTA = 0
         ltime = time.localtime()
         logSuffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000,
             ltime[1],
@@ -61,10 +55,8 @@ class LauncherBase(DirectObject):
             ltime[3],
             ltime[4],
             ltime[5])
-        logPrefix = ''
-        if not self.WIN32:
-            logPrefix = os.environ.get('LOGFILE_PREFIX', '')
-        logfile = logPrefix + self.getLogFileName() + '-' + logSuffix + '.log'
+        logPrefix = self.getLogFileName() + '-'
+        logfile = logPrefix + logSuffix + '.log'
         self.errorfile = 'errorCode'
         log = open(logfile, 'a')
         logOut = LogAndOutput(sys.__stdout__, log)
@@ -81,7 +73,6 @@ class LauncherBase(DirectObject):
             print('os.environ = ', os.environ)
         self.miniTaskMgr = MiniTaskManager()
         self.setServerVersion(launcherConfig.GetString('server-version', 'no_version_set'))
-        self.ServerVersionSuffix = launcherConfig.GetString('server-version-suffix', '')
         self.nout = MultiplexStream()
         Notify.ptr().setOstreamPtr(self.nout, 0)
         self.nout.addFile(Filename(logfile))

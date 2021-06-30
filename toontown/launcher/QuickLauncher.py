@@ -16,7 +16,6 @@ from toontown.toonbase import TTLocalizer
 
 class QuickLauncher(LauncherBase):
     GameName = 'Toontown'
-    ArgCount = 3
     Localizer = TTLocalizer
 
     def __init__(self):
@@ -69,7 +68,6 @@ class QuickLauncher(LauncherBase):
 
     def getRegistry(self, name, missingValue = None):
         self.notify.info('getRegistry %s' % ((name, missingValue),))
-        self.notify.info('self.VISTA = %s' % self.VISTA)
         self.notify.info('checking env' % os.environ)
         if missingValue == None:
             missingValue = ''
