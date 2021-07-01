@@ -42,6 +42,7 @@ class LauncherBase(DirectObject):
     def __init__(self):
         self.started = False
         self.taskMgrStarted = False
+        self._downloadComplete = True
         self.pandaErrorCode = 0
         ltime = time.localtime()
         logSuffix = '%02d%02d%02d_%02d%02d%02d' % (ltime[0] - 2000,
@@ -122,6 +123,7 @@ class LauncherBase(DirectObject):
             self.background()
             builtins.launcher = self
             self.startGame()
+            self.cleanup()
 
     def _runTaskManager(self):
         if not self.taskMgrStarted:
@@ -170,7 +172,7 @@ class LauncherBase(DirectObject):
             sys.exit()
 
     def isDownloadComplete(self):
-        return True
+        return self._downloadComplete
 
     def launcherMessage(self, msg):
         if msg != self.lastLauncherMsg:

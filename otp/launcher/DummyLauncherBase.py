@@ -1,8 +1,5 @@
 from pandac.PandaModules import *
-import string
 from direct.showbase.MessengerGlobal import *
-from direct.showbase.DirectObject import DirectObject
-from direct.showbase.EventManagerGlobal import *
 from direct.task.TaskManagerGlobal import *
 from direct.task.Task import Task
 
@@ -16,11 +13,7 @@ class DummyLauncherBase:
             self.phaseComplete[phase] = 0
 
         self.firstPhase = self.LauncherPhases[0]
-        self.finalPhase = self.LauncherPhases[-1]
-        self.launcherFileDbHash = HashVal()
-        self.serverDbFileHash = HashVal()
         self.setPandaErrorCode(0)
-        self.setServerVersion('dev')
 
     def isDummy(self):
         return 1
@@ -38,9 +31,6 @@ class DummyLauncherBase:
 
     def isTestServer(self):
         return base.config.GetBool('is-test-server', 0)
-
-    def setPhaseCompleteArray(self, newPhaseComplete):
-        self.phaseComplete = newPhaseComplete
 
     def setPhaseComplete(self, phase, percent):
         self.phaseComplete[phase] = percent
@@ -65,18 +55,6 @@ class DummyLauncherBase:
         self.disconnectCode = newCode
         self.disconnectMsg = newMsg
 
-    def setServerVersion(self, version):
-        self.ServerVersion = version
-
-    def getServerVersion(self):
-        return self.ServerVersion
-
-    def getIsNewInstallation(self):
-        return base.config.GetBool('new-installation', 0)
-
-    def setIsNotNewInstallation(self):
-        pass
-
     def getLastLogin(self):
         if hasattr(self, 'lastLogin'):
             return self.lastLogin
@@ -93,9 +71,6 @@ class DummyLauncherBase:
 
     def getGameServer(self):
         return '206.16.11.19'
-
-    def getAccountServer(self):
-        return ''
 
     def getDeployment(self):
         return 'US'

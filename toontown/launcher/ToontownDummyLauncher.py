@@ -10,35 +10,12 @@ class ToontownDummyLauncher(DummyLauncherBase, ToontownLauncher):
         self.setPhaseComplete(1, 100)
         self.setPhaseComplete(2, 100)
         self.setPhaseComplete(3, 100)
-        self.tutorialComplete = 1
-        self.frequency = 0.0
         self.windowOpen = 0
         self.firstPhase = 3.5
-        self.pandaErrorCodeKey = 'PANDA_ERROR_CODE'
         self.goUserName = ''
         self.periodTimeRemainingKey = 'PERIOD_TIME_REMAINING'
-        self.periodNameKey = 'PERIOD_NAME'
-        self.swidKey = 'SWID'
         self.reg = {}
         self.startFakeDownload()
-
-    def setTutorialComplete(self, complete):
-        self.tutorialComplete = complete
-
-    def getTutorialComplete(self):
-        return self.tutorialComplete
-
-    def setFrequency(self, freq):
-        self.frequency = freq
-
-    def getFrequency(self):
-        return self.frequency
-
-    def getInstallDir(self):
-        return 'C:\\Program Files\\Disney\\Disney Online\\Toontown'
-
-    def getUserName(self):
-        return 'dummy'
 
     def getReferrerCode(self):
         return None
@@ -60,12 +37,6 @@ class ToontownDummyLauncher(DummyLauncherBase, ToontownLauncher):
 
     def recordPeriodTimeRemaining(self, secondsRemaining):
         self.setRegistry(self.periodTimeRemainingKey, secondsRemaining)
-
-    def recordPeriodName(self, periodName):
-        self.setRegistry(self.periodNameKey, periodName)
-
-    def recordSwid(self, swid):
-        self.setRegistry(self.swidKey, swid)
 
     def getGoUserName(self):
         return self.goUserName
