@@ -25,9 +25,7 @@ from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 from otp.avatar import Avatar
 from otp.avatar.DistributedPlayer import DistributedPlayer
-from otp.login import TTAccount
 from otp.login import LoginTTSpecificDevAccount
-from otp.login import AccountServerConstants
 from otp.login.CreateAccountScreen import CreateAccountScreen
 from otp.login import LoginScreen
 from otp.otpgui import OTPDialog
@@ -495,13 +493,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.gotoFirstScreen()
 
     def gotoFirstScreen(self):
-        try:
-            self.accountServerConstants = AccountServerConstants.AccountServerConstants(self)
-        except TTAccount.TTAccountException as e:
-            self.notify.debug(str(e))
-            self.loginFSM.request('failedToGetServerConstants', [e])
-            return
-
         self.startReaderPollTask()
         if not __astron__:
             self.startHeartbeat()
@@ -630,7 +621,7 @@ class OTPClientRepository(ClientRepositoryBase):
     def enterFailedToGetServerConstants(self, e):
         self.handler = self.handleMessageType
         messenger.send('connectionIssue')
-        url = AccountServerConstants.AccountServerConstants.getServerURL()
+        url = 'N/A'
         statusCode = 0
         if isinstance(e, HTTPUtil.ConnectionError):
             statusCode = e.statusCode
@@ -1902,13 +1893,6 @@ class OTPClientRepository(ClientRepositoryBase):
         if gsg:
             render2d.prepareScene(gsg)
         base.graphicsEngine.renderFrame()
-
-    def refreshAccountServerDate(self, forceRefresh = 0):
-        try:
-            self.accountServerDate.grabDate(force=forceRefresh)
-        except TTAccount.TTAccountException as e:
-            self.notify.debug(str(e))
-            return 1
 
     def resetPeriodTimer(self, secondsRemaining):
         self.periodTimerExpired = 0

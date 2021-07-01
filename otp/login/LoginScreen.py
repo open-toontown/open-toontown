@@ -14,7 +14,6 @@ from otp.otpgui import OTPDialog
 from otp.otpbase import OTPLocalizer
 from otp.otpbase import OTPGlobals
 from otp.uberdog.AccountDetailRecord import AccountDetailRecord, SubDetailRecord
-from . import TTAccount
 from . import GuiScreen
 
 class LoginScreen(StateData.StateData, GuiScreen.GuiScreen):
@@ -199,12 +198,7 @@ class LoginScreen(StateData.StateData, GuiScreen.GuiScreen):
         self.cr.handler = self.handleWaitForLoginResponse
         self.cr.userName = self.userName
         self.cr.password = self.password
-        try:
-            error = self.loginInterface.authorize(self.userName, self.password)
-        except TTAccount.TTAccountException as e:
-            self.fsm.request('showConnectionProblemDialog', [str(e)])
-            return
-
+        error = self.loginInterface.authorize(self.userName, self.password)
         if error:
             self.notify.info(error)
             freeTimeExpired = self.loginInterface.getErrorCode() == 10

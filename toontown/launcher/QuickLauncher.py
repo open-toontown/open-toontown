@@ -1,15 +1,5 @@
-import sys
 import os
-import time
-import string
-import bz2
-import random
-from direct.showbase.MessengerGlobal import *
-from direct.showbase.DirectObject import DirectObject
 from direct.showbase.EventManagerGlobal import *
-from direct.task.TaskManagerGlobal import *
-from direct.task.Task import Task
-from direct.directnotify.DirectNotifyGlobal import *
 from pandac.PandaModules import *
 from otp.launcher.LauncherBase import LauncherBase
 from toontown.toonbase import TTLocalizer
@@ -78,9 +68,6 @@ class QuickLauncher(LauncherBase):
             pass
 
         return value
-
-    def getAccountServer(self):
-        return self.getValue('ACCOUNT_SERVER', '')
 
     def getGame2Done(self):
         return True

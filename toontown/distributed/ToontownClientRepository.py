@@ -16,8 +16,6 @@ from direct.showbase.InputStateGlobal import inputState
 from otp.avatar import Avatar
 from otp.avatar import DistributedAvatar
 from otp.friends import FriendManager
-from otp.login import TTAccount
-from otp.login import AccountServerConstants
 from otp.login import LoginScreen
 from otp.login import LoginGSAccount
 from otp.login import LoginGoAccount
@@ -43,7 +41,6 @@ from toontown.friends import FriendsListPanel
 from toontown.friends import ToontownFriendSecret
 from toontown.uberdog import TTSpeedchatRelay
 from toontown.login import DateObject
-from toontown.login import AccountServerDate
 from toontown.login import AvatarChooser
 from toontown.makeatoon import MakeAToon
 from toontown.pets import DistributedPet, PetDetail, PetHandle
@@ -117,7 +114,6 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.elderFriendsMap = {}
         self.__queryAvatarMap = {}
         self.dateObject = DateObject.DateObject()
-        self.accountServerDate = AccountServerDate.AccountServerDate()
         self.hoodMgr = HoodMgr.HoodMgr(self)
         self.setZonesEmulated = 0
         self.old_setzone_interest_handle = None
