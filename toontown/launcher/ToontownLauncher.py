@@ -44,13 +44,7 @@ from toontown.toonbase import TTLocalizer
 class ToontownLauncher(LauncherBase):
     GameName = 'Toontown'
     LauncherPhases = [3, 3.5, 4, 5, 5.5, 6, 7, 8, 9, 10, 11, 12, 13]
-    TmpOverallMap = [0.25, 0.15, 0.12, 0.17, 0.08, 0.07, 0.05, 0.05, 0.017,
-                     0.011, 0.01, 0.012, 0.01]
-    RegistryKey = 'Software\\Disney\\Disney Online\\Toontown'
-    ForegroundSleepTime = 0.01
     Localizer = TTLocalizer
-    VerifyFiles = 1
-    DecompressMultifiles = True
 
     def __init__(self):
         if sys.argv[2] == 'Phase2.py':
@@ -66,9 +60,7 @@ class ToontownLauncher(LauncherBase):
         self.toontownBlueKey = 'TOONTOWN_BLUE'
         self.toontownPlayTokenKey = 'TOONTOWN_PLAYTOKEN'
         self.launcherMessageKey = 'LAUNCHER_MESSAGE'
-        self.game1DoneKey = 'GAME1_DONE'
         self.game2DoneKey = 'GAME2_DONE'
-        self.tutorialCompleteKey = 'TUTORIAL_DONE'
         self.toontownRegistryKey = 'Software\\Disney\\Disney Online\\Toontown'
         if self.testServerFlag:
             self.toontownRegistryKey = '%s%s' % (self.toontownRegistryKey, 'Test')
@@ -86,9 +78,6 @@ class ToontownLauncher(LauncherBase):
 
     def setValue(self, key, value):
         self.setRegistry(key, value)
-
-    def getVerifyFiles(self):
-        return 1
 
     def getTestServerFlag(self):
         return self.testServerFlag
@@ -181,33 +170,9 @@ class ToontownLauncher(LauncherBase):
         else:
             return missingValue
 
-    def getCDDownloadPath(self, origPath, serverFilePath):
-        return '%s/%s%s/CD_%d/%s' % (origPath, self.ServerVersion, self.ServerVersionSuffix, self.fromCD, serverFilePath)
-
-    def getDownloadPath(self, origPath, serverFilePath):
-        return '%s/%s%s/%s' % (origPath, self.ServerVersion, self.ServerVersionSuffix, serverFilePath)
-
-    def getPercentPatchComplete(self, bytesWritten):
-        if self.totalPatchDownload:
-            return LauncherBase.getPercentPatchComplete(self, bytesWritten)
-        else:
-            return 0
-
-    def hashIsValid(self, serverHash, hashStr):
-        return serverHash.setFromDec(hashStr) or serverHash.setFromHex(hashStr)
-
     def launcherMessage(self, msg):
         LauncherBase.launcherMessage(self, msg)
         self.setRegistry(self.launcherMessageKey, msg)
-
-    def getAccountServer(self):
-        return self.accountServer
-
-    def setTutorialComplete(self):
-        self.setRegistry(self.tutorialCompleteKey, 0)
-
-    def getTutorialComplete(self):
-        return self.getRegistry(self.tutorialCompleteKey, 0)
 
     def getGame2Done(self):
         return self.getRegistry(self.game2DoneKey, 0)
@@ -233,11 +198,6 @@ class ToontownLauncher(LauncherBase):
 
     def getParentPasswordSet(self):
         return self.chatEligibleKey
-
-    def MakeNTFSFilesGlobalWriteable(self, pathToSet=None):
-        if not self.WIN32:
-            return
-        LauncherBase.MakeNTFSFilesGlobalWriteable(self, pathToSet)
 
     def startGame(self):
         try:
