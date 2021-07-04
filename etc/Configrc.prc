@@ -32,6 +32,7 @@ notify-level-gobj warning
 notify-level-loader warning
 notify-timestamp #t
 notify-integrate #f
+console-output 1
 default-model-extension .bam
 decompressor-step-time 0.5
 extractor-step-time 0.5
@@ -57,6 +58,3 @@ want-dev 0
 schellgames-dev 0
 text-minfilter linear_mipmap_linear
 gc-save-all 0
-
-# TEMP
-fake-playtoken dev

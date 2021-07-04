@@ -1,8 +1,3 @@
-from panda3d.core import *
-
-if __debug__:
-    loadPrcFile('etc/Configrc.prc')
-
 import builtins
 
 class game:
@@ -11,14 +6,15 @@ class game:
 
 
 builtins.game = game()
+from panda3d.core import *
 import time
-import os
 import sys
-import random
-import builtins
 try:
     launcher
 except:
+    if __debug__:
+        loadPrcFile('etc/Configrc.prc')
+
     from toontown.launcher.ToontownDummyLauncher import ToontownDummyLauncher
     launcher = ToontownDummyLauncher()
     builtins.launcher = launcher
@@ -74,7 +70,6 @@ if base.musicManagerIsValid:
     DirectGuiGlobals.setDefaultClickSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 else:
     music = None
-from . import ToontownLoader
 from direct.gui.DirectGui import *
 serverVersion = base.config.GetString('server-version', 'no_version_set')
 print('ToontownStart: serverVersion: ', serverVersion)
@@ -89,7 +84,6 @@ del music
 base.initNametagGlobals()
 base.cr = cr
 loader.endBulkLoad('init')
-from otp.friends import FriendManager
 from otp.distributed.OtpDoGlobals import *
 cr.generateGlobalObject(OTP_DO_ID_FRIEND_MANAGER, 'FriendManager')
 if not launcher.isDummy():
