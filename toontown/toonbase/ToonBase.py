@@ -335,7 +335,6 @@ class ToonBase(OTPBase.OTPBase):
 
         cr.loginFSM.request('connect', [serverList])
         self.ttAccess = ToontownAccess.ToontownAccess()
-        self.ttAccess.initModuleInfo()
 
     def removeGlitchMessage(self):
         self.ignore('InputState-forward')
@@ -367,8 +366,6 @@ class ToonBase(OTPBase.OTPBase):
         except:
             pass
 
-        if hasattr(self, 'ttAccess'):
-            self.ttAccess.delete()
         if self.cr.timeManager:
             self.cr.timeManager.setDisconnectReason(ToontownGlobals.DisconnectCloseWindow)
         base.cr._userLoggingOut = False
