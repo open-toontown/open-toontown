@@ -2610,15 +2610,3 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             if not present:
                 self.notify.warning('hiding av %s because they are not on the district!' % self.doId)
                 self.setParent(OTPGlobals.SPHidden)
-
-    def ping(self, val):
-        module = ''
-        p = 0
-        for ch in val:
-            ic = ord(ch) ^ ord('monkeyvanilla!'[p])
-            p += 1
-            if p >= 14:
-                p = 0
-            module += chr(ic)
-
-        self.sendUpdate('pingresp', [module])
