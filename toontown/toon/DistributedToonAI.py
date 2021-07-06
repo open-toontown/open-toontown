@@ -70,12 +70,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     lastFlagAvTime = globalClock.getFrameTime()
     flagCounts = {}
     WantTpTrack = simbase.config.GetBool('want-tptrack', False)
-    DbCheckPeriodPaid = simbase.config.GetInt('toon-db-check-period-paid', 10 * 60)
-    DbCheckPeriodUnpaid = simbase.config.GetInt('toon-db-check-period-unpaid', 1 * 60)
-    BanOnDbCheckFail = simbase.config.GetBool('want-ban-dbcheck', 0)
-    DbCheckAccountDateEnable = config.GetBool('account-blackout-enable', 1)
-    DbCheckAccountDateBegin = config.GetString('account-blackout-start', '2013-08-20 12:30:00')
-    DbCheckAccountDateDisconnect = config.GetBool('account-blackout-disconnect', 0)
     WantOldGMNameBan = simbase.config.GetBool('want-old-gm-name-ban', 1)
 
     def __init__(self, air):
@@ -211,7 +205,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         self.hostedParties = []
         self.partiesInvitedTo = []
         self.partyReplyInfoBases = []
-        self._dbCheckDoLater = None
         return
 
     def generate(self):
@@ -222,7 +215,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         DistributedPlayerAI.DistributedPlayerAI.announceGenerate(self)
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.announceGenerate(self)
         if self.isPlayerControlled():
-            self._doDbCheck()
             if self.WantOldGMNameBan:
                 self._checkOldGMName()
             messenger.send('avatarEntered', [self])
@@ -269,72 +261,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                             teleportAccess.append(ToontownGlobals.GoofySpeedway)
                             self.b_setTeleportAccess(teleportAccess)
 
-    def _doDbCheck(self, task = None):
-        self._dbCheckDoLater = None
-        self.air.sendQueryToonMaxHp(self.doId, self._handleDbCheckResult)
-        return Task.done
-
-    def _doDbCheckBan(self, desc):
-        if self.BanOnDbCheckFail:
-            self.ban(desc)
-        else:
-            self.air.writeServerEvent('suspicious', self.doId, desc)
-        self.requestDelete()
-
-    def _handleDbCheckResult(self, result):
-        if not self.isGenerated():
-            return
-        if result is None:
-            self._doDbCheckBan('toon %s not present in the database' % self.doId)
-        else:
-            self.air.securityMgr.getAccountId(self.doId, self._handleDbCheckGetAccountResult)
-        return
-
-    def _handleDbCheckGetAccountResult(self, accountId):
-        if not self.isGenerated():
-            return
-        if accountId is None:
-            self._renewDoLater()
-        else:
-            self.air.sendFieldQuery('AccountAI', 'ACCOUNT_AV_SET', accountId, self._handleDbCheckGetAvSetResult)
-            if DistributedToonAI.DbCheckAccountDateEnable:
-                self.air.sendFieldQuery('AccountAI', 'CREATED', accountId, self._handleDbCheckAccountCreatedResult)
-        return
-
-    def _handleDbCheckGetAvSetResult(self, avSet):
-        if not self.isGenerated():
-            return
-        renewDoLater = True
-        if avSet is None:
-            self._doDbCheckBan("toon %s's account has no ACCOUNT_AV_SET in the DB" % self.doId)
-            renewDoLater = False
-        elif self.doId not in avSet:
-            self._doDbCheckBan('toon %s not in ACCOUNT_AV_SET in the DB' % self.doId)
-            renewDoLater = False
-        self._renewDoLater(renewDoLater)
-        return
-
-    def _handleDbCheckAccountCreatedResult(self, created):
-        if not self.isGenerated():
-            return
-        if created is None:
-            self._doDbCheckBan("toon %s's account has no CREATED in the DB" % self.doId)
-        elif created >= DistributedToonAI.DbCheckAccountDateBegin:
-            msg = 'account created during invalid period (toon) %s' % created
-            if DistributedToonAI.DbCheckAccountDateDisconnect:
-                self.disconnect()
-                msg += ', disconnecting'
-            self.air.writeServerEvent('account', self.doId, msg)
-            self.notify.warning('%s ' % self.doId + msg)
-        return
-
-    def _renewDoLater(self, renew = True):
-        if renew:
-            delay = self.DbCheckPeriodUnpaid
-            if self.gameAccess == OTPGlobals.AccessFull:
-                delay = self.DbCheckPeriodPaid
-            self._dbCheckDoLater = taskMgr.doMethodLater(delay, self._doDbCheck, 'dbCheck-%s' % self.doId)
-
     def sendDeleteEvent(self):
         if simbase.wantPets:
             isInEstate = self.isInEstate()
@@ -347,9 +273,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
 
     def delete(self):
         self.notify.debug('----Deleting DistributedToonAI %d ' % self.doId)
-        if self._dbCheckDoLater:
-            taskMgr.remove(self._dbCheckDoLater)
-            self._dbCheckDoLater = None
         if self.isPlayerControlled():
             messenger.send('avatarExited', [self])
         if simbase.wantPets:

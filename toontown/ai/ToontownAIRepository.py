@@ -450,6 +450,3 @@ class ToontownAIRepository(ToontownInternalRepository):
 
     def trueUniqueName(self, idString):
         return self.uniqueName(idString)
-
-    def sendQueryToonMaxHp(self, avId, callback):
-        pass  # TODO?
