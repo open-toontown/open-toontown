@@ -52,8 +52,6 @@ class ToonBase(OTPBase.OTPBase):
             sys.exit(1)
         self.disableShowbaseMouse()
         base.debugRunningMultiplier /= OTPGlobals.ToonSpeedFactor
-        __builtins__['__astron__'] = self.config.GetBool('astron-support', 1)
-        ToonBase.notify.info('__astron__ == %s' % __astron__)
         self.toonChatSounds = self.config.GetBool('toon-chat-sounds', 1)
         self.placeBeforeObjects = config.GetBool('place-before-objects', 1)
         self.endlessQuietZone = False
@@ -205,8 +203,11 @@ class ToonBase(OTPBase.OTPBase):
         self.walking = pressed
 
     def takeScreenShot(self):
+        if not os.path.exists('screenshots/'):
+            os.mkdir('screenshots/')
+
         namePrefix = 'screenshot'
-        namePrefix = launcher.logPrefix + namePrefix
+        namePrefix = 'screenshots/' + launcher.logPrefix + namePrefix
         timedif = globalClock.getRealTime() - self.lastScreenShotTime
         if self.glitchCount > 10 and self.walking:
             return
@@ -400,8 +401,3 @@ class ToonBase(OTPBase.OTPBase):
 
     def playMusic(self, music, looping = 0, interrupt = 1, volume = None, time = 0.0):
         OTPBase.OTPBase.playMusic(self, music, looping, interrupt, volume, time)
-
-    def isMainWindowOpen(self):
-        if self.win != None:
-            return self.win.isValid()
-        return 0

@@ -10,6 +10,8 @@ class OTPBase(ShowBase):
     def __init__(self, windowType = None):
         self.wantEnviroDR = False
         ShowBase.__init__(self, windowType=windowType)
+        __builtins__['__astron__'] = self.config.GetBool('astron-support', 1)
+        OTPBase.notify.info('__astron__ == %s' % __astron__)
         if config.GetBool('want-phase-checker', 0):
             from direct.showbase import Loader
             Loader.phaseChecker = self.loaderPhaseChecker
@@ -227,3 +229,8 @@ class OTPBase(ShowBase):
             self.wantEnviroDR = not self.win.getGsg().isHardware() or config.GetBool('want-background-region', 1)
             self.backgroundDrawable = self.win
         return result
+
+    def isMainWindowOpen(self):
+        if self.win != None:
+            return self.win.isValid()
+        return 0
