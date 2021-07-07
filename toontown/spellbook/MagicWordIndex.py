@@ -222,8 +222,7 @@ class ToggleOobe(MagicWord):
     desc = "Toggles the out of body experience mode, which lets you move the camera freely."
     advancedDesc = "This Magic Word will toggle what is known as 'Out Of Body Experience' Mode, hence the name " \
                    "'Oobe'. When this mode is active, you are able to move the camera around with your mouse- " \
-                   "though your camera will still follow your Toon. You can also toggle this mode by pressing the " \
-                   "'F4' key, or whichever other keybind you have set."
+                   "though your camera will still follow your Toon."
     execLocation = MagicWordConfig.EXEC_LOC_CLIENT
 
     def handleWord(self, invoker, avId, toon, *args):
@@ -235,9 +234,7 @@ class ToggleRun(MagicWord):
     aliases = ["run"]
     desc = "Toggles run mode, which gives you a faster running speed."
     advancedDesc = "This Magic Word will toggle Run Mode. When this mode is active, the target can run around at a " \
-                   "very fast speed. This running speed stacks with other speed multipliers, such as the one given" \
-                   "by the 'SetSpeed' Magic Word. You will automatically toggle Run Mode by using the 'EnableGod' " \
-                   "Magic Word."
+                   "very fast speed."
     execLocation = MagicWordConfig.EXEC_LOC_CLIENT
 
     def handleWord(self, invoker, avId, toon, *args):
