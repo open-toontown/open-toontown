@@ -70,7 +70,7 @@ from toontown.estate import DistributedHouse/AI
 from toontown.estate import DistributedHouseInterior/AI
 from toontown.estate import DistributedGarden/AI
 from toontown.shtiker import DeleteManager/AI
-from toontown.ai import ToontownMagicWordManager/AI
+from toontown.spellbook import ToontownMagicWordManager/AI
 from toontown.ai import NewsManager/AI
 from toontown.shtiker import PurchaseManager/AI
 from toontown.shtiker import NewbiePurchaseManager/AI
@@ -1406,8 +1406,10 @@ dclass DeleteManager : DistributedObject {
   setInventory(blob) airecv clsend;
 };
 
-dclass ToontownMagicWordManager : MagicWordManager {
-  requestTeleport(string, string, uint32, uint32, uint32);
+dclass ToontownMagicWordManager : DistributedObject {
+  requestExecuteMagicWord(int8, int8, int16, uint32, string) airecv clsend;
+  executeMagicWord(string, string, uint32[], blob, int8, int8, int16, uint32);
+  generateResponse(string, string, blob, string, int8, int8, int16, uint32, string);
 };
 
 struct weeklyCalendarHoliday {
@@ -3265,4 +3267,3 @@ dclass DistributedTrashcanZeroMgr : DistributedPhaseEventMgr {
 
 dclass DistributedSillyMeterMgr : DistributedPhaseEventMgr {
 };
-

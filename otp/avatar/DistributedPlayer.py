@@ -457,3 +457,6 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def setAccessLevel(self, accessLevel):
         self.accessLevel = accessLevel
+
+    def getAccessLevel(self):
+        return self.accessLevel
