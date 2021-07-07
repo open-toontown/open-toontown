@@ -457,6 +457,8 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
 
     def setAccessLevel(self, accessLevel):
         self.accessLevel = accessLevel
+        if self.isLocal():
+            self.cr.wantMagicWords = self.accessLevel > OTPGlobals.AccessLevelName2Int.get('NO_ACCESS')
 
     def getAccessLevel(self):
         return self.accessLevel

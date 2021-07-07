@@ -617,7 +617,7 @@ class TalkAssistant(DirectObject.DirectObject):
 
     def sendOpenTalk(self, message):
         error = None
-        if base.cr.magicWordManager and base.localAvatar.getAccessLevel() > OTPGlobals.AccessLevelName2Int.get('NO_ACCESS') and len(message) > 0 and message[0] == base.cr.magicWordManager.chatPrefix:
+        if base.cr.magicWordManager and base.cr.wantMagicWords and len(message) > 0 and message[0] == base.cr.magicWordManager.chatPrefix:
             messenger.send('magicWord', [message])
             self.receiveDeveloperMessage(message)
         else:

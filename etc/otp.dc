@@ -6,7 +6,6 @@ from direct.distributed import DistributedCamera/AI/OV
 from otp.distributed import Account/AI/UD
 from otp.distributed import AstronAccount/AI/UD
 from otp.ai import TimeManager/AI
-from otp.ai import MagicWordManager/AI
 from otp.avatar import DistributedAvatar/AI/UD
 from otp.avatar import DistributedPlayer/AI
 from otp.friends import FriendManager/AI
@@ -255,12 +254,6 @@ dclass DistributedPlayer : DistributedAvatar {
   setAccess(uint8 = 2) broadcast ownrecv required ram airecv;
   setAccessLevel(uint16 accessLevel = 0) ownrecv required airecv;
   setAsGM(bool = 0) required ram broadcast ownrecv airecv;
-};
-
-dclass MagicWordManager : DistributedObject {
-  setMagicWord(string, uint32, uint32, string(0-256)) airecv clsend;
-  setMagicWordResponse(string) airecv;
-  setWho(uint32[]) airecv clsend;
 };
 
 dclass OtpAvatarManager : DistributedObject {
