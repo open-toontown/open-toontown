@@ -112,8 +112,6 @@ dclass TimeManager : DistributedObject {
   checkForGarbageLeaks(bool) airecv clsend;
   setNumAIGarbageLeaks(uint32);
   setClientGarbageLeak(uint32, string(0-1024)) airecv clsend;
-  checkAvOnDistrict(uint32, DoId) clsend airecv;
-  checkAvOnDistrictResult(uint32, DoId, bool);
 };
 
 dclass ObjectServer {

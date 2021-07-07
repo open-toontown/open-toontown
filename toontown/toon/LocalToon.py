@@ -1934,9 +1934,3 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     def stopQuestMap(self):
         if self.questMap:
             self.questMap.stop()
-
-    def _startZombieCheck(self):
-        pass
-
-    def _stopZombieCheck(self):
-        pass
