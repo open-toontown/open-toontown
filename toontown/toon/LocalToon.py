@@ -12,7 +12,6 @@ from direct.showbase import PythonUtil
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui import DirectGuiGlobals
 from pandac.PandaModules import *
-from libotp import *
 from otp.avatar import LocalAvatar
 from otp.login import LeaveToPayDialog
 from otp.avatar import PositionExaminer
@@ -163,8 +162,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             if not hasattr(base.cr, 'lastLoggedIn'):
                 base.cr.lastLoggedIn = self.cr.toontownTimeManager.convertStrToToontownTime('')
             self.setLastTimeReadNews(base.cr.lastLoggedIn)
-            self.acceptingNewFriends = Settings.getAcceptingNewFriends() and base.config.GetBool('accepting-new-friends-default', True)
-            self.acceptingNonFriendWhispers = Settings.getAcceptingNonFriendWhispers() and base.config.GetBool('accepting-non-friend-whispers-default', True)
+            self.acceptingNewFriends = base.settings.getSetting('accepting-new-friends', 1) and base.config.GetBool('accepting-new-friends-default', True)
+            self.acceptingNonFriendWhispers = base.settings.getSetting('accepting-non-friend-whispers', 1) and base.config.GetBool('accepting-non-friend-whispers-default', True)
             self.physControls.event.addAgainPattern('again%in')
             self.oldPos = None
             self.questMap = None

@@ -22,6 +22,13 @@ class Settings:
         except:
             self.__settings = {}
 
+    def writeSettings(self):
+        with open(self.__filename, 'w+') as f:
+            json.dump(self.__settings, f, indent=4)
+
+    def updateSetting(self, setting, value):
+        self.__settings[setting] = value
+
     def getSetting(self, setting, default=None):
         result = self.__settings.get(setting, default)
         return result

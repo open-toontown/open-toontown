@@ -211,7 +211,7 @@ class OptionsTabPage(DirectFrame):
         self.ignore('confirmDone')
         self.hide()
         if self.settingsChanged != 0:
-            Settings.writeSettings()
+            base.settings.writeSettings()
         self.speedChatStyleText.exit()
         if self.displaySettingsChanged:
             taskMgr.doMethodLater(self.DisplaySettingsDelay, self.writeDisplaySettings, self.DisplaySettingsTaskName)
@@ -253,10 +253,10 @@ class OptionsTabPage(DirectFrame):
         messenger.send('wakeup')
         if base.musicActive:
             base.enableMusic(0)
-            Settings.setMusic(0)
+            base.settings.updateSetting('music', 0)
         else:
             base.enableMusic(1)
-            Settings.setMusic(1)
+            base.settings.updateSetting('music', 1)
         self.settingsChanged = 1
         self.__setMusicButton()
 
@@ -272,10 +272,10 @@ class OptionsTabPage(DirectFrame):
         messenger.send('wakeup')
         if base.sfxActive:
             base.enableSoundEffects(0)
-            Settings.setSfx(0)
+            base.settings.updateSetting('sfx', 0)
         else:
             base.enableSoundEffects(1)
-            Settings.setSfx(1)
+            base.settings.updateSetting('sfx', 1)
         self.settingsChanged = 1
         self.__setSoundFXButton()
 
@@ -283,10 +283,10 @@ class OptionsTabPage(DirectFrame):
         messenger.send('wakeup')
         if base.toonChatSounds:
             base.toonChatSounds = 0
-            Settings.setToonChatSounds(0)
+            base.settings.updateSetting('toon-chat-sounds', 0)
         else:
             base.toonChatSounds = 1
-            Settings.setToonChatSounds(1)
+            base.settings.updateSetting('toon-chat-sounds', 1)
         self.settingsChanged = 1
         self.__setToonChatSoundsButton()
 
@@ -317,10 +317,10 @@ class OptionsTabPage(DirectFrame):
         messenger.send('wakeup')
         if base.localAvatar.acceptingNewFriends:
             base.localAvatar.acceptingNewFriends = 0
-            Settings.setAcceptingNewFriends(0)
+            base.settings.updateSetting('accepting-new-friends', 0)
         else:
             base.localAvatar.acceptingNewFriends = 1
-            Settings.setAcceptingNewFriends(1)
+            base.settings.updateSetting('accepting-new-friends', 1)
         self.settingsChanged = 1
         self.__setAcceptFriendsButton()
 
@@ -328,10 +328,10 @@ class OptionsTabPage(DirectFrame):
         messenger.send('wakeup')
         if base.localAvatar.acceptingNonFriendWhispers:
             base.localAvatar.acceptingNonFriendWhispers = 0
-            Settings.setAcceptingNonFriendWhispers(0)
+            base.settings.updateSetting('accepting-non-friend-whispers', 0)
         else:
             base.localAvatar.acceptingNonFriendWhispers = 1
-            Settings.setAcceptingNonFriendWhispers(1)
+            base.settings.updateSetting('accepting-non-friend-whispers', 1)
         self.settingsChanged = 1
         self.__setAcceptWhispersButton()
 
@@ -433,16 +433,16 @@ class OptionsTabPage(DirectFrame):
          self.displaySettingsFullscreen,
          self.displaySettingsEmbedded,
          self.displaySettingsApi))
-        Settings.setResolutionDimensions(self.displaySettingsSize[0], self.displaySettingsSize[1])
-        Settings.setWindowedMode(not self.displaySettingsFullscreen)
-        Settings.setEmbeddedMode(self.displaySettingsEmbedded)
+        base.settings.updateSetting('resolution', (self.displaySettingsSize[0], self.displaySettingsSize[1]))
+        base.settings.updateSetting('windowed-mode', not self.displaySettingsFullscreen)
+        base.settings.updateSetting('embedded-mode', self.displaySettingsEmbedded)
         if self.displaySettingsApiChanged:
             api = self.DisplaySettingsApiMap.get(self.displaySettingsApi)
             if api == None:
                 self.notify.warning('Cannot save unknown display API: %s' % self.displaySettingsApi)
             else:
                 Settings.setDisplayDriver(api)
-        Settings.writeSettings()
+        base.settings.writeSettings()
         self.displaySettingsChanged = 0
         return Task.done
 
