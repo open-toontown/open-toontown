@@ -167,7 +167,6 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.physControls.event.addAgainPattern('again%in')
             self.oldPos = None
             self.questMap = None
-            self.prevToonIdx = 0
 
     def wantLegacyLifter(self):
         return True

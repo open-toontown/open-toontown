@@ -618,7 +618,6 @@ dclass DistributedToon : DistributedPlayer {
   setNeverStartedPartyRefunded(uint64, int8, uint16) ownrecv;
   setDISLname(string) ram;
   setDISLid(uint32) ram db airecv;
-  flagAv(uint32, uint16, string []) airecv ownsend;
 };
 
 dclass DistributedCCharBase : DistributedObject {
