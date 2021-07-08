@@ -1,6 +1,7 @@
 from otp.otpbase import OTPBase
 from otp.otpbase import OTPLauncherGlobals
 from otp.otpbase import OTPGlobals
+from otp.settings.Settings import Settings
 from direct.showbase.PythonUtil import *
 from . import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
@@ -21,18 +22,14 @@ class ToonBase(OTPBase.OTPBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonBase')
 
     def __init__(self):
+        self.settings = Settings()
         if not config.GetInt('ignore-user-options', 0):
-            Settings.readSettings()
-            mode = not Settings.getWindowedMode()
-            music = Settings.getMusic()
-            sfx = Settings.getSfx()
-            toonChatSounds = Settings.getToonChatSounds()
-            resList = [(640, 480),
-             (800, 600),
-             (1024, 768),
-             (1280, 1024),
-             (1600, 1200)]
-            res = resList[Settings.getResolution()]
+            self.settings.readSettings()
+            mode = not self.settings.getSetting('windowed-mode', 1)
+            music = self.settings.getSetting('music', 1)
+            sfx = self.settings.getSetting('sfx', 1)
+            toonChatSounds = self.settings.getSetting('toon-chat-sounds', 1)
+            res = self.settings.getSetting('resolution', (800, 600))
             if mode == None:
                 mode = 1
             if res == None:
