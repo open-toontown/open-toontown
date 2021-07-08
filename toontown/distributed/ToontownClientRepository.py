@@ -211,7 +211,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             self.send(datagram)
             self.loginFSM.request('waitForAvatarList')
         else:
-            self.astronLoginManager.sendAcknowledgeAvatarName(avId, lambda: self.loginFSM.request('waitForAvatarList'))
+            self.astronLoginManager.sendAcknowledgeAvatarName(avid, lambda: self.loginFSM.request('waitForAvatarList'))
 
     def enterChooseAvatar(self, avList):
         ModelPool.garbageCollect()
