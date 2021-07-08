@@ -1,6 +1,6 @@
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
-from libotp import *
+from panda3d.otp import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import FSM

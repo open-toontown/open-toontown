@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from libotp import *
+from panda3d.otp import *
 from direct.gui.DirectGui import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData

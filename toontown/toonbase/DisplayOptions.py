@@ -155,8 +155,8 @@ class DisplayOptions:
                 base.closeWindow(base.win)
                 return 0
             base.disableShowbaseMouse()
-            if 'libotp' in sys.modules:
-                from libotp import NametagGlobals
+            if 'panda3d.otp' in sys.modules:
+                from panda3d.otp import NametagGlobals
                 NametagGlobals.setCamera(base.cam)
                 NametagGlobals.setMouseWatcher(base.mouseWatcherNode)
         else:

@@ -1,4 +1,4 @@
-from libotp import *
+from panda3d.otp import *
 from direct.interval.IntervalGlobal import *
 from .BattleProps import *
 from .BattleSounds import *

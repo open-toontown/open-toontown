@@ -1,6 +1,6 @@
 from otp.avatar import Avatar
 from pandac.PandaModules import *
-from libotp import *
+from panda3d.otp import *
 from direct.task import Task
 import random
 from pandac.PandaModules import *

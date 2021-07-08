@@ -3,7 +3,7 @@ from otp.avatar import Avatar
 from . import SuitDNA
 from toontown.toonbase import ToontownGlobals
 from pandac.PandaModules import *
-from libotp import *
+from panda3d.otp import *
 from toontown.battle import SuitBattleGlobals
 from direct.task.Task import Task
 from toontown.battle import BattleProps

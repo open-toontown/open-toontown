@@ -1,6 +1,6 @@
 from toontown.toonbase.ToonBaseGlobal import *
 from pandac.PandaModules import *
-from libtoontown import *
+from panda3d.toontown import *
 from toontown.toonbase.ToontownGlobals import *
 import random
 from direct.task.Task import Task

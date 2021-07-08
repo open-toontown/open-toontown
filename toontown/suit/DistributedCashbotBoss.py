@@ -19,7 +19,7 @@ from toontown.distributed import DelayDelete
 from toontown.chat import ResistanceChat
 from toontown.coghq import CogDisguiseGlobals
 from pandac.PandaModules import *
-from libotp import *
+from panda3d.otp import *
 import random
 import math
 import functools

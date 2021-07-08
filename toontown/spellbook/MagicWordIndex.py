@@ -14,7 +14,7 @@ import collections, types
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 
-from libotp import NametagGroup, WhisperPopup
+from panda3d.otp import NametagGroup, WhisperPopup
 
 from otp.otpbase import OTPLocalizer
 from otp.otpbase import OTPGlobals

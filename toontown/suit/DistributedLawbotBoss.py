@@ -6,7 +6,7 @@ from direct.showbase.PythonUtil import Functor
 from direct.showbase.PythonUtil import StackTrace
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
-from libotp import *
+from panda3d.otp import *
 from direct.fsm import FSM
 from direct.fsm import ClassicFSM
 from direct.fsm import State

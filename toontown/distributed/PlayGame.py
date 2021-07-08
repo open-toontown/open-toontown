@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from libtoontown import *
+from panda3d.toontown import *
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData

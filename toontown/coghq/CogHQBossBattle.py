@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from libotp import *
+from panda3d.otp import *
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from toontown.hood import Place

@@ -12,7 +12,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 
-from libotp import WhisperPopup
+from panda3d.otp import WhisperPopup
 from otp.otpbase.OTPGlobals import *
 
 from toontown.friends import FriendHandle

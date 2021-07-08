@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from libotp import *
+from panda3d.otp import *
 from . import FriendsListPanel
 from . import FriendInviter
 from . import FriendInvitee

@@ -9,7 +9,7 @@ from toontown.estate import DistributedCannon
 from toontown.estate import CannonGlobals
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
-from libotp import *
+from panda3d.otp import *
 from toontown.toon import NPCToons
 from toontown.toon import ToonHead
 from toontown.toonbase import TTLocalizer

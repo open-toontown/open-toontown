@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from libotp import *
+from panda3d.otp import *
 from toontown.battle.BattleProps import *
 from toontown.battle.BattleSounds import *
 from toontown.distributed.ToontownMsgTypes import *

@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from libtoontown import *
+from panda3d.toontown import *
 from direct.distributed.ClockDelta import *
 import math
 import random

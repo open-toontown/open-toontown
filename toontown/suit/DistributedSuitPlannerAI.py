@@ -1,4 +1,4 @@
-from libtoontown import *
+from panda3d.toontown import *
 from otp.ai.AIBaseGlobal import *
 from direct.distributed import DistributedObjectAI
 from . import SuitPlannerBase, DistributedSuitAI

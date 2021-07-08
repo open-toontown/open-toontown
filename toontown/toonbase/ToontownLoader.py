@@ -1,5 +1,5 @@
 from pandac.PandaModules import *
-from libtoontown import *
+from panda3d.toontown import *
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.showbase import Loader
 from toontown.toontowngui import ToontownLoadingScreen

@@ -9,7 +9,7 @@ from . import ToontownLoader
 from direct.gui import DirectGuiGlobals
 from direct.gui.DirectGui import *
 from pandac.PandaModules import *
-from libotp import *
+from panda3d.otp import *
 import sys
 import os
 import math
