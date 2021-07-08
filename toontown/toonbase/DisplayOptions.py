@@ -4,7 +4,6 @@ import os
 import sys
 import datetime
 from pandac.PandaModules import loadPrcFileData, WindowProperties
-from libotp import Settings
 from otp.otpgui import OTPDialog
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPRender
@@ -22,25 +21,20 @@ class DisplayOptions:
         self.loadFromSettings()
 
     def loadFromSettings(self):
-        Settings.readSettings()
-        mode = not Settings.getWindowedMode()
-        music = Settings.getMusic()
-        sfx = Settings.getSfx()
-        toonChatSounds = Settings.getToonChatSounds()
-        resList = [(640, 480),
-         (800, 600),
-         (1024, 768),
-         (1280, 1024),
-         (1600, 1200)]
-        res = resList[Settings.getResolution()]
-        embed = Settings.getEmbeddedMode()
+        base.settings.readSettings()
+        mode = not base.settings.getSetting('windowed-mode', True)
+        music = base.settings.getSetting('music', True)
+        sfx = base.settings.getSetting('sfx', True)
+        toonChatSounds = base.settings.getSetting('toon-chat-sounds', True)
+        res = base.settings.getSetting('resolution', (800, 600))
+        embed = False  # base.settings.getSetting('embedded-mode', False)
         self.notify.debug('before prc settings embedded mode=%s' % str(embed))
         self.notify.debug('before prc settings full screen mode=%s' % str(mode))
         if mode == None:
             mode = 1
         if res == None:
             res = (800, 600)
-        if not Settings.doSavedSettingsExist():
+        if not base.settings.doSavedSettingsExist():
             self.notify.info('loadFromSettings: No settings; isDefaultEmbedded=%s' % self.isDefaultEmbedded())
             embed = self.isDefaultEmbedded()
         if embed and not self.isEmbeddedPossible():
