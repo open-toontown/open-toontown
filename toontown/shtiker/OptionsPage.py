@@ -435,7 +435,7 @@ class OptionsTabPage(DirectFrame):
          self.displaySettingsApi))
         base.settings.updateSetting('resolution', (self.displaySettingsSize[0], self.displaySettingsSize[1]))
         base.settings.updateSetting('windowed-mode', not self.displaySettingsFullscreen)
-        base.settings.updateSetting('embedded-mode', self.displaySettingsEmbedded)
+        #base.settings.updateSetting('embedded-mode', self.displaySettingsEmbedded)
         if self.displaySettingsApiChanged:
             api = self.DisplaySettingsApiMap.get(self.displaySettingsApi)
             if api == None:

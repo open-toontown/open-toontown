@@ -27,7 +27,7 @@ class DisplayOptions:
         sfx = base.settings.getSetting('sfx', True)
         toonChatSounds = base.settings.getSetting('toon-chat-sounds', True)
         res = base.settings.getSetting('resolution', (800, 600))
-        embed = base.settings.getSetting('embedded-mode', False)
+        embed = False  # base.settings.getSetting('embedded-mode', False)
         self.notify.debug('before prc settings embedded mode=%s' % str(embed))
         self.notify.debug('before prc settings full screen mode=%s' % str(mode))
         if mode == None:
