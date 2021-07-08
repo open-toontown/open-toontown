@@ -25,10 +25,10 @@ class ToonBase(OTPBase.OTPBase):
         self.settings = Settings()
         if not config.GetInt('ignore-user-options', 0):
             self.settings.readSettings()
-            mode = not self.settings.getSetting('windowed-mode', 1)
-            music = self.settings.getSetting('music', 1)
-            sfx = self.settings.getSetting('sfx', 1)
-            toonChatSounds = self.settings.getSetting('toon-chat-sounds', 1)
+            mode = not self.settings.getSetting('windowed-mode', True)
+            music = self.settings.getSetting('music', True)
+            sfx = self.settings.getSetting('sfx', True)
+            toonChatSounds = self.settings.getSetting('toon-chat-sounds', True)
             res = self.settings.getSetting('resolution', (800, 600))
             if mode == None:
                 mode = 1

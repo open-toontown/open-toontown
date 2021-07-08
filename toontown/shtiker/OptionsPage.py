@@ -253,10 +253,10 @@ class OptionsTabPage(DirectFrame):
         messenger.send('wakeup')
         if base.musicActive:
             base.enableMusic(0)
-            base.settings.updateSetting('music', 0)
+            base.settings.updateSetting('music', False)
         else:
             base.enableMusic(1)
-            base.settings.updateSetting('music', 1)
+            base.settings.updateSetting('music', True)
         self.settingsChanged = 1
         self.__setMusicButton()
 
@@ -272,10 +272,10 @@ class OptionsTabPage(DirectFrame):
         messenger.send('wakeup')
         if base.sfxActive:
             base.enableSoundEffects(0)
-            base.settings.updateSetting('sfx', 0)
+            base.settings.updateSetting('sfx', False)
         else:
             base.enableSoundEffects(1)
-            base.settings.updateSetting('sfx', 1)
+            base.settings.updateSetting('sfx', True)
         self.settingsChanged = 1
         self.__setSoundFXButton()
 
@@ -283,10 +283,10 @@ class OptionsTabPage(DirectFrame):
         messenger.send('wakeup')
         if base.toonChatSounds:
             base.toonChatSounds = 0
-            base.settings.updateSetting('toon-chat-sounds', 0)
+            base.settings.updateSetting('toon-chat-sounds', False)
         else:
             base.toonChatSounds = 1
-            base.settings.updateSetting('toon-chat-sounds', 1)
+            base.settings.updateSetting('toon-chat-sounds', True)
         self.settingsChanged = 1
         self.__setToonChatSoundsButton()
 
@@ -317,10 +317,10 @@ class OptionsTabPage(DirectFrame):
         messenger.send('wakeup')
         if base.localAvatar.acceptingNewFriends:
             base.localAvatar.acceptingNewFriends = 0
-            base.settings.updateSetting('accepting-new-friends', 0)
+            base.settings.updateSetting('accepting-new-friends', False)
         else:
             base.localAvatar.acceptingNewFriends = 1
-            base.settings.updateSetting('accepting-new-friends', 1)
+            base.settings.updateSetting('accepting-new-friends', True)
         self.settingsChanged = 1
         self.__setAcceptFriendsButton()
 
@@ -328,10 +328,10 @@ class OptionsTabPage(DirectFrame):
         messenger.send('wakeup')
         if base.localAvatar.acceptingNonFriendWhispers:
             base.localAvatar.acceptingNonFriendWhispers = 0
-            base.settings.updateSetting('accepting-non-friend-whispers', 0)
+            base.settings.updateSetting('accepting-non-friend-whispers', False)
         else:
             base.localAvatar.acceptingNonFriendWhispers = 1
-            base.settings.updateSetting('accepting-non-friend-whispers', 1)
+            base.settings.updateSetting('accepting-non-friend-whispers', True)
         self.settingsChanged = 1
         self.__setAcceptWhispersButton()
 

@@ -22,12 +22,12 @@ class DisplayOptions:
 
     def loadFromSettings(self):
         base.settings.readSettings()
-        mode = not base.settings.getSetting('windowed-mode', 1)
-        music = base.settings.getSetting('music', 1)
-        sfx = base.settings.getSetting('sfx', 1)
-        toonChatSounds = base.settings.getSetting('toon-chat-sounds', 1)
+        mode = not base.settings.getSetting('windowed-mode', True)
+        music = base.settings.getSetting('music', True)
+        sfx = base.settings.getSetting('sfx', True)
+        toonChatSounds = base.settings.getSetting('toon-chat-sounds', True)
         res = base.settings.getSetting('resolution', (800, 600))
-        embed = base.settings.getSetting('embedded-mode', 0)
+        embed = base.settings.getSetting('embedded-mode', False)
         self.notify.debug('before prc settings embedded mode=%s' % str(embed))
         self.notify.debug('before prc settings full screen mode=%s' % str(mode))
         if mode == None:
