@@ -75,10 +75,61 @@ class FriendManagerAI(DistributedObjectGlobalAI):
             # The client might legitimately try to cancel a context
             # that has already been cancelled.
             #self.air.writeServerEvent('suspicious', avId, 'FriendManagerAI.cancelFriendQuery unknown context')
-            #FriendManagerAI.notify.warning('Message for unknown context ' + `context`)
+            #FriendManagerAI.notify.warning('Message for unknown context ' + repr(context))
             return
 
         self.cancelInvite(invite)
+
+    ### Messages sent from invitee client to AI
+
+    def inviteeFriendConsidering(self, response, context):
+        """inviteeFriendConsidering(self, int response, int context)
+
+        Sent by the invitee to the AI to indicate whether the invitee
+        is able to consider the request right now.
+
+        The responses are:
+          0 - no
+          1 - yes
+          4 - the invitee is ignoring you.
+        """
+        self.notify.debug("AI: inviteeFriendConsidering(%d, %d)" % (response, context))
+        avId = self.air.getAvatarIdFromSender()
+
+        try:
+            invite = FriendManagerAI.invites[context]
+        except:
+            self.air.writeServerEvent('suspicious', avId, 'FriendManagerAI.inviteeFriendConsidering unknown context')
+            FriendManagerAI.notify.warning('Message for unknown context ' + repr(context))
+            return
+
+        if response == 1:
+            self.inviteeAvailable(invite)
+        else:
+            self.inviteeUnavailable(invite, response)
+
+    def inviteeFriendResponse(self, yesNoMaybe, context):
+        """inviteeFriendResponse(self, int yesNoMaybe, int context)
+
+        Sent by the invitee to the AI, following an affirmative
+        response in inviteeFriendConsidering, to indicate whether or
+        not the user decided to accept the friendship.
+        """
+
+        self.notify.debug("AI: inviteeFriendResponse(%d, %d)" % (yesNoMaybe, context))
+        avId = self.air.getAvatarIdFromSender()
+
+        try:
+            invite = FriendManagerAI.invites[context]
+        except:
+            self.air.writeServerEvent('suspicious', avId, 'FriendManagerAI.inviteeFriendResponse unknown context')
+            FriendManagerAI.notify.warning('Message for unknown context ' + repr(context))
+            return
+
+        if yesNoMaybe == 1:
+            self.makeFriends(invite)
+        else:
+            self.noFriends(invite, yesNoMaybe)
 
     ### Messages sent from AI to invitee client
 
@@ -131,6 +182,18 @@ class FriendManagerAI(DistributedObjectGlobalAI):
 
         self.sendUpdateToAvatarId(recipient, "friendConsidering", [yesNoAlready, context])
         self.notify.debug("AI: friendConsidering(%d, %d)" % (yesNoAlready, context))
+
+    def down_friendResponse(self, recipient, yesNoMaybe, context):
+        """friendResponse(self, DistributedOBject recipient,
+                          int yesNoMaybe, int context)
+
+        Sent by the AI to the inviter client, following an affirmitive
+        response in friendConsidering, to indicate whether or not the
+        user decided to accept the friendship.
+        """
+
+        self.sendUpdateToAvatarId(recipient, "friendResponse", [yesNoMaybe, context])
+        self.notify.debug("AI: friendResponse(%d, %d)" % (yesNoMaybe, context))
 
     ### Support methods
 
@@ -196,6 +259,32 @@ class FriendManagerAI(DistributedObjectGlobalAI):
 
         # That ends the invitation.
         self.clearInvite(invite)
+
+    def inviteeAvailable(self, invite):
+        # The invitee is considering our friendship request.
+        self.down_friendConsidering(invite.inviterId, 1, invite.context)
+
+    def noFriends(self, invite, yesNoMaybe):
+        # The invitee declined to make friends.
+        #
+        # 0 - no
+        # 2 - unable to answer; e.g. entered a minigame or something.
+        # 3 - the invitee has too many friends already.
+
+        if yesNoMaybe == 0 or yesNoMaybe == 3:
+            # The user explictly said no or has too many friends.
+            # Disallow this guy from asking again for the next ten
+            # minutes or so.
+
+            if invite.inviteeId not in self.declineFriends1:
+                self.declineFriends1[invite.inviteeId] = {}
+            self.declineFriends1[invite.inviteeId][invite.inviterId] = yesNoMaybe
+
+        self.down_friendResponse(invite.inviterId, yesNoMaybe, invite.context)
+        self.clearInvite(invite)
+
+    def makeFriends(self, invite):
+        self.notify.info('TODO: makeFriends (%s)' % invite)
 
     def __previousResponse(self, inviteeId, inviterId):
         # Return the previous rejection code if this invitee has
