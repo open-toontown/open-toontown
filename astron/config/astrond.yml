@@ -15,6 +15,10 @@ uberdogs:
       id: 4688
       anonymous: false
 
+    - class: FriendManager
+      id: 4501
+      anonymous: false
+
     - class: AvatarFriendsManager
       id: 4686
       anonymous: false
