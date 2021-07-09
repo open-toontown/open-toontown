@@ -30,5 +30,4 @@ class Settings:
         self.__settings[setting] = value
 
     def getSetting(self, setting, default=None):
-        result = self.__settings.get(setting, default)
-        return result
+        return self.__settings.get(setting, default)
