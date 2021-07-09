@@ -86,6 +86,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.trophyMgr = None
         self.safeZoneManager = None
         self.magicWordManager = None
+        self.friendManager = None
         self.zoneTable = {}
         self.dnaStoreMap = {}
         self.dnaDataMap = {}
@@ -207,6 +208,9 @@ class ToontownAIRepository(ToontownInternalRepository):
         # Generate our magic word manager...
         self.magicWordManager = ToontownMagicWordManagerAI(self)
         self.magicWordManager.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
+
+        # Generate our friend manager...
+        self.friendManager = self.generateGlobalObject(OTP_DO_ID_FRIEND_MANAGER, 'FriendManager')
 
     def generateHood(self, hoodConstructor, zoneId):
         # Bossbot HQ doesn't use DNA, so we skip over that.
