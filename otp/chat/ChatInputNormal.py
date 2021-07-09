@@ -100,16 +100,16 @@ class ChatInputNormal(DirectObject.DirectObject):
     def __execMessage(self, message):
         if not ChatInputNormal.ExecNamespace:
             ChatInputNormal.ExecNamespace = {}
-            exec('from pandac.PandaModules import *', globals(), self.ExecNamespace)
+            exec('from panda3d.core import *', globals(), self.ExecNamespace)
             self.importExecNamespace()
         try:
-            if not isClient():
+            if not __debug__ or __execWarnings__:
                 print('EXECWARNING ChatInputNormal eval: %s' % message)
                 printStack()
             return str(eval(message, globals(), ChatInputNormal.ExecNamespace))
         except SyntaxError:
             try:
-                if not isClient():
+                if not __debug__ or __execWarnings__:
                     print('EXECWARNING ChatInputNormal exec: %s' % message)
                     printStack()
                 exec(message, globals(), ChatInputNormal.ExecNamespace)

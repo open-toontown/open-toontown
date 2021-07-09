@@ -175,7 +175,12 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
 
     def applyFilter(self, keyArgs, strict = False):
         text = self.chatEntry.get(plain=True)
-        if len(text) > 0 and text[0] in ['~', '>']:
+        prefixes = []
+        if base.cr.magicWordManager and base.cr.wantMagicWords:
+            prefixes.append(base.cr.magicWordManager.chatPrefix)
+        if config.GetBool('exec-chat', 0):
+            prefixes.append('>')
+        if len(text) > 0 and text[0] in prefixes:
             self.okayToSubmit = True
         else:
             words = text.split(' ')

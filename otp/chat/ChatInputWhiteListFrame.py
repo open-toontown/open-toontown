@@ -285,16 +285,16 @@ class ChatInputWhiteListFrame(FSM.FSM, DirectFrame):
     def __execMessage(self, message):
         if not ChatInputTyped.ExecNamespace:
             ChatInputTyped.ExecNamespace = {}
-            exec('from pandac.PandaModules import *', globals(), self.ExecNamespace)
+            exec('from panda3d.core import *', globals(), self.ExecNamespace)
             self.importExecNamespace()
         try:
-            if not isClient():
+            if not __debug__ or __execWarnings__:
                 print('EXECWARNING ChatInputWhiteListFrame eval: %s' % message)
                 printStack()
             return str(eval(message, globals(), ChatInputTyped.ExecNamespace))
         except SyntaxError:
             try:
-                if not isClient():
+                if not __debug__ or __execWarnings__:
                     print('EXECWARNING ChatInputWhiteListFrame exec: %s' % message)
                     printStack()
                 exec(message, globals(), ChatInputTyped.ExecNamespace)

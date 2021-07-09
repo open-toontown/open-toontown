@@ -48,7 +48,7 @@ CashbotStageMiddleRoomIDs = (1,)
 CashbotStageFinalRoomIDs = (2,)
 CashbotStageConnectorRooms = ('phase_11/models/lawbotHQ/LB_connector_7cubeL2', 'phase_11/models/lawbotHQ/LB_connector_7cubeLR')
 CashbotStageSpecModules = {}
-if not isClient():
+if not __debug__ or __execWarnings__:
     print('EXECWARNING StageRoomSpecs: %s' % CashbotStageRoomName2RoomId)
     printStack()
 for roomName, roomId in list(CashbotStageRoomName2RoomId.items()):

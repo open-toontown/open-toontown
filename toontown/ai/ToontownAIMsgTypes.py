@@ -5,7 +5,7 @@ TTAIMsgName2Id = {'DBSERVER_GET_ESTATE': 1040,
  'IN_GAME_NEWS_MANAGER_UD_TO_ALL_AI': 1043,
  'WHITELIST_MANAGER_UD_TO_ALL_AI': 1044}
 TTAIMsgId2Names = invertDictLossless(TTAIMsgName2Id)
-if not isClient():
+if not __debug__ or __execWarnings__:
     print('EXECWARNING ToontownAIMsgTypes: %s' % TTAIMsgName2Id)
     printStack()
 for name, value in list(TTAIMsgName2Id.items()):

@@ -249,16 +249,16 @@ class TalkAssistant(DirectObject.DirectObject):
         print('execMessage %s' % message)
         if not TalkAssistant.ExecNamespace:
             TalkAssistant.ExecNamespace = {}
-            exec('from pandac.PandaModules import *', globals(), self.ExecNamespace)
+            exec('from panda3d.core import *', globals(), self.ExecNamespace)
             self.importExecNamespace()
         try:
-            if not isClient():
+            if not __debug__ or __execWarnings__:
                 print('EXECWARNING TalkAssistant eval: %s' % message)
                 printStack()
             return str(eval(message, globals(), TalkAssistant.ExecNamespace))
         except SyntaxError:
             try:
-                if not isClient():
+                if not __debug__ or __execWarnings__:
                     print('EXECWARNING TalkAssistant exec: %s' % message)
                     printStack()
                 exec(message, globals(), TalkAssistant.ExecNamespace)

@@ -49,8 +49,7 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.announceGenerate(self)
 
         # Only use a custom Magic Word activator if the index is allowed
-        # TODO: Uncomment after adding settings support
-        activatorIndex = 0 # base.settings.getInt('game', 'magic-word-activator', 0)
+        activatorIndex = base.settings.getSetting('magic-word-activator', 0)
         if 0 <= activatorIndex <= (len(PREFIX_ALLOWED) - 1):
             self.chatPrefix = PREFIX_ALLOWED[activatorIndex]
 
