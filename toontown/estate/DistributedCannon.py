@@ -785,7 +785,7 @@ class DistributedCannon(DistributedObject.DistributedObject):
         if not self.toonHead:
             return Task.done
         flightResults = self.__calcFlightResults(avId, launchTime)
-        if not isClient():
+        if not __debug__ or __execWarnings__:
             print('EXECWARNING DistributedCannon: %s' % flightResults)
             printStack()
         for key in flightResults:

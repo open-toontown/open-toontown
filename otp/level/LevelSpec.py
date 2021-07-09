@@ -92,7 +92,7 @@ class LevelSpec:
 
     def getCopyOfSpec(self, spec):
         specCopy = {}
-        if not isClient():
+        if not __debug__ or __execWarnings__:
             print('EXECWARNING LevelSpec exec: %s' % self.getSpecImportsModuleName())
             printStack()
         exec('from %s import *' % self.getSpecImportsModuleName())

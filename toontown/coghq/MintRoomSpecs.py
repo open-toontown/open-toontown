@@ -62,7 +62,7 @@ CashbotMintMiddleRoomIDs = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1
 CashbotMintFinalRoomIDs = (17, 18, 19, 20, 21, 22, 23, 24, 25)
 CashbotMintConnectorRooms = ('phase_10/models/cashbotHQ/connector_7cubeL2', 'phase_10/models/cashbotHQ/connector_7cubeR2')
 CashbotMintSpecModules = {}
-if not isClient():
+if not __debug__ or __execWarnings__:
     print('EXECWARNING MintRoomSpecs: %s' % CashbotMintRoomName2RoomId)
     printStack()
 for roomName, roomId in list(CashbotMintRoomName2RoomId.items()):

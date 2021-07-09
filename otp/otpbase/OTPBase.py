@@ -11,6 +11,7 @@ class OTPBase(ShowBase):
         self.wantEnviroDR = False
         ShowBase.__init__(self, windowType=windowType)
         __builtins__['__astron__'] = self.config.GetBool('astron-support', 1)
+        __builtins__['__execWarnings__'] = self.config.GetBool('want-exec-warnings', 0)
         OTPBase.notify.info('__astron__ == %s' % __astron__)
         if config.GetBool('want-phase-checker', 0):
             from direct.showbase import Loader

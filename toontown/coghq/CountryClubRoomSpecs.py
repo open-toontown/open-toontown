@@ -41,7 +41,7 @@ BossbotCountryClubMiddleRoomIDs = (2, 5, 6)
 BossbotCountryClubFinalRoomIDs = (18,)
 BossbotCountryClubConnectorRooms = ('phase_12/models/bossbotHQ/Connector_Tunnel_A', 'phase_12/models/bossbotHQ/Connector_Tunnel_B')
 CashbotMintSpecModules = {}
-if not isClient():
+if not __debug__ or __execWarnings__:
     print('EXECWARNING CountryClubRoomSpecs: %s' % BossbotCountryClubRoomName2RoomId)
     printStack()
 for roomName, roomId in list(BossbotCountryClubRoomName2RoomId.items()):
