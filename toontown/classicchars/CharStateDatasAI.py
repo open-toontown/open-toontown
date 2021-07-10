@@ -15,6 +15,7 @@ class CharLonelyStateAI(StateData.StateData):
         StateData.StateData.__init__(self, doneEvent)
         self.__doneEvent = doneEvent
         self.character = character
+        StateData.StateData.load(self)
 
     def enter(self):
         if hasattr(self.character, 'name'):
@@ -51,6 +52,7 @@ class CharChattyStateAI(StateData.StateData):
         self.nextChatTime = 0
         self.lastMessage = [
          -1, -1]
+        StateData.StateData.load(self)
 
     def enter(self):
         if hasattr(self.character, 'name'):
