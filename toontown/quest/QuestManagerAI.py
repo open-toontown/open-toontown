@@ -39,3 +39,6 @@ class QuestManagerAI:
 
     def toonDefeatedStage(self, toon, stageId, activeVictors):
         pass  # TODO
+
+    def toonMadeFriend(self, av, otherAv):
+        pass  # TODO

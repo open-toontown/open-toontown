@@ -284,7 +284,15 @@ class FriendManagerAI(DistributedObjectGlobalAI):
         self.clearInvite(invite)
 
     def makeFriends(self, invite):
-        self.notify.info('TODO: makeFriends (%s)' % invite)
+        # The invitee agreed to make friends.
+        self.__handleMakeFriends(invite.inviteeId, invite.inviterId, 0,
+                                 invite.context)
+        self.down_friendResponse(invite.inviterId, 1, invite.context)
+        # The reply will clear the context out when it comes in.
+
+    def __handleMakeFriends(self, avatarAId, avatarBId, flags, context):
+        # TODO
+        self.makeFriendsReply(1, context)
 
     def __previousResponse(self, inviteeId, inviterId):
         # Return the previous rejection code if this invitee has
@@ -333,3 +341,49 @@ class FriendManagerAI(DistributedObjectGlobalAI):
             self.down_inviteeCancelFriendQuery(invite.inviteeId, invite.context)
 
         invite.inviteeKnows = 0
+
+    def makeFriendsReply(self, result, context):
+        try:
+            invite = FriendManagerAI.invites[context]
+        except:
+            FriendManagerAI.notify.warning('Message for unknown context ' + repr(context))
+            return
+
+        if result:
+            # By now, the server has OK'ed the friends transaction.
+            # Update our internal bookkeeping so we remember who's
+            # friends with whom.  This is mainly useful for correct
+            # accounting of the make-a-friend quest.
+            invitee = self.air.doId2do.get(invite.inviteeId)
+            inviter = self.air.doId2do.get(invite.inviterId)
+            if invitee != None:
+                invitee.extendFriendsList(invite.inviterId, invite.sendSpecialResponse)
+                self.air.questManager.toonMadeFriend(invitee, inviter)
+
+            #inviter = self.air.doId2do.get(invite.inviterId)
+            if inviter != None:
+                inviter.extendFriendsList(invite.inviteeId, invite.sendSpecialResponse)
+                self.air.questManager.toonMadeFriend(inviter, invitee)
+
+        if invite.sendSpecialResponse:
+            # If this flag is set, the "invite" was generated via the
+            # codeword system, instead of through the normal path.  In
+            # this case, we need to send the acknowledgement back to
+            # the client.
+
+            if result:
+                # Success!  Send a result code of 1.
+                result = 1
+            else:
+                # Failure, some friends list problem.  Result code of 2.
+                result = 2
+
+            self.down_submitSecretResponse(invite.inviterId, result,
+                                           invite.inviteeId)
+
+            # Also send a notification to the other avatar, if he's on.
+            avatar = DistributedAvatarAI.DistributedAvatarAI(self.air)
+            avatar.doId = invite.inviteeId
+            avatar.d_friendsNotify(invite.inviterId, 2)
+
+        self.clearInvite(invite)
