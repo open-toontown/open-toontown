@@ -1,5 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobalAI import DistributedObjectGlobalAI
+from direct.distributed.PyDatagram import *
 
 
 class FriendManagerAI(DistributedObjectGlobalAI):
@@ -291,8 +292,39 @@ class FriendManagerAI(DistributedObjectGlobalAI):
         # The reply will clear the context out when it comes in.
 
     def __handleMakeFriends(self, avatarAId, avatarBId, flags, context):
-        # TODO
-        self.makeFriendsReply(1, context)
+        # And now the magic begins.
+        if avatarAId == avatarBId:
+            self.makeFriendsReply(0, context)
+            return
+
+        avatarA = self.air.doId2do.get(avatarAId)  # invitee
+        avatarB = self.air.doId2do.get(avatarBId)  # inviter
+        if avatarA and avatarB:
+            datagram = PyDatagram()
+            datagram.addServerHeader(self.GetPuppetConnectionChannel(avatarA.getDoId()), self.air.ourChannel,
+                                                                     CLIENTAGENT_DECLARE_OBJECT)
+            datagram.addUint32(avatarB.getDoId())
+            datagram.addUint16(self.air.dclassesByName['DistributedToonAI'].getNumber())
+            self.air.send(datagram)
+
+            datagram = PyDatagram()
+            datagram.addServerHeader(self.GetPuppetConnectionChannel(avatarB.getDoId()), self.air.ourChannel,
+                                                                     CLIENTAGENT_DECLARE_OBJECT)
+            datagram.addUint32(avatarA.getDoId())
+            datagram.addUint16(self.air.dclassesByName['DistributedToonAI'].getNumber())
+            self.air.send(datagram)
+
+            avatarAFriendsList = avatarA.getFriendsList()
+            avatarAFriendsList.append((avatarB.getDoId(), 0))
+            avatarA.d_setFriendsList(avatarAFriendsList)
+            
+            avatarBFriendsList = avatarB.getFriendsList()
+            avatarBFriendsList.append((avatarA.getDoId(), 0))
+            avatarB.d_setFriendsList(avatarBFriendsList)
+
+            self.makeFriendsReply(1, context)
+
+        self.makeFriendsReply(0, context)
 
     def __previousResponse(self, inviteeId, inviterId):
         # Return the previous rejection code if this invitee has
