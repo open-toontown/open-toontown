@@ -2,6 +2,8 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobalAI import DistributedObjectGlobalAI
 from direct.distributed.PyDatagram import *
 
+from otp.otpbase import OTPGlobals
+
 
 class FriendManagerAI(DistributedObjectGlobalAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('FriendManagerAI')
@@ -293,10 +295,6 @@ class FriendManagerAI(DistributedObjectGlobalAI):
 
     def __handleMakeFriends(self, avatarAId, avatarBId, flags, context):
         # And now the magic begins.
-        if avatarAId == avatarBId:
-            self.makeFriendsReply(0, context)
-            return
-
         avatarA = self.air.doId2do.get(avatarAId)  # invitee
         avatarB = self.air.doId2do.get(avatarBId)  # inviter
         if avatarA and avatarB:
@@ -314,17 +312,41 @@ class FriendManagerAI(DistributedObjectGlobalAI):
             datagram.addUint16(self.air.dclassesByName['DistributedToonAI'].getNumber())
             self.air.send(datagram)
 
+        if avatarA:
             avatarAFriendsList = avatarA.getFriendsList()
-            avatarAFriendsList.append((avatarB.getDoId(), 0))
+            if len(avatarAFriendsList) >= OTPGlobals.MaxFriends:
+                self.makeFriendsReply(0, context)
+                return
+
+            avatarANewFriend = (avatarBId, flags)
+            if avatarANewFriend in avatarAFriendsList:
+                self.makeFriendsReply(0, context)
+                return
+
+            avatarAFriendsList.append(avatarANewFriend)
             avatarA.d_setFriendsList(avatarAFriendsList)
-            
+        else:
+            # TODO
+            pass
+
+        if avatarB:
             avatarBFriendsList = avatarB.getFriendsList()
-            avatarBFriendsList.append((avatarA.getDoId(), 0))
+            if len(avatarBFriendsList) >= OTPGlobals.MaxFriends:
+                self.makeFriendsReply(0, context)
+                return
+
+            avatarBNewFriend = (avatarAId, flags)
+            if avatarBNewFriend in avatarBFriendsList:
+                self.makeFriendsReply(0, context)
+                return
+
+            avatarBFriendsList.append(avatarBNewFriend)
             avatarB.d_setFriendsList(avatarBFriendsList)
+        else:
+            # TODO
+            pass
 
-            self.makeFriendsReply(1, context)
-
-        self.makeFriendsReply(0, context)
+        self.makeFriendsReply(1, context)
 
     def __previousResponse(self, inviteeId, inviterId):
         # Return the previous rejection code if this invitee has
