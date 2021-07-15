@@ -87,6 +87,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.safeZoneManager = None
         self.magicWordManager = None
         self.friendManager = None
+        self.toontownFriendsManager = None
         self.zoneTable = {}
         self.dnaStoreMap = {}
         self.dnaDataMap = {}
@@ -211,6 +212,11 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         # Generate our friend manager...
         self.friendManager = self.generateGlobalObject(OTP_DO_ID_FRIEND_MANAGER, 'FriendManager')
+
+        if __astron__:
+            # Create our Toontown friends manager...
+            # TODO: Is this Astron specific?
+            self.toontownFriendsManager = self.generateGlobalObject(OTP_DO_ID_TOONTOWN_FRIENDS_MANAGER, 'ToontownFriendsManager')
 
     def generateHood(self, hoodConstructor, zoneId):
         # Bossbot HQ doesn't use DNA, so we skip over that.

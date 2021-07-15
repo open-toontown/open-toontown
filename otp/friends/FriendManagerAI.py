@@ -166,6 +166,17 @@ class FriendManagerAI(DistributedObjectGlobalAI):
         self.sendUpdateToAvatarId(recipient, "inviteeCancelFriendQuery", [context])
         self.notify.debug("AI: inviteeCancelFriendQuery(%d)" % (context))
 
+    ### Messages involving secrets
+
+    def requestSecret(self):
+        """requestSecret(self)
+
+        Sent by the client to the AI to request a new "secret" for the
+        user.
+        """
+        # TODO
+        self.notify.info('TODO: requestSecret')
+
     ### Messages sent from AI to inviter client
 
     def down_friendConsidering(self, recipient, yesNoAlready, context):
