@@ -2847,6 +2847,7 @@ dclass TTPlayerFriendsManager : PlayerFriendsManager {
 };
 
 dclass ToontownFriendsManager : DistributedObject {
+  getFriendsListRequest() clsend;
 };
 
 dclass TTSpeedchatRelay : SpeedchatRelay {

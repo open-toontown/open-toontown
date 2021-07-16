@@ -4,3 +4,6 @@ from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobal
 
 class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownFriendsManagerUD')
+
+    def getFriendsListRequest(self):
+        self.notify.info('getFriendsListRequest TODO')

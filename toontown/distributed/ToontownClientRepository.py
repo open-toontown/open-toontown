@@ -867,11 +867,11 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.friendsListError = 0
 
     def sendGetFriendsListRequest(self):
+        self.friendsMapPending = 1
+        self.friendsListError = 0
         if __astron__:
-            print('sendGetFriendsListRequest TODO')
+            self.toontownFriendsManager.sendGetFriendsListRequest()
         else:
-            self.friendsMapPending = 1
-            self.friendsListError = 0
             datagram = PyDatagram()
             datagram.addUint16(CLIENT_GET_FRIEND_LIST)
             self.send(datagram)
