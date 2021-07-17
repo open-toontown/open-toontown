@@ -80,6 +80,8 @@ class GetFriendsListOperation(FriendsOperation):
 
     def __sendFriendsList(self):
         self.friendsManager.sendUpdateToAvatarId(self.sender, 'getFriendsListResponse', [self.friendsList])
+        for friendId in self.onlineFriends:
+            self.friendsManager.sendUpdateToAvatarId(self.sender, 'friendOnline', [friendId, 0, 1])
 
 
 class ToontownFriendsManagerUD(DistributedObjectGlobalUD):

@@ -995,20 +995,29 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         if avatarHandleList:
             messenger.send('gotExtraFriendHandles', [avatarHandleList])
 
-    def handleFriendOnline(self, di):
-        doId = di.getUint32()
-        commonChatFlags = 0
-        whitelistChatFlags = 0
-        if di.getRemainingSize() > 0:
-            commonChatFlags = di.getUint8()
-        if di.getRemainingSize() > 0:
-            whitelistChatFlags = di.getUint8()
-        self.notify.debug('Friend %d now online. common=%d whitelist=%d' % (doId, commonChatFlags, whitelistChatFlags))
-        if doId not in self.friendsOnline:
-            self.friendsOnline[doId] = self.identifyFriend(doId)
-            messenger.send('friendOnline', [doId, commonChatFlags, whitelistChatFlags])
-            if not self.friendsOnline[doId]:
-                self.friendPendingChatSettings[doId] = (commonChatFlags, whitelistChatFlags)
+    if __astron__:
+        def handleFriendOnline(self, doId, commonChatFlags, whitelistChatFlags):
+            self.notify.debug('Friend %d now online. common=%d whitelist=%d' % (doId, commonChatFlags, whitelistChatFlags))
+            if doId not in self.friendsOnline:
+                self.friendsOnline[doId] = self.identifyFriend(doId)
+                messenger.send('friendOnline', [doId, commonChatFlags, whitelistChatFlags])
+                if not self.friendsOnline[doId]:
+                    self.friendPendingChatSettings[doId] = (commonChatFlags, whitelistChatFlags)
+    else:
+        def handleFriendOnline(self, di):
+            doId = di.getUint32()
+            commonChatFlags = 0
+            whitelistChatFlags = 0
+            if di.getRemainingSize() > 0:
+                commonChatFlags = di.getUint8()
+            if di.getRemainingSize() > 0:
+                whitelistChatFlags = di.getUint8()
+            self.notify.debug('Friend %d now online. common=%d whitelist=%d' % (doId, commonChatFlags, whitelistChatFlags))
+            if doId not in self.friendsOnline:
+                self.friendsOnline[doId] = self.identifyFriend(doId)
+                messenger.send('friendOnline', [doId, commonChatFlags, whitelistChatFlags])
+                if not self.friendsOnline[doId]:
+                    self.friendPendingChatSettings[doId] = (commonChatFlags, whitelistChatFlags)
 
     def handleFriendOffline(self, di):
         doId = di.getUint32()

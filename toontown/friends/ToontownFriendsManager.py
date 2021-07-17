@@ -10,3 +10,6 @@ class ToontownFriendsManager(DistributedObjectGlobal):
 
     def getFriendsListResponse(self, friendsList):
         self.cr.handleGetFriendsList(friendsList)
+
+    def friendOnline(self, doId, commonChatFlags, whitelistChatFlags):
+        self.cr.handleFriendOnline(doId, commonChatFlags, whitelistChatFlags)
