@@ -7,3 +7,6 @@ class ToontownFriendsManager(DistributedObjectGlobal):
 
     def sendGetFriendsListRequest(self):
         self.sendUpdate('getFriendsListRequest')
+
+    def getFriendsListResponse(self, friendsList):
+        self.cr.handleGetFriendsList(friendsList)

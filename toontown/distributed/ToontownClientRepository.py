@@ -907,20 +907,15 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
         PetDetail.PetDetail(doId, petDetailsCallback)
 
-    def handleGetFriendsList(self, di):
-        error = di.getUint8()
-        if error:
-            self.notify.warning('Got error return from friends list.')
-            self.friendsListError = 1
-        else:
-            count = di.getUint16()
-            for i in range(0, count):
-                doId = di.getUint32()
-                name = di.getString()
-                dnaString = di.getString()
+    if __astron__:
+        def handleGetFriendsList(self, friendsList):
+            for friend in friendsList:
+                doId = friend[0]
+                name = friend[1]
+                dnaString = friend[2]
                 dna = ToonDNA.ToonDNA()
                 dna.makeFromNetString(dnaString)
-                petId = di.getUint32()
+                petId = friend[3]
                 handle = FriendHandle.FriendHandle(doId, name, dna, petId)
                 self.friendsMap[doId] = handle
                 if doId in self.friendsOnline:
@@ -937,8 +932,41 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
                 self.addPetToFriendsMap(handleAddedPet)
                 return
-        self.friendsMapPending = 0
-        messenger.send('friendsMapComplete')
+            self.friendsMapPending = 0
+            messenger.send('friendsMapComplete')
+    else:
+        def handleGetFriendsList(self, di):
+            error = di.getUint8()
+            if error:
+                self.notify.warning('Got error return from friends list.')
+                self.friendsListError = 1
+            else:
+                count = di.getUint16()
+                for i in range(0, count):
+                    doId = di.getUint32()
+                    name = di.getString()
+                    dnaString = di.getString()
+                    dna = ToonDNA.ToonDNA()
+                    dna.makeFromNetString(dnaString)
+                    petId = di.getUint32()
+                    handle = FriendHandle.FriendHandle(doId, name, dna, petId)
+                    self.friendsMap[doId] = handle
+                    if doId in self.friendsOnline:
+                        self.friendsOnline[doId] = handle
+                    if doId in self.friendPendingChatSettings:
+                        self.notify.debug('calling setCommonAndWL %s' % str(self.friendPendingChatSettings[doId]))
+                        handle.setCommonAndWhitelistChatFlags(*self.friendPendingChatSettings[doId])
+
+                if base.wantPets and base.localAvatar.hasPet():
+
+                    def handleAddedPet():
+                        self.friendsMapPending = 0
+                        messenger.send('friendsMapComplete')
+
+                    self.addPetToFriendsMap(handleAddedPet)
+                    return
+            self.friendsMapPending = 0
+            messenger.send('friendsMapComplete')
 
     def handleGetFriendsListExtended(self, di):
         avatarHandleList = []

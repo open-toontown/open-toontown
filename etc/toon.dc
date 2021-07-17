@@ -2846,8 +2846,16 @@ dclass TTAvatarFriendsManager : AvatarFriendsManager {
 dclass TTPlayerFriendsManager : PlayerFriendsManager {
 };
 
+struct Friend {
+  uint32 doId;
+  string name;
+  blob dnaString;
+  uint32 petId;
+};
+
 dclass ToontownFriendsManager : DistributedObject {
   getFriendsListRequest() clsend;
+  getFriendsListResponse(Friend[]);
 };
 
 dclass TTSpeedchatRelay : SpeedchatRelay {

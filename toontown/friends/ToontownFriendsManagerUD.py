@@ -17,9 +17,20 @@ class FriendsOperation:
         pass
 
 
-class FriendsListOperation(FriendsOperation):
+class GetFriendsListOperation(FriendsOperation):
+
+    def __init__(self, friendsManager, sender):
+        FriendsOperation.__init__(self, friendsManager, sender)
+        self.friendsList = None
+        self.tempFriendsList = None
+        self.onlineFriends = None
+        self.currentFriendIdx = None
 
     def start(self):
+        self.friendsList = []
+        self.tempFriendsList = []
+        self.onlineFriends = []
+        self.currentFriendIdx = 0
         self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.sender,
                                                         self.__handleSenderRetrieved)
 
@@ -30,12 +41,10 @@ class FriendsListOperation(FriendsOperation):
 
         self.tempFriendsList = fields['setFriendsList'][0]
         if len(self.tempFriendsList) <= 0:
-            self.__sendFriendsList([])
+            self.__sendFriendsList()
             self._handleDone()
             return
 
-        self.currentFriendIdx = 0
-        self.friendsList = []
         self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.tempFriendsList[0][0],
                                                         self.__handleFriendRetrieved)
 
@@ -47,8 +56,7 @@ class FriendsListOperation(FriendsOperation):
         friendId = self.tempFriendsList[self.currentFriendIdx][0]
         self.friendsList.append([friendId, fields['setName'][0], fields['setDNAString'][0], fields['setPetId'][0]])
         if len(self.friendsList) >= len(self.tempFriendsList):
-            self.__sendFriendsList(self.friendsList)
-            self._handleDone()
+            self.__checkFriendsOnline()
             return
 
         self.currentFriendIdx += 1
@@ -56,8 +64,22 @@ class FriendsListOperation(FriendsOperation):
                                                         self.tempFriendsList[self.currentFriendIdx][0],
                                                         self.__handleFriendRetrieved)
 
-    def __sendFriendsList(self, friendsList):
-        self.friendsManager.notify.info('TODO: __sendFriendsList')
+    def __checkFriendsOnline(self):
+        self.currentFriendIdx = 0
+        for friendDetails in self.friendsList:
+            self.friendsManager.air.getActivated(friendDetails[0], self.__gotActivatedResp)
+
+    def __gotActivatedResp(self, avId, activated):
+        self.currentFriendIdx += 1
+        if activated:
+            self.onlineFriends.append(avId)
+
+        if self.currentFriendIdx >= len(self.friendsList):
+            self.__sendFriendsList()
+            self._handleDone()
+
+    def __sendFriendsList(self):
+        self.friendsManager.sendUpdateToAvatarId(self.sender, 'getFriendsListResponse', [self.friendsList])
 
 
 class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
@@ -77,4 +99,4 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
         newOperation.start(*args)
 
     def getFriendsListRequest(self):
-        self.runOperation(FriendsListOperation)
+        self.runOperation(GetFriendsListOperation)
