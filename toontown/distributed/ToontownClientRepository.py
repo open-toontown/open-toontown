@@ -438,11 +438,14 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             pad.delayDelete.destroy()
 
     def __sendGetAvatarDetails(self, avId):
-        datagram = PyDatagram()
-        avatar = self.__queryAvatarMap[avId].avatar
-        datagram.addUint16(avatar.getRequestID())
-        datagram.addUint32(avId)
-        self.send(datagram)
+        if __astron__:
+            self.toontownFriendsManager.sendGetAvatarDetailsRequest(avId)
+        else:
+            datagram = PyDatagram()
+            avatar = self.__queryAvatarMap[avId].avatar
+            datagram.addUint16(avatar.getRequestID())
+            datagram.addUint32(avId)
+            self.send(datagram)
 
     def handleGetAvatarDetailsResp(self, di):
         avId = di.getUint32()

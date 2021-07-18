@@ -2857,6 +2857,8 @@ dclass ToontownFriendsManager : DistributedObject {
   getFriendsListRequest() clsend;
   getFriendsListResponse(Friend[]);
   friendOnline(uint32, uint8, uint8);
+  getAvatarDetailsRequest(uint32) clsend;
+  getAvatarDetailsResponse(blob);
 };
 
 dclass TTSpeedchatRelay : SpeedchatRelay {
