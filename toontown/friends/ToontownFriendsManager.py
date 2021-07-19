@@ -11,10 +11,14 @@ class ToontownFriendsManager(DistributedObjectGlobal):
         self.sendUpdate('getFriendsListRequest')
 
     def getFriendsListResponse(self, friendsList):
-        self.cr.handleGetFriendsList(friendsList)
+        datagram = PyDatagram(friendsList)
+        di = PyDatagramIterator(datagram)
+        self.cr.handleGetFriendsList(di)
 
-    def friendOnline(self, doId, commonChatFlags, whitelistChatFlags):
-        self.cr.handleFriendOnline(doId, commonChatFlags, whitelistChatFlags)
+    def friendOnline(self, friend):
+        datagram = PyDatagram(friend)
+        di = PyDatagramIterator(datagram)
+        self.cr.handleFriendOnline(di)
 
     def sendGetAvatarDetailsRequest(self, avId):
         self.sendUpdate('getAvatarDetailsRequest', [avId])

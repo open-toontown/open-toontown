@@ -2846,17 +2846,10 @@ dclass TTAvatarFriendsManager : AvatarFriendsManager {
 dclass TTPlayerFriendsManager : PlayerFriendsManager {
 };
 
-struct Friend {
-  uint32 doId;
-  string name;
-  blob dnaString;
-  uint32 petId;
-};
-
 dclass ToontownFriendsManager : DistributedObject {
   getFriendsListRequest() clsend;
-  getFriendsListResponse(Friend[]);
-  friendOnline(uint32, uint8, uint8);
+  getFriendsListResponse(blob);
+  friendOnline(blob);
   getAvatarDetailsRequest(uint32) clsend;
   getAvatarDetailsResponse(blob);
 };

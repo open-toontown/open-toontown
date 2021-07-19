@@ -18,65 +18,6 @@ class FriendsOperation:
         pass
 
 
-class GetAvatarDetailsOperation(FriendsOperation):
-
-    def __init__(self, friendsManager, sender):
-        FriendsOperation.__init__(self, friendsManager, sender)
-        self.avId = None
-        self.dclass = None
-        self.fields = None
-
-    def start(self, avId):
-        self.avId = avId
-        self.fields = {}
-        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, avId,
-                                                        self.__handleAvatarRetrieved)
-
-    def __handleAvatarRetrieved(self, dclass, fields):
-        if dclass not in (self.friendsManager.air.dclassesByName['DistributedToonUD'],
-                          self.friendsManager.air.dclassesByName['DistributedPetAI']):
-            self.__sendAvatarDetails(False)
-            self._handleError('Retrieved avatar is not a DistributedToonUD or DistributedPetAI!')
-            return
-
-        self.dclass = dclass
-        self.fields = fields
-        self.fields['avId'] = self.avId
-        self.__sendAvatarDetails(True)
-        self._handleDone()
-
-    def __packAvatarDetails(self, dclass, fields):
-        # Pack required fields.
-        fieldPacker = DCPacker()
-        for i in range(dclass.getNumInheritedFields()):
-            field = dclass.getInheritedField(i)
-            if not field.isRequired() or field.asMolecularField():
-                continue
-
-            k = field.getName()
-            v = fields.get(k, None)
-
-            fieldPacker.beginPack(field)
-            if not v:
-                fieldPacker.packDefaultValue()
-            else:
-                field.packArgs(fieldPacker, v)
-
-            fieldPacker.endPack()
-
-        return fieldPacker.getBytes()
-
-    def __sendAvatarDetails(self, success):
-        datagram = PyDatagram()
-        datagram.addUint32(self.fields['avId'])
-        datagram.addUint8(0 if success else 1)
-        if success:
-            details = self.__packAvatarDetails(self.dclass, self.fields)
-            datagram.appendData(details)
-
-        self.friendsManager.sendUpdateToAvatarId(self.sender, 'getAvatarDetailsResponse', [datagram.getMessage()])
-
-
 class GetFriendsListOperation(FriendsOperation):
 
     def __init__(self, friendsManager, sender):
@@ -101,7 +42,6 @@ class GetFriendsListOperation(FriendsOperation):
 
         self.tempFriendsList = fields['setFriendsList'][0]
         if len(self.tempFriendsList) <= 0:
-            self.__sendFriendsList()
             self._handleDone()
             return
 
@@ -135,13 +75,100 @@ class GetFriendsListOperation(FriendsOperation):
             self.onlineFriends.append(avId)
 
         if self.currentFriendIdx >= len(self.friendsList):
-            self.__sendFriendsList()
             self._handleDone()
 
-    def __sendFriendsList(self):
-        self.friendsManager.sendUpdateToAvatarId(self.sender, 'getFriendsListResponse', [self.friendsList])
+    def __sendFriendsList(self, success):
+        datagram = PyDatagram()
+        datagram.addUint8(0 if success else 1)  # error
+        if success:
+            count = len(self.friendsList)
+            datagram.addUint16(count)  # count
+            for i in range(count):
+                datagram.addUint32(self.friendsList[i][0])  # doId
+                datagram.addString(self.friendsList[i][1])  # name
+                datagram.addBlob(self.friendsList[i][2])  # dnaString
+                datagram.addUint32(self.friendsList[i][3])  # petId
+
+        self.friendsManager.sendUpdateToAvatarId(self.sender, 'getFriendsListResponse', [datagram.getMessage()])
         for friendId in self.onlineFriends:
-            self.friendsManager.sendUpdateToAvatarId(self.sender, 'friendOnline', [friendId, 0, 1])
+            datagram = PyDatagram()
+            datagram.addUint32(friendId)  # doId
+            datagram.addUint8(0)  # commonChatFlags
+            datagram.addUint8(1)  # whitelistChatFlags
+            self.friendsManager.sendUpdateToAvatarId(self.sender, 'friendOnline', [datagram.getMessage()])
+
+    def _handleDone(self):
+        self.__sendFriendsList(True)
+        FriendsOperation._handleDone(self)
+
+    def _handleError(self, error):
+        self.__sendFriendsList(False)
+        FriendsOperation._handleError(self, error)
+
+
+class GetAvatarDetailsOperation(FriendsOperation):
+
+    def __init__(self, friendsManager, sender):
+        FriendsOperation.__init__(self, friendsManager, sender)
+        self.avId = None
+        self.dclass = None
+        self.fields = None
+
+    def start(self, avId):
+        self.avId = avId
+        self.fields = {}
+        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, avId,
+                                                        self.__handleAvatarRetrieved)
+
+    def __handleAvatarRetrieved(self, dclass, fields):
+        if dclass not in (self.friendsManager.air.dclassesByName['DistributedToonUD'],
+                          self.friendsManager.air.dclassesByName['DistributedPetAI']):
+            self._handleError('Retrieved avatar is not a DistributedToonUD or DistributedPetAI!')
+            return
+
+        self.dclass = dclass
+        self.fields = fields
+        self.fields['avId'] = self.avId
+        self._handleDone()
+
+    def __packAvatarDetails(self, dclass, fields):
+        # Pack required fields.
+        fieldPacker = DCPacker()
+        for i in range(dclass.getNumInheritedFields()):
+            field = dclass.getInheritedField(i)
+            if not field.isRequired() or field.asMolecularField():
+                continue
+
+            k = field.getName()
+            v = fields.get(k, None)
+
+            fieldPacker.beginPack(field)
+            if not v:
+                fieldPacker.packDefaultValue()
+            else:
+                field.packArgs(fieldPacker, v)
+
+            fieldPacker.endPack()
+
+        return fieldPacker.getBytes()
+
+    def __sendAvatarDetails(self, success):
+        datagram = PyDatagram()
+        datagram.addUint32(self.fields['avId'])
+        datagram.addUint8(0 if success else 1)
+        if success:
+            avatarDetails = self.__packAvatarDetails(self.dclass, self.fields)
+            datagram.appendData(avatarDetails)
+
+        self.friendsManager.sendUpdateToAvatarId(self.sender, 'getAvatarDetailsResponse', [datagram.getMessage()])
+
+    def _handleDone(self):
+        self.__sendAvatarDetails(True)
+        FriendsOperation._handleDone(self)
+
+    def _handleError(self, error):
+        self.__sendAvatarDetails(False)
+        FriendsOperation._handleError(self, error)
 
 
 class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
