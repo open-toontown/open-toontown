@@ -2,6 +2,8 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
 from direct.distributed.PyDatagram import *
 
+from otp.otpbase import OTPGlobals
+
 
 class FriendsOperation:
 
@@ -154,11 +156,11 @@ class GetAvatarDetailsOperation(FriendsOperation):
 
     def __sendAvatarDetails(self, success):
         datagram = PyDatagram()
-        datagram.addUint32(self.fields['avId'])
-        datagram.addUint8(0 if success else 1)
+        datagram.addUint32(self.fields['avId'])  # avId
+        datagram.addUint8(0 if success else 1)  # returnCode
         if success:
             avatarDetails = self.__packAvatarDetails(self.dclass, self.fields)
-            datagram.appendData(avatarDetails)
+            datagram.appendData(avatarDetails)  # fields
 
         self.friendsManager.sendUpdateToAvatarId(self.sender, 'getAvatarDetailsResponse', [datagram.getMessage()])
 
@@ -171,6 +173,64 @@ class GetAvatarDetailsOperation(FriendsOperation):
         FriendsOperation._handleError(self, error)
 
 
+class MakeFriendsOperation(FriendsOperation):
+
+    def __init__(self, friendsManager):
+        FriendsOperation.__init__(self, friendsManager, None)
+        self.avatarAId = None
+        self.avatarBId = None
+        self.flags = None
+        self.context = None
+        self.resultCode = None
+
+    def start(self, avatarAId, avatarBId, flags, context):
+        self.avatarAId = avatarAId
+        self.avatarBId = avatarBId
+        self.flags = flags
+        self.context = context
+        self.resultCode = 0
+        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.avatarAId,
+                                                        self.__handleAvatarARetrieved)
+
+    def __handleMakeFriends(self, dclass, fields, avId, friendId):
+        if dclass != self.friendsManager.air.dclassesByName['DistributedToonUD']:
+            self._handleError('Retrieved avatar is not a DistributedToonUD!')
+            return
+
+        friendsList = fields['setFriendsList'][0]
+        if len(friendsList) >= OTPGlobals.MaxFriends:
+            self._handleError('Avatar\'s friends list is full!')
+            return
+
+        newFriend = (friendId, self.flags)
+        if newFriend in friendsList:
+            self._handleError('Already friends!')
+            return
+
+        friendsList.append(newFriend)
+        self.friendsManager.air.dbInterface.updateObject(self.friendsManager.air.dbId, avId,
+                                                         self.friendsManager.air.dclassesByName['DistributedToonUD'],
+                                                         {'setFriendsList': [friendsList]})
+        self.friendsManager.sendUpdateToAvatar(avId, 'setFriendsList', [friendsList])
+
+    def __handleAvatarARetrieved(self, dclass, fields):
+        self.__handleMakeFriends(dclass, fields, self.avatarAId, self.avatarBId)
+        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.avatarBId,
+                                                        self.__handleAvatarBRetrieved)
+
+    def __handleAvatarBRetrieved(self, dclass, fields):
+        self.__handleMakeFriends(dclass, fields, self.avatarBId, self.avatarAId)
+        self._handleDone()
+
+    def _handleDone(self):
+        self.resultCode = 1
+        FriendsOperation._handleDone(self)
+
+    def _handleError(self, error):
+        self.resultCode = 0
+        FriendsOperation._handleError(self, error)
+
+
 class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownFriendsManagerUD')
 
@@ -178,7 +238,19 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
         DistributedObjectGlobalUD.__init__(self, air)
         self.operations = []
 
-    def runOperation(self, operationType, *args):
+    def sendUpdateToAvatar(self, avId, fieldName, args=[]):
+        dclass = self.air.dclassesByName['DistributedToonUD']
+        if not dclass:
+            return
+
+        field = dclass.getFieldByName(fieldName)
+        if not field:
+            return
+
+        datagram = field.aiFormatUpdate(avId, avId, self.air.ourChannel, args)
+        self.air.send(datagram)
+
+    def runSenderOperation(self, operationType, *args):
         sender = self.air.getAvatarIdFromSender()
         if not sender:
             return
@@ -187,8 +259,16 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
         self.operations.append(newOperation)
         newOperation.start(*args)
 
+    def runServerOperation(self, operationType, *args):
+        newOperation = operationType(self)
+        self.operations.append(newOperation)
+        newOperation.start(*args)
+
     def getFriendsListRequest(self):
-        self.runOperation(GetFriendsListOperation)
+        self.runSenderOperation(GetFriendsListOperation)
 
     def getAvatarDetailsRequest(self, avId):
-        self.runOperation(GetAvatarDetailsOperation, avId)
+        self.runSenderOperation(GetAvatarDetailsOperation, avId)
+
+    def makeFriends(self, avatarAId, avatarBId, flags, context):
+        self.runServerOperation(MakeFriendsOperation, avatarAId, avatarBId, flags, context)

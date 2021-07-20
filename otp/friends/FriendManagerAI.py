@@ -299,99 +299,11 @@ class FriendManagerAI(DistributedObjectGlobalAI):
 
     def makeFriends(self, invite):
         # The invitee agreed to make friends.
-        self.__handleMakeFriends(invite.inviteeId, invite.inviterId, 0,
-                                 invite.context)
+        if __astron__ and hasattr(self.air, 'toontownFriendsManager') and self.air.toontownFriendsManager:
+            self.air.toontownFriendsManager.makeFriends(invite.inviteeId, invite.inviterId, 0,
+                                                        invite.context)
         self.down_friendResponse(invite.inviterId, 1, invite.context)
         # The reply will clear the context out when it comes in.
-
-    def __handleMakeFriends(self, avatarAId, avatarBId, flags, context):
-        # And now the magic begins.
-        avatarA = self.air.doId2do.get(avatarAId)  # invitee
-        avatarB = self.air.doId2do.get(avatarBId)  # inviter
-        if avatarA and avatarB:
-            datagram = PyDatagram()
-            datagram.addServerHeader(self.GetPuppetConnectionChannel(avatarA.getDoId()), self.air.ourChannel,
-                                                                     CLIENTAGENT_DECLARE_OBJECT)
-            datagram.addUint32(avatarB.getDoId())
-            datagram.addUint16(self.air.dclassesByName['DistributedToonAI'].getNumber())
-            self.air.send(datagram)
-
-            datagram = PyDatagram()
-            datagram.addServerHeader(self.GetPuppetConnectionChannel(avatarB.getDoId()), self.air.ourChannel,
-                                                                     CLIENTAGENT_DECLARE_OBJECT)
-            datagram.addUint32(avatarA.getDoId())
-            datagram.addUint16(self.air.dclassesByName['DistributedToonAI'].getNumber())
-            self.air.send(datagram)
-
-        if avatarA:
-            avatarAFriendsList = avatarA.getFriendsList()
-            if len(avatarAFriendsList) >= OTPGlobals.MaxFriends:
-                self.makeFriendsReply(0, context)
-                return
-
-            avatarANewFriend = (avatarBId, flags)
-            if avatarANewFriend in avatarAFriendsList:
-                self.makeFriendsReply(0, context)
-                return
-
-            avatarAFriendsList.append(avatarANewFriend)
-            avatarA.d_setFriendsList(avatarAFriendsList)
-        else:
-            def handleAvatarA(dclass, fields):
-                if dclass != self.air.dclassesByName['DistributedToonAI']:
-                    return
-
-                avatarAFriendsList = fields['setFriendsList'][0]
-                if len(avatarAFriendsList) >= OTPGlobals.MaxFriends:
-                    self.makeFriendsReply(0, context)
-                    return
-
-                avatarANewFriend = (avatarBId, flags)
-                if avatarANewFriend in avatarAFriendsList:
-                    self.makeFriendsReply(0, context)
-                    return
-
-                avatarAFriendsList.append(avatarANewFriend)
-                self.air.dbInterface.updateObject(self.air.dbId, avatarAId, self.air.dclassesByName['DistributedToonAI'],
-                                                  {'setFriendsList': [avatarAFriendsList]})
-
-            self.air.dbInterface.queryObject(self.air.dbId, avatarAId, handleAvatarA)
-
-        if avatarB:
-            avatarBFriendsList = avatarB.getFriendsList()
-            if len(avatarBFriendsList) >= OTPGlobals.MaxFriends:
-                self.makeFriendsReply(0, context)
-                return
-
-            avatarBNewFriend = (avatarAId, flags)
-            if avatarBNewFriend in avatarBFriendsList:
-                self.makeFriendsReply(0, context)
-                return
-
-            avatarBFriendsList.append(avatarBNewFriend)
-            avatarB.d_setFriendsList(avatarBFriendsList)
-        else:
-            def handleAvatarB(dclass, fields):
-                if dclass != self.air.dclassesByName['DistributedToonAI']:
-                    return
-
-                avatarBFriendsList = fields['setFriendsList'][0]
-                if len(avatarBFriendsList) >= OTPGlobals.MaxFriends:
-                    self.makeFriendsReply(0, context)
-                    return
-
-                avatarBNewFriend = (avatarAId, flags)
-                if avatarBNewFriend in avatarBFriendsList:
-                    self.makeFriendsReply(0, context)
-                    return
-
-                avatarBFriendsList.append(avatarBNewFriend)
-                self.air.dbInterface.updateObject(self.air.dbId, avatarBId, self.air.dclassesByName['DistributedToonAI'],
-                                                  {'setFriendsList': [avatarBFriendsList]})
-
-            self.air.dbInterface.queryObject(self.air.dbId, avatarBId, handleAvatarB)
-
-        self.makeFriendsReply(1, context)
 
     def __previousResponse(self, inviteeId, inviterId):
         # Return the previous rejection code if this invitee has
