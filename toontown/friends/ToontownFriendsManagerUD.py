@@ -218,8 +218,6 @@ class MakeFriendsOperation(FriendsOperation):
                                                          {'setFriendsList': [friendsList]})
         if avId in self.onlineToons:
             self.friendsManager.sendUpdateToAvatar(avId, 'setFriendsList', [friendsList])
-            if friendId in self.onlineToons:
-                self.friendsManager.sendFriendOnline(avId, friendId, 0, 1)
 
     def __handleAvatarARetrieved(self, dclass, fields):
         self.__handleMakeFriends(dclass, fields, self.avatarAId, self.avatarBId)
@@ -237,12 +235,12 @@ class MakeFriendsOperation(FriendsOperation):
 
     def _handleDone(self):
         self.resultCode = 1
-        self.friendsManager.sendMakeFriendsResponse(self.resultCode, self.context)
+        self.friendsManager.sendMakeFriendsResponse(self.avatarAId, self.avatarBId, self.resultCode, self.context)
         FriendsOperation._handleDone(self)
 
     def _handleError(self, error):
         self.resultCode = 0
-        self.friendsManager.sendMakeFriendsResponse(self.resultCode, self.context)
+        self.friendsManager.sendMakeFriendsResponse(self.avatarAId, self.avatarBId, self.resultCode, self.context)
         FriendsOperation._handleError(self, error)
 
 
@@ -253,8 +251,8 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
         DistributedObjectGlobalUD.__init__(self, air)
         self.operations = []
 
-    def sendMakeFriendsResponse(self, result, context):
-        self.sendUpdate('makeFriendsResponse', [result, context])
+    def sendMakeFriendsResponse(self, avatarAId, avatarBId, result, context):
+        self.sendUpdate('makeFriendsResponse', [avatarAId, avatarBId, result, context])
 
     def sendFriendOnline(self, avId, friendId, commonChatFlags, whitelistChatFlags):
         datagram = PyDatagram()
