@@ -43,9 +43,9 @@ builtins.game = game
 from otp.ai.AIBaseGlobal import *
 from toontown.ai.ToontownAIRepository import ToontownAIRepository
 
-simbase.air = ToontownAIRepository(config.GetInt('air-base-channel', 1000000), config.GetInt('air-stateserver', 4002), config.GetString('district-name', 'Toon Valley'))
+simbase.air = ToontownAIRepository(ConfigVariableInt('air-base-channel', 1000000).value, ConfigVariableInt('air-stateserver', 4002).value, ConfigVariableString('district-name', 'Toon Valley').value)
 
-host = config.GetString('air-connect', '127.0.0.1:7199')
+host = ConfigVariableString('air-connect', '127.0.0.1:7199').value
 port = 7199
 if ':' in host:
     host, port = host.split(':', 1)
