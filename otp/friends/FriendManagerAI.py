@@ -43,6 +43,18 @@ class FriendManagerAI(DistributedObjectGlobalAI):
         self.declineFriends2 = {}
         self.lastRollTime = 0
 
+    def generate(self):
+        DistributedObjectGlobalAI.generate(self)
+
+        # The FriendManagerAI always listens for these events, which
+        # will be sent in response to secret requests to the database,
+        # via the AIR.
+        self.accept("makeFriendsReply", self.makeFriendsReply)
+
+    def delete(self):
+        self.ignore("makeFriendsReply")
+        DistributedObjectGlobalAI.delete(self)
+
     ### Messages sent from inviter client to AI
 
     def friendQuery(self, inviteeId):

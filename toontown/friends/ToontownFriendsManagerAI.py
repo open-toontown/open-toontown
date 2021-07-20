@@ -15,3 +15,6 @@ class ToontownFriendsManagerAI(DistributedObjectGlobalAI):
         parameters: an integer result code, and the supplied context.
         """
         self.sendUpdate('makeFriends', [avatarAId, avatarBId, flags, context])
+
+    def makeFriendsResponse(self, result, context):
+        messenger.send("makeFriendsReply", [result, context])

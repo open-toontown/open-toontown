@@ -237,10 +237,12 @@ class MakeFriendsOperation(FriendsOperation):
 
     def _handleDone(self):
         self.resultCode = 1
+        self.friendsManager.sendMakeFriendsResponse(self.resultCode, self.context)
         FriendsOperation._handleDone(self)
 
     def _handleError(self, error):
         self.resultCode = 0
+        self.friendsManager.sendMakeFriendsResponse(self.resultCode, self.context)
         FriendsOperation._handleError(self, error)
 
 
@@ -250,6 +252,9 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
     def __init__(self, air):
         DistributedObjectGlobalUD.__init__(self, air)
         self.operations = []
+
+    def sendMakeFriendsResponse(self, result, context):
+        self.sendUpdate('makeFriendsResponse', [result, context])
 
     def sendFriendOnline(self, avId, friendId, commonChatFlags, whitelistChatFlags):
         datagram = PyDatagram()
