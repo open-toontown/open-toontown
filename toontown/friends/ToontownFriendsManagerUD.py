@@ -195,8 +195,7 @@ class MakeFriendsOperation(FriendsOperation):
 
     def __gotActivatedAvatarA(self, avId, activated):
         self.__handleActivatedResp(avId, activated)
-        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.avatarAId,
-                                                        self.__handleAvatarARetrieved)
+        self.friendsManager.air.getActivated(self.avatarBId, self.__gotActivatedAvatarB)
 
     def __handleMakeFriends(self, dclass, fields, avId, friendId):
         if dclass != self.friendsManager.air.dclassesByName['DistributedToonUD']:
@@ -224,12 +223,13 @@ class MakeFriendsOperation(FriendsOperation):
 
     def __handleAvatarARetrieved(self, dclass, fields):
         self.__handleMakeFriends(dclass, fields, self.avatarAId, self.avatarBId)
-        self.friendsManager.air.getActivated(self.avatarBId, self.__gotActivatedAvatarB)
+        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.avatarBId,
+                                                        self.__handleAvatarBRetrieved)
 
     def __gotActivatedAvatarB(self, avId, activated):
         self.__handleActivatedResp(avId, activated)
-        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.avatarBId,
-                                                        self.__handleAvatarBRetrieved)
+        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.avatarAId,
+                                                        self.__handleAvatarARetrieved)
 
     def __handleAvatarBRetrieved(self, dclass, fields):
         self.__handleMakeFriends(dclass, fields, self.avatarBId, self.avatarAId)
