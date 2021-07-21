@@ -26,7 +26,10 @@ class ToontownFriendsManagerAI(DistributedObjectGlobalAI):
 
     def makeFriendsResponse(self, avatarAId, avatarBId, result, context):
         if result == 1:
-            self.sendFriendOnline(avatarAId, avatarBId, 0, 1)
-            self.sendFriendOnline(avatarBId, avatarAId, 0, 1)
+            avatarA = self.air.doId2do.get(avatarAId)
+            avatarB = self.air.doId2do.get(avatarBId)
+            if avatarA and avatarB:
+                self.sendFriendOnline(avatarAId, avatarBId, 0, 1)
+                self.sendFriendOnline(avatarBId, avatarAId, 0, 1)
 
         messenger.send("makeFriendsReply", [result, context])
