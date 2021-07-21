@@ -213,11 +213,13 @@ class MakeFriendsOperation(FriendsOperation):
             return
 
         friendsList.append(newFriend)
-        self.friendsManager.air.dbInterface.updateObject(self.friendsManager.air.dbId, avId,
-                                                         self.friendsManager.air.dclassesByName['DistributedToonUD'],
-                                                         {'setFriendsList': [friendsList]})
         if avId in self.onlineToons:
             self.friendsManager.sendUpdateToAvatar(avId, 'setFriendsList', [friendsList])
+        else:
+            self.friendsManager.air.dbInterface.updateObject(self.friendsManager.air.dbId, avId,
+                                                             self.friendsManager.air.dclassesByName[
+                                                                 'DistributedToonUD'],
+                                                             {'setFriendsList': [friendsList]})
 
     def __handleAvatarARetrieved(self, dclass, fields):
         self.__handleMakeFriends(dclass, fields, self.avatarAId, self.avatarBId)
