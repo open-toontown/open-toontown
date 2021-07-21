@@ -216,7 +216,8 @@ class ToontownAIRepository(ToontownInternalRepository):
         if __astron__:
             # Create our Toontown friends manager...
             # TODO: Is this Astron specific?
-            self.toontownFriendsManager = self.generateGlobalObject(OTP_DO_ID_TOONTOWN_FRIENDS_MANAGER, 'ToontownFriendsManager')
+            self.toontownFriendsManager = self.generateGlobalObject(OTP_DO_ID_TOONTOWN_FRIENDS_MANAGER,
+                                                                    'ToontownFriendsManager')
 
     def generateHood(self, hoodConstructor, zoneId):
         # Bossbot HQ doesn't use DNA, so we skip over that.
@@ -466,3 +467,15 @@ class ToontownAIRepository(ToontownInternalRepository):
 
     def trueUniqueName(self, idString):
         return self.uniqueName(idString)
+
+    def makeFriends(self, avatarAId, avatarBId, flags, context):
+        """
+        Requests to make a friendship between avatarA and avatarB with
+        the indicated flags (or upgrade an existing friendship with
+        the indicated flags).  The context is any arbitrary 32-bit
+        integer.  When the friendship is made, or the operation fails,
+        the "makeFriendsReply" event is generated, with two
+        parameters: an integer result code, and the supplied context.
+        """
+        if __astron__:
+            self.toontownFriendsManager.sendMakeFriends(avatarAId, avatarBId, flags, context)

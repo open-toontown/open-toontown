@@ -13,15 +13,7 @@ class ToontownFriendsManagerAI(DistributedObjectGlobalAI):
         datagram.addUint8(whitelistChatFlags)  # whitelistChatFlags
         self.sendUpdateToAvatarId(avId, 'friendOnline', [datagram.getMessage()])
 
-    def makeFriends(self, avatarAId, avatarBId, flags, context):
-        """
-        Requests to make a friendship between avatarA and avatarB with
-        the indicated flags (or upgrade an existing friendship with
-        the indicated flags).  The context is any arbitrary 32-bit
-        integer.  When the friendship is made, or the operation fails,
-        the "makeFriendsReply" event is generated, with two
-        parameters: an integer result code, and the supplied context.
-        """
+    def sendMakeFriends(self, avatarAId, avatarBId, flags, context):
         self.sendUpdate('makeFriends', [avatarAId, avatarBId, flags, context])
 
     def makeFriendsResponse(self, avatarAId, avatarBId, result, context):

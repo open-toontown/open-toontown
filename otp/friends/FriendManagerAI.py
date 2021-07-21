@@ -311,9 +311,8 @@ class FriendManagerAI(DistributedObjectGlobalAI):
 
     def makeFriends(self, invite):
         # The invitee agreed to make friends.
-        if __astron__ and hasattr(self.air, 'toontownFriendsManager') and self.air.toontownFriendsManager:
-            self.air.toontownFriendsManager.makeFriends(invite.inviteeId, invite.inviterId, 0,
-                                                        invite.context)
+        self.air.makeFriends(invite.inviteeId, invite.inviterId, 0,
+                             invite.context)
         self.down_friendResponse(invite.inviterId, 1, invite.context)
         # The reply will clear the context out when it comes in.
 
