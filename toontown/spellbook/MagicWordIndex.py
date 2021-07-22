@@ -242,6 +242,36 @@ class ToggleRun(MagicWord):
         inputState.set('debugRunning', not inputState.isSet('debugRunning'))
         return "Run mode has been toggled."
 
+class MaxToon(MagicWord):
+    aliases = ["max", "idkfa"]
+    desc = "Maxes your target toon."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    accessLevel = 'ADMIN'
+
+    def handleWord(self, invoker, avId, toon, *args):
+        from toontown.toonbase import ToontownGlobals
+
+        # TODO: Handle this better, like giving out all awards, set the quest tier, stuff like that.
+        # This is mainly copied from Anesidora just so I can better work on things.
+        toon.b_setTrackAccess([1, 1, 1, 1, 1, 1, 1])
+
+        toon.b_setMaxCarry(ToontownGlobals.MaxCarryLimit)
+        toon.b_setQuestCarryLimit(ToontownGlobals.MaxQuestCarryLimit)
+
+        toon.experience.maxOutExp()
+        toon.d_setExperience(toon.experience.makeNetString())
+
+        toon.inventory.maxOutInv()
+        toon.d_setInventory(toon.inventory.makeNetString())
+
+        toon.b_setMaxHp(ToontownGlobals.MaxHpLimit)
+        toon.b_setHp(ToontownGlobals.MaxHpLimit)
+
+        toon.b_setMaxMoney(250)
+        toon.b_setMoney(toon.maxMoney)
+        toon.b_setBankMoney(toon.maxBankMoney)
+
+        return f"Successfully maxed {toon.getName()}!"
 
 # Instantiate all classes defined here to register them.
 # A bit hacky, but better than the old system

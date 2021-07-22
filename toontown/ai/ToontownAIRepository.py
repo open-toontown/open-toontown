@@ -97,21 +97,26 @@ class ToontownAIRepository(ToontownInternalRepository):
         ToontownInternalRepository.handleConnected(self)
 
         # Generate our district...
+        self.notify.info('Generating district...')
         self.districtId = self.allocateChannel()
         self.district = ToontownDistrictAI(self)
         self.district.setName(self.districtName)
         self.district.generateWithRequiredAndId(self.districtId, self.getGameDoId(), OTP_ZONE_ID_DISTRICTS)
 
         # Claim ownership of that district...
+        self.notify.info('Declaring ownership...')
         self.district.setAI(self.ourChannel)
 
         # Create our local objects.
+        self.notify.info('Creating local objects...')
         self.createLocals()
 
         # Create our global objects.
+        self.notify.info('Creating global objects...')
         self.createGlobals()
 
         # Create our zones.
+        self.notify.info('Creating zones...')
         self.createZones()
 
         # Make our district available, and we're done.
