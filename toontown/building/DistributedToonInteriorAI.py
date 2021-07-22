@@ -7,6 +7,7 @@ from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObjectAI
 from direct.fsm import State
 from toontown.toon import NPCToons
+from toontown.toon.ToonDNA import ToonDNA
 
 class DistributedToonInteriorAI(DistributedObjectAI.DistributedObjectAI):
 
@@ -38,8 +39,13 @@ class DistributedToonInteriorAI(DistributedObjectAI.DistributedObjectAI):
          self.zoneId, self.block]
         return r
 
-    def getToonData(self):
-        return pickle.dumps(self.building.savedBy, 1)
+    def getSavedBy(self):
+        savedBy = []
+        for avId, name, dnaTuple in self.building.savedBy:
+            dna = ToonDNA()
+            dna.newToonFromProperties(*dnaTuple)
+            savedBy.append([avId, name, dna.makeNetString()])
+        return savedBy
 
     def getState(self):
         r = [

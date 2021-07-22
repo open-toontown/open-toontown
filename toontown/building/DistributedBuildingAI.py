@@ -56,7 +56,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         self.track = 'c'
         self.difficulty = 1
         self.numFloors = 0
-        self.savedBy = None
+        self.savedBy = []
         self.becameSuitTime = 0
         self.frontDoorPoint = None
         self.suitPlannerExt = None
@@ -89,9 +89,17 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         DistributedObjectAI.DistributedObjectAI.delete(self)
         del self.fsm
 
-    def getPickleData(self):
-        pickleData = {'state': str(self.fsm.getCurrentState().getName()), 'block': str(self.block), 'track': str(self.track), 'difficulty': str(self.difficulty), 'numFloors': str(self.numFloors), 'savedBy': self.savedBy, 'becameSuitTime': self.becameSuitTime}
-        return pickleData
+    def getBuildingData(self):
+        buildingData = {
+            'state': str(self.fsm.getCurrentState().getName()),
+            'block': str(self.block),
+            'track': str(self.track),
+            'difficulty': str(self.difficulty),
+            'numFloors': str(self.numFloors),
+            'savedBy': self.savedBy,
+            'becameSuitTime': self.becameSuitTime
+            }
+        return buildingData
 
     def _getMinMaxFloors(self, difficulty):
         return SuitBuildingGlobals.SuitBuildingInfo[difficulty][0]
@@ -99,7 +107,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
     def suitTakeOver(self, suitTrack, difficulty, buildingHeight):
         if not self.isToonBlock():
             return
-        self.updateSavedBy(None)
+        self.updateSavedBy([])
         difficulty = min(difficulty, len(SuitBuildingGlobals.SuitBuildingInfo) - 1)
         minFloors, maxFloors = self._getMinMaxFloors(difficulty)
         if buildingHeight == None:
@@ -118,7 +126,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
     def cogdoTakeOver(self, suitTrack, difficulty, buildingHeight):
         if not self.isToonBlock():
             return
-        self.updateSavedBy(None)
+        self.updateSavedBy([])
         numFloors = self.FieldOfficeNumFloors
         self.track = suitTrack
         self.difficulty = difficulty

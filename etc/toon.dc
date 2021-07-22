@@ -1603,9 +1603,15 @@ dclass DistributedBuilding : DistributedObject {
 dclass DistributedAnimBuilding : DistributedBuilding {
 };
 
+struct savedBy {
+  uint32 avId;
+  string name;
+  blob dna;
+}
+
 dclass DistributedToonInterior : DistributedObject {
   setZoneIdAndBlock(uint32, uint16) required broadcast ram;
-  setToonData(blob) required broadcast ram;
+  setSavedBy(savedBy[]) required broadcast ram;
   setState(string, int16) required broadcast ram;
 };
 
