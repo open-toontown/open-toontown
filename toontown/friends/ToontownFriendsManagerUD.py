@@ -246,8 +246,14 @@ class MakeFriendsOperation(FriendsOperation):
 
     def _handleDone(self):
         self.resultCode = 1
-        self.__handleSetFriendsList(self.avatarAId, self.avatarAFriendsList)
-        self.__handleSetFriendsList(self.avatarBId, self.avatarBFriendsList)
+        if self.avatarAFriendsList is not None and self.avatarBFriendsList is not None:
+            self.__handleSetFriendsList(self.avatarAId, self.avatarAFriendsList)
+            self.__handleSetFriendsList(self.avatarBId, self.avatarBFriendsList)
+
+        if self.avatarAId in self.onlineToons and self.avatarBId in self.onlineToons:
+            self.friendsManager.declareObject(self.avatarAId, self.avatarBId)
+            self.friendsManager.declareObject(self.avatarBId, self.avatarAId)
+
         self.friendsManager.sendMakeFriendsResponse(self.avatarAId, self.avatarBId, self.resultCode, self.context)
         FriendsOperation._handleDone(self)
 
@@ -266,6 +272,13 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
 
     def sendMakeFriendsResponse(self, avatarAId, avatarBId, result, context):
         self.sendUpdate('makeFriendsResponse', [avatarAId, avatarBId, result, context])
+
+    def declareObject(self, doId, objId):
+        datagram = PyDatagram()
+        datagram.addServerHeader(self.GetPuppetConnectionChannel(doId), self.air.ourChannel, CLIENTAGENT_DECLARE_OBJECT)
+        datagram.addUint32(objId)
+        datagram.addUint16(self.air.dclassesByName['DistributedToonUD'].getNumber())
+        self.air.send(datagram)
 
     def sendFriendOnline(self, avId, friendId, commonChatFlags, whitelistChatFlags):
         datagram = PyDatagram()
