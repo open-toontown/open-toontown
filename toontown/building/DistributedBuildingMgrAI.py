@@ -1,6 +1,6 @@
 import os
 from direct.task.Task import Task
-import pickle
+import json
 from otp.ai.AIBaseGlobal import *
 from . import DistributedBuildingAI, HQBuildingAI, GagshopBuildingAI, PetshopBuildingAI
 from toontown.building.KartShopBuildingAI import KartShopBuildingAI
@@ -231,35 +231,18 @@ class DistributedBuildingMgrAI:
         return building
 
     def getFileName(self):
-        f = '%s%s_%d.buildings' % (self.serverDatafolder, self.shard, self.branchID)
+        f = '%s%s_%d_buildings.json' % (self.serverDatafolder, self.shard, self.branchID)
         return f
 
-    def saveTo(self, file, block=None):
-        if block:
-            pickleData = block.getPickleData()
-            pickle.dump(pickleData, file)
-        else:
-            for i in list(self.__buildings.values()):
-                if isinstance(i, HQBuildingAI.HQBuildingAI):
-                    continue
-                pickleData = i.getPickleData()
-                pickle.dump(pickleData, file)
+    def saveTo(self, file):
+        buildings = {}
+        for i in list(self.__buildings.values()):
+            if isinstance(i, HQBuildingAI.HQBuildingAI):
+                continue
+            buildingData = i.getBuildingData()
+            buildings[buildingData['block']] = buildingData
 
-    def fastSave(self, block):
-        return
-        try:
-            fileName = self.getFileName() + '.delta'
-            working = fileName + '.temp'
-            if os.path.exists(working):
-                os.remove(working)
-            os.rename(fileName, working)
-            file = open(working, 'wb')
-            file.seek(0, 2)
-            self.saveTo(file, block)
-            file.close()
-            os.rename(working, fileName)
-        except IOError:
-            self.notify.error(str(sys.exc_info()[1]))
+        json.dump(buildings, file, indent=2)
 
     def save(self):
         try:
@@ -267,7 +250,7 @@ class DistributedBuildingMgrAI:
             backup = fileName + self.backupExtension
             if os.path.exists(fileName):
                 os.rename(fileName, backup)
-            file = open(fileName, 'wb')
+            file = open(fileName, 'w')
             file.seek(0)
             self.saveTo(file)
             file.close()
@@ -278,25 +261,21 @@ class DistributedBuildingMgrAI:
 
     def loadFrom(self, file):
         blocks = {}
-        try:
-            while 1:
-                pickleData = pickle.load(file)
-                blocks[int(pickleData['block'])] = pickleData
-
-        except EOFError:
-            pass
+        buildingData = json.load(file)
+        for block in buildingData:
+            blocks[int(block)] = buildingData[block]
 
         return blocks
 
     def load(self):
         fileName = self.getFileName()
         try:
-            file = open(fileName + self.backupExtension, 'rb')
+            file = open(fileName + self.backupExtension, 'r')
             if os.path.exists(fileName):
                 os.remove(fileName)
         except IOError:
             try:
-                file = open(fileName, 'rb')
+                file = open(fileName, 'r')
             except IOError:
                 return {}
 
