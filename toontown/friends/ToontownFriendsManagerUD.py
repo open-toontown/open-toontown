@@ -179,6 +179,8 @@ class MakeFriendsOperation(FriendsOperation):
         self.context = None
         self.resultCode = None
         self.onlineToons = None
+        self.avatarAFriendsList = None
+        self.avatarBFriendsList = None
 
     def start(self, avatarAId, avatarBId, flags, context):
         self.avatarAId = avatarAId
@@ -197,22 +199,43 @@ class MakeFriendsOperation(FriendsOperation):
         self.__handleActivatedResp(avId, activated)
         self.friendsManager.air.getActivated(self.avatarBId, self.__gotActivatedAvatarB)
 
-    def __handleMakeFriends(self, dclass, fields, avId, friendId):
+    def __handleMakeFriends(self, dclass, fields, friendId):
         if dclass != self.friendsManager.air.dclassesByName['DistributedToonUD']:
             self._handleError('Retrieved avatar is not a DistributedToonUD!')
-            return
+            return False, []
 
         friendsList = fields['setFriendsList'][0]
         if len(friendsList) >= OTPGlobals.MaxFriends:
             self._handleError('Avatar\'s friends list is full!')
-            return
+            return False, []
 
         newFriend = (friendId, self.flags)
         if newFriend in friendsList:
             self._handleError('Already friends!')
-            return
+            return False, []
 
         friendsList.append(newFriend)
+        return True, friendsList
+
+    def __handleAvatarARetrieved(self, dclass, fields):
+        success, avatarAFriendsList = self.__handleMakeFriends(dclass, fields, self.avatarBId)
+        if success:
+            self.avatarAFriendsList = avatarAFriendsList
+            self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.avatarBId,
+                                                            self.__handleAvatarBRetrieved)
+
+    def __gotActivatedAvatarB(self, avId, activated):
+        self.__handleActivatedResp(avId, activated)
+        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.avatarAId,
+                                                        self.__handleAvatarARetrieved)
+
+    def __handleAvatarBRetrieved(self, dclass, fields):
+        success, avatarBFriendsList = self.__handleMakeFriends(dclass, fields, self.avatarAId)
+        if success:
+            self.avatarBFriendsList = avatarBFriendsList
+            self._handleDone()
+
+    def __handleSetFriendsList(self, avId, friendsList):
         if avId in self.onlineToons:
             self.friendsManager.sendUpdateToAvatar(avId, 'setFriendsList', [friendsList])
         else:
@@ -221,22 +244,10 @@ class MakeFriendsOperation(FriendsOperation):
                                                                  'DistributedToonUD'],
                                                              {'setFriendsList': [friendsList]})
 
-    def __handleAvatarARetrieved(self, dclass, fields):
-        self.__handleMakeFriends(dclass, fields, self.avatarAId, self.avatarBId)
-        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.avatarBId,
-                                                        self.__handleAvatarBRetrieved)
-
-    def __gotActivatedAvatarB(self, avId, activated):
-        self.__handleActivatedResp(avId, activated)
-        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.avatarAId,
-                                                        self.__handleAvatarARetrieved)
-
-    def __handleAvatarBRetrieved(self, dclass, fields):
-        self.__handleMakeFriends(dclass, fields, self.avatarBId, self.avatarAId)
-        self._handleDone()
-
     def _handleDone(self):
         self.resultCode = 1
+        self.__handleSetFriendsList(self.avatarAId, self.avatarAFriendsList)
+        self.__handleSetFriendsList(self.avatarBId, self.avatarBFriendsList)
         self.friendsManager.sendMakeFriendsResponse(self.avatarAId, self.avatarBId, self.resultCode, self.context)
         FriendsOperation._handleDone(self)
 
