@@ -19,6 +19,7 @@ from toontown.coghq.PromotionManagerAI import PromotionManagerAI
 from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
 from toontown.distributed.ToontownDistrictStatsAI import ToontownDistrictStatsAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
+from toontown.estate.EstateManagerAI import EstateManagerAI
 from toontown.hood import ZoneUtil
 from toontown.hood.BRHoodDataAI import BRHoodDataAI
 from toontown.hood.BossbotHQDataAI import BossbotHQDataAI
@@ -88,6 +89,7 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.magicWordManager = None
         self.friendManager = None
         self.toontownFriendsManager = None
+        self.estateMgr = None
         self.zoneTable = {}
         self.dnaStoreMap = {}
         self.dnaDataMap = {}
@@ -219,10 +221,14 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.friendManager = self.generateGlobalObject(OTP_DO_ID_FRIEND_MANAGER, 'FriendManager')
 
         if __astron__:
-            # Create our Toontown friends manager...
+            # Generate our Toontown friends manager...
             # TODO: Is this Astron specific?
             self.toontownFriendsManager = self.generateGlobalObject(OTP_DO_ID_TOONTOWN_FRIENDS_MANAGER,
                                                                     'ToontownFriendsManager')
+
+        # Generate our estate manager...
+        self.estateMgr = EstateManagerAI(self)
+        self.estateMgr.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
 
     def generateHood(self, hoodConstructor, zoneId):
         # Bossbot HQ doesn't use DNA, so we skip over that.
