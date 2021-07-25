@@ -851,11 +851,14 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         return 1
 
     def removeFriend(self, avatarId):
-        base.localAvatar.sendUpdate('friendsNotify', [base.localAvatar.doId, 1], sendToId=avatarId)
-        datagram = PyDatagram()
-        datagram.addUint16(CLIENT_REMOVE_FRIEND)
-        datagram.addUint32(avatarId)
-        self.send(datagram)
+        if __astron__:
+            self.toontownFriendsManager.sendRemoveFriend(avatarId)
+        else:
+            base.localAvatar.sendUpdate('friendsNotify', [base.localAvatar.doId, 1], sendToId=avatarId)
+            datagram = PyDatagram()
+            datagram.addUint16(CLIENT_REMOVE_FRIEND)
+            datagram.addUint32(avatarId)
+            self.send(datagram)
         self.estateMgr.removeFriend(base.localAvatar.doId, avatarId)
         for pair in base.localAvatar.friendsList:
             friendId = pair[0]

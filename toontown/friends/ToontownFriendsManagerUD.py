@@ -263,6 +263,89 @@ class MakeFriendsOperation(FriendsOperation):
         FriendsOperation._handleError(self, error)
 
 
+class RemoveFriendOperation(FriendsOperation):
+
+    def __init__(self, friendsManager, sender):
+        FriendsOperation.__init__(self, friendsManager, sender)
+        self.friendId = None
+        self.onlineToons = None
+        self.senderFriendsList = None
+        self.friendFriendsList = None
+
+    def start(self, friendId):
+        self.friendId = friendId
+        self.onlineToons = []
+        self.friendsManager.air.getActivated(self.sender, self.__gotSenderActivated)
+
+    def __handleActivatedResp(self, avId, activated):
+        if activated:
+            self.onlineToons.append(avId)
+
+    def __gotSenderActivated(self, avId, activated):
+        self.__handleActivatedResp(avId, activated)
+        self.friendsManager.air.getActivated(self.friendId, self.__gotFriendActivated)
+
+    def __gotFriendActivated(self, avId, activated):
+        self.__handleActivatedResp(avId, activated)
+        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.sender,
+                                                        self.__handleSenderRetrieved)
+
+    def __handleRemoveFriend(self, dclass, fields, friendId):
+        if dclass != self.friendsManager.air.dclassesByName['DistributedToonUD']:
+            self._handleError('Retrieved sender is not a DistributedToonUD!')
+            return False, []
+
+        friendsList = fields['setFriendsList'][0]
+        removed = False
+        for index, friend in enumerate(friendsList):
+            if friend[0] == friendId:
+                del friendsList[index]
+                removed = True
+                break
+
+        if removed:
+            return True, friendsList
+        else:
+            self._handleError('Unable to remove friend!')
+            return False, []
+
+    def __handleSenderRetrieved(self, dclass, fields):
+        success, senderFriendsList = self.__handleRemoveFriend(dclass, fields, self.friendId)
+        if success:
+            self.senderFriendsList = senderFriendsList
+            self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.friendId,
+                                                            self.__handleFriendRetrieved)
+
+    def __handleFriendRetrieved(self, dclass, fields):
+        success, friendFriendsList = self.__handleRemoveFriend(dclass, fields, self.sender)
+        if success:
+            self.friendFriendsList = friendFriendsList
+            self._handleDone()
+
+    def __handleSetFriendsList(self, avId, friendsList):
+        if avId in self.onlineToons:
+            self.friendsManager.sendUpdateToAvatar(avId, 'setFriendsList', [friendsList])
+        else:
+            self.friendsManager.air.dbInterface.updateObject(self.friendsManager.air.dbId, avId,
+                                                             self.friendsManager.air.dclassesByName[
+                                                                 'DistributedToonUD'],
+                                                             {'setFriendsList': [friendsList]})
+
+    def _handleDone(self):
+        if self.senderFriendsList is not None and self.friendFriendsList is not None:
+            self.__handleSetFriendsList(self.sender, self.senderFriendsList)
+            self.__handleSetFriendsList(self.friendId, self.friendFriendsList)
+
+        if self.sender in self.onlineToons and self.friendId in self.onlineToons:
+            self.friendsManager.undeclareObject(self.sender, self.friendId)
+            self.friendsManager.undeclareObject(self.friendId, self.sender)
+
+        if self.friendId in self.onlineToons:
+            self.friendsManager.sendUpdateToAvatar(self.friendId, 'friendsNotify', [self.sender, 1])
+
+        FriendsOperation._handleDone(self)
+
+
 class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownFriendsManagerUD')
 
@@ -278,6 +361,13 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
         datagram.addServerHeader(self.GetPuppetConnectionChannel(doId), self.air.ourChannel, CLIENTAGENT_DECLARE_OBJECT)
         datagram.addUint32(objId)
         datagram.addUint16(self.air.dclassesByName['DistributedToonUD'].getNumber())
+        self.air.send(datagram)
+
+    def undeclareObject(self, doId, objId):
+        datagram = PyDatagram()
+        datagram.addServerHeader(self.GetPuppetConnectionChannel(doId), self.air.ourChannel,
+                                 CLIENTAGENT_UNDECLARE_OBJECT)
+        datagram.addUint32(objId)
         self.air.send(datagram)
 
     def sendFriendOnline(self, avId, friendId, commonChatFlags, whitelistChatFlags):
@@ -321,3 +411,6 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
 
     def makeFriends(self, avatarAId, avatarBId, flags, context):
         self.runServerOperation(MakeFriendsOperation, avatarAId, avatarBId, flags, context)
+
+    def removeFriend(self, friendId):
+        self.runSenderOperation(RemoveFriendOperation, friendId)

@@ -27,3 +27,6 @@ class ToontownFriendsManager(DistributedObjectGlobal):
         datagram = PyDatagram(avatarDetails)
         di = PyDatagramIterator(datagram)
         self.cr.handleGetAvatarDetailsResp(di)
+
+    def sendRemoveFriend(self, friendId):
+        self.sendUpdate('removeFriend', [friendId])

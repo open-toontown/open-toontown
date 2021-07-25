@@ -2860,6 +2860,7 @@ dclass ToontownFriendsManager : DistributedObject {
   getAvatarDetailsResponse(blob);
   makeFriends(uint32, uint32, uint8, uint32);
   makeFriendsResponse(uint32, uint32, uint8, uint32) airecv;
+  removeFriend(uint32) clsend;
 };
 
 dclass TTSpeedchatRelay : SpeedchatRelay {
