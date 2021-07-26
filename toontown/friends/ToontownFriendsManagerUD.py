@@ -346,6 +346,35 @@ class RemoveFriendOperation(FriendsOperation):
         FriendsOperation._handleDone(self)
 
 
+class ComingOnlineOperation(FriendsOperation):
+
+    def __init__(self, friendsManager):
+        FriendsOperation.__init__(self, friendsManager, None)
+        self.avId = None
+        self.friendsList = None
+        self.currentFriendIdx = None
+
+    def start(self, avId, friendsList):
+        self.avId = avId
+        self.friendsList = friendsList
+        self.__checkFriendsOnline()
+
+    def __checkFriendsOnline(self):
+        self.currentFriendIdx = 0
+        for friendId in self.friendsList:
+            self.friendsManager.air.getActivated(friendId, self.__gotFriendActivated)
+
+    def __gotFriendActivated(self, avId, activated):
+        self.currentFriendIdx += 1
+        if activated:
+            self.friendsManager.declareObject(avId, self.avId)
+            self.friendsManager.declareObject(self.avId, avId)
+            self.friendsManager.sendFriendOnline(avId, self.avId, 0, 1)
+
+        if self.currentFriendIdx >= len(self.friendsList):
+            self._handleDone()
+
+
 class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownFriendsManagerUD')
 
@@ -414,3 +443,6 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
 
     def removeFriend(self, friendId):
         self.runSenderOperation(RemoveFriendOperation, friendId)
+
+    def comingOnline(self, avId, friendsList):
+        self.runServerOperation(ComingOnlineOperation, avId, friendsList)

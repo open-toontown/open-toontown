@@ -783,6 +783,9 @@ class LoadAvatarOperation(AvatarOperation):
 
         self.loginManager.air.setOwner(self.avId, channel)
 
+        friendsList = [friendId for friendId, _ in self.avatar['setFriendsList'][0]]
+        self.loginManager.air.toontownFriendsManager.comingOnline(self.avId, friendsList)
+
         self._handleDone()
 
 
@@ -798,6 +801,8 @@ class UnloadAvatarOperation(GameOperation):
 
     def __handleUnloadAvatar(self):
         channel = self.loginManager.GetAccountConnectionChannel(self.sender)
+
+        self.loginManager.air.toontownFriendsManager.goingOffline(self.avId)
 
         datagram = PyDatagram()
         datagram.addServerHeader(channel, self.loginManager.air.ourChannel, CLIENTAGENT_CLEAR_POST_REMOVES)
