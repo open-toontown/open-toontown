@@ -375,6 +375,46 @@ class ComingOnlineOperation(FriendsOperation):
             self._handleDone()
 
 
+class GoingOfflineOperation(FriendsOperation):
+
+    def __init__(self, friendsManager):
+        FriendsOperation.__init__(self, friendsManager, None)
+        self.avId = None
+        self.friendsList = None
+        self.accId = None
+        self.currentFriendIdx = None
+
+    def start(self, avId):
+        self.avId = avId
+        self.friendsList = []
+        self.accId = 0
+        self.friendsManager.air.dbInterface.queryObject(self.friendsManager.air.dbId, self.avId, self.__handleAvatarRetrieved)
+
+    def __handleAvatarRetrieved(self, dclass, fields):
+        if dclass != self.friendsManager.air.dclassesByName['DistributedToonUD']:
+            self._handleError('Retrieved avatar is not a DistributedToonUD!')
+            return
+
+        self.friendsList = fields['setFriendsList'][0]
+        self.accId = fields['setDISLid'][0]
+        self.__checkFriendsOnline()
+
+    def __checkFriendsOnline(self):
+        self.currentFriendIdx = 0
+        for friendId, _ in self.friendsList:
+            self.friendsManager.air.getActivated(friendId, self.__gotFriendActivated)
+
+    def __gotFriendActivated(self, avId, activated):
+        self.currentFriendIdx += 1
+        if activated:
+            self.friendsManager.undeclareObject(avId, self.avId)
+            self.friendsManager.undeclareObject(self.accId, avId, isAccount=True)
+            self.friendsManager.sendFriendOffline(avId, self.avId)
+
+        if self.currentFriendIdx >= len(self.friendsList):
+            self._handleDone()
+
+
 class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownFriendsManagerUD')
 
@@ -392,10 +432,15 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
         datagram.addUint16(self.air.dclassesByName['DistributedToonUD'].getNumber())
         self.air.send(datagram)
 
-    def undeclareObject(self, doId, objId):
+    def undeclareObject(self, doId, objId, isAccount=False):
         datagram = PyDatagram()
-        datagram.addServerHeader(self.GetPuppetConnectionChannel(doId), self.air.ourChannel,
-                                 CLIENTAGENT_UNDECLARE_OBJECT)
+        if isAccount:
+            datagram.addServerHeader(self.GetAccountConnectionChannel(doId), self.air.ourChannel,
+                                     CLIENTAGENT_UNDECLARE_OBJECT)
+
+        else:
+            datagram.addServerHeader(self.GetPuppetConnectionChannel(doId), self.air.ourChannel,
+                                     CLIENTAGENT_UNDECLARE_OBJECT)
         datagram.addUint32(objId)
         self.air.send(datagram)
 
@@ -405,6 +450,11 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
         datagram.addUint8(commonChatFlags)  # commonChatFlags
         datagram.addUint8(whitelistChatFlags)  # whitelistChatFlags
         self.sendUpdateToAvatarId(avId, 'friendOnline', [datagram.getMessage()])
+
+    def sendFriendOffline(self, avId, friendId):
+        datagram = PyDatagram()
+        datagram.addUint32(friendId)
+        self.sendUpdateToAvatarId(avId, 'friendOffline', [datagram.getMessage()])
 
     def sendUpdateToAvatar(self, avId, fieldName, args=[]):
         dclass = self.air.dclassesByName['DistributedToonUD']
@@ -446,3 +496,6 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
 
     def comingOnline(self, avId, friendsList):
         self.runServerOperation(ComingOnlineOperation, avId, friendsList)
+
+    def goingOffline(self, avId):
+        self.runServerOperation(GoingOfflineOperation, avId)

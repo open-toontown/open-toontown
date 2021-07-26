@@ -20,6 +20,11 @@ class ToontownFriendsManager(DistributedObjectGlobal):
         di = PyDatagramIterator(datagram)
         self.cr.handleFriendOnline(di)
 
+    def friendOffline(self, friend):
+        datagram = PyDatagram(friend)
+        di = PyDatagramIterator(datagram)
+        self.cr.handleFriendOffline(di)
+
     def sendGetAvatarDetailsRequest(self, avId):
         self.sendUpdate('getAvatarDetailsRequest', [avId])
 

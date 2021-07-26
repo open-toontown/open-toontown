@@ -2856,6 +2856,7 @@ dclass ToontownFriendsManager : DistributedObject {
   getFriendsListRequest() clsend;
   getFriendsListResponse(blob);
   friendOnline(blob);
+  friendOffline(blob);
   getAvatarDetailsRequest(uint32) clsend;
   getAvatarDetailsResponse(blob);
   makeFriends(uint32, uint32, uint8, uint32);
