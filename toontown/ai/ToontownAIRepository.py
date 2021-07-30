@@ -49,6 +49,7 @@ from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
 from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
 from toontown.uberdog.DistributedInGameNewsMgrAI import DistributedInGameNewsMgrAI
+import os
 
 
 class ToontownAIRepository(ToontownInternalRepository):
@@ -60,6 +61,9 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.doLiveUpdates = config.GetBool('want-live-updates', True)
         self.wantCogdominiums = config.GetBool('want-cogdominiums', True)
         self.useAllMinigames = config.GetBool('want-all-minigames', True)
+        self.dataFolder = config.GetString('server-data-folder', '')
+        if self.dataFolder:
+            self.dataFolder = self.dataFolder + '/'
         self.districtId = None
         self.district = None
         self.districtStats = None
@@ -106,6 +110,9 @@ class ToontownAIRepository(ToontownInternalRepository):
         # Claim ownership of that district...
         self.notify.info('Declaring ownership...')
         self.district.setAI(self.ourChannel)
+
+        # Setup necessary files and things.
+        self.setupFiles()
 
         # Create our local objects.
         self.notify.info('Creating local objects...')
@@ -461,3 +468,7 @@ class ToontownAIRepository(ToontownInternalRepository):
 
     def trueUniqueName(self, idString):
         return self.uniqueName(idString)
+
+    def setupFiles(self):
+        if not os.path.exists(self.dataFolder):
+            os.mkdir(self.dataFolder)

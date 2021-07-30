@@ -11,7 +11,6 @@ import time, random
 
 class DistributedBuildingMgrAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBuildingMgrAI')
-    serverDatafolder = simbase.config.GetString('server-data-folder', '')
 
     def __init__(self, air, branchID, dnaStore, trophyMgr):
         self.branchID = branchID
@@ -231,7 +230,7 @@ class DistributedBuildingMgrAI:
         return building
 
     def getFileName(self):
-        f = '%s%s_%d_buildings.json' % (self.serverDatafolder, self.shard, self.branchID)
+        f = '%s%s_%d_buildings.json' % (self.air.dataFolder, self.shard, self.branchID)
         return f
 
     def saveTo(self, file):
