@@ -633,7 +633,7 @@ class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlan
                 if oldestAge > timeout:
                     self.notify.info('Street %d has %d buildings; reclaiming %0.2f-hour-old building.' % (self.zoneId, len(suitBuildings), oldestAge / 3600.0))
                     oldest.b_setVictorList([0, 0, 0, 0])
-                    oldest.updateSavedBy(None)
+                    oldest.updateSavedBy([])
                     oldest.toonTakeOver()
         self.__waitForNextUpkeep()
         return Task.done
