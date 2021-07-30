@@ -9,7 +9,6 @@ import os, pickle
 
 class RaceManagerAI(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('RaceManagerAI')
-    serverDataFolder = simbase.config.GetString('server-data-folder', '')
 
     def __init__(self, air):
         DirectObject.DirectObject.__init__(self)
@@ -620,7 +619,7 @@ class RaceManagerAI(DirectObject.DirectObject):
             self.notify.warning(str(sys.exc_info()[1]))
 
     def getFilename(self):
-        return '%s%s.trackRecords' % (self.serverDataFolder, self.shard)
+        return '%s%s.trackRecords' % (self.air.dataFolder, self.shard)
 
     def loadRecords(self):
         try:
