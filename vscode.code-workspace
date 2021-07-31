@@ -16,5 +16,21 @@
         "name": "Darwin Scripts",
         "path": "darwin"
       }
-    ]
+    ],
+    "settings": {
+      "files.exclude": {
+        "**/__pycache__": true,
+        "**/.idea": true,
+        "**/.pyc,**/*.pyo,**/*.pyd": true,
+        "**/*_buildings.json": true,
+        "**/darwin": true,
+        "**/errorCode": true,
+        "**/linux": true,
+        "**/news": true,
+        "**/resources": true,
+        "**/sign": true,
+        "**/whitelist": true,
+        "**/win32": true
+      }
+    }
   }
