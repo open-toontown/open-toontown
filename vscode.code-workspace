@@ -1,0 +1,20 @@
+{
+    "folders": [
+      {
+        "name": "Source",
+        "path": "."
+      },
+      {
+        "name": "Windows Scripts",
+        "path": "win32"
+      },
+      {
+        "name": "Linux Scripts",
+        "path": "linux"
+      },
+      {
+        "name": "Darwin Scripts",
+        "path": "darwin"
+      }
+    ]
+  }

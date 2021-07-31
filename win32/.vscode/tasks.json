@@ -1,0 +1,47 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Windows - Start Game",
+            "type": "shell",
+            "command": "./start_game.bat",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Windows - Start AI Server",
+            "type": "shell",
+            "command": "./start_ai_server.bat",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Windows - Start Astron Server",
+            "type": "shell",
+            "command": "./start_astron_server.bat",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+        {
+            "label": "Windows - Start UberDOG Server",
+            "type": "shell",
+            "command": "./start_uberdog_server.bat",
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            }
+        },
+    ]
+  }
