@@ -96,3 +96,4 @@ early-event-sphere 1
 accept-clock-skew 1
 text-minfilter linear_mipmap_linear
 gc-save-all 0
+server-data-folder data
