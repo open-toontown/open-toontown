@@ -6,7 +6,7 @@
         {
             "label": "Linux - Start Game",
             "type": "shell",
-            "command": "./start_game.sh",
+            "command": "./start-game.sh",
             "group": "test",
             "presentation": {
                 "reveal": "always",
@@ -16,7 +16,7 @@
         {
             "label": "Linux - Start AI Server",
             "type": "shell",
-            "command": "./start_ai_server.sh",
+            "command": "./start-ai-server.sh",
             "group": "test",
             "presentation": {
                 "reveal": "always",
@@ -26,7 +26,7 @@
         {
             "label": "Linux - Start Astron Server",
             "type": "shell",
-            "command": "./start_astron_server.sh",
+            "command": "./start-astron-server.sh",
             "group": "test",
             "presentation": {
                 "reveal": "always",
@@ -36,7 +36,7 @@
         {
             "label": "Linux - Start UberDOG Server",
             "type": "shell",
-            "command": "./start_uberdog_server.sh",
+            "command": "./start-uberdog-server.sh",
             "group": "test",
             "presentation": {
                 "reveal": "always",
@@ -44,4 +44,4 @@
             }
         },
     ]
-  }
+}
