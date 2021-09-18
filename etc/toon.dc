@@ -2863,6 +2863,7 @@ dclass ToontownFriendsManager : DistributedObject {
   makeFriends(uint32, uint32, uint8, uint32);
   makeFriendsResponse(uint32, uint32, uint8, uint32) airecv;
   removeFriend(uint32) clsend;
+  requestSecret(uint32);
 };
 
 dclass TTSpeedchatRelay : SpeedchatRelay {

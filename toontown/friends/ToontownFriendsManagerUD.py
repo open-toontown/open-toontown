@@ -421,6 +421,7 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
     def __init__(self, air):
         DistributedObjectGlobalUD.__init__(self, air)
         self.operations = []
+        self.secrets = []
 
     def sendMakeFriendsResponse(self, avatarAId, avatarBId, result, context):
         self.sendUpdate('makeFriendsResponse', [avatarAId, avatarBId, result, context])
@@ -499,3 +500,6 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
 
     def goingOffline(self, avId):
         self.runServerOperation(GoingOfflineOperation, avId)
+
+    def requestSecret(self, requesterId):
+        print('requestSecret')

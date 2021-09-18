@@ -186,8 +186,8 @@ class FriendManagerAI(DistributedObjectGlobalAI):
         Sent by the client to the AI to request a new "secret" for the
         user.
         """
-        # TODO
-        self.notify.info('TODO: requestSecret')
+        avId = self.air.getAvatarIdFromSender()
+        self.air.requestSecret(avId)
 
     ### Messages sent from AI to inviter client
 

@@ -490,3 +490,18 @@ class ToontownAIRepository(ToontownInternalRepository):
         """
         if __astron__:
             self.toontownFriendsManager.sendMakeFriends(avatarAId, avatarBId, flags, context)
+
+    def requestSecret(self, requesterId):
+        """
+        Requests a "secret" from the friends manager.  This is a
+        unique string that will be associated with the indicated
+        requesterId, for the purposes of authenticating true-life
+        friends.
+
+        When the secret is ready, a "requestSecretReply" message will
+        be thrown with three parameters: the result code (0 or 1,
+        indicating failure or success), the generated secret, and the
+        requesterId again.
+        """
+        if __astron__:
+            self.toontownFriendsManager.sendRequestSecret(requesterId)
