@@ -19,7 +19,7 @@ If you install Panda3D outside the default directory (or use the x86 installer),
 ## macOS 10.9+
 [Panda3D Wheel for macOS 10.9+ (Python3.9, x86_64)](https://drive.google.com/file/d/1_6WJxrkNfwisK5pe5ubJJy1psEp0IIft/view?usp=sharing)
 
-Installing the provided Panda3D wheel requires Python 3.9, which is not installed on your system by default whatsoever.  We recommand installing Python 3.9 through [Homebrew](https://brew.sh/) (Make sure that the xcode command line tools are installed first `xcode-select --install`): 
+Installing the provided Panda3D wheel requires Python 3.9, which is not installed on your system by default whatsoever.  We recommend installing Python 3.9 through [Homebrew](https://brew.sh/) (Make sure that the xcode command line tools are installed first `xcode-select --install`): 
 ```shell
 $ brew install python@3.9
 ```
@@ -37,12 +37,12 @@ To start the server and run the game locally, go to your platform directory (`wi
 
 `Astron Server -> UberDOG (UD) Server -> AI (District) Server -> Game Client`
 
-Be sure to wait till the servers have finished booting before starting the next.  If everything's done correctly, you should be able to make your toon and play the game!  There is no support for Magic Words (commands) yet, [but it is currently in the works!](https://github.com/open-toontown/open-toontown/projects/1)
+Be sure to wait till the servers have finished booting before starting the next.  If done correctly, you should be able to make your toon and play the game!  There is no support for Magic Words (commands) yet, [but it is currently in the works!](https://github.com/open-toontown/open-toontown/projects/1)
 
 # Contributing
 Submitting issues and Pull Requests are encouraged and welcome.
 
-How you commit changes is your choice, but when committing, please include what you did as well as a basic description, just so we know exactly what you did. Here are some examples:
+How you commit changes is your choice, but please include what you did and a basic description so that we know exactly what was modified. Here are some examples:
 
 * `minigames: Fix crash when entering the trolley`
 * `racing: Fix possible race condition when two racers tied`
