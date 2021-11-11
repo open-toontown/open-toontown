@@ -20,8 +20,6 @@ class LoginAstronAccount(LoginBase):
         self.cr.send(datagram)
 
     def supportsRelogin(self):
-        if __debug__:
-            return 1
         return 0
 
     def supportsAuthenticateDelete(self):
