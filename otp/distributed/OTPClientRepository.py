@@ -961,7 +961,7 @@ class OTPClientRepository(ClientRepositoryBase):
                 avNames[1] = di.getString()
                 avNames[2] = di.getString()
                 avNames[3] = di.getString()
-                avDNA = di.getString()
+                avDNA = di.getBlob()
                 avPosition = di.getUint8()
                 aname = di.getUint8()
                 potAv = PotentialAvatar(avNum, avNames, avDNA, avPosition, aname)
