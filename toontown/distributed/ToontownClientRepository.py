@@ -917,7 +917,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             for i in range(0, count):
                 doId = di.getUint32()
                 name = di.getString()
-                dnaString = di.getString()
+                dnaString = di.getBlob()
                 dna = ToonDNA.ToonDNA()
                 dna.makeFromNetString(dnaString)
                 petId = di.getUint32()
