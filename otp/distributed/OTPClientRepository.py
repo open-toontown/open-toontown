@@ -1047,7 +1047,7 @@ class OTPClientRepository(ClientRepositoryBase):
             datagram = PyDatagram()
             datagram.addUint16(CLIENT_CREATE_AVATAR)
             datagram.addUint16(0)
-            datagram.addString(avDNA.makeNetString())
+            datagram.addBlob(avDNA.makeNetString())
             datagram.addUint8(avPosition)
             self.newName = avName
             self.newDNA = avDNA
