@@ -1152,19 +1152,19 @@ def get50ItemCloset(avatar, duplicateItems):
 
 
 def getMaxClosets():
-    list = []
+    maxClosets = []
     for closetId in MaxClosetIds:
-        list.append(CatalogFurnitureItem(closetId))
+        maxClosets.append(CatalogFurnitureItem(closetId))
 
-    return list
+    return maxClosets
 
 
 def getAllClosets():
-    list = []
+    allClosets = []
     for closetId in list(ClosetToClothes.keys()):
-        list.append(CatalogFurnitureItem(closetId))
+        allClosets.append(CatalogFurnitureItem(closetId))
 
-    return list
+    return allClosets
 
 
 def get50ItemTrunk(avatar, duplicateItems):
@@ -1180,17 +1180,17 @@ def get50ItemTrunk(avatar, duplicateItems):
 
 
 def getMaxTrunks():
-    list = []
+    maxTrunks = []
     for trunkId in MaxTrunkIds:
-        list.append(CatalogFurnitureItem(trunkId))
+        maxTrunks.append(CatalogFurnitureItem(trunkId))
 
-    return list
+    return maxTrunks
 
 
 def getAllFurnitures(index):
-    list = []
+    allFurnitures = []
     colors = FurnitureTypes[index][FTColorOptions]
     for n in range(len(colors)):
-        list.append(CatalogFurnitureItem(index, n))
+        allFurnitures.append(CatalogFurnitureItem(index, n))
 
-    return list
+    return allFurnitures
