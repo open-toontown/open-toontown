@@ -167,12 +167,10 @@ class CatalogItemList:
         return len(self.__list)
 
     def __getitem__(self, index):
-        if isinstance(index, slice):
-            if self.__list == None:
-                self.__decodeList()
-            return CatalogItemList(self.__list[index.start:index.stop], store=self.store)
         if self.__list == None:
             self.__decodeList()
+        if isinstance(index, slice):
+            return CatalogItemList(self.__list[index.start:index.stop], store=self.store)
         return self.__list[index]
 
     def __setitem__(self, index, item):
