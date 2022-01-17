@@ -85,6 +85,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.nametag2dNormalContents = Nametag.CSpeech
         self.showNametag2d()
         self.setPickable(0)
+        self.posCameraSeq = None
         return
 
     def useSwimControls(self):
@@ -137,7 +138,9 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.stopJumpLandTask()
         taskMgr.remove('shadowReach')
         base.popCTrav()
-        taskMgr.remove('posCamera')
+        if self.posCameraSeq:
+            self.posCameraSeq.finish()
+            self.posCameraSeq = None
         self.disableAvatarControls()
         self.stopTrackAnimToSpeed()
         self.stopUpdateSmartCamera()
@@ -605,8 +608,11 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             r = destHpr[2]
             camera.setPos(savePos)
             camera.setHpr(saveHpr)
-            taskMgr.remove('posCamera')
-            camera.lerpPosHpr(x, y, z, h, p, r, time, task='posCamera')
+            if self.posCameraSeq:
+                self.posCameraSeq.finish()
+                self.posCameraSeq = None
+            self.posCameraSeq = camera.posHprInterval(time, Point3(x, y, z), Point3(h, p, r), name='posCamera')
+            self.posCameraSeq.start()
 
     def getClampedAvatarHeight(self):
         return max(self.getHeight(), 3.0)
