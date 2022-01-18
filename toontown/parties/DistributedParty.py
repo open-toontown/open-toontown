@@ -1,11 +1,11 @@
 import random
 import time
 import datetime
-from pandac.PandaModules import Vec4, TextNode, CardMaker, NodePath
+from panda3d.core import Vec4, TextNode, CardMaker, NodePath
 from direct.distributed import DistributedObject
-from direct.task.Task import Task
 from direct.gui.DirectGui import DirectLabel
 from direct.gui import OnscreenText
+from direct.interval.IntervalGlobal import *
 from toontown.toonbase import ToontownGlobals
 from toontown.parties.PartyInfo import PartyInfo
 from toontown.toonbase import TTLocalizer
@@ -321,8 +321,8 @@ class DistributedParty(DistributedObject.DistributedObject):
           False]]
 
         def fillGrid(x, y, size):
-            for i in range(-size[1] / 2 + 1, size[1] / 2 + 1):
-                for j in range(-size[0] / 2 + 1, size[0] / 2 + 1):
+            for i in range(-size[1] // 2 + 1, size[1] // 2 + 1):
+                for j in range(-size[0] // 2 + 1, size[0] // 2 + 1):
                     self.grid[i + y][j + x] = False
 
         for activityBase in self.partyInfo.activityList:
@@ -572,12 +572,8 @@ class DistributedParty(DistributedObject.DistributedObject):
         self.titleText.setColor(Vec4(*self.titleColor))
         self.titleText.clearColorScale()
         self.titleText.setFg(self.titleColor)
-        seq = Task.sequence(Task.pause(0.1), Task.pause(6.0), self.titleText.lerpColorScale(Vec4(1.0, 1.0, 1.0, 1.0), Vec4(1.0, 1.0, 1.0, 0.0), 0.5), Task(self.hideTitleTextTask))
-        taskMgr.add(seq, 'titleText')
-
-    def hideTitleTextTask(self, task):
-        self.titleText.hide()
-        return Task.done
+        seq = Sequence(Wait(0.1), Wait(6.0), self.titleText.colorScaleInterval(0.5, Vec4(1.0, 1.0, 1.0, 0.0)), Func(self.hideTitleText))
+        seq.start()
 
     def hideTitleText(self):
         if self.titleText:

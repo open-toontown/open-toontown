@@ -4,7 +4,7 @@ from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 from direct.task.Task import Task
 from direct.distributed import ClockDelta
-from pandac.PandaModules import Point3
+from panda3d.core import Point3, Quat
 from panda3d.otp import CFSpeech, CFTimeout
 from toontown.toontowngui import TTDialog
 from otp.otpbase import OTPLocalizer
@@ -21,12 +21,15 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
         self.button = None
         self.askGui = None
         self.teaserDialog = None
+        self.lerpCameraSeq = None
         return
 
     def disable(self):
         self.ignoreAll()
         taskMgr.remove(self.uniqueName('popupAskGUI'))
-        taskMgr.remove(self.uniqueName('lerpCamera'))
+        if self.lerpCameraSeq:
+            self.lerpCameraSeq.finish()
+            self.lerpCameraSeq = None
         self.av = None
         if self.isInteractingWithLocalToon:
             base.localAvatar.posCamera(0, 0)
@@ -85,7 +88,9 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
     def resetPartyPerson(self):
         self.ignoreAll()
         taskMgr.remove(self.uniqueName('popupAskGUI'))
-        taskMgr.remove(self.uniqueName('lerpCamera'))
+        if self.lerpCameraSeq:
+            self.lerpCameraSeq.finish()
+            self.lerpCameraSeq = None
         if self.askGui:
             self.askGui.hide()
         self.show()
@@ -105,7 +110,9 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
         if mode == NPCToons.PARTY_MOVIE_CLEAR:
             return
         if mode == NPCToons.PARTY_MOVIE_TIMEOUT:
-            taskMgr.remove(self.uniqueName('lerpCamera'))
+            if self.lerpCameraSeq:
+                self.lerpCameraSeq.finish()
+                self.lerpCameraSeq = None
             if self.isInteractingWithLocalToon:
                 self.ignore(self.planPartyQuestionGuiDoneEvent)
                 if self.askGui:
@@ -123,7 +130,10 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
             self.setupAvatars(self.av)
             if self.isInteractingWithLocalToon:
                 camera.wrtReparentTo(render)
-                camera.lerpPosHpr(-5, 9, base.localAvatar.getHeight() - 0.5, -150, -2, 0, 1, other=self, blendType='easeOut', task=self.uniqueName('lerpCamera'))
+                quat = Quat()
+                quat.setHpr((-150, -2, 0))
+                self.lerpCameraSeq = camera.posQuatInterval(1, Point3(-5, 9, base.localAvatar.getHeight() - 0.5), quat, other=self, blendType='easeOut', name=self.uniqueName('lerpCamera'))
+                self.lerpCameraSeq.start()
                 taskMgr.doMethodLater(1.0, self.popupAskGUI, self.uniqueName('popupAskGUI'))
             else:
                 self.setChatAbsolute(TTLocalizer.PartyDoYouWantToPlan, CFSpeech | CFTimeout)
@@ -134,7 +144,7 @@ class DistributedNPCPartyPerson(DistributedNPCToonBase):
             if self.isInteractingWithLocalToon:
                 base.localAvatar.aboutToPlanParty = True
                 base.cr.partyManager.setPartyPlannerStyle(self.style)
-                base.cr.partyManager.setPartyPlannerName(self.name)
+                base.cr.partyManager.setPartyPlannerName(self._name)
                 base.localAvatar.creatingNewPartyWithMagicWord = False
                 loaderId = 'safeZoneLoader'
                 whereId = 'party'
