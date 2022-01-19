@@ -2,14 +2,13 @@ import json
 import os
 import time
 from datetime import datetime
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed.MsgTypes import *
 from direct.gui.DirectGui import *
 from direct.fsm import StateData
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.directnotify import DirectNotifyGlobal
-from direct.task import Task
 from otp.otpgui import OTPDialog
 from otp.otpbase import OTPLocalizer
 from otp.otpbase import OTPGlobals
@@ -17,8 +16,8 @@ from otp.uberdog.AccountDetailRecord import AccountDetailRecord, SubDetailRecord
 from . import GuiScreen
 
 class LoginScreen(StateData.StateData, GuiScreen.GuiScreen):
-    AutoLoginName = base.config.GetString('%s-auto-login%s' % (game.name, os.getenv('otp_client', '')), '')
-    AutoLoginPassword = base.config.GetString('%s-auto-password%s' % (game.name, os.getenv('otp_client', '')), '')
+    AutoLoginName = ConfigVariableString('%s-auto-login%s' % (game.name, os.getenv('otp_client', '')), '').value
+    AutoLoginPassword = ConfigVariableString('%s-auto-password%s' % (game.name, os.getenv('otp_client', '')), '').value
     notify = DirectNotifyGlobal.directNotify.newCategory('LoginScreen')
     ActiveEntryColor = Vec4(1, 1, 1, 1)
     InactiveEntryColor = Vec4(0.8, 0.8, 0.8, 1)
@@ -439,11 +438,11 @@ class LoginScreen(StateData.StateData, GuiScreen.GuiScreen):
             self.cr.whiteListChatEnabled = 1
         else:
             self.cr.whiteListChatEnabled = 0
-        self.lastLoggedInStr = base.config.GetString('last-logged-in', '')
+        self.lastLoggedInStr = ConfigVariableString('last-logged-in', '').value
         self.cr.lastLoggedIn = datetime.now()
         if hasattr(self.cr, 'toontownTimeManager'):
             self.cr.lastLoggedIn = self.cr.toontownTimeManager.convertStrToToontownTime(self.lastLoggedInStr)
-        self.cr.withParentAccount = base.config.GetBool('dev-with-parent-account', 0)
+        self.cr.withParentAccount = ConfigVariableBool('dev-with-parent-account', 0).value
         self.notify.info('Login response return code %s' % returnCode)
         if returnCode == 0:
             self.__handleLoginSuccess()

@@ -1,40 +1,33 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.otp import Nametag, WhisperPopup
 from direct.gui.DirectGui import *
 from direct.showbase.PythonUtil import *
 from direct.interval.IntervalGlobal import *
 from direct.showbase.InputStateGlobal import inputState
-from pandac.PandaModules import *
-from . import Avatar
 from direct.controls import ControlManager
 from . import DistributedAvatar
 from direct.task import Task
-from . import PositionExaminer
 from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPRender
 import math
-import string
 import random
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNode
-from direct.gui import DirectGuiGlobals
 from otp.otpbase import OTPLocalizer
 from direct.controls.GhostWalker import GhostWalker
 from direct.controls.GravityWalker import GravityWalker
 from direct.controls.ObserverWalker import ObserverWalker
-from direct.controls.PhysicsWalker import PhysicsWalker
 from direct.controls.SwimWalker import SwimWalker
 from direct.controls.TwoDWalker import TwoDWalker
 
 class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.DistributedSmoothNode):
     notify = DirectNotifyGlobal.directNotify.newCategory('LocalAvatar')
-    wantDevCameraPositions = base.config.GetBool('want-dev-camera-positions', 0)
-    wantMouse = base.config.GetBool('want-mouse', 0)
-    sleepTimeout = base.config.GetInt('sleep-timeout', 120)
-    swimTimeout = base.config.GetInt('afk-timeout', 600)
-    __enableMarkerPlacement = base.config.GetBool('place-markers', 0)
-    acceptingNewFriends = base.config.GetBool('accepting-new-friends', 1)
-    acceptingNonFriendWhispers = base.config.GetBool('accepting-non-friend-whispers', 0)
+    wantDevCameraPositions = ConfigVariableBool('want-dev-camera-positions', 0).value
+    wantMouse = ConfigVariableBool('want-mouse', 0).value
+    sleepTimeout = ConfigVariableInt('sleep-timeout', 120).value
+    swimTimeout = ConfigVariableInt('afk-timeout', 600).value
+    __enableMarkerPlacement = ConfigVariableBool('place-markers', 0).value
+    acceptingNewFriends = ConfigVariableBool('accepting-new-friends', 1).value
+    acceptingNonFriendWhispers = ConfigVariableBool('accepting-non-friend-whispers', 0).value
 
     def __init__(self, cr, chatMgr, talkAssistant = None, passMessagesThrough = False):
         try:

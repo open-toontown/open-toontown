@@ -4,7 +4,7 @@ from otp.otpbase import OTPLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase import OTPGlobals
 from otp.speedchat import SCDecoders
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.chat.TalkMessage import TalkMessage
 from otp.chat.TalkHandle import TalkHandle
 import time
@@ -16,7 +16,7 @@ ThoughtPrefix = '.'
 class TalkAssistant(DirectObject.DirectObject):
     ExecNamespace = None
     notify = DirectNotifyGlobal.directNotify.newCategory('TalkAssistant')
-    execChat = base.config.GetBool('exec-chat', 0)
+    execChat = ConfigVariableBool('exec-chat', 0).value
 
     def __init__(self):
         self.logWhispers = 1
@@ -25,7 +25,7 @@ class TalkAssistant(DirectObject.DirectObject):
         self.zeroTimeDay = time.time()
         self.zeroTimeGame = globalClock.getRealTime()
         self.floodThreshold = 10.0
-        self.useWhiteListFilter = base.config.GetBool('white-list-filter-openchat', 0)
+        self.useWhiteListFilter = ConfigVariableBool('white-list-filter-openchat', 0).value
         self.lastWhisperDoId = None
         self.lastWhisperPlayerId = None
         self.lastWhisper = None
