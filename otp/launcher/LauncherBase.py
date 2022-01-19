@@ -88,7 +88,7 @@ class LauncherBase(DirectObject):
         self.setRegistry(self.GameLogFilenameKey, logfile)
         self.showPhase = 3.5
         self.currentPhase = 4
-        serverVersion = launcherConfig.GetString('server-version', 'no_version_set')
+        serverVersion = ConfigVariableString('server-version', 'no_version_set').value
         if serverVersion == 'no_version_set':
             self.setPandaErrorCode(10)
             self.notify.info('Aborting, config did not load!')

@@ -1,13 +1,7 @@
 from panda3d.core import *
-from direct.showbase import DConfig
-import string
-import types
-try:
-    language = DConfig.GetString('language', 'english')
-    checkLanguage = DConfig.GetBool('check-language', 0)
-except:
-    language = simbase.config.GetString('language', 'english')
-    checkLanguage = simbase.config.GetBool('check-language', 0)
+
+language = ConfigVariableString('language', 'english').value
+checkLanguage = ConfigVariableBool('check-language', 0).value
 
 def getLanguage():
     return language
