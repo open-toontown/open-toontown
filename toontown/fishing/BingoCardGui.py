@@ -194,7 +194,7 @@ class BingoCardGui(DirectFrame):
         for i in range(rowSize):
             for j in range(self.game.getColSize()):
                 color = self.getCellColor(i * rowSize + j)
-                if i * rowSize + j == self.game.getCardSize() / 2:
+                if i * rowSize + j == self.game.getCardSize() // 2:
                     tmpFish = 'Free'
                 else:
                     choice = rng.randrange(0, len(fishList))

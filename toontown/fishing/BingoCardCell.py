@@ -26,7 +26,7 @@ class BingoCardCell(DirectButton, FSM.FSM):
         DirectButton.__init__(self, parent)
         FSM.FSM.__init__(self, 'BingoCardCell')
         self.initialiseoptions(BingoCardCell)
-        self.parent = parent
+        self._parent = parent
         self.fish = fish
         self.cellId = cellId
         self.request('Off')
