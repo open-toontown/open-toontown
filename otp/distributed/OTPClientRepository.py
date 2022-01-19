@@ -2108,7 +2108,7 @@ class OTPClientRepository(ClientRepositoryBase):
     def handleDatagram(self, di):
         if self.notify.getDebug():
             print('ClientRepository received datagram:')
-            di.getDatagram().dumpHex(ostream)
+            di.getDatagram().dumpHex(Notify.out())
         msgType = self.getMsgType()
         if msgType == 65535:
             self.lostConnection()
