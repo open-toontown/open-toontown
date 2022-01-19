@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.otp import Nametag, NametagGroup
 from panda3d.otp import CFSpeech, CFThought, CFTimeout, CFPageButton, CFNoQuitButton, CFQuitButton
 from otp.otpbase import OTPGlobals
@@ -12,7 +12,7 @@ from otp.otpbase import OTPRender
 from otp.otpbase.PythonUtil import recordCreationStack
 teleportNotify = DirectNotifyGlobal.directNotify.newCategory('Teleport')
 teleportNotify.showTime = True
-if config.GetBool('want-teleport-debug', 1):
+if ConfigVariableBool('want-teleport-debug', 1).value:
     teleportNotify.setDebug(1)
 
 def reconsiderAllUnderstandable():

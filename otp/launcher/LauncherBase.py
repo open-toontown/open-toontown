@@ -65,15 +65,13 @@ class LauncherBase(DirectObject):
         print('Current time: ' + time.asctime(time.localtime(time.time())) + ' ' + time.tzname[0])
         print('sys.path = ', sys.path)
         print('sys.argv = ', sys.argv)
-        launcherConfig = DConfig
-        builtins.config = launcherConfig
-        if config.GetBool('log-private-info', 0):
+        if ConfigVariableBool('log-private-info', 0).value:
             print('os.environ = ', os.environ)
         self.miniTaskMgr = MiniTaskManager()
         self.nout = MultiplexStream()
         Notify.ptr().setOstreamPtr(self.nout, 0)
         self.nout.addFile(Filename(logfile))
-        if launcherConfig.GetBool('console-output', 0):
+        if ConfigVariableBool('console-output', 0).value:
             self.nout.addStandardOutput()
             sys.stdout.console = True
             sys.stderr.console = True
