@@ -1,6 +1,6 @@
 import os
 import datetime
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from otp.chat.WhiteList import WhiteList
@@ -8,10 +8,10 @@ from toontown.toonbase import TTLocalizer
 
 class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
     RedownloadTaskName = 'RedownloadWhitelistTask'
-    WhitelistBaseDir = config.GetString('whitelist-base-dir', '')
-    WhitelistStageDir = config.GetString('whitelist-stage-dir', 'whitelist')
-    WhitelistOverHttp = config.GetBool('whitelist-over-http', True)
-    WhitelistFileName = config.GetString('whitelist-filename', 'twhitelist.dat')
+    WhitelistBaseDir = ConfigVariableString('whitelist-base-dir', '').value
+    WhitelistStageDir = ConfigVariableString('whitelist-stage-dir', 'whitelist').value
+    WhitelistOverHttp = ConfigVariableBool('whitelist-over-http', True).value
+    WhitelistFileName = ConfigVariableString('whitelist-filename', 'twhitelist.dat').value
 
     def __init__(self):
         self.redownloadingWhitelist = False
@@ -72,8 +72,8 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
             self.updateWhitelist()
 
     def getWhitelistUrl(self):
-        result = base.config.GetString('fallback-whitelist-url', 'http://cdn.toontown.disney.go.com/toontown/en/')
-        override = base.config.GetString('whitelist-url', '')
+        result = ConfigVariableString('fallback-whitelist-url', 'http://cdn.toontown.disney.go.com/toontown/en/').value
+        override = ConfigVariableString('whitelist-url', '').value
         if override:
             self.notify.info('got an override url,  using %s for the whitelist' % override)
             result = override
