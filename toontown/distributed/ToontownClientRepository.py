@@ -798,10 +798,10 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.send(datagram)
 
     def cleanPetsFromFriendsMap(self):
-        for objId, obj in self.friendsMap.items():
+        for objId, obj in list(self.friendsMap.items()):
             from toontown.pets import DistributedPet
             if isinstance(obj, DistributedPet.DistributedPet):
-                print 'Removing %s reference from the friendsMap' % obj.getName()
+                print('Removing %s reference from the friendsMap' % obj.getName())
                 del self.friendsMap[objId]
 
     def removePetFromFriendsMap(self):
