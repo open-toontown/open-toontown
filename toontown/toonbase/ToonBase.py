@@ -306,7 +306,7 @@ class ToonBase(OTPBase.OTPBase):
             self.notify.info('Using gameServer from launcher: %s ' % gameServer)
         else:
             gameServer = '127.0.0.1'
-        serverPort = ConfigVariableInt('server-port', 7198).value
+        serverPort = ConfigVariableInt('server-port', 6667).value
         serverList = []
         for name in gameServer.split(';'):
             url = URLSpec(name, 1)
