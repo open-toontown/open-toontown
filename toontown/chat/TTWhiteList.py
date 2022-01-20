@@ -1,12 +1,11 @@
-import os
 import datetime
 from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObject
+from direct.showbase.DirectObject import DirectObject
 from otp.chat.WhiteList import WhiteList
 from toontown.toonbase import TTLocalizer
 
-class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
+class TTWhiteList(WhiteList, DirectObject):
     RedownloadTaskName = 'RedownloadWhitelistTask'
     WhitelistBaseDir = ConfigVariableString('whitelist-base-dir', '').value
     WhitelistStageDir = ConfigVariableString('whitelist-stage-dir', 'whitelist').value
@@ -14,6 +13,7 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
     WhitelistFileName = ConfigVariableString('whitelist-filename', 'twhitelist.dat').value
 
     def __init__(self):
+        DirectObject.__init__(self)
         self.redownloadingWhitelist = False
         self.startRedownload = datetime.datetime.now()
         self.endRedownload = datetime.datetime.now()
@@ -36,10 +36,13 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
             self.accept('updateWhitelist', self.handleNewWhitelist)
 
     def unload(self):
-        self.ignore('updateWhitelist')
-        self.removeDownloadingTextTask()
+        if self.WhitelistOverHttp:
+            self.ignore('updateWhitelist')
+            self.removeDownloadingTextTask()
 
     def redownloadWhitelist(self):
+        if not self.WhitelistOverHttp:
+            return
         self.percentDownload = 0.0
         self.notify.info('starting redownloadWhitelist')
         self.startRedownload = datetime.datetime.now()
