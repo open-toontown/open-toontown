@@ -138,55 +138,29 @@ class QuietZoneState(StateData.StateData):
                 self._setZoneCompleteCallbacks.remove(token)
         return
 
-    if not __astron__:
-        def handleWaitForQuietZoneResponse(self, msgType, di):
-            # self.notify.debug('handleWaitForQuietZoneResponse(' + 'msgType=' + str(msgType) + ', di=' + str(di) + ')')
-            if msgType == CLIENT_CREATE_OBJECT_REQUIRED:
-                base.cr.handleQuietZoneGenerateWithRequired(di)
-            elif msgType == CLIENT_CREATE_OBJECT_REQUIRED_OTHER:
-                base.cr.handleQuietZoneGenerateWithRequiredOther(di)
-            elif msgType == CLIENT_OBJECT_UPDATE_FIELD:
-                base.cr.handleQuietZoneUpdateField(di)
-            elif msgType in QUIET_ZONE_IGNORED_LIST:
-                self.notify.debug('ignoring unwanted message from previous zone')
-            else:
-                base.cr.handlePlayGame(msgType, di)
-    else:
-        def handleWaitForQuietZoneResponse(self, msgType, di):
-            # self.notify.debug('handleWaitForQuietZoneResponse(' + 'msgType=' + str(msgType) + ', di=' + str(di) + ')')
-            if msgType == CLIENT_ENTER_OBJECT_REQUIRED:
-                base.cr.handleQuietZoneGenerateWithRequired(di)
-            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER:
-                base.cr.handleQuietZoneGenerateWithRequiredOther(di)
-            elif msgType == CLIENT_OBJECT_SET_FIELD:
-                base.cr.handleQuietZoneUpdateField(di)
-            elif msgType in QUIET_ZONE_IGNORED_LIST:
-                self.notify.debug('ignoring unwanted message from previous zone')
-            else:
-                base.cr.handlePlayGame(msgType, di)
+    def handleWaitForQuietZoneResponse(self, msgType, di):
+        self.notify.debug('handleWaitForQuietZoneResponse(' + 'msgType=' + str(msgType) + ', di=' + str(di) + ')')
+        if msgType == CLIENT_CREATE_OBJECT_REQUIRED:
+            base.cr.handleQuietZoneGenerateWithRequired(di)
+        elif msgType == CLIENT_CREATE_OBJECT_REQUIRED_OTHER:
+            base.cr.handleQuietZoneGenerateWithRequiredOther(di)
+        elif msgType == CLIENT_OBJECT_UPDATE_FIELD:
+            base.cr.handleQuietZoneUpdateField(di)
+        elif msgType in QUIET_ZONE_IGNORED_LIST:
+            self.notify.debug('ignoring unwanted message from previous zone')
+        else:
+            base.cr.handlePlayGame(msgType, di)
 
-    if not __astron__:
-        def handleWaitForZoneRedirect(self, msgType, di):
-            # self.notify.debug('handleWaitForZoneRedirect(' + 'msgType=' + str(msgType) + ', di=' + str(di) + ')')
-            if msgType == CLIENT_CREATE_OBJECT_REQUIRED:
-                base.cr.handleQuietZoneGenerateWithRequired(di)
-            elif msgType == CLIENT_CREATE_OBJECT_REQUIRED_OTHER:
-                base.cr.handleQuietZoneGenerateWithRequiredOther(di)
-            elif msgType == CLIENT_OBJECT_UPDATE_FIELD:
-                base.cr.handleQuietZoneUpdateField(di)
-            else:
-                base.cr.handlePlayGame(msgType, di)
-    else:
-        def handleWaitForZoneRedirect(self, msgType, di):
-            # self.notify.debug('handleWaitForZoneRedirect(' + 'msgType=' + str(msgType) + ', di=' + str(di) + ')')
-            if msgType == CLIENT_ENTER_OBJECT_REQUIRED:
-                base.cr.handleQuietZoneGenerateWithRequired(di)
-            elif msgType == CLIENT_ENTER_OBJECT_REQUIRED_OTHER:
-                base.cr.handleQuietZoneGenerateWithRequiredOther(di)
-            elif msgType == CLIENT_OBJECT_SET_FIELD:
-                base.cr.handleQuietZoneUpdateField(di)
-            else:
-                base.cr.handlePlayGame(msgType, di)
+    def handleWaitForZoneRedirect(self, msgType, di):
+        self.notify.debug('handleWaitForZoneRedirect(' + 'msgType=' + str(msgType) + ', di=' + str(di) + ')')
+        if msgType == CLIENT_CREATE_OBJECT_REQUIRED:
+            base.cr.handleQuietZoneGenerateWithRequired(di)
+        elif msgType == CLIENT_CREATE_OBJECT_REQUIRED_OTHER:
+            base.cr.handleQuietZoneGenerateWithRequiredOther(di)
+        elif msgType == CLIENT_OBJECT_UPDATE_FIELD:
+            base.cr.handleQuietZoneUpdateField(di)
+        else:
+            base.cr.handlePlayGame(msgType, di)
 
     def enterOff(self):
         self.notify.debug('enterOff()')
@@ -199,7 +173,7 @@ class QuietZoneState(StateData.StateData):
         self._setZoneCompleteLocalCallbacks = {}
 
     def enterWaitForQuietZoneResponse(self):
-        # self.notify.debug('enterWaitForQuietZoneResponse(doneStatus=' + str(self._requestStatus) + ')')
+        self.notify.debug('enterWaitForQuietZoneResponse(doneStatus=' + str(self._requestStatus) + ')')
         if not self.Disable:
             base.cr.handler = self.handleWaitForQuietZoneResponse
             base.cr.handlerArgs = self._requestStatus
@@ -231,7 +205,7 @@ class QuietZoneState(StateData.StateData):
         return
 
     def enterWaitForZoneRedirect(self):
-        # self.notify.debug('enterWaitForZoneRedirect(requestStatus=' + str(self._requestStatus) + ')')
+        self.notify.debug('enterWaitForZoneRedirect(requestStatus=' + str(self._requestStatus) + ')')
         if not self.Disable:
             base.cr.handler = self.handleWaitForZoneRedirect
             base.cr.handlerArgs = self._requestStatus
@@ -276,7 +250,7 @@ class QuietZoneState(StateData.StateData):
         return
 
     def enterWaitForSetZoneResponse(self):
-        # self.notify.debug('enterWaitForSetZoneResponse(requestStatus=' + str(self._requestStatus) + ')')
+        self.notify.debug('enterWaitForSetZoneResponse(requestStatus=' + str(self._requestStatus) + ')')
         if not self.Disable:
             messenger.send(self.getEnterWaitForSetZoneResponseMsg(), [self._requestStatus])
             base.cr.handlerArgs = self._requestStatus
@@ -295,7 +269,7 @@ class QuietZoneState(StateData.StateData):
         return
 
     def enterWaitForSetZoneComplete(self):
-        # self.notify.debug('enterWaitForSetZoneComplete(requestStatus=' + str(self._requestStatus) + ')')
+        self.notify.debug('enterWaitForSetZoneComplete(requestStatus=' + str(self._requestStatus) + ')')
         if not self.Disable:
             base.cr.handlerArgs = self._requestStatus
             if base.slowQuietZone:
