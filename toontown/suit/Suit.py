@@ -2,15 +2,12 @@ from direct.actor import Actor
 from otp.avatar import Avatar
 from . import SuitDNA
 from toontown.toonbase import ToontownGlobals
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.otp import *
 from toontown.battle import SuitBattleGlobals
 from direct.task.Task import Task
 from toontown.battle import BattleProps
 from toontown.toonbase import TTLocalizer
-from pandac.PandaModules import VirtualFileMountHTTP, VirtualFileSystem, Filename, DSearchPath
-from direct.showbase import AppRunnerGlobal
-import os
 aSize = 6.06
 bSize = 5.29
 cSize = 4.14
@@ -150,7 +147,7 @@ bw = (('finger-wag', 'fingerwag', 5),
  ('magic1', 'magic1', 5),
  ('throw-object', 'throw-object', 5),
  ('throw-paper', 'throw-paper', 5))
-if not base.config.GetBool('want-new-cogs', 0):
+if not ConfigVariableBool('want-new-cogs', 0).value:
     ModelDict = {'a': ('/models/char/suitA-', 4),
      'b': ('/models/char/suitB-', 4),
      'c': ('/models/char/suitC-', 3.5)}
@@ -186,12 +183,12 @@ def unloadSuits(level):
 def loadSuitModelsAndAnims(level, flag = 0):
     for key in list(ModelDict.keys()):
         model, phase = ModelDict[key]
-        if base.config.GetBool('want-new-cogs', 0):
+        if ConfigVariableBool('want-new-cogs', 0).value:
             headModel, headPhase = HeadModelDict[key]
         else:
             headModel, headPhase = ModelDict[key]
         if flag:
-            if base.config.GetBool('want-new-cogs', 0):
+            if ConfigVariableBool('want-new-cogs', 0).value:
                 filepath = 'phase_3.5' + model + 'zero'
                 if cogExists(model + 'zero.bam'):
                     loader.loadModel(filepath).node()
@@ -199,7 +196,7 @@ def loadSuitModelsAndAnims(level, flag = 0):
                 loader.loadModel('phase_3.5' + model + 'mod').node()
             loader.loadModel('phase_' + str(headPhase) + headModel + 'heads').node()
         else:
-            if base.config.GetBool('want-new-cogs', 0):
+            if ConfigVariableBool('want-new-cogs', 0).value:
                 filepath = 'phase_3.5' + model + 'zero'
                 if cogExists(model + 'zero.bam'):
                     loader.unloadModel(filepath)
@@ -210,11 +207,8 @@ def loadSuitModelsAndAnims(level, flag = 0):
 
 def cogExists(filePrefix):
     searchPath = DSearchPath()
-    if AppRunnerGlobal.appRunner:
-        searchPath.appendDirectory(Filename.expandFrom('$TT_3_5_ROOT/phase_3.5'))
-    else:
-        basePath = os.path.expandvars('$TTMODELS') or './ttmodels'
-        searchPath.appendDirectory(Filename.fromOsSpecific(basePath + '/built/phase_3.5'))
+    if __debug__:
+        searchPath.appendDirectory(Filename('resources/phase_3.5'))
     filePrefix = filePrefix.strip('/')
     pfile = Filename(filePrefix)
     found = vfs.resolveFilename(pfile, searchPath)
@@ -618,7 +612,7 @@ class Suit(Avatar.Avatar):
     def generateBody(self):
         animDict = self.generateAnimDict()
         filePrefix, bodyPhase = ModelDict[self.style.body]
-        if base.config.GetBool('want-new-cogs', 0):
+        if ConfigVariableBool('want-new-cogs', 0).value:
             if cogExists(filePrefix + 'zero.bam'):
                 self.loadModel('phase_3.5' + filePrefix + 'zero')
             else:
@@ -644,7 +638,7 @@ class Suit(Avatar.Avatar):
         for anim in AllSuitsBattle:
             animDict[anim[0]] = 'phase_5' + filePrefix + anim[1]
 
-        if not base.config.GetBool('want-new-cogs', 0):
+        if not ConfigVariableBool('want-new-cogs', 0).value:
             if self.style.body == 'a':
                 animDict['neutral'] = 'phase_4/models/char/suitA-neutral'
                 for anim in SuitsCEOBattle:
@@ -701,7 +695,7 @@ class Suit(Avatar.Avatar):
             self.shadowJoint = self.find('**/joint_shadow')
             self.nametagJoint = self.find('**/joint_nameTag')
 
-        if base.config.GetBool('want-new-cogs', 0):
+        if ConfigVariableBool('want-new-cogs', 0).value:
             if dept == 'c':
                 texType = 'bossbot'
             elif dept == 'm':
@@ -759,14 +753,14 @@ class Suit(Avatar.Avatar):
         modelRoot.find('**/hands').setTexture(handTex, 1)
 
     def generateHead(self, headType):
-        if base.config.GetBool('want-new-cogs', 0):
+        if ConfigVariableBool('want-new-cogs', 0).value:
             filePrefix, phase = HeadModelDict[self.style.body]
         else:
             filePrefix, phase = ModelDict[self.style.body]
         headModel = loader.loadModel('phase_' + str(phase) + filePrefix + 'heads')
         headReferences = headModel.findAllMatches('**/' + headType)
         for i in range(0, headReferences.getNumPaths()):
-            if base.config.GetBool('want-new-cogs', 0):
+            if ConfigVariableBool('want-new-cogs', 0).value:
                 headPart = self.instance(headReferences.getPath(i), 'modelRoot', 'to_head')
                 if not headPart:
                     headPart = self.instance(headReferences.getPath(i), 'modelRoot', 'joint_head')
@@ -806,7 +800,7 @@ class Suit(Avatar.Avatar):
     def generateCorporateMedallion(self):
         icons = loader.loadModel('phase_3/models/gui/cog_icons')
         dept = self.style.dept
-        if base.config.GetBool('want-new-cogs', 0):
+        if ConfigVariableBool('want-new-cogs', 0).value:
             chestNull = self.find('**/def_joint_attachMeter')
             if chestNull.isEmpty():
                 chestNull = self.find('**/joint_attachMeter')
@@ -831,7 +825,7 @@ class Suit(Avatar.Avatar):
         button.setScale(3.0)
         button.setH(180.0)
         button.setColor(self.healthColors[0])
-        if base.config.GetBool('want-new-cogs', 0):
+        if ConfigVariableBool('want-new-cogs', 0).value:
             chestNull = self.find('**/def_joint_attachMeter')
             if chestNull.isEmpty():
                 chestNull = self.find('**/joint_attachMeter')
@@ -909,7 +903,7 @@ class Suit(Avatar.Avatar):
         return
 
     def getLoseActor(self):
-        if base.config.GetBool('want-new-cogs', 0):
+        if ConfigVariableBool('want-new-cogs', 0).value:
             if self.find('**/body'):
                 return self
         if self.loseActor == None:

@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 
 class BattleSounds:
@@ -9,7 +9,7 @@ class BattleSounds:
         self.isValid = 0
         if self.mgr != None and self.mgr.isValid():
             self.isValid = 1
-            limit = base.config.GetInt('battle-sound-cache-size', 15)
+            limit = ConfigVariableInt('battle-sound-cache-size', 15).value
             self.mgr.setCacheLimit(limit)
             base.addSfxManager(self.mgr)
             self.setupSearchPath()
