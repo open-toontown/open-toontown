@@ -4,8 +4,8 @@ from direct.distributed import DistributedSmoothNode/AI
 from direct.distributed import DistributedCartesianGrid/AI
 from direct.distributed import DistributedCamera/AI/OV
 from otp.distributed import Account/AI/UD
-from otp.distributed import AstronAccount/AI/UD
 from otp.ai import TimeManager/AI
+from otp.ai import MagicWordManager/AI
 from otp.avatar import DistributedAvatar/AI/UD
 from otp.avatar import DistributedPlayer/AI
 from otp.friends import FriendManager/AI
@@ -27,7 +27,6 @@ from otp.distributed import CentralLogger/AI/UD
 from otp.web import SettingsMgr/AI/UD
 from otp.status import StatusDatabase/UD
 from otp.avatar import AvatarHandle
-from otp.login import AstronLoginManager/UD
 
 typedef uint8 bool;
 
@@ -42,25 +41,15 @@ struct AvatarPendingDel {
 
 dclass Account {
   string DcObjectType db;
-  uint32[] ACCOUNT_AV_SET required db;
-  uint32[] pirateAvatars required db;
-  uint32[] HOUSE_ID_SET db;
+  uint32array ACCOUNT_AV_SET required db;
+  uint32array pirateAvatars required db;
+  uint32array HOUSE_ID_SET db;
   uint32 ESTATE_ID db;
   AvatarPendingDel ACCOUNT_AV_SET_DEL[] db;
   string PLAYED_MINUTES db;
   string PLAYED_MINUTES_PERIOD db;
   string CREATED db;
   string LAST_LOGIN db;
-};
-
-dclass AstronAccount {
-  uint32[] ACCOUNT_AV_SET required db;
-  uint32 ESTATE_ID db;
-  AvatarPendingDel ACCOUNT_AV_SET_DEL[] db;
-  string CREATED db;
-  string LAST_LOGIN db;
-  string ACCOUNT_ID db;
-  string ACCESS_LEVEL db;
 };
 
 struct BarrierData {
@@ -106,12 +95,14 @@ dclass TimeManager : DistributedObject {
   serverTime(uint8, int32, uint32);
   setDisconnectReason(uint8) airecv clsend;
   setExceptionInfo(string(0-1024)) airecv clsend;
-  setSignature(string(0-1024), blob, blob) airecv clsend;
+  setSignature(string(0-1024), char [16], char [16]) airecv clsend;
   setFrameRate(uint16/10, uint16/1000, uint16, string(0-256), uint32/10, uint32/10, string(0-256), uint16, uint16, uint32/10, uint32/10, uint32/10, uint32, OSInfo, CPUSpeed, uint16, uint16, string(0-256)) airecv clsend;
   setCpuInfo(string(0-1024), string) airecv clsend;
   checkForGarbageLeaks(bool) airecv clsend;
   setNumAIGarbageLeaks(uint32);
   setClientGarbageLeak(uint32, string(0-1024)) airecv clsend;
+  checkAvOnDistrict(uint32, DoId) clsend airecv;
+  checkAvOnDistrictResult(uint32, DoId, bool);
 };
 
 dclass ObjectServer {
@@ -218,20 +209,15 @@ dclass AvatarHandle : TalkPath_whisper {
 
 dclass DistributedAvatar : DistributedSmoothNode, TalkPath_owner, TalkPath_whisper {
   string DcObjectType db;
-  setName(string = "Avatar") required broadcast db airecv;
+  setName(string) required broadcast db airecv;
   friendsNotify(int32, int8) ownrecv airecv clsend;
   checkAvOnShard(uint32) clsend airecv;
   confirmAvOnShard(uint32, int8);
 };
 
-struct FriendEntry {
-  uint32 friendId;
-  uint8 friendCode;
-};
-
 dclass DistributedPlayer : DistributedAvatar {
   arrivedOnDistrict(uint32) ownrecv ram;
-  setAccountName(string = "") required ownrecv db;
+  setAccountName(string) required ownrecv db;
   setWhisperFrom(uint32, string(0-256), uint32) ownrecv clsend;
   setWhisperWLFrom(uint32, string(0-256), uint32) ownrecv clsend;
   setWhisperSCFrom(uint32, uint16) ownrecv clsend;
@@ -242,16 +228,21 @@ dclass DistributedPlayer : DistributedAvatar {
   setWhitelistChatFlags(uint8) broadcast ownrecv ram airecv;
   setSC(uint16) broadcast ownsend airecv;
   setSCCustom(uint16) broadcast ownsend airecv;
-  setFriendsList(FriendEntry[] = []) ownrecv required db airecv;
+  setFriendsList(uint32uint8array) ownrecv required db airecv;
   setDISLname(string) broadcast ownrecv ram;
-  setDISLid(uint32 = 0) broadcast ownrecv ram db airecv required;
+  setDISLid(uint32) broadcast ownrecv ram db airecv required;
   OwningAccount(uint32);
-  WishName(string = "") db ram;
-  WishNameState(string = "LOCKED") db ram;
-  setPreviousAccess(uint8 = 0) required db airecv;
-  setAccess(uint8 = 2) broadcast ownrecv required ram airecv;
-  setAccessLevel(uint16 accessLevel = 0) ownrecv required airecv;
-  setAsGM(bool = 0) required ram broadcast ownrecv airecv;
+  WishName(string) db ram;
+  WishNameState(string) db ram;
+  setPreviousAccess(uint8) required db airecv;
+  setAccess(uint8) broadcast ownrecv required ram airecv;
+  setAsGM(bool) required ram broadcast ownrecv airecv;
+};
+
+dclass MagicWordManager : DistributedObject {
+  setMagicWord(string, uint32, uint32, string(0-256)) airecv clsend;
+  setMagicWordResponse(string) airecv;
+  setWho(uint32array) airecv clsend;
 };
 
 dclass OtpAvatarManager : DistributedObject {
@@ -514,27 +505,3 @@ dclass CallbackObject {
   callback(uint32, bool, uint8);
 };
 
-struct PotentialAvatar {
-  uint32 avNum;
-  string avName;
-  blob avDNA;
-  uint8 avPosition;
-  uint8 nameState;
-};
-
-dclass AstronLoginManager : DistributedObject {
-  requestLogin(string) clsend;
-  loginResponse(blob);
-  requestAvatarList() clsend;
-  avatarListResponse(PotentialAvatar[]);
-  createAvatar(blob, uint8) clsend;
-  createAvatarResponse(uint32);
-  setNamePattern(uint32, int16, uint8, int16, uint8, int16, uint8, int16, uint8) clsend;
-  namePatternAnswer(uint32, uint8);
-  setNameTyped(uint32, string) clsend;
-  nameTypedResponse(uint32, uint8);
-  acknowledgeAvatarName(uint32) clsend;
-  acknowledgeAvatarNameResponse();
-  requestRemoveAvatar(uint32) clsend;
-  requestPlayAvatar(uint32) clsend;
-};

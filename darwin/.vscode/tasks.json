@@ -24,16 +24,6 @@
             }
         },
         {
-            "label": "Darwin - Start Astron Server",
-            "type": "shell",
-            "command": "./start-astron-server.sh",
-            "group": "test",
-            "presentation": {
-                "reveal": "always",
-                "panel": "new"
-            }
-        },
-        {
             "label": "Darwin - Start UberDOG Server",
             "type": "shell",
             "command": "./start-uberdog-server.sh",
