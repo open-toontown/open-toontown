@@ -18,8 +18,5 @@ class TelemetryLimited:
             self._limits.remove(limit)
 
     def enforceTelemetryLimits(self):
-        if __astron__ and self.isEmpty():
-            return
-
         for limit in self._limits:
             limit(self)
