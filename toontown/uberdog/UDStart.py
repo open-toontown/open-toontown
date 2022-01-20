@@ -9,7 +9,7 @@ parser.add_argument('--max-channels', help='The number of channels that the serv
 parser.add_argument('--stateserver', help='The control channel of this UberDOG\'s designated State Server.')
 parser.add_argument('--messagedirector-ip',
                     help='The IP address of the Message Director that this UberDOG will connect to.')
-parser.add_argument('--eventlogger-ip', help='The IP address of the Astron Event Logger that this UberDOG will log to.')
+parser.add_argument('--eventlogger-ip', help='The IP address of the OTP Event Logger that this UberDOG will log to.')
 parser.add_argument('config', nargs='*', default=['etc/Configrc.prc'],
                     help='PRC file(s) that will be loaded on this UberDOG instance.')
 args = parser.parse_args()
