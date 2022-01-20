@@ -35,7 +35,7 @@ If you use Linux, or are interested in building Panda3D yourself, head on over t
 # Starting the Server and Game
 To start the server and run the game locally, go to your platform directory (`win32` for Windows, `darwin` for Mac and `linux` for Linux), and make sure you start the following scripts in order:
 
-`Astron Server -> UberDOG (UD) Server -> AI (District) Server -> Game Client`
+`OTP Server -> UberDOG (UD) Server -> AI (District) Server -> Game Client`
 
 Be sure to wait till the servers have finished booting before starting the next.  If done correctly, you should be able to make your toon and play the game!  There is no support for Magic Words (commands) yet, [but it is currently in the works!](https://github.com/open-toontown/open-toontown/projects/1)
 
