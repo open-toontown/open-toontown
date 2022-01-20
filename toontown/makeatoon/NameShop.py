@@ -540,7 +540,7 @@ class NameShop(StateData.StateData):
             name = string.strip(name)
             return TextEncoder.upper(npcName) == TextEncoder.upper(name)
 
-        for npcId in NPCToons.NPCToonDict.keys():
+        for npcId in list(NPCToons.NPCToonDict.keys()):
             npcName = NPCToons.NPCToonDict[npcId][1]
             if match(npcName):
                 self.notify.info('name matches NPC name "%s"' % npcName)
@@ -909,7 +909,7 @@ class NameShop(StateData.StateData):
             self.fsm.request('PickAName')
             flags = [pattern[0] != -1, pattern[1] != -1, pattern[2] != -1]
             names = []
-            for i in xrange(len(pattern)):
+            for i in range(len(pattern)):
                 if pattern[i] != -1:
                     names.append(pnp.getNamePartString(self.toon.style.gender, i, pattern[i]))
                 else:
