@@ -10,7 +10,7 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
     RedownloadTaskName = 'RedownloadWhitelistTask'
     WhitelistBaseDir = ConfigVariableString('whitelist-base-dir', '').value
     WhitelistStageDir = ConfigVariableString('whitelist-stage-dir', 'whitelist').value
-    WhitelistOverHttp = ConfigVariableBool('whitelist-over-http', True).value
+    WhitelistOverHttp = ConfigVariableBool('whitelist-over-http', False).value
     WhitelistFileName = ConfigVariableString('whitelist-filename', 'twhitelist.dat').value
 
     def __init__(self):
@@ -30,9 +30,10 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
         data = vfs.readFile(filename, 1)
         lines = data.split(b'\n')
         WhiteList.__init__(self, lines)
-        self.redownloadWhitelist()
         self.defaultWord = TTLocalizer.ChatGarblerDefault[0]
-        self.accept('updateWhitelist', self.handleNewWhitelist)
+        if self.WhitelistOverHttp:
+            self.redownloadWhitelist()
+            self.accept('updateWhitelist', self.handleNewWhitelist)
 
     def unload(self):
         self.ignore('updateWhitelist')
@@ -108,22 +109,7 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
     def findWhitelistDir(self):
         if self.WhitelistOverHttp:
             return self.WhitelistStageDir
-        searchPath = DSearchPath()
-        if AppRunnerGlobal.appRunner:
-            searchPath.appendDirectory(Filename.expandFrom('$TT_3_5_ROOT/phase_3.5/models/news'))
-        else:
-            basePath = os.path.expandvars('$TTMODELS') or './ttmodels'
-            searchPath.appendDirectory(Filename.fromOsSpecific(basePath + '/built/' + self.NewsBaseDir))
-            searchPath.appendDirectory(Filename(self.NewsBaseDir))
-        pfile = Filename(self.WhitelistFileName)
-        found = vfs.resolveFilename(pfile, searchPath)
-        if not found:
-            self.notify.warning('findWhitelistDir - no path: %s' % self.WhitelistFileName)
-            self.setErrorMessage(TTLocalizer.NewsPageErrorDownloadingFile % self.WhitelistFileName)
-            return None
-        self.notify.debug('found whitelist file %s' % pfile)
-        realDir = pfile.getDirname()
-        return realDir
+        return None
 
     def downloadWhitelistTask(self, task):
         if self.ch.run():
