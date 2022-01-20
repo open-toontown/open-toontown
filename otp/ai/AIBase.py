@@ -22,7 +22,6 @@ class AIBase:
     def __init__(self):
         self.config = getConfigShowbase()
         __builtins__['__dev__'] = self.config.GetBool('want-dev', 0)
-        __builtins__['__astron__'] = self.config.GetBool('astron-support', 1)
         __builtins__['__execWarnings__'] = self.config.GetBool('want-exec-warnings', 0)
         logStackDump = (self.config.GetBool('log-stack-dump', (not __debug__)) or self.config.GetBool('ai-log-stack-dump', (not __debug__)))
         uploadStackDump = self.config.GetBool('upload-stack-dump', 0)
@@ -58,7 +57,6 @@ class AIBase:
         __builtins__['vfs'] = vfs
         __builtins__['hidden'] = self.hidden
         AIBase.notify.info('__dev__ == %s' % __dev__)
-        AIBase.notify.info('__astron__ == %s' % __astron__)
         PythonUtil.recordFunctorCreationStacks()
         __builtins__['wantTestObject'] = self.config.GetBool('want-test-object', 0)
         self.wantStats = self.config.GetBool('want-pstats', 0)
