@@ -154,7 +154,7 @@ class OTPClientRepository(ClientRepositoryBase):
         else:
             self.notify.error('The required-login was not recognized.')
 
-        self.wantMagicWords = False
+        self.wantMagicWords = ConfigVariableString('want-magic-words', '').value
         if self.launcher and hasattr(self.launcher, 'http'):
             self.http = self.launcher.http
         else:
@@ -941,7 +941,7 @@ class OTPClientRepository(ClientRepositoryBase):
                 avNames[1] = di.getString()
                 avNames[2] = di.getString()
                 avNames[3] = di.getString()
-                avDNA = di.getBlob()
+                avDNA = di.getString()
                 avPosition = di.getUint8()
                 aname = di.getUint8()
                 potAv = PotentialAvatar(avNum, avNames, avDNA, avPosition, aname)
