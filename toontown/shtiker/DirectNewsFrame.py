@@ -1,5 +1,6 @@
 import os
 import datetime
+import functools
 from panda3d.core import Filename, DSearchPath, ConfigVariableString, ConfigVariableBool
 from panda3d.core import HTTPClient, Ramfile, DocumentSpec
 from direct.showbase import DirectObject
@@ -121,7 +122,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
             return fileA.getFilename().compareTo(fileB.getFilename())
 
         homeFileNames = list(homeFileNames)
-        homeFileNames.sort(cmp=fileCmp)
+        homeFileNames.sort(key=functools.cmp_to_key(fileCmp))
         self.notify.debug('returned homeFileNames=%s' % homeFileNames)
         return homeFileNames
 
