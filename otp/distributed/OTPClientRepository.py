@@ -407,9 +407,6 @@ class OTPClientRepository(ClientRepositoryBase):
         self.uberZoneInterest = None
         self.wantSwitchboard = ConfigVariableBool('want-switchboard', 0).value
         self.wantSwitchboardHacks = ConfigVariableBool('want-switchboard-hacks', 0).value
-        self.__pendingGenerates = {}
-        self.__pendingMessages = {}
-        self.__doId2pendingInterest = {}
         self.centralLogger = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_CENTRAL_LOGGER, 'CentralLogger')
 
     def startLeakDetector(self):
