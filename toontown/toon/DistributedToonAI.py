@@ -216,8 +216,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             if self.WantOldGMNameBan:
                 self._checkOldGMName()
             messenger.send('avatarEntered', [self])
-            if __astron__:
-                self.sendUpdate('setDefaultShard', [self.air.districtId])
         if hasattr(self, 'gameAccess') and self.gameAccess != 2:
             if self.hat[0] != 0:
                 self.replaceItemInAccessoriesList(ToonDNA.HAT, 0, 0, 0, self.hat[0], self.hat[1], self.hat[2])
@@ -235,29 +233,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
                 self.replaceItemInAccessoriesList(ToonDNA.SHOES, 0, 0, 0, self.shoes[0], self.shoes[1], self.shoes[2])
                 self.b_setShoesList(self.shoesList)
                 self.b_setShoes(0, 0, 0)
-
-    if __astron__:
-        def setLocation(self, parentId, zoneId):
-            DistributedPlayerAI.DistributedPlayerAI.setLocation(self, parentId, zoneId)
-            if self.isPlayerControlled():
-                if 100 <= zoneId < ToontownGlobals.DynamicZonesBegin:
-                    hood = ZoneUtil.getHoodId(zoneId)
-                    self.sendUpdate('setLastHood', [hood])
-                    self.setDefaultZone(hood)
-                    self.sendUpdate('setDefaultZone', [hood])
-
-                    canonicalZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
-                    canonicalHood = ZoneUtil.getHoodId(canonicalZoneId)
-                    hoodsVisited = list(self.getHoodsVisited())
-                    if canonicalHood not in hoodsVisited:
-                        hoodsVisited.append(canonicalHood)
-                        self.b_setHoodsVisited(hoodsVisited)
-
-                    if canonicalZoneId == ToontownGlobals.GoofySpeedway:
-                        teleportAccess = self.getTeleportAccess()
-                        if ToontownGlobals.GoofySpeedway not in teleportAccess:
-                            teleportAccess.append(ToontownGlobals.GoofySpeedway)
-                            self.b_setTeleportAccess(teleportAccess)
 
     def sendDeleteEvent(self):
         if simbase.wantPets:
