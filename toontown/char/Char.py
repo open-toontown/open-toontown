@@ -416,122 +416,26 @@ class Char(Avatar.Avatar):
             dialogueFile = base.loader.loadSfx('phase_3/audio/dial/mickey.ogg')
             for i in range(0, 6):
                 self.dialogueArray.append(dialogueFile)
-
-            if language == 'japanese':
-                chatterIndexArray = ([1, 2], [1,
-                  2,
-                  3,
-                  4], [1,
-                  2,
-                  3,
-                  4,
-                  5])
-                self.loadChatterDialogue('mickey', chatterIndexArray, 'phase_3/audio/dial', language)
         elif char == 'vmk':
             dialogueFile = base.loader.loadSfx('phase_3/audio/dial/mickey.ogg')
             for i in range(0, 6):
                 self.dialogueArray.append(dialogueFile)
-
-            if language == 'japanese':
-                chatterIndexArray = ([1, 2], [1,
-                  2,
-                  3,
-                  4], [1,
-                  2,
-                  3,
-                  4,
-                  5])
-                self.loadChatterDialogue('mickey', chatterIndexArray, 'phase_3/audio/dial', language)
         elif char == 'mn' or char == 'wmn':
             dialogueFile = base.loader.loadSfx('phase_3/audio/dial/minnie.ogg')
             for i in range(0, 6):
                 self.dialogueArray.append(dialogueFile)
-
-            if language == 'japanese':
-                chatterIndexArray = ([1, 2], [1,
-                  2,
-                  3,
-                  4,
-                  5,
-                  6,
-                  7,
-                  8,
-                  9,
-                  10,
-                  11,
-                  12,
-                  13,
-                  14,
-                  15,
-                  16,
-                  17], [1, 2, 3])
-                self.loadChatterDialogue('minnie', chatterIndexArray, 'phase_3/audio/dial', language)
         elif char == 'dd' or char == 'shdd':
             dialogueFile = base.loader.loadSfx('phase_4/audio/dial/daisy.ogg')
             for i in range(0, 6):
                 self.dialogueArray.append(dialogueFile)
-
-            if language == 'japanese':
-                chatterIndexArray = ([1, 2, 3], [1,
-                  2,
-                  3,
-                  4,
-                  5,
-                  6,
-                  7,
-                  8,
-                  9,
-                  10,
-                  11,
-                  12], [1,
-                  2,
-                  3,
-                  4])
-                self.loadChatterDialogue('daisy', chatterIndexArray, 'phase_8/audio/dial', language)
         elif char == 'g' or char == 'sg':
             dialogueFile = base.loader.loadSfx('phase_6/audio/dial/goofy.ogg')
             for i in range(0, 6):
                 self.dialogueArray.append(dialogueFile)
-
-            if language == 'japanese':
-                chatterIndexArray = ([1, 2, 3], [1,
-                  2,
-                  3,
-                  4,
-                  5,
-                  6,
-                  7,
-                  8,
-                  9,
-                  10,
-                  11,
-                  12], [1,
-                  2,
-                  3,
-                  4])
-                self.loadChatterDialogue('goofy', chatterIndexArray, 'phase_6/audio/dial', language)
         elif char == 'd' or char == 'dw' or char == 'fd':
             dialogueFile = base.loader.loadSfx('phase_6/audio/dial/donald.ogg')
             for i in range(0, 6):
                 self.dialogueArray.append(dialogueFile)
-
-            if char == 'd':
-                if language == 'japanese':
-                    chatterIndexArray = ([1, 2], [1,
-                      2,
-                      3,
-                      4,
-                      5,
-                      6,
-                      7,
-                      8,
-                      9,
-                      10,
-                      11], [1,
-                      2,
-                      3,
-                      4])
-                    self.loadChatterDialogue('donald', chatterIndexArray, 'phase_6/audio/dial', language)
         elif char == 'p' or char == 'wp':
             dialogueFile = base.loader.loadSfx('phase_3.5/audio/dial/AV_dog_med.ogg')
             for i in range(0, 6):

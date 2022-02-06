@@ -241,38 +241,6 @@ def checkName(name, otherCheckFuncs = [], font = None):
                     notify.info('name has mixed case')
                     return OTPLocalizer.NCMixedCase
 
-    def checkJapanese(name):
-        asciiSpace = list(range(32, 33))
-        asciiDigits = list(range(48, 64))
-        hiragana = list(range(12353, 12448))
-        katakana = list(range(12449, 12544))
-        halfwidthKatakana = list(range(65381, 65440))
-        halfwidthCharacter = set(asciiSpace + halfwidthKatakana)
-        allowedUtf8 = set(asciiSpace + hiragana + katakana + halfwidthKatakana)
-
-        te = TextEncoder()
-        dc = 0.0
-
-        for char in (ord(char) for char in te.decodeText(name)):
-            if char not in allowedUtf8:
-                if char in asciiDigits:
-                    notify.info('name contains not allowed ascii digits')
-                    return OTPLocalizer.NCNoDigits
-                else:
-                    notify.info('name contains not allowed utf8 char: 0x%04x' % char)
-                    return OTPLocalizer.NCBadCharacter % te.encodeWtext(chr(char))
-            elif char in halfwidthCharacter:
-                dc += 0.5
-            else:
-                dc += 1
-
-        if dc < 2:
-            notify.info('name is too short: %0.1f' % dc)
-            return OTPLocalizer.NCTooShort
-        elif dc > 8:
-            notify.info('name has been occupied more than eight display cells: %0.1f' % dc)
-            return OTPLocalizer.NCGeneric
-
     def repeatedChars(name):
         count = 1
         lastChar = None
