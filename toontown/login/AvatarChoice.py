@@ -200,11 +200,7 @@ class AvatarChoice(DirectButton):
 
     def verifyDeleteWithPassword(self):
         tt = base.cr.loginInterface
-        if tt.supportsAuthenticateDelete() and base.cr.productName not in ['DisneyOnline-UK',
-         'JP',
-         'FR',
-         'BR',
-         'DisneyOnline-AP']:
+        if tt.supportsAuthenticateDelete():
             self.deleteWithPassword = 1
             deleteText = TTLocalizer.AvatarChoiceDeletePasswordText % self.name
         else:

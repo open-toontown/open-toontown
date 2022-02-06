@@ -106,12 +106,6 @@ class FriendsListPanel(DirectFrame, StateData.StateData):
     def __init__(self):
         self.leftmostPanel = FLPPets
         self.rightmostPanel = FLPPlayers
-        if base.cr.productName in ['DisneyOnline-UK',
-         'DisneyOnline-AP',
-         'JP',
-         'FR',
-         'BR']:
-            self.rightmostPanel = FLPAll
         DirectFrame.__init__(self, relief=None)
         self.listScrollIndex = [0,
          0,

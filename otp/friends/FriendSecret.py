@@ -17,38 +17,11 @@ def showFriendSecret(secretType = AvatarSecret):
         chatMgr = base.localAvatar.chatMgr
         chatMgr.fsm.request('trueFriendTeaserPanel')
     elif not base.cr.isParentPasswordSet():
-        chatMgr = base.localAvatar.chatMgr
-        if base.cr.productName in ['DisneyOnline-AP',
-         'DisneyOnline-UK',
-         'JP',
-         'DE',
-         'BR',
-         'FR']:
-            chatMgr = base.localAvatar.chatMgr
-            if not base.cr.isPaid():
-                chatMgr.fsm.request('unpaidChatWarning')
-            else:
-                chatMgr.paidNoParentPassword = 1
-                chatMgr.fsm.request('unpaidChatWarning')
-        else:
-            chatMgr.paidNoParentPassword = 1
-            chatMgr.fsm.request('noSecretChatAtAll')
+        chatMgr.paidNoParentPassword = 1
+        chatMgr.fsm.request('noSecretChatAtAll')
     elif not base.cr.allowSecretChat():
         chatMgr = base.localAvatar.chatMgr
-        if base.cr.productName in ['DisneyOnline-AP',
-         'DisneyOnline-UK',
-         'JP',
-         'DE',
-         'BR',
-         'FR']:
-            chatMgr = base.localAvatar.chatMgr
-            if not base.cr.isPaid():
-                chatMgr.fsm.request('unpaidChatWarning')
-            else:
-                chatMgr.paidNoParentPassword = 1
-                chatMgr.fsm.request('unpaidChatWarning')
-        else:
-            chatMgr.fsm.request('noSecretChatAtAll')
+        chatMgr.fsm.request('noSecretChatAtAll')
     elif base.cr.needParentPasswordForSecretChat():
         unloadFriendSecret()
         globalFriendSecret = FriendSecretNeedsParentLogin(secretType)
@@ -109,10 +82,6 @@ class FriendSecretNeedsParentLogin(StateData.StateData):
                 okPos = (-0.22, 0.0, -0.5)
                 textPos = (0, 0.25)
                 okCommand = self.__handleOKWithParentAccount
-            elif base.cr.productName != 'Terra-DMC':
-                okPos = (-0.22, 0.0, -0.5)
-                textPos = (0, 0.25)
-                okCommand = self.__oldHandleOK
             else:
                 self.passwordEntry = None
                 okPos = (0, 0, -0.35)
@@ -121,21 +90,20 @@ class FriendSecretNeedsParentLogin(StateData.StateData):
             self.dialog = DirectFrame(parent=aspect2dp, pos=(0.0, 0.1, 0.2), relief=None, image=DGG.getDefaultDialogGeom(), image_color=OTPGlobals.GlobalDialogColor, image_scale=(1.4, 1.0, 1.25), image_pos=(0, 0, -0.1), text=OTPLocalizer.FriendSecretNeedsParentLoginWarning, text_wordwrap=21.5, text_scale=0.055, text_pos=textPos, textMayChange=1)
             DirectButton(self.dialog, image=okButtonImage, relief=None, text=OTPLocalizer.FriendSecretNeedsPasswordWarningOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=okPos, command=okCommand)
             DirectLabel(parent=self.dialog, relief=None, pos=(0, 0, 0.35), text=OTPLocalizer.FriendSecretNeedsPasswordWarningTitle, textMayChange=0, text_scale=0.08)
-            if base.cr.productName != 'Terra-DMC':
-                self.usernameLabel = DirectLabel(parent=self.dialog, relief=None, pos=(-0.07, 0.0, -0.1), text=OTPLocalizer.ParentLogin, text_scale=0.06, text_align=TextNode.ARight, textMayChange=0)
-                self.usernameEntry = DirectEntry(parent=self.dialog, relief=None, image=nameBalloon, image1_color=(0.8, 0.8, 0.8, 1.0), scale=0.064, pos=(0.0, 0.0, -0.1), width=OTPGlobals.maxLoginWidth, numLines=1, focus=1, cursorKeys=1, obscured=1, command=self.__handleUsername)
-                self.passwordLabel = DirectLabel(parent=self.dialog, relief=None, pos=(-0.02, 0.0, -0.3), text=OTPLocalizer.ParentPassword, text_scale=0.06, text_align=TextNode.ARight, textMayChange=0)
-                self.passwordEntry = DirectEntry(parent=self.dialog, relief=None, image=nameBalloon, image1_color=(0.8, 0.8, 0.8, 1.0), scale=0.064, pos=(0.04, 0.0, -0.3), width=OTPGlobals.maxLoginWidth, numLines=1, focus=1, cursorKeys=1, obscured=1, command=okCommand)
-                DirectButton(self.dialog, image=cancelButtonImage, relief=None, text=OTPLocalizer.FriendSecretNeedsPasswordWarningCancel, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=1, pos=(0.2, 0.0, -0.5), command=self.__handleCancel)
-                if withParentAccount:
-                    self.usernameEntry.enterText('')
-                    self.usernameEntry['focus'] = 1
-                    self.passwordEntry.enterText('')
-                else:
-                    self.usernameEntry.hide()
-                    self.usernameLabel.hide()
-                    self.passwordEntry['focus'] = 1
-                    self.passwordEntry.enterText('')
+            self.usernameLabel = DirectLabel(parent=self.dialog, relief=None, pos=(-0.07, 0.0, -0.1), text=OTPLocalizer.ParentLogin, text_scale=0.06, text_align=TextNode.ARight, textMayChange=0)
+            self.usernameEntry = DirectEntry(parent=self.dialog, relief=None, image=nameBalloon, image1_color=(0.8, 0.8, 0.8, 1.0), scale=0.064, pos=(0.0, 0.0, -0.1), width=OTPGlobals.maxLoginWidth, numLines=1, focus=1, cursorKeys=1, obscured=1, command=self.__handleUsername)
+            self.passwordLabel = DirectLabel(parent=self.dialog, relief=None, pos=(-0.02, 0.0, -0.3), text=OTPLocalizer.ParentPassword, text_scale=0.06, text_align=TextNode.ARight, textMayChange=0)
+            self.passwordEntry = DirectEntry(parent=self.dialog, relief=None, image=nameBalloon, image1_color=(0.8, 0.8, 0.8, 1.0), scale=0.064, pos=(0.04, 0.0, -0.3), width=OTPGlobals.maxLoginWidth, numLines=1, focus=1, cursorKeys=1, obscured=1, command=okCommand)
+            DirectButton(self.dialog, image=cancelButtonImage, relief=None, text=OTPLocalizer.FriendSecretNeedsPasswordWarningCancel, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=1, pos=(0.2, 0.0, -0.5), command=self.__handleCancel)
+            if withParentAccount:
+                self.usernameEntry.enterText('')
+                self.usernameEntry['focus'] = 1
+                self.passwordEntry.enterText('')
+            else:
+                self.usernameEntry.hide()
+                self.usernameLabel.hide()
+                self.passwordEntry['focus'] = 1
+                self.passwordEntry.enterText('')
             guiButton.removeNode()
             buttons.removeNode()
             nameBalloon.removeNode()
@@ -280,20 +248,6 @@ class FriendSecret(DirectFrame, StateData.StateData):
         self.enterSecret.hide()
         self.ok1 = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=OTPLocalizer.FSok1, text=OTPLocalizer.FriendSecretEnter, text_scale=0.06, text_pos=(0, -0.02), pos=(0, 0, -0.5), command=self.__ok1)
         self.ok1.hide()
-        if base.cr.productName in ['JP',
-         'DE',
-         'BR',
-         'FR']:
-
-            class ShowHide:
-
-                def show(self):
-                    pass
-
-                def hide(self):
-                    pass
-
-            self.changeOptions = ShowHide()
         self.ok2 = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=OTPLocalizer.FSok2, text=OTPLocalizer.FriendSecretOK, text_scale=0.06, text_pos=(0, -0.02), pos=(0, 0, -0.57), command=self.__ok2)
         self.ok2.hide()
         self.cancel = DirectButton(parent=self, relief=None, text=OTPLocalizer.FriendSecretCancel, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=OTPLocalizer.FScancel, text_scale=0.06, text_pos=(0, -0.02), pos=(0, 0, -0.57), command=self.__cancel)

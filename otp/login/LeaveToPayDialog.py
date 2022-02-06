@@ -24,17 +24,9 @@ class LeaveToPayDialog:
 
     def show(self):
         if self.paidUser:
-            if base.cr.productName in ['DisneyOnline-AP',
-             'DisneyOnline-UK',
-             'JP',
-             'FR']:
-                directFrameText = OTPLocalizer.LeaveToEnableChatUK
-                directButtonYesText = OTPLocalizer.LeaveToEnableChatUKYes
-                directButtonNoText = OTPLocalizer.LeaveToEnableChatUKNo
-            else:
-                directFrameText = OTPLocalizer.LeaveToSetParentPassword
-                directButtonYesText = OTPLocalizer.LeaveToSetParentPasswordYes
-                directButtonNoText = OTPLocalizer.LeaveToSetParentPasswordNo
+            directFrameText = OTPLocalizer.LeaveToSetParentPassword
+            directButtonYesText = OTPLocalizer.LeaveToSetParentPasswordYes
+            directButtonNoText = OTPLocalizer.LeaveToSetParentPasswordNo
         else:
             directFrameText = OTPLocalizer.LeaveToPay
             directButtonYesText = OTPLocalizer.LeaveToPayYes
@@ -75,14 +67,7 @@ class LeaveToPayDialog:
         self.destroy()
         errorCode = None
         if self.paidUser:
-            if base.cr.productName in ['DisneyOnline-AP',
-             'DisneyOnline-UK',
-             'JP',
-             'DE',
-             'FR']:
-                errorCode = OTPLauncherGlobals.ExitEnableChat
-            else:
-                errorCode = OTPLauncherGlobals.ExitSetParentPassword
+            errorCode = OTPLauncherGlobals.ExitSetParentPassword
         else:
             errorCode = OTPLauncherGlobals.ExitPurchase
         base.setExitErrorCode(errorCode)

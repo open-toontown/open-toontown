@@ -414,8 +414,6 @@ class NameShop(StateData.StateData):
          self.squareDown,
          self.squareHover,
          self.squareUp), image_scale=(1, 1.1, 0.9), pos=(0.0033, 0, -.38833), scale=(1.2, 1, 1.2), text=TTLocalizer.TypeANameButton, text_scale=TTLocalizer.NStypeANameButton, text_pos=TTLocalizer.NStypeANameButtonPos, command=self.__typeAName)
-        if base.cr.productName in ['DE', 'BR']:
-            self.typeANameButton.hide()
         self.pickANameGUIElements.append(self.typeANameButton)
         self.nameResult = DirectLabel(parent=aspect2d, relief=None, scale=TTLocalizer.NSnameResult, pos=(0.005, 0, 0.585), text=' \n ', text_scale=0.8, text_align=TextNode.ACenter, text_wordwrap=MAX_NAME_WIDTH)
         self.pickANameGUIElements.append(self.nameResult)
@@ -478,9 +476,6 @@ class NameShop(StateData.StateData):
                 x.show()
             except:
                 print('NameShop: Tried to show already removed object')
-
-        if base.cr.productName in ['DE', 'BR']:
-            self.typeANameButton.hide()
 
     def hideAll(self):
         self.uberhide(self.pickANameGUIElements)
@@ -751,14 +746,6 @@ class NameShop(StateData.StateData):
         self.nameEntry['focus'] = 1
 
     def __typeAName(self):
-        if base.cr.productName in ['JP',
-         'DE',
-         'BR',
-         'FR']:
-            if base.restrictTrialers:
-                if not base.cr.isPaid():
-                    dialog = TeaserPanel.TeaserPanel(pageName='typeAName')
-                    return
         if self.fsm.getCurrentState().getName() == 'TypeAName':
             self.typeANameButton['text'] = TTLocalizer.TypeANameButton
             self.typeANameButton.wrtReparentTo(self.namePanel, sort=2)

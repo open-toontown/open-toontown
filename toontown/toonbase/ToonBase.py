@@ -386,12 +386,7 @@ class ToonBase(OTPBase.OTPBase):
         sys.exit()
 
     def getShardPopLimits(self):
-        if self.cr.productName == 'JP':
-            return (config.GetInt('shard-low-pop', ToontownGlobals.LOW_POP_JP), config.GetInt('shard-mid-pop', ToontownGlobals.MID_POP_JP), config.GetInt('shard-high-pop', ToontownGlobals.HIGH_POP_JP))
-        elif self.cr.productName in ['BR', 'FR']:
-            return (config.GetInt('shard-low-pop', ToontownGlobals.LOW_POP_INTL), config.GetInt('shard-mid-pop', ToontownGlobals.MID_POP_INTL), config.GetInt('shard-high-pop', ToontownGlobals.HIGH_POP_INTL))
-        else:
-            return (config.GetInt('shard-low-pop', ToontownGlobals.LOW_POP), config.GetInt('shard-mid-pop', ToontownGlobals.MID_POP), config.GetInt('shard-high-pop', ToontownGlobals.HIGH_POP))
+        return (config.GetInt('shard-low-pop', ToontownGlobals.LOW_POP), config.GetInt('shard-mid-pop', ToontownGlobals.MID_POP), config.GetInt('shard-high-pop', ToontownGlobals.HIGH_POP))
 
     def playMusic(self, music, looping = 0, interrupt = 1, volume = None, time = 0.0):
         OTPBase.OTPBase.playMusic(self, music, looping, interrupt, volume, time)

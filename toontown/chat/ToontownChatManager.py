@@ -143,21 +143,12 @@ class ToontownChatManager(ChatManager.ChatManager):
 
     def enterUnpaidChatWarning(self):
         self.forceHidePayButton = False
-        if base.cr.productName in ['DisneyOnline-UK',
-         'JP',
-         'DE',
-         'BR',
-         'FR']:
-            directFrameText = OTPLocalizer.PaidParentPasswordUKWarning
-            payButtonText = OTPLocalizer.PaidParentPasswordUKWarningSet
-            directButtonText = OTPLocalizer.PaidParentPasswordUKWarningContinue
-        else:
-            directFrameText = OTPLocalizer.PaidNoParentPasswordWarning
-            payButtonText = OTPLocalizer.PaidNoParentPasswordWarningSet
-            directButtonText = OTPLocalizer.PaidNoParentPasswordWarningContinue
-            if 'QuickLauncher' not in str(base.cr.launcher.__class__) and not base.cr.isPaid():
-                directFrameText = OTPLocalizer.UnpaidNoParentPasswordWarning
-                self.forceHidePayButton = True
+        directFrameText = OTPLocalizer.PaidNoParentPasswordWarning
+        payButtonText = OTPLocalizer.PaidNoParentPasswordWarningSet
+        directButtonText = OTPLocalizer.PaidNoParentPasswordWarningContinue
+        if 'QuickLauncher' not in str(base.cr.launcher.__class__) and not base.cr.isPaid():
+            directFrameText = OTPLocalizer.UnpaidNoParentPasswordWarning
+            self.forceHidePayButton = True
         if self.unpaidChatWarning == None:
             guiButton = loader.loadModel('phase_3/models/gui/quit_button')
             buttonImage = (guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR'))
@@ -169,19 +160,7 @@ class ToontownChatManager(ChatManager.ChatManager):
             self.payButton.hide()
         else:
             self.payButton.show()
-        if base.cr.productName not in ['ES',
-         'JP',
-         'DE',
-         'BR',
-         'FR']:
-            self.unpaidChatWarning.show()
-        else:
-            place = base.cr.playGame.getPlace()
-            if place:
-                place.fsm.request('stopped')
-            self.teaser = TeaserPanel.TeaserPanel('secretChat', self.__handleUnpaidChatWarningDone)
-            if base.localAvatar.inTutorial:
-                self.teaser.hidePay()
+        self.unpaidChatWarning.show()
         normObs, scObs = self.isObscured()
         if not scObs:
             self.scButton.show()
@@ -218,22 +197,15 @@ class ToontownChatManager(ChatManager.ChatManager):
             nameBalloon = loader.loadModel('phase_3/models/props/chatbox_input')
             okButtonImage = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
             cancelButtonImage = (buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr'))
-            if base.cr.productName != 'Terra-DMC':
-                okPos = (-0.22, 0.0, -0.35)
-                textPos = (0, 0.25)
-                okCommand = self.__handleNoSecretChatWarningOK
-            else:
-                self.passwordEntry = None
-                okPos = (0, 0, -0.35)
-                textPos = (0, 0.125)
-                okCommand = self.__handleNoSecretChatWarningCancel
+            okPos = (-0.22, 0.0, -0.35)
+            textPos = (0, 0.25)
+            okCommand = self.__handleNoSecretChatWarningOK
             self.noSecretChatWarning = DirectFrame(parent=aspect2dp, pos=(0.0, 0.1, 0.2), relief=None, image=DGG.getDefaultDialogGeom(), image_color=OTPGlobals.GlobalDialogColor, image_scale=(1.4, 1.0, 1.0), text=warningText, text_wordwrap=20, text_scale=0.055, text_pos=textPos, textMayChange=1)
             DirectButton(self.noSecretChatWarning, image=okButtonImage, relief=None, text=OTPLocalizer.NoSecretChatWarningOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=okPos, command=okCommand)
             DirectLabel(parent=self.noSecretChatWarning, relief=None, pos=(0, 0, 0.35), text=OTPLocalizer.NoSecretChatWarningTitle, textMayChange=0, text_scale=0.08)
-            if base.cr.productName != 'Terra-DMC':
-                self.passwordLabel = DirectLabel(parent=self.noSecretChatWarning, relief=None, pos=(-0.07, 0.0, -0.2), text=OTPLocalizer.ParentPassword, text_scale=0.06, text_align=TextNode.ARight, textMayChange=0)
-                self.passwordEntry = DirectEntry(parent=self.noSecretChatWarning, relief=None, image=nameBalloon, image1_color=(0.8, 0.8, 0.8, 1.0), scale=0.064, pos=(0.0, 0.0, -0.2), width=OTPGlobals.maxLoginWidth, numLines=1, focus=1, cursorKeys=1, obscured=1, command=self.__handleNoSecretChatWarningOK)
-                DirectButton(self.noSecretChatWarning, image=cancelButtonImage, relief=None, text=OTPLocalizer.NoSecretChatWarningCancel, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=1, pos=(0.2, 0.0, -0.35), command=self.__handleNoSecretChatWarningCancel)
+            self.passwordLabel = DirectLabel(parent=self.noSecretChatWarning, relief=None, pos=(-0.07, 0.0, -0.2), text=OTPLocalizer.ParentPassword, text_scale=0.06, text_align=TextNode.ARight, textMayChange=0)
+            self.passwordEntry = DirectEntry(parent=self.noSecretChatWarning, relief=None, image=nameBalloon, image1_color=(0.8, 0.8, 0.8, 1.0), scale=0.064, pos=(0.0, 0.0, -0.2), width=OTPGlobals.maxLoginWidth, numLines=1, focus=1, cursorKeys=1, obscured=1, command=self.__handleNoSecretChatWarningOK)
+            DirectButton(self.noSecretChatWarning, image=cancelButtonImage, relief=None, text=OTPLocalizer.NoSecretChatWarningCancel, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=1, pos=(0.2, 0.0, -0.35), command=self.__handleNoSecretChatWarningCancel)
             buttons.removeNode()
             nameBalloon.removeNode()
         else:
@@ -281,8 +253,7 @@ class ToontownChatManager(ChatManager.ChatManager):
             c3f.setColor(1, 1, 1, 1)
             c3f.setScale(0.8)
             DirectLabel(self.activateChatGui, relief=None, text=OTPLocalizer.ActivateChatTitle, text_align=TextNode.ACenter, text_scale=0.07, text_pos=(0, 0.7), textMayChange=0)
-            if base.cr.productName != 'JP':
-                DirectButton(self.activateChatGui, image=moreButtonImage, image_scale=(1.25, 1.0, 1.0), relief=None, text=OTPLocalizer.ActivateChatMoreInfo, text_scale=0.06, text_pos=(0, -0.02), textMayChange=0, pos=(0.0, 0.0, -0.7), command=self.__handleActivateChatMoreInfo)
+            DirectButton(self.activateChatGui, image=moreButtonImage, image_scale=(1.25, 1.0, 1.0), relief=None, text=OTPLocalizer.ActivateChatMoreInfo, text_scale=0.06, text_pos=(0, -0.02), textMayChange=0, pos=(0.0, 0.0, -0.7), command=self.__handleActivateChatMoreInfo)
             self.dcb1 = HackedDirectRadioButton(parent=self.activateChatGui, relief=None, scale=0.1, boxImage=innerCircle, boxImageScale=2.5, boxImageColor=VBase4(0, 0.25, 0.5, 1), boxRelief=None, pos=(-0.745, 0, 0.297), command=self.__updateCheckBoxen, extraArgs=[1])
             self.dcb2 = HackedDirectRadioButton(parent=self.activateChatGui, relief=None, scale=0.1, boxImage=innerCircle, boxImageScale=2.5, boxImageColor=VBase4(0, 0.25, 0.5, 1), boxRelief=None, pos=(-0.745, 0, 0.147), command=self.__updateCheckBoxen, extraArgs=[2])
             self.dcb3 = HackedDirectRadioButton(parent=self.activateChatGui, relief=None, scale=0.1, boxImage=innerCircle, boxImageScale=2.5, boxImageColor=VBase4(0, 0.25, 0.5, 1), boxRelief=None, pos=(-0.745, 0, -0.003), command=self.__updateCheckBoxen, extraArgs=[3])
@@ -367,44 +338,17 @@ class ToontownChatManager(ChatManager.ChatManager):
         if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: CHAT: Speedchat Plus')
         messenger.send('wakeup')
-        if base.cr.productName in ['DisneyOnline-US', 'ES']:
-            if base.cr.whiteListChatEnabled:
-                self.fsm.request('normalChat')
-            elif not base.cr.isParentPasswordSet():
-                self.paidNoParentPassword = 1
-                self.fsm.request('unpaidChatWarning')
-            elif not base.cr.allowSecretChat():
-                self.fsm.request('noSecretChatAtAllAndNoWhitelist')
-            elif not base.localAvatar.canChat():
-                self.fsm.request('openChatWarning')
-            else:
-                self.fsm.request('normalChat')
-        elif base.cr.productName == 'Terra-DMC':
-            if not base.cr.allowSecretChat():
-                self.fsm.request('noSecretChatWarning')
-            elif not base.localAvatar.canChat():
-                self.fsm.request('openChatWarning')
-            else:
-                self.fsm.request('normalChat')
-        elif base.cr.productName in ['DisneyOnline-UK',
-         'DisneyOnline-AP',
-         'JP',
-         'BR',
-         'FR']:
-            if base.cr.whiteListChatEnabled:
-                self.fsm.request('normalChat')
-            elif not base.cr.isParentPasswordSet():
-                self.paidNoParentPassword = 1
-                self.fsm.request('unpaidChatWarning')
-            elif not base.cr.allowSecretChat():
-                self.paidNoParentPassword = 1
-                self.fsm.request('unpaidChatWarning')
-            elif not base.localAvatar.canChat():
-                self.fsm.request('openChatWarning')
-            else:
-                self.fsm.request('normalChat')
+        if base.cr.whiteListChatEnabled:
+            self.fsm.request('normalChat')
+        elif not base.cr.isParentPasswordSet():
+            self.paidNoParentPassword = 1
+            self.fsm.request('unpaidChatWarning')
+        elif not base.cr.allowSecretChat():
+            self.fsm.request('noSecretChatAtAllAndNoWhitelist')
+        elif not base.localAvatar.canChat():
+            self.fsm.request('openChatWarning')
         else:
-            print('ChatManager: productName: %s not recognized' % base.cr.productName)
+            self.fsm.request('normalChat')
 
     def __scButtonPressed(self):
         if base.config.GetBool('want-qa-regression', 0):

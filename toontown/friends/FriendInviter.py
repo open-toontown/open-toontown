@@ -138,13 +138,7 @@ class FriendInviter(DirectFrame):
 
     def enterGetNewFriend(self):
         self['text'] = TTLocalizer.FriendInviterClickToon % len(base.localAvatar.friendsList)
-        if base.cr.productName in ['JP',
-         'DE',
-         'BR',
-         'FR']:
-            self.bOk.show()
-        else:
-            self.bCancel.show()
+        self.bCancel.show()
         self.accept('clickedNametag', self.__handleClickedNametag)
 
     def exitGetNewFriend(self):
@@ -166,7 +160,7 @@ class FriendInviter(DirectFrame):
         self.bCancel.setPos(0.35, 0.0, -0.05)
         self.bCancel.show()
         self.bToon.show()
-        if self.wantPlayerFriends and base.cr.productName != 'DisneyOnline-UK' and base.cr.productName != 'DisneyOnline-AP':
+        if self.wantPlayerFriends:
             self.bPlayer.show()
         else:
             self.__handleToon()
@@ -175,7 +169,7 @@ class FriendInviter(DirectFrame):
     def exitBegin(self):
         self.ignore(self.avDisableName)
         self.bToon.hide()
-        if self.wantPlayerFriends and base.cr.productName != 'DisneyOnline-UK' and base.cr.productName != 'DisneyOnline-AP':
+        if self.wantPlayerFriends:
             self.bPlayer.hide()
         self.bCancel.setPos(0.0, 0.0, -0.1)
         self.bCancel.hide()
@@ -296,12 +290,6 @@ class FriendInviter(DirectFrame):
             self['text'] = TTLocalizer.FriendInviterToonAlready % self.getName()
             self.bStop['text'] = TTLocalizer.FriendInviterStopBeingToonFriends
         self.context = None
-        if base.cr.productName in ['JP',
-         'DE',
-         'BR',
-         'FR']:
-            self.bStop.setPos(-0.2, 0.0, -0.1)
-            self.bCancel.setPos(0.2, 0.0, -0.1)
         self.bStop.show()
         self.bCancel.show()
         return

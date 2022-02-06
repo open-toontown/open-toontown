@@ -60,25 +60,9 @@ class OTPClientRepository(ClientRepositoryBase):
         self.launcher = launcher
         base.launcher = launcher
         self.__currentAvId = 0
-        self.productName = config.GetString('product-name', 'DisneyOnline-US')
         self.createAvatarClass = None
         self.systemMessageSfx = None
         reg_deployment = ''
-        if self.productName == 'DisneyOnline-US':
-            if self.launcher:
-                if self.launcher.isDummy():
-                    reg_deployment = self.launcher.getDeployment()
-                else:
-                    reg_deployment = self.launcher.getRegistry('DEPLOYMENT')
-                    if reg_deployment != 'UK' and reg_deployment != 'AP':
-                        reg_deployment = self.launcher.getRegistry('GAME_DEPLOYMENT')
-
-                    self.notify.info('reg_deployment=%s' % reg_deployment)
-
-                if reg_deployment == 'UK':
-                    self.productName = 'DisneyOnline-UK'
-                elif reg_deployment == 'AP':
-                    self.productName = 'DisneyOnline-AP'
 
         self.blue = None
         if self.launcher:
@@ -1747,7 +1731,7 @@ class OTPClientRepository(ClientRepositoryBase):
         return base.config.GetInt('allow-free-names', 1)
 
     def allowSecretChat(self):
-        return self.secretChatAllowed or self.productName == 'Terra-DMC' and self.isBlue() and self.secretChatAllowed
+        return self.secretChatAllowed
 
     def allowWhiteListChat(self):
         if hasattr(self, 'whiteListChatEnabled') and self.whiteListChatEnabled:
@@ -1768,7 +1752,7 @@ class OTPClientRepository(ClientRepositoryBase):
         return self.parentPasswordSet
 
     def needParentPasswordForSecretChat(self):
-        return self.isPaid() and self.secretChatNeedsParentPassword or self.productName == 'Terra-DMC' and self.isBlue() and self.secretChatNeedsParentPassword
+        return self.isPaid() and self.secretChatNeedsParentPassword
 
     def logAccountInfo(self):
         self.notify.info('*** ACCOUNT INFO ***')

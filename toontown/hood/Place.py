@@ -210,7 +210,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         if teleportIn == 0:
             self.walkStateData.fsm.request('walking')
         self.acceptOnce(self.walkDoneEvent, self.handleWalkDone)
-        if base.cr.productName in ['DisneyOnline-US', 'ES'] and not base.cr.isPaid() and base.localAvatar.tutorialAck:
+        if not base.cr.isPaid() and base.localAvatar.tutorialAck:
             base.localAvatar.chatMgr.obscure(0, 0)
             base.localAvatar.chatMgr.normalButton.show()
         self.accept('teleportQuery', self.handleTeleportQuery)
@@ -223,7 +223,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
     def exitWalk(self):
         self.exitFLM()
-        if base.cr.productName in ['DisneyOnline-US', 'ES'] and not base.cr.isPaid() and base.localAvatar.tutorialAck and not base.cr.whiteListChatEnabled:
+        if not base.cr.isPaid() and base.localAvatar.tutorialAck and not base.cr.whiteListChatEnabled:
             base.localAvatar.chatMgr.obscure(1, 0)
         self.disablePeriodTimer()
         messenger.send('wakeup')

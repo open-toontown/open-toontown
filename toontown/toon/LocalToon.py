@@ -396,10 +396,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.purchaseButton.hide()
         if (base.cr.isWebPlayToken() or __dev__):
             if base.cr.isPaid():
-                if base.cr.productName in ['DisneyOnline-UK', 'DisneyOnline-AP', 'JP', 'DE', 'BR', 'FR']:
-                    paidNoParentPassword = launcher and launcher.getParentPasswordSet()
-                else:
-                    paidNoParentPassword = launcher and not launcher.getParentPasswordSet()
+                paidNoParentPassword = launcher and not launcher.getParentPasswordSet()
             else:
                 paidNoParentPassword = 0
             self.leaveToPayDialog = LeaveToPayDialog.LeaveToPayDialog(paidNoParentPassword, self.purchaseButton.show)

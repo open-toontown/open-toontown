@@ -245,27 +245,26 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
             command=ignoreCmd)
 
 
-        if base.cr.productName not in ['JP', 'DE', 'BR', 'FR']:
-            self.reportButton = DirectButton(
-                parent=self.frame,
-                image=(
-                    gui.find('**/report_BtnUP'),
-                    gui.find('**/report_BtnDN'),
-                    gui.find('**/report_BtnRLVR'),
-                    gui.find('**/report_BtnUP')),
-                image3_color=self.disabledImageColor,
-                image_scale=0.65,
-                relief=None,
-                pos=(-0.103, 0, -0.29738),
-                text=TTLocalizer.AvatarPanelReport,
-                text0_fg=self.text0Color,
-                text1_fg=self.text1Color,
-                text2_fg=self.text2Color,
-                text3_fg=self.text3Color,
-                text_scale=0.06,
-                text_pos=(0.06, -0.015),
-                text_align=TextNode.ALeft,
-                command=self.handleReport)
+        self.reportButton = DirectButton(
+            parent=self.frame,
+            image=(
+                gui.find('**/report_BtnUP'),
+                gui.find('**/report_BtnDN'),
+                gui.find('**/report_BtnRLVR'),
+                gui.find('**/report_BtnUP')),
+            image3_color=self.disabledImageColor,
+            image_scale=0.65,
+            relief=None,
+            pos=(-0.103, 0, -0.29738),
+            text=TTLocalizer.AvatarPanelReport,
+            text0_fg=self.text0Color,
+            text1_fg=self.text1Color,
+            text2_fg=self.text2Color,
+            text3_fg=self.text3Color,
+            text_scale=0.06,
+            text_pos=(0.06, -0.015),
+            text_align=TextNode.ALeft,
+            command=self.handleReport)
 
 
         if not base.localAvatar.isTeleportAllowed():
@@ -320,12 +319,7 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
 
     def disableAll(self):
         self.detailButton['state'] = DGG.DISABLED
-        if base.cr.productName not in ['ES',
-         'JP',
-         'DE',
-         'BR',
-         'FR']:
-            self.reportButton['state'] = DGG.DISABLED
+        self.reportButton['state'] = DGG.DISABLED
         self.ignoreButton['state'] = DGG.DISABLED
         self.goToButton['state'] = DGG.DISABLED
         self.secretsButton['state'] = DGG.DISABLED

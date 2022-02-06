@@ -64,7 +64,7 @@ class ToontownLauncher(LauncherBase):
         self.toontownRegistryKey = 'Software\\Disney\\Disney Online\\Toontown'
         if self.testServerFlag:
             self.toontownRegistryKey = '%s%s' % (self.toontownRegistryKey, 'Test')
-        self.toontownRegistryKey = '%s%s' % (self.toontownRegistryKey, self.getProductName())
+        self.toontownRegistryKey = '%sOPEN-TOONTOWN' % (self.toontownRegistryKey)
         LauncherBase.__init__(self)
         self.webAcctParams = 'WEB_ACCT_PARAMS'
         self.parseWebAcctParams()

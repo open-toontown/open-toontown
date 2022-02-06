@@ -109,22 +109,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         return (shardButtonParent, shardButtonR, shardButtonL)
 
     def getPopColor(self, pop):
-        if base.cr.productName == 'JP':
-            if pop < self.midPop:
-                color1 = POP_COLORS_NTT[0]
-                color2 = POP_COLORS_NTT[1]
-                popRange = self.midPop - self.lowPop
-                pop = pop - self.lowPop
-            else:
-                color1 = POP_COLORS_NTT[1]
-                color2 = POP_COLORS_NTT[2]
-                popRange = self.highPop - self.midPop
-                pop = pop - self.midPop
-            popPercent = pop / float(popRange)
-            if popPercent > 1:
-                popPercent = 1
-            newColor = color2 * popPercent + color1 * (1 - popPercent)
-        elif pop <= self.lowPop:
+        if pop <= self.lowPop:
             newColor = POP_COLORS[0]
         elif pop <= self.midPop:
             newColor = POP_COLORS[1]
@@ -142,9 +127,7 @@ class ShardPage(ShtikerPage.ShtikerPage):
         return popText
 
     def getPopChoiceHandler(self, pop):
-        if base.cr.productName == 'JP':
-            handler = self.choseShard
-        elif pop <= self.midPop:
+        if pop <= self.midPop:
             if self.noTeleport and not self.showPop:
                 handler = self.shardChoiceReject
             else:
@@ -212,10 +195,9 @@ class ShardPage(ShtikerPage.ShtikerPage):
                 buttonTuple[1]['text'] = str(pop)
             else:
                 buttonTuple[1]['image_color'] = self.getPopColor(pop)
-                if not base.cr.productName == 'JP':
-                    buttonTuple[1]['text'] = self.getPopText(pop)
-                    buttonTuple[1]['command'] = self.getPopChoiceHandler(pop)
-                    buttonTuple[2]['command'] = self.getPopChoiceHandler(pop)
+                buttonTuple[1]['text'] = self.getPopText(pop)
+                buttonTuple[1]['command'] = self.getPopChoiceHandler(pop)
+                buttonTuple[2]['command'] = self.getPopChoiceHandler(pop)
             self.shardButtons.append(buttonTuple[0])
             if shardId == currentShardId or self.book.safeMode:
                 buttonTuple[1]['state'] = DGG.DISABLED
@@ -236,10 +218,9 @@ class ShardPage(ShtikerPage.ShtikerPage):
                 buttonTuple[1]['text'] = str(totalWVPop)
             else:
                 buttonTuple[1]['image_color'] = self.getPopColor(totalWVPop)
-                if not base.cr.productName == 'JP':
-                    buttonTuple[1]['text'] = self.getPopText(totalWVPop)
-                    buttonTuple[1]['command'] = self.getPopChoiceHandler(totalWVPop)
-                    buttonTuple[2]['command'] = self.getPopChoiceHandler(totalWVPop)
+                buttonTuple[1]['text'] = self.getPopText(totalWVPop)
+                buttonTuple[1]['command'] = self.getPopChoiceHandler(totalWVPop)
+                buttonTuple[2]['command'] = self.getPopChoiceHandler(totalWVPop)
         if anyChanges:
             self.regenerateScrollList()
         self.totalPopulationText['text'] = TTLocalizer.ShardPagePopulationTotal % totalPop
