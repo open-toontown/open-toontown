@@ -1,17 +1,15 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.gui.DirectGui import *
 from direct.task import Task
 from .SCConstants import *
 from direct.interval.IntervalGlobal import *
 from .SCObject import SCObject
 from direct.showbase.PythonUtil import makeTuple
-import types
 
 class SCMenu(SCObject, NodePath):
-    config = getConfigShowbase()
-    SpeedChatRolloverTolerance = config.GetFloat('speedchat-rollover-tolerance', 0.08)
-    WantFade = config.GetBool('want-speedchat-fade', 0)
-    FadeDuration = config.GetFloat('speedchat-fade-duration', 0.2)
+    SpeedChatRolloverTolerance = ConfigVariableDouble('speedchat-rollover-tolerance', 0.08).value
+    WantFade = ConfigVariableBool('want-speedchat-fade', 0).value
+    FadeDuration = ConfigVariableDouble('speedchat-fade-duration', 0.2).value
     SerialNum = 0
     BackgroundModelName = None
     GuiModelName = None

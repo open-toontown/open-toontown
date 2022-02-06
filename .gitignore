@@ -12,6 +12,9 @@ whitelist/
 .idea
 venv/
 *.json
+!win32/.vscode/tasks.json
+!linux/.vscode/tasks.json
+!darwin/.vscode/tasks.json
 *.buildings
 *.trackRecords
 PPYTHON_PATH

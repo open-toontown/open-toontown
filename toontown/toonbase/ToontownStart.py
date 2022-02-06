@@ -71,7 +71,7 @@ if base.musicManagerIsValid:
 else:
     music = None
 from direct.gui.DirectGui import *
-serverVersion = base.config.GetString('server-version', 'no_version_set')
+serverVersion = ConfigVariableString('server-version', 'no_version_set').value
 print('ToontownStart: serverVersion: ', serverVersion)
 version = OnscreenText(serverVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
 loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, TTLocalizer.TIP_NONE)

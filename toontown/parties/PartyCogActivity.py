@@ -262,7 +262,7 @@ class PartyCogActivity(DirectObject):
         if not opening:
             pos = self._doorStartPos[team]
         else:
-            pos = (self._doorStartPos[team] + Point3(0, 0, -7.0),)
+            pos = (self._doorStartPos[team] + Point3(0, 0, -7.0))
         ival = self._arenaDoors[team].posInterval(0.75, pos, blendType='easeIn')
         self._arenaDoorIvals[team] = ival
         ival.start()

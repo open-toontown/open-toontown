@@ -1,20 +1,16 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.otp import WhisperPopup
 from panda3d.otp import CFQuicktalker, CFPageButton, CFQuitButton, CFSpeech, CFThought, CFTimeout
 from otp.chat import ChatGarbler
-import string
-from direct.task import Task
 from otp.otpbase import OTPLocalizer
 from otp.speedchat import SCDecoders
-from direct.showbase import PythonUtil
 from otp.avatar import DistributedAvatar
-import time
 from otp.avatar import Avatar, PlayerBase
 from otp.chat import TalkAssistant
 from otp.otpbase import OTPGlobals
 from otp.avatar.Avatar import teleportNotify
 from otp.distributed.TelemetryLimited import TelemetryLimited
-if base.config.GetBool('want-chatfilter-hacks', 0):
+if ConfigVariableBool('want-chatfilter-hacks', 0).value:
     from otp.switchboard import badwordpy
     import os
     badwordpy.init(os.environ.get('OTP') + '\\src\\switchboard\\', '')
@@ -44,7 +40,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
             self.DISLid = 0
             self.accessLevel = 0
             self.autoRun = 0
-            self.whiteListEnabled = base.config.GetBool('whitelist-chat-enabled', 1)
+            self.whiteListEnabled = ConfigVariableBool('whitelist-chat-enabled', 1).value
 
         return
 
@@ -224,8 +220,8 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
         if self.cr.wantMagicWords and len(chatString) > 0 and chatString[0] == '~':
             messenger.send('magicWord', [chatString])
         else:
-            if base.config.GetBool('want-chatfilter-hacks', 0):
-                if base.config.GetBool('want-chatfilter-drop-offending', 0):
+            if ConfigVariableBool('want-chatfilter-hacks', 0).value:
+                if ConfigVariableBool('want-chatfilter-drop-offending', 0).value:
                     if badwordpy.test(chatString):
                         return
                 else:
@@ -351,7 +347,7 @@ class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBa
                     teleportNotify.debug('party is ending')
                     self.d_teleportResponse(self.doId, 0, 0, 0, 0, sendToId=requesterId)
                     return
-            if self.__teleportAvailable and not self.ghostMode and base.config.GetBool('can-be-teleported-to', 1):
+            if self.__teleportAvailable and not self.ghostMode and ConfigVariableBool('can-be-teleported-to', 1).value:
                 teleportNotify.debug('teleport initiation successful')
                 self.setSystemMessage(requesterId, OTPLocalizer.WhisperComingToVisit % avatar.getName())
                 messenger.send('teleportQuery', [avatar, self])

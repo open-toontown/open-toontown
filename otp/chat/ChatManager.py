@@ -1,7 +1,5 @@
 import string
-import sys
 from direct.showbase import DirectObject
-from otp.otpbase import OTPGlobals
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from otp.login import SecretFriendsInfoPanel
@@ -10,7 +8,7 @@ from otp.otpbase import OTPLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from otp.login import LeaveToPayDialog
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 ChatEvent = 'ChatEvent'
 NormalChatEvent = 'NormalChatEvent'
 SCChatEvent = 'SCChatEvent'
@@ -39,7 +37,7 @@ def removeThoughtPrefix(message):
 
 class ChatManager(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('ChatManager')
-    execChat = base.config.GetBool('exec-chat', 0)
+    execChat = ConfigVariableBool('exec-chat', 0).value
 
     def __init__(self, cr, localAvatar):
         self.cr = cr
@@ -323,7 +321,7 @@ class ChatManager(DirectObject.DirectObject):
                 if self.wantBackgroundFocus:
                     self.chatInputNormal.chatEntry['backgroundFocus'] = 1
                 self.acceptOnce('enterNormalChat', self.fsm.request, ['whisperChat', [avatarName, avatarId]])
-        if base.cr.config.GetBool('force-typed-whisper-enabled', 0):
+        if ConfigVariableBool('force-typed-whisper-enabled', 0).value:
             self.whisperButton['state'] = 'normal'
             self.enablewhisperButton()
         return

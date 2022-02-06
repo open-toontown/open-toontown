@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from . import ShtikerPage
 from toontown.toontowngui import TTDialog
 from direct.gui.DirectGui import *
@@ -118,8 +118,8 @@ class OptionsTabPage(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('OptionsTabPage')
     DisplaySettingsTaskName = 'save-display-settings'
     DisplaySettingsDelay = 60
-    ChangeDisplaySettings = base.config.GetBool('change-display-settings', 1)
-    ChangeDisplayAPI = base.config.GetBool('change-display-api', 0)
+    ChangeDisplaySettings = ConfigVariableBool('change-display-settings', 1).value
+    ChangeDisplayAPI = ConfigVariableBool('change-display-api', 0).value
 
     def __init__(self, parent = aspect2d):
         self._parent = parent

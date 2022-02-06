@@ -1,7 +1,6 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase.ToontownBattleGlobals import *
 from direct.task.Timer import *
-import math
 import functools
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toon import NPCToons
@@ -58,10 +57,7 @@ TOON_FIRE_SUIT_DELAY = 1.0
 REWARD_TIMEOUT = 120
 FLOOR_REWARD_TIMEOUT = 4
 BUILDING_REWARD_TIMEOUT = 300
-try:
-    CLIENT_INPUT_TIMEOUT = base.config.GetFloat('battle-input-timeout', TTLocalizer.BBbattleInputTimeout)
-except:
-    CLIENT_INPUT_TIMEOUT = simbase.config.GetFloat('battle-input-timeout', TTLocalizer.BBbattleInputTimeout)
+CLIENT_INPUT_TIMEOUT = ConfigVariableDouble('battle-input-timeout', TTLocalizer.BBbattleInputTimeout).value
 
 def levelAffectsGroup(track, level):
     return attackAffectsGroup(track, level)

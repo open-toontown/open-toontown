@@ -42,8 +42,9 @@ builtins.game = game
 
 from otp.ai.AIBaseGlobal import *
 from toontown.ai.ToontownAIRepository import ToontownAIRepository
+from toontown.toonbase import TTLocalizer
 
-simbase.air = ToontownAIRepository(ConfigVariableInt('air-base-channel', 1000000).value, ConfigVariableInt('air-stateserver', 4002).value, ConfigVariableString('district-name', 'Toon Valley').value)
+simbase.air = ToontownAIRepository(ConfigVariableInt('air-base-channel', 401000000).value, ConfigVariableInt('air-stateserver', 4002).value, ConfigVariableString('district-name', TTLocalizer.AIStartDefaultDistrict).value)
 
 host = ConfigVariableString('air-connect', '127.0.0.1:7199').value
 port = 7199

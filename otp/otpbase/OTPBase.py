@@ -1,5 +1,5 @@
 from direct.showbase.ShowBase import ShowBase
-from pandac.PandaModules import Camera, TPLow, VBase4, ColorWriteAttrib, Filename, getModelPath, NodePath
+from panda3d.core import Camera, TPLow, VBase4, ColorWriteAttrib, Filename, getModelPath, NodePath, ConfigVariableBool, ConfigVariableDouble
 from . import OTPRender
 import time
 import math
@@ -10,22 +10,22 @@ class OTPBase(ShowBase):
     def __init__(self, windowType = None):
         self.wantEnviroDR = False
         ShowBase.__init__(self, windowType=windowType)
-        __builtins__['__astron__'] = self.config.GetBool('astron-support', 1)
-        __builtins__['__execWarnings__'] = self.config.GetBool('want-exec-warnings', 0)
+        __builtins__['__astron__'] = ConfigVariableBool('astron-support', 1).value
+        __builtins__['__execWarnings__'] = ConfigVariableBool('want-exec-warnings', 0).value
         OTPBase.notify.info('__astron__ == %s' % __astron__)
-        if config.GetBool('want-phase-checker', 0):
+        if ConfigVariableBool('want-phase-checker', 0).value:
             from direct.showbase import Loader
             Loader.phaseChecker = self.loaderPhaseChecker
             self.errorAccumulatorBuffer = ''
             taskMgr.add(self.delayedErrorCheck, 'delayedErrorCheck', priority=10000)
-        self.idTags = config.GetBool('want-id-tags', 0)
+        self.idTags = ConfigVariableBool('want-id-tags', 0).value
         if not self.idTags:
             del self.idTags
-        self.wantNametags = self.config.GetBool('want-nametags', 1)
-        self.slowCloseShard = self.config.GetBool('slow-close-shard', 0)
-        self.slowCloseShardDelay = self.config.GetFloat('slow-close-shard-delay', 10.0)
-        self.fillShardsToIdealPop = self.config.GetBool('fill-shards-to-ideal-pop', 1)
-        self.logPrivateInfo = self.config.GetBool('log-private-info', __dev__)
+        self.wantNametags = ConfigVariableBool('want-nametags', 1).value
+        self.slowCloseShard = ConfigVariableBool('slow-close-shard', 0).value
+        self.slowCloseShardDelay = ConfigVariableDouble('slow-close-shard-delay', 10.0).value
+        self.fillShardsToIdealPop = ConfigVariableBool('fill-shards-to-ideal-pop', 1).value
+        self.logPrivateInfo = ConfigVariableBool('log-private-info', __dev__).value
         self.wantDynamicShadows = 1
         self.stereoEnabled = False
         self.enviroDR = None
@@ -227,7 +227,7 @@ class OTPBase(ShowBase):
     def openMainWindow(self, *args, **kw):
         result = ShowBase.openMainWindow(self, *args, **kw)
         if result:
-            self.wantEnviroDR = not self.win.getGsg().isHardware() or config.GetBool('want-background-region', 1)
+            self.wantEnviroDR = not self.win.getGsg().isHardware() or ConfigVariableBool('want-background-region', 1).value
             self.backgroundDrawable = self.win
         return result
 

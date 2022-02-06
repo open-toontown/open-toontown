@@ -253,11 +253,23 @@ class CatalogItem:
     def getHashContents(self):
         return None
 
-    def __cmp__(self, other):
-        c = cmp(self.__class__, other.__class__)
-        if c != 0:
-            return c
-        return self.compareTo(other)
+    def __lt__(self, other):
+        c = self.__class__ == other.__class__
+        if not c:
+            return 0
+        return self.compareTo(other) < 0
+
+    def __gt__(self, other):
+        c = self.__class__ == other.__class__
+        if not c:
+            return 0
+        return self.compareTo(other) > 0
+
+    def __eq__(self, other):
+        c = self.__class__ == other.__class__
+        if not c:
+            return 0
+        return self.compareTo(other) == 0
 
     def __hash__(self):
         return hash((self.__class__, self.getHashContents()))

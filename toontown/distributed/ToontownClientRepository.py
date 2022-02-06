@@ -1,31 +1,14 @@
-import time
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed.ClockDelta import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
 from direct.interval.IntervalGlobal import ivalMgr
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedSmoothNode
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
-from direct.task import Task
-from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.showbase.PythonUtil import Functor, ScratchPad
-from direct.showbase.InputStateGlobal import inputState
 from otp.avatar import Avatar
-from otp.avatar import DistributedAvatar
-from otp.friends import FriendManager
-from otp.login import LoginScreen
-from otp.login import LoginGSAccount
-from otp.login import LoginGoAccount
-from otp.login import LoginWebPlayTokenAccount
-from otp.login import LoginTTAccount
-from otp.login import HTTPUtil
 from otp.distributed import OTPClientRepository
 from otp.distributed import PotentialAvatar
-from otp.distributed import PotentialShard
-from otp.distributed import DistributedDistrict
 from otp.distributed.OtpDoGlobals import *
 from otp.distributed import OtpDoGlobals
 from otp.otpbase import OTPGlobals
@@ -39,7 +22,6 @@ from toontown.distributed import DelayDelete
 from toontown.friends import FriendHandle
 from toontown.friends import FriendsListPanel
 from toontown.friends import ToontownFriendSecret
-from toontown.uberdog import TTSpeedchatRelay
 from toontown.login import DateObject
 from toontown.login import AvatarChooser
 from toontown.makeatoon import MakeAToon
@@ -49,7 +31,6 @@ from toontown.toontowngui import TTDialog
 from toontown.toon import LocalToon
 from toontown.toon import ToonDNA
 from toontown.distributed import ToontownDistrictStats
-from toontown.makeatoon import TTPickANamePattern
 from toontown.parties import ToontownTimeManager
 from toontown.toon import Toon, DistributedToon
 from .ToontownMsgTypes import *
@@ -101,7 +82,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.playerFriendsManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_PLAYER_FRIENDS_MANAGER, 'TTPlayerFriendsManager')
         self.speedchatRelay = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TOONTOWN_SPEEDCHAT_RELAY, 'TTSpeedchatRelay')
         self.deliveryManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TOONTOWN_DELIVERY_MANAGER, 'DistributedDeliveryManager')
-        if config.GetBool('want-code-redemption', 1):
+        if ConfigVariableBool('want-code-redemption', 1).value:
             self.codeRedemptionManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TOONTOWN_CODE_REDEMPTION_MANAGER, 'TTCodeRedemptionMgr')
         self.streetSign = None
         self.furnitureManager = None
@@ -127,9 +108,9 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         state.addTransition('skipTutorialRequest')
         state = self.gameFSM.getStateNamed('playGame')
         state.addTransition('skipTutorialRequest')
-        self.wantCogdominiums = base.config.GetBool('want-cogdominiums', 1)
-        self.wantEmblems = base.config.GetBool('want-emblems', 0)
-        if base.config.GetBool('tt-node-check', 0):
+        self.wantCogdominiums = ConfigVariableBool('want-cogdominiums', 1).value
+        self.wantEmblems = ConfigVariableBool('want-emblems', 0).value
+        if ConfigVariableBool('tt-node-check', 0).value:
             for species in ToonDNA.toonSpeciesTypes:
                 for head in ToonDNA.getHeadList(species):
                     for torso in ToonDNA.toonTorsoTypes:
@@ -231,7 +212,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.avChoice.load(self.isPaid())
         self.avChoice.enter()
         self.accept(self.avChoiceDoneEvent, self.__handleAvatarChooserDone, [avList])
-        if config.GetBool('want-gib-loader', 1):
+        if ConfigVariableBool('want-gib-loader', 1).value:
             self.loadingBlocker = ToontownLoadingBlocker.ToontownLoadingBlocker(avList)
         return
 
@@ -917,7 +898,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             for i in range(0, count):
                 doId = di.getUint32()
                 name = di.getString()
-                dnaString = di.getString()
+                dnaString = di.getBlob()
                 dna = ToonDNA.ToonDNA()
                 dna.makeFromNetString(dnaString)
                 petId = di.getUint32()

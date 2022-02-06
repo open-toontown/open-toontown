@@ -1,13 +1,11 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.otp import *
 from toontown.toonbase import ToontownGlobals
-import random
 from toontown.hood import ZoneUtil
 from . import ToonDNA
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
-import sys, os
-import string
+import os
 QUEST_MOVIE_CLEAR = 0
 QUEST_MOVIE_REJECT = 1
 QUEST_MOVIE_COMPLETE = 2
@@ -11488,7 +11486,7 @@ try:
 except:
     config = base.config
 
-if config.GetBool('want-new-toonhall', 1):
+if ConfigVariableBool('want-new-toonhall', 1).value:
     NPCToonDict[2001] = (2513,
      lnames[2001],
      ('dss',

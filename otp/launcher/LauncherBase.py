@@ -65,15 +65,13 @@ class LauncherBase(DirectObject):
         print('Current time: ' + time.asctime(time.localtime(time.time())) + ' ' + time.tzname[0])
         print('sys.path = ', sys.path)
         print('sys.argv = ', sys.argv)
-        launcherConfig = DConfig
-        builtins.config = launcherConfig
-        if config.GetBool('log-private-info', 0):
+        if ConfigVariableBool('log-private-info', 0).value:
             print('os.environ = ', os.environ)
         self.miniTaskMgr = MiniTaskManager()
         self.nout = MultiplexStream()
         Notify.ptr().setOstreamPtr(self.nout, 0)
         self.nout.addFile(Filename(logfile))
-        if launcherConfig.GetBool('console-output', 0):
+        if ConfigVariableBool('console-output', 0).value:
             self.nout.addStandardOutput()
             sys.stdout.console = True
             sys.stderr.console = True
@@ -88,7 +86,7 @@ class LauncherBase(DirectObject):
         self.setRegistry(self.GameLogFilenameKey, logfile)
         self.showPhase = 3.5
         self.currentPhase = 4
-        serverVersion = launcherConfig.GetString('server-version', 'no_version_set')
+        serverVersion = ConfigVariableString('server-version', 'no_version_set').value
         if serverVersion == 'no_version_set':
             self.setPandaErrorCode(10)
             self.notify.info('Aborting, config did not load!')
