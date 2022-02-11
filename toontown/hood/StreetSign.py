@@ -9,7 +9,7 @@ from toontown.toonbase import TTLocalizer
 
 class StreetSign(DistributedObject.DistributedObject):
     RedownloadTaskName = 'RedownloadStreetSign'
-    StreetSignFileName = config.GetString('street-sign-filename', 'texture.jpg')
+    StreetSignFileName = config.GetString('street-sign-filename', 'texture.png')
     StreetSignBaseDir = config.GetString('street-sign-base-dir', 'sign')
     StreetSignUrl = base.config.GetString('street-sign-url', 'http://cdn.toontown.disney.go.com/toontown/en/street-signs/img/')
     notify = DirectNotifyGlobal.directNotify.newCategory('StreetSign')

@@ -2,11 +2,11 @@ from .CatalogSurfaceItem import *
 WSTTextureName = 0
 WSTColor = 1
 WSTBasePrice = 2
-WainscotingTypes = {1000: ('phase_3.5/maps/wall_paper_b3.jpg', CTFlatColorDark, 200),
- 1010: ('phase_5.5/maps/wall_paper_b4_greyscale.jpg', CTBasicWoodColorOnWhite, 200),
- 1020: ('phase_5.5/maps/wainscotings_neutral.jpg', CTBasicWoodColorOnWhite, 200),
- 1030: ('phase_3.5/maps/wall_paper_b3.jpg', CTValentinesColors, 200),
- 1040: ('phase_3.5/maps/wall_paper_b3.jpg', CTUnderwaterColors, 200)}
+WainscotingTypes = {1000: ('phase_3.5/maps/wall_paper_b3.png', CTFlatColorDark, 200),
+ 1010: ('phase_5.5/maps/wall_paper_b4_greyscale.png', CTBasicWoodColorOnWhite, 200),
+ 1020: ('phase_5.5/maps/wainscotings_neutral.png', CTBasicWoodColorOnWhite, 200),
+ 1030: ('phase_3.5/maps/wall_paper_b3.png', CTValentinesColors, 200),
+ 1040: ('phase_3.5/maps/wall_paper_b3.png', CTUnderwaterColors, 200)}
 
 class CatalogWainscotingItem(CatalogSurfaceItem):
 
