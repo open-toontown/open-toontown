@@ -18,7 +18,7 @@ If you install Panda3D outside the default directory (or use the x86 installer),
 
 ## macOS 10.9+
 [Panda3D Wheel for macOS 10.9+ (Python3.9, x86_64)](https://drive.google.com/file/d/1_6WJxrkNfwisK5pe5ubJJy1psEp0IIft/view?usp=sharing)
-
+[Panda3D Wheel for macOS 11.0+ (Python3.9, ARM64)](https://drive.google.com/file/d/18aKkdYTb1GwZzuhdjyNT0nj2RxRiyAEL/view?usp=sharing)
 Installing the provided Panda3D wheel requires Python 3.9, which is not installed on your system by default whatsoever.  We recommend installing Python 3.9 through [Homebrew](https://brew.sh/) (Make sure that the xcode command line tools are installed first `xcode-select --install`): 
 ```shell
 $ brew install python@3.9
@@ -28,6 +28,10 @@ $ brew install python@3.9
 After installing Python 3.9.  You can then install the wheel by using pip:
 ```shell
 $ pip install panda3d-1.11.0-cp39-cp39-macosx_10_9_x86_64.whl
+```
+or if you are using a silicon Mac
+```shell
+$ pip install panda3d-1.11.0-cp39-cp39-macosx_11_0_arm64.whl
 ```
 ## Linux (Building your own)
 If you use Linux, or are interested in building Panda3D yourself, head on over to [our Panda3D fork](https://github.com/open-toontown/panda3d) and read the "Building Panda3D" section on the README file there.
