@@ -38,14 +38,15 @@ from otp.distributed import OtpDoGlobals
 from otp.distributed.TelemetryLimiter import TelemetryLimiter
 from otp.ai.GarbageLeakServerEventAggregator import GarbageLeakServerEventAggregator
 from .PotentialAvatar import PotentialAvatar
+from enum import IntEnum
 
 class OTPClientRepository(ClientRepositoryBase):
     notify = directNotify.newCategory('OTPClientRepository')
     avatarLimit = 6
-    WishNameResult = Enum(['Failure',
+    WishNameResult = IntEnum('WishNameResult', ('Failure',
      'PendingApproval',
      'Approved',
-     'Rejected'])
+     'Rejected'))
 
     def __init__(self, serverVersion, launcher = None, playGame = None):
         ClientRepositoryBase.__init__(self)

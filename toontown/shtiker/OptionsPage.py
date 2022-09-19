@@ -8,8 +8,8 @@ from direct.task import Task
 from otp.speedchat import SpeedChat
 from otp.speedchat import SCColorScheme
 from otp.speedchat import SCStaticTextTerminal
-from direct.showbase import PythonUtil
 from direct.directnotify import DirectNotifyGlobal
+from enum import IntEnum
 speedChatStyles = ((2000,
   (200 / 255.0, 60 / 255.0, 229 / 255.0),
   (200 / 255.0, 135 / 255.0, 255 / 255.0),
@@ -50,7 +50,7 @@ speedChatStyles = ((2000,
   (170 / 255.0, 120 / 255.0, 20 / 255.0),
   (165 / 255.0, 120 / 255.0, 50 / 255.0),
   (210 / 255.0, 200 / 255.0, 180 / 255.0)))
-PageMode = PythonUtil.Enum('Options, Codes')
+PageMode = IntEnum('PageMode', ('Options', 'Codes'))
 
 class OptionsPage(ShtikerPage.ShtikerPage):
     notify = DirectNotifyGlobal.directNotify.newCategory('OptionsPage')
