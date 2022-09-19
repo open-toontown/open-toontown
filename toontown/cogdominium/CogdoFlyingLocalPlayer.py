@@ -1,7 +1,6 @@
 import math
 import random
 from pandac.PandaModules import Vec3
-from direct.showbase import PythonUtil
 from direct.directnotify import DirectNotifyGlobal
 from direct.task.Task import Task
 from direct.interval.FunctionInterval import Wait
@@ -21,13 +20,14 @@ from .CogdoFlyingCameraManager import CogdoFlyingCameraManager
 from .CogdoFlyingObjects import CogdoFlyingPlatform, CogdoFlyingGatherable
 from .CogdoFlyingLegalEagle import CogdoFlyingLegalEagle
 from . import CogdoFlyingGameGlobals as Globals
+from enum import IntEnum
 
 class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogdoFlyingLocalPlayer')
     BroadcastPosTask = 'CogdoFlyingLocalPlayerBroadcastPos'
     PlayWaitingMusicEventName = 'PlayWaitingMusicEvent'
     RanOutOfTimeEventName = 'RanOutOfTimeEvent'
-    PropStates = PythonUtil.Enum(('Normal', 'Overdrive', 'Off'))
+    PropStates = IntEnum('PropStates', ('Normal', 'Overdrive', 'Off'))
 
     def __init__(self, toon, game, level, guiMgr):
         CogdoFlyingPlayer.__init__(self, toon)
