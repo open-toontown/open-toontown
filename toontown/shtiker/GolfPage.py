@@ -10,7 +10,7 @@ from toontown.golf import GolfGlobals
 from enum import IntEnum
 if (__debug__):
     import pdb
-PageMode = IntEnum('PageMode', ('Records, Trophy'))
+PageMode = IntEnum('PageMode', ('Records', 'Trophy'))
 
 class GolfPage(ShtikerPage):
     notify = DirectNotifyGlobal.directNotify.newCategory('GolfPage')

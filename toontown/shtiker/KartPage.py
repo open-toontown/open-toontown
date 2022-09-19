@@ -12,7 +12,7 @@ from .FishPage import FishingTrophy
 from enum import IntEnum
 if (__debug__):
     import pdb
-PageMode = IntEnum('PageMode', ('Customize, Records, Trophy'))
+PageMode = IntEnum('PageMode', ('Customize', 'Records', 'Trophy'))
 
 class KartPage(ShtikerPage):
     notify = DirectNotifyGlobal.directNotify.newCategory('KartPage')

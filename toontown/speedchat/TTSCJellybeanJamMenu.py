@@ -13,7 +13,7 @@ JellybeanJamMenu = [(OTPLocalizer.JellybeanJamMenuSections[0], [30180,
    30188,
    30189,
    30190])]
-JellybeanJamPhases = IntEnum('JellybeanJamPhases', ('TROLLEY, FISHING, PARTIES'))
+JellybeanJamPhases = IntEnum('JellybeanJamPhases', ('TROLLEY', 'FISHING', 'PARTIES'))
 PhaseSpecifPhrases = [30180, 30181, 30182]
 
 class TTSCJellybeanJamMenu(SCMenu):

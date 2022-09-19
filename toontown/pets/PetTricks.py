@@ -2,7 +2,7 @@ from direct.showbase.PythonUtil import invertDictLossless
 from direct.interval.IntervalGlobal import *
 import random
 from enum import IntEnum
-Tricks = IntEnum('Tricks', ('JUMP, BEG, PLAYDEAD, ROLLOVER, BACKFLIP, DANCE, SPEAK, BALK,'))
+Tricks = IntEnum('Tricks', ('JUMP', 'BEG', 'PLAYDEAD', 'ROLLOVER', 'BACKFLIP', 'DANCE', 'SPEAK', 'BALK'))
 NonHappyMinActualTrickAptitude = 0.1
 NonHappyMaxActualTrickAptitude = 0.6
 MinActualTrickAptitude = 0.5
