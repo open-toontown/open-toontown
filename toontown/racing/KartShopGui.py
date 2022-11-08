@@ -16,7 +16,7 @@ from toontown.toontowngui.TeaserPanel import TeaserPanel
 from enum import IntEnum
 if (__debug__):
     import pdb
-MENUS = IntEnum('MENUS', ('MainMenu, BuyKart, BuyAccessory, ReturnKart, ConfirmBuyAccessory, ConfirmBuyKart, BoughtKart, BoughtAccessory, TeaserPanel'))
+MENUS = IntEnum('MENUS', ('MainMenu, BuyKart, BuyAccessory, ReturnKart, ConfirmBuyAccessory, ConfirmBuyKart, BoughtKart, BoughtAccessory, TeaserPanel'), start=0)
 MM_OPTIONS = IntEnum('MM_OPTIONS', ('Cancel, BuyAccessory, BuyKart'), start=-1)
 BK_OPTIONS = IntEnum('BK_OPTIONS', ('Cancel, BuyKart'), start=-1)
 BA_OPTIONS = IntEnum('BA_OPTIONS', ('Cancel, BuyAccessory'), start=-1)
