@@ -1,5 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase.PythonUtil import list2dict, Enum
+from direct.showbase.PythonUtil import list2dict
+from enum import IntEnum
 from toontown.pets import PetTricks
 import types
 notify = DirectNotifyGlobal.directNotify.newCategory('PetObserve')
@@ -16,9 +17,8 @@ def send(zoneIds, petObserve):
             messenger.send(getEventName(zoneId), [petObserve])
 
 
-Phrases = Enum('HI, BYE, YES, NO, SOOTHE, PRAISE, CRITICISM, HAPPY,SAD, ANGRY, HURRY, QUESTION, FRIENDLY, LETS_PLAY,COME, FOLLOW_ME, STAY, NEED_LAFF, NEED_GAGS, NEED_JB,GO_AWAY, DO_TRICK,')
-Actions = Enum('FEED, SCRATCH,ATTENDED_START, ATTENDED_STOP,ATTENDING_START, ATTENDING_STOP,CHANGE_ZONE, LOGOUT,GARDEN')
-
+Phrases = IntEnum('Phrases', ('HI', 'BYE', 'YES', 'NO', 'SOOTHE', 'PRAISE', 'CRITICISM', 'HAPPY','SAD', 'ANGRY', 'HURRY', 'QUESTION', 'FRIENDLY', 'LETS_PLAY','COME', 'FOLLOW_ME', 'STAY', 'NEED_LAFF', 'NEED_GAGS', 'NEED_JB','GO_AWAY', 'DO_TRICK',))
+Actions = IntEnum('Actions', ('FEED', 'SCRATCH','ATTENDED_START', 'ATTENDED_STOP','ATTENDING_START', 'ATTENDING_STOP','CHANGE_ZONE', 'LOGOUT','GARDEN'))
 class PetObserve:
 
     def isValid(self):
