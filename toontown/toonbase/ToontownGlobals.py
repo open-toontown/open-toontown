@@ -1614,7 +1614,7 @@ AnimPropTypes = IntEnum('AnimPropTypes', ('Unknown',
  'Hydrant',
  'Mailbox',
  'Trashcan'), start=-1)
-EmblemTypes = IntEnum('EmblemTypes', ('Silver', 'Gold'))
+EmblemTypes = IntEnum('EmblemTypes', ('Silver', 'Gold'), start=0)
 NumEmblemTypes = 2
 DefaultMaxBankMoney = 12000
 DefaultBankItemId = 1350

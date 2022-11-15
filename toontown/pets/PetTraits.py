@@ -24,8 +24,8 @@ def gaussian(min, max, rng):
 
 
 class TraitDistribution:
-    TraitQuality = IntEnum('TraitQuality', ('VERY_BAD', 'BAD', 'AVERAGE', 'GOOD', 'VERY_GOOD'))
-    TraitTypes = IntEnum('TraitTypes', ('INCREASING', 'DECREASING'))
+    TraitQuality = IntEnum('TraitQuality', ('VERY_BAD', 'BAD', 'AVERAGE', 'GOOD', 'VERY_GOOD'), start=0)
+    TraitTypes = IntEnum('TraitTypes', ('INCREASING', 'DECREASING'), start=0)
     Sz2MinMax = None
     TraitType = None
     TraitCutoffs = {TraitTypes.INCREASING: {TraitQuality.VERY_BAD: 0.1,
