@@ -29,7 +29,7 @@ Component2IconDict = {'boredom': 'Bored',
 class Pet(Avatar.Avatar):
     notify = DirectNotifyGlobal.directNotify.newCategory('Pet')
     SerialNum = 0
-    Interactions = IntEnum('Interactions', ('SCRATCH', 'BEG', 'EAT', 'NEUTRAL'))
+    Interactions = IntEnum('Interactions', ('SCRATCH', 'BEG', 'EAT', 'NEUTRAL'), start=0)
     InteractAnims = {Interactions.SCRATCH: ('toPet', 'pet', 'fromPet'),
      Interactions.BEG: ('toBeg', 'beg', 'fromBeg'),
      Interactions.EAT: ('eat', 'swallow', 'neutral'),

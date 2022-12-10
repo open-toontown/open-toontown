@@ -27,7 +27,7 @@ class CogdoFlyingLocalPlayer(CogdoFlyingPlayer):
     BroadcastPosTask = 'CogdoFlyingLocalPlayerBroadcastPos'
     PlayWaitingMusicEventName = 'PlayWaitingMusicEvent'
     RanOutOfTimeEventName = 'RanOutOfTimeEvent'
-    PropStates = IntEnum('PropStates', ('Normal', 'Overdrive', 'Off'))
+    PropStates = IntEnum('PropStates', ('Normal', 'Overdrive', 'Off'), start=0)
 
     def __init__(self, toon, game, level, guiMgr):
         CogdoFlyingPlayer.__init__(self, toon)
