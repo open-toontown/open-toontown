@@ -46,7 +46,7 @@ class OTPClientRepository(ClientRepositoryBase):
     WishNameResult = IntEnum('WishNameResult', ('Failure',
      'PendingApproval',
      'Approved',
-     'Rejected'))
+     'Rejected'), start=0)
 
     def __init__(self, serverVersion, launcher = None, playGame = None):
         ClientRepositoryBase.__init__(self)

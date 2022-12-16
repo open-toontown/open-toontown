@@ -6,7 +6,7 @@ from enum import IntEnum
 DEFAULT_MASK_RESOLUTION = 32
 DEFAULT_RADIUS_RATIO = 0.05
 MAP_RESOLUTION = 320
-MazeRevealType = IntEnum('MazeRevealType', ('SmoothCircle', 'HardCircle', 'Square'))
+MazeRevealType = IntEnum('MazeRevealType', ('SmoothCircle', 'HardCircle', 'Square'), start=0)
 MAZE_REVEAL_TYPE = MazeRevealType.SmoothCircle
 
 class MazeMapGui(DirectFrame):

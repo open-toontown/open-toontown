@@ -90,7 +90,7 @@ class CogdoFlyingObtacleFactory:
 class CogdoFlyingObstacle(DirectObject):
     EnterEventName = 'CogdoFlyingObstacle_Enter'
     ExitEventName = 'CogdoFlyingObstacle_Exit'
-    MotionTypes = IntEnum('MotionTypes', ('BackForth', 'Loop'))
+    MotionTypes = IntEnum('MotionTypes', ('BackForth', 'Loop'), start=0)
 
     def __init__(self, type, index, model, collSolid, motionPath = None, motionPattern = None, blendMotion = True, instanceModel = True):
         self.type = type
