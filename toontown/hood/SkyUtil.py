@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase.ToontownGlobals import *
 from direct.task.Task import Task
 from direct.directnotify import DirectNotifyGlobal

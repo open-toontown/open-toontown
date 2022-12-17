@@ -1,7 +1,7 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from . import ShtikerPage
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 import os
 from toontown.toonbase import ToontownGlobals

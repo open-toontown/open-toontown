@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from . import DistributedDoorAI, DistributedHQInteriorAI, FADoorCodes, DoorTypes
 from toontown.toon import NPCToons

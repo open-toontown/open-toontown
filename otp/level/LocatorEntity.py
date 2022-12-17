@@ -1,5 +1,5 @@
 from . import Entity, BasicEntities
-from pandac.PandaModules import NodePath
+from panda3d.core import NodePath
 from direct.directnotify import DirectNotifyGlobal
 
 class LocatorEntity(Entity.Entity, NodePath):

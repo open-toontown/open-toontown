@@ -1,4 +1,4 @@
-from pandac.PandaModules import NodePath, Point3
+from panda3d.core import NodePath, Point3
 from direct.interval.MetaInterval import Parallel, Sequence
 from direct.interval.SoundInterval import SoundInterval
 from direct.interval.FunctionInterval import Wait, Func

@@ -10,7 +10,7 @@ from . import FactoryExterior
 from . import FactoryInterior
 from . import SellbotHQExterior
 from . import SellbotHQBossBattle
-from pandac.PandaModules import DecalEffect
+from panda3d.core import DecalEffect
 aspectSF = 0.7227
 
 class SellbotCogHQLoader(CogHQLoader.CogHQLoader):

@@ -1,4 +1,4 @@
-from pandac.PandaModules import Vec3
+from panda3d.core import Vec3
 from direct.gui.DirectGui import DirectButton, DirectLabel
 from direct.gui import DirectGuiGlobals
 from toontown.toonbase import TTLocalizer

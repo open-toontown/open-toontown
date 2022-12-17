@@ -1,5 +1,5 @@
 import math
-from pandac.PandaModules import Point3
+from panda3d.core import Point3
 from toontown.toonbase import ToontownGlobals
 InputTimeout = 15
 TireMovieTimeout = 120

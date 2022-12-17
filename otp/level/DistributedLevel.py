@@ -1,5 +1,5 @@
 from direct.distributed.ClockDelta import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.showbase.PythonUtil import Functor, sameElements, list2dict, uniqueElements
 from direct.interval.IntervalGlobal import *
 from toontown.distributed.ToontownMsgTypes import *

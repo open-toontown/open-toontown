@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from pandac.PandaModules import ConfigVariableBool
+from panda3d.core import ConfigVariableBool
 from direct.task import Task
 import pickle
 import os

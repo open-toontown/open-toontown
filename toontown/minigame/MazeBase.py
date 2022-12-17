@@ -1,4 +1,4 @@
-from pandac.PandaModules import VBase3
+from panda3d.core import VBase3
 from direct.showbase.RandomNumGen import RandomNumGen
 
 class MazeBase:

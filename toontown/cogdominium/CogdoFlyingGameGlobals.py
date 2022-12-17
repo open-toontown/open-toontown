@@ -1,4 +1,4 @@
-from pandac.PandaModules import VBase4, Vec3, Point3
+from panda3d.core import VBase4, Vec3, Point3
 from .CogdoUtil import VariableContainer, DevVariableContainer
 from enum import IntEnum
 AI = VariableContainer()

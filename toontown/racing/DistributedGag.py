@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed import DistributedObject
 from direct.interval.ProjectileInterval import *
 from direct.interval.IntervalGlobal import *

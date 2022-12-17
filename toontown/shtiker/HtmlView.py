@@ -2,17 +2,17 @@ import array, sys
 from direct.showbase.DirectObject import DirectObject
 from direct.task.Task import Task
 from direct.directnotify import DirectNotifyGlobal
-from pandac.PandaModules import Texture
-from pandac.PandaModules import CardMaker
-from pandac.PandaModules import NodePath
-from pandac.PandaModules import Point3, Vec3, Vec4, VBase4D, Point2
-from pandac.PandaModules import PNMImage
-from pandac.PandaModules import TextureStage
-from pandac.PandaModules import Texture
-from pandac.PandaModules import WindowProperties
+from panda3d.core import Texture
+from panda3d.core import CardMaker
+from panda3d.core import NodePath
+from panda3d.core import Point3, Vec3, Vec4, VBase4D, Point2
+from panda3d.core import PNMImage
+from panda3d.core import TextureStage
+from panda3d.core import Texture
+from panda3d.core import WindowProperties
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import AwWebView
-from pandac.PandaModules import AwWebCore
+from panda3d.core import AwWebView
+from panda3d.core import AwWebCore
 WEB_WIDTH_PIXELS = 784
 WEB_HEIGHT_PIXELS = 451
 WEB_WIDTH = 1024

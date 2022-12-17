@@ -1,4 +1,4 @@
-from pandac.PandaModules import Point3, CollisionSphere, CollisionNode
+from panda3d.core import Point3, CollisionSphere, CollisionNode
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.PythonUtil import Functor
 from direct.showbase.RandomNumGen import RandomNumGen

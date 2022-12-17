@@ -1,5 +1,5 @@
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from . import Quests
 from toontown.toon import NPCToons
 from toontown.toon import ToonHead

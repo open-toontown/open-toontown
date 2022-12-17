@@ -4,7 +4,7 @@ from direct.fsm import State
 from toontown.hood import Place
 from toontown.building import Elevator
 from toontown.toonbase import ToontownGlobals
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.otp import *
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 

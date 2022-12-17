@@ -7,7 +7,7 @@ from toontown.hood import QuietZoneState
 from toontown.hood import ZoneUtil
 from toontown.town import TownBattle
 from toontown.suit import Suit
-from pandac.PandaModules import *
+from panda3d.core import *
 
 class CogHQLoader(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogHQLoader')

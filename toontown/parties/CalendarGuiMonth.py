@@ -1,6 +1,6 @@
 import calendar
 from datetime import timedelta, datetime
-from pandac.PandaModules import Vec4, TextNode
+from panda3d.core import Vec4, TextNode
 from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton, DirectScrolledList, DGG
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals

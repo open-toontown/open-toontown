@@ -1,4 +1,4 @@
-from pandac.PandaModules import Vec3, NodePath
+from panda3d.core import Vec3, NodePath
 from direct.distributed.ClockDelta import globalClockDelta
 from otp.avatar.SpeedMonitor import SpeedMonitor
 from toontown.cogdominium.CogdoMaze import CogdoMazeFactory

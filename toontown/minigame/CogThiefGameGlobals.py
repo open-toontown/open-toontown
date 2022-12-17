@@ -1,4 +1,4 @@
-from pandac.PandaModules import VBase3, BitMask32
+from panda3d.core import VBase3, BitMask32
 GameTime = 60
 NumBarrels = 4
 BarrelStartingPositions = (VBase3(4.3, 4, 0),

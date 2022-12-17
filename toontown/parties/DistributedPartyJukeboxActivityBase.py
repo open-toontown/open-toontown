@@ -1,6 +1,6 @@
 from direct.actor.Actor import Actor
 from direct.task.Task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.otpbase.OTPBase import OTPBase
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
