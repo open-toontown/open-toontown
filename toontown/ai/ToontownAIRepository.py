@@ -167,25 +167,15 @@ class ToontownAIRepository(AIDistrict):
         self.setTimeWarning(simbase.config.GetFloat('aimsg-time-warning', 4))
 
         self.dnaSearchPath = DSearchPath()
-        if os.getenv('TTMODELS'):
-            self.dnaSearchPath.appendDirectory(Filename.expandFrom('$TTMODELS/built/phase_3.5/dna'))
-            self.dnaSearchPath.appendDirectory(Filename.expandFrom('$TTMODELS/built/phase_4/dna'))
-            self.dnaSearchPath.appendDirectory(Filename.expandFrom('$TTMODELS/built/phase_5/dna'))
-            self.dnaSearchPath.appendDirectory(Filename.expandFrom('$TTMODELS/built/phase_5.5/dna'))
-            self.dnaSearchPath.appendDirectory(Filename.expandFrom('$TTMODELS/built/phase_6/dna'))
-            self.dnaSearchPath.appendDirectory(Filename.expandFrom('$TTMODELS/built/phase_8/dna'))
-            self.dnaSearchPath.appendDirectory(Filename.expandFrom('$TTMODELS/built/phase_9/dna'))
-            self.dnaSearchPath.appendDirectory(Filename.expandFrom('$TTMODELS/built/phase_10/dna'))
-            self.dnaSearchPath.appendDirectory(Filename.expandFrom('$TTMODELS/built/phase_11/dna'))
-
-            # In the publish environment, TTMODELS won't be on the model
-            # path by default, so we always add it there.  In the dev
-            # environment, it'll be on the model path already, but it
-            # doesn't hurt to add it again.
-            getModelPath().appendDirectory(Filename.expandFrom("$TTMODELS"))
-        else:
-            self.dnaSearchPath.appendDirectory(Filename('.'))
-            self.dnaSearchPath.appendDirectory(Filename('ttmodels/src/dna'))
+        self.dnaSearchPath.appendDirectory('resources/phase_3.5/dna')
+        self.dnaSearchPath.appendDirectory('resources/phase_4/dna')
+        self.dnaSearchPath.appendDirectory('resources/phase_5/dna')
+        self.dnaSearchPath.appendDirectory('resources/phase_5.5/dna')
+        self.dnaSearchPath.appendDirectory('resources/phase_6/dna')
+        self.dnaSearchPath.appendDirectory('resources/phase_8/dna')
+        self.dnaSearchPath.appendDirectory('resources/phase_9/dna')
+        self.dnaSearchPath.appendDirectory('resources/phase_10/dna')
+        self.dnaSearchPath.appendDirectory('resources/phase_11/dna')
 
         # Initialize our query context.
         self.__queryEstateContext = 0
@@ -636,7 +626,7 @@ class ToontownAIRepository(AIDistrict):
 
         if ((isinstance(dnaGroup, DNAGroup)) and
             # If it is a DNAGroup, and the name has party_gate, count it
-            (string.find(dnaGroup.getName(), 'party_gate') >= 0)):
+            (dnaGroup.getName().find('party_gate') >= 0)):
             # Here's a party hat!
             ph = DistributedPartyGateAI.DistributedPartyGateAI(self)
             ph.generateWithRequired(zoneId)
@@ -670,7 +660,7 @@ class ToontownAIRepository(AIDistrict):
 
         if ((isinstance(dnaGroup, DNAGroup)) and
             # If it is a DNAGroup, and the name starts with fishing_pond, count it
-            (string.find(dnaGroup.getName(), 'fishing_pond') >= 0)):
+            (dnaGroup.getName().find('fishing_pond') >= 0)):
             # Here's a fishing pond!
             fishingPondGroups.append(dnaGroup)
             fp = DistributedFishingPondAI.DistributedFishingPondAI(self, area)
@@ -705,7 +695,7 @@ class ToontownAIRepository(AIDistrict):
         for i in range(dnaPondGroup.getNumChildren()):
             dnaGroup = dnaPondGroup.at(i)
             if ((isinstance(dnaGroup, DNAProp)) and 
-                (string.find(dnaGroup.getCode(), 'fishing_spot') >= 0)):
+                (dnaGroup.getCode().find('fishing_spot') >= 0)):
                 # Here's a fishing spot!
                 pos = dnaGroup.getPos()
                 hpr = dnaGroup.getHpr()
@@ -720,7 +710,7 @@ class ToontownAIRepository(AIDistrict):
     def findRacingPads(self, dnaGroup, zoneId, area, overrideDNAZone = 0, type = 'racing_pad'):
         racingPads = []
         racingPadGroups = []
-        if ((isinstance(dnaGroup, DNAGroup)) and (string.find(dnaGroup.getName(), type) >= 0)):
+        if ((isinstance(dnaGroup, DNAGroup)) and (dnaGroup.getName().find(type) >= 0)):
             racingPadGroups.append(dnaGroup)
             if (type == 'racing_pad'):
                 nameInfo = dnaGroup.getName().split('_')
@@ -789,7 +779,7 @@ class ToontownAIRepository(AIDistrict):
             dnaGroup = dnaRacingPadGroup.at(i)
 
             # TODO - check if DNAProp instance
-            if ((string.find(dnaGroup.getName(), 'starting_block') >= 0)):
+            if ((dnaGroup.getName().find('starting_block') >= 0)):
                 padLocation = dnaGroup.getName().split('_')[2]
                 pos = dnaGroup.getPos()
                 hpr = dnaGroup.getHpr()
@@ -809,7 +799,7 @@ class ToontownAIRepository(AIDistrict):
         Find and return leader boards
         '''
         leaderBoards = []
-        if (string.find(dnaPool.getName(), 'leaderBoard') >= 0):
+        if (dnaPool.getName().find('leaderBoard') >= 0):
             #found a leader board
             pos = dnaPool.getPos()
             hpr = dnaPool.getHpr()

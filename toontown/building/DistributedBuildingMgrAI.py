@@ -88,7 +88,7 @@ class DistributedBuildingMgrAI:
     def isValidBlockNumber(self, blockNumber):
         """return true if that block refers to a real block"""
         assert(self.debugPrint("isValidBlockNumber(blockNumber="+str(blockNumber)+")"))
-        return self.__buildings.has_key(blockNumber)
+        return blockNumber in self.__buildings
 
     def delayedSaveTask(self, task):
         assert(self.debugPrint("delayedSaveTask()"))
@@ -99,7 +99,7 @@ class DistributedBuildingMgrAI:
     def isSuitBlock(self, blockNumber):
         """return true if that block is a suit block/building"""
         assert(self.debugPrint("isSuitBlock(blockNumber="+str(blockNumber)+")"))
-        assert(self.__buildings.has_key(blockNumber))
+        assert(blockNumber in self.__buildings)
         return self.__buildings[blockNumber].isSuitBlock()
 
     def getSuitBlocks(self):
@@ -147,7 +147,7 @@ class DistributedBuildingMgrAI:
            useful for suits to know where to go when exiting from a
            building"""
         assert(self.debugPrint("getFrontDoorPoint(blockNumber="+str(blockNumber)+")"))
-        assert(self.__buildings.has_key(blockNumber))
+        assert(blockNumber in self.__buildings)
         return self.__buildings[blockNumber].getFrontDoorPoint()
 
     def getBuildingTrack(self, blockNumber):
@@ -155,12 +155,12 @@ class DistributedBuildingMgrAI:
            useful for suits to know where to go when exiting from a
            building"""
         assert(self.debugPrint("getBuildingTrack(blockNumber="+str(blockNumber)+")"))
-        assert(self.__buildings.has_key(blockNumber))
+        assert(blockNumber in self.__buildings)
         return self.__buildings[blockNumber].track
 
     def getBuilding( self, blockNumber ):
         assert(self.debugPrint("getBuilding(%s)" %(str(blockNumber),)))
-        assert(self.__buildings.has_key(blockNumber))
+        assert(blockNumber in self.__buildings)
         return self.__buildings[blockNumber]
         
     def setFrontDoorPoint(self, blockNumber, point):
@@ -169,7 +169,7 @@ class DistributedBuildingMgrAI:
            building"""
         assert(self.debugPrint("setFrontDoorPoint(blockNumber="+str(blockNumber)
                 +", point="+str(point)+")"))
-        assert(self.__buildings.has_key(blockNumber))
+        assert(blockNumber in self.__buildings)
         return self.__buildings[blockNumber].setFrontDoorPoint(point)
     
     def getDNABlockLists(self):
@@ -225,7 +225,7 @@ class DistributedBuildingMgrAI:
         """Create a new building and keep track of it."""
         assert(self.debugPrint("newBuilding(blockNumber="+str(blockNumber)
                 +", blockData="+str(blockData)+")"))
-        assert(not self.__buildings.has_key(blockNumber))
+        assert(blockNumber not in self.__buildings)
 
         building=DistributedBuildingAI.DistributedBuildingAI(
             self.air, blockNumber, self.branchID, self.trophyMgr)
@@ -261,7 +261,7 @@ class DistributedBuildingMgrAI:
         """Create a new building and keep track of it."""
         assert(self.debugPrint("newBuilding(blockNumber="+str(blockNumber)
                 +", blockData="+str(blockData)+")"))
-        assert(not self.__buildings.has_key(blockNumber))
+        assert(blockNumber not in self.__buildings)
 
         building=DistributedAnimBuildingAI.DistributedAnimBuildingAI(
                 self.air, blockNumber, self.branchID, self.trophyMgr)
@@ -290,7 +290,7 @@ class DistributedBuildingMgrAI:
 
     def newHQBuilding(self, blockNumber):
         """Create a new HQ building and keep track of it."""
-        assert(not self.__buildings.has_key(blockNumber))
+        assert(blockNumber not in self.__buildings)
         dnaStore = self.air.dnaStoreMap[self.canonicalBranchID]
         exteriorZoneId = dnaStore.getZoneFromBlockNumber(blockNumber)
         exteriorZoneId = ZoneUtil.getTrueZoneId(exteriorZoneId, self.branchID)
@@ -304,7 +304,7 @@ class DistributedBuildingMgrAI:
     def newGagshopBuilding(self, blockNumber):
         """Create a new Gagshop building and keep track of it."""
         assert(self.debugPrint("newGagshopBuilding(blockNumber="+str(blockNumber)+")"))
-        assert(not self.__buildings.has_key(blockNumber))
+        assert(blockNumber not in self.__buildings)
         dnaStore = self.air.dnaStoreMap[self.canonicalBranchID]
         exteriorZoneId = dnaStore.getZoneFromBlockNumber(blockNumber)
         exteriorZoneId = ZoneUtil.getTrueZoneId(exteriorZoneId, self.branchID)
@@ -316,7 +316,7 @@ class DistributedBuildingMgrAI:
     def newPetshopBuilding(self, blockNumber):
         """Create a new Petshop building and keep track of it."""
         assert(self.debugPrint("newPetshopBuilding(blockNumber="+str(blockNumber)+")"))
-        assert(not self.__buildings.has_key(blockNumber))
+        assert(blockNumber not in self.__buildings)
         dnaStore = self.air.dnaStoreMap[self.canonicalBranchID]
         exteriorZoneId = dnaStore.getZoneFromBlockNumber(blockNumber)
         exteriorZoneId = ZoneUtil.getTrueZoneId(exteriorZoneId, self.branchID)
@@ -334,7 +334,7 @@ class DistributedBuildingMgrAI:
         Return: None
         """
         assert( self.debugPrint( "newKartShopBuilding(blockNumber=" + str( blockNumber ) + ")" ) )
-        assert( not self.__buildings.has_key( blockNumber ) )
+        assert( blockNumber not in self.__buildings )
 
         dnaStore = self.air.dnaStoreMap[ self.canonicalBranchID ]
 
