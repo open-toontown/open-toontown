@@ -1,3 +1,10 @@
+from panda3d.core import loadPrcFile
+
+# TODO: use argparse for this?
+configs = ('etc/Configrc.prc',)
+for prc in configs:
+    loadPrcFile(prc)
+
 import builtins
 
 class game:
@@ -7,7 +14,6 @@ builtins.game = game()
 
 # NOTE: this file is not used in production. See AIServiceStart.py
 
-import time
 import os
 import sys
 
@@ -19,7 +25,7 @@ from direct.showbase import PythonUtil
 
 # Clear the default model extension for AI developers, so they'll know
 # when they screw up and omit it.
-from pandac.PandaModules import loadPrcFileData
+from panda3d.core import loadPrcFileData
 loadPrcFileData("AIStart.py", "default-model-extension")
 
 simbase.mdip = simbase.config.GetString("msg-director-ip", "localhost")
