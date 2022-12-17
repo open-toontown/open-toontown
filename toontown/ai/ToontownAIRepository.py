@@ -15,7 +15,7 @@ from . import ToontownMagicWordManagerAI
 from toontown.tutorial import TutorialManagerAI
 from toontown.catalog import CatalogManagerAI
 from otp.ai import TimeManagerAI
-import WelcomeValleyManagerAI
+from . import WelcomeValleyManagerAI
 from toontown.building import DistributedBuildingMgrAI
 from toontown.building import DistributedTrophyMgrAI
 from toontown.estate import DistributedBankMgrAI
@@ -39,7 +39,7 @@ from toontown.coghq import FactoryManagerAI
 from toontown.coghq import MintManagerAI
 from toontown.coghq import LawOfficeManagerAI
 from toontown.coghq import CountryClubManagerAI
-import NewsManagerAI
+from . import NewsManagerAI
 from toontown.hood import ZoneUtil
 from toontown.fishing import DistributedFishingPondAI
 from toontown.safezone import DistributedFishingSpotAI
@@ -51,7 +51,7 @@ from toontown.toon import NPCToons
 from toontown.safezone import ButterflyGlobals
 from toontown.estate import EstateManagerAI
 from toontown.suit import SuitInvasionManagerAI
-import HolidayManagerAI
+from . import HolidayManagerAI
 from toontown.effects import FireworkManagerAI
 from toontown.coghq import CogSuitManagerAI
 from toontown.coghq import PromotionManagerAI
@@ -73,10 +73,10 @@ import string
 import os
 import time
 
-import DatabaseObject
+from . import DatabaseObject
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
-from ToontownAIMsgTypes import *
+from .ToontownAIMsgTypes import *
 from otp.otpbase.OTPGlobals import *
 from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
 #from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
@@ -89,7 +89,7 @@ from toontown.parties import ToontownTimeManager
 from toontown.coderedemption.TTCodeRedemptionMgrAI import TTCodeRedemptionMgrAI
 from toontown.distributed.NonRepeatableRandomSourceAI import NonRepeatableRandomSourceAI
 
-import ToontownGroupManager
+from . import ToontownGroupManager
 
 if __debug__:
     import pdb
