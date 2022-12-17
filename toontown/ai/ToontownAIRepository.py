@@ -536,7 +536,7 @@ class ToontownAIRepository(AIDistrict):
         # them can be used to fill the world with requests for suit
         # buildings.
         if self.suitPlanners:
-            self.suitPlanners.values()[0].assignInitialSuitBuildings()
+            list(self.suitPlanners.values())[0].assignInitialSuitBuildings()
             
         # mark district as avaliable
         self.district.b_setAvailable(1)

@@ -1016,7 +1016,7 @@ class AIRepository(ConnectionRepository):
         datagram.addChannel(CONTROL_MESSAGE)
         datagram.addUint16(CONTROL_ADD_POST_REMOVE)
 
-        datagram.addString(themessage.getMessage())
+        datagram.addBlob(themessage.getMessage())
         self.send(datagram)
 
     def addPostSocketCloseUD(self, dclassName, fieldName, doId, args):

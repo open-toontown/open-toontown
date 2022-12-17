@@ -21,19 +21,19 @@ print("Initializing...")
 
 from otp.ai.AIBaseGlobal import *
 from . import ToontownAIRepository
-from direct.showbase import PythonUtil
+from otp.otpbase import PythonUtil
 
 # Clear the default model extension for AI developers, so they'll know
 # when they screw up and omit it.
 from panda3d.core import loadPrcFileData
 loadPrcFileData("AIStart.py", "default-model-extension")
 
-simbase.mdip = simbase.config.GetString("msg-director-ip", "localhost")
+simbase.mdip = simbase.config.GetString("msg-director-ip", "127.0.0.1")
 
 # Now the AI connects directly to the state server instead of the msg director
 simbase.mdport = simbase.config.GetInt("msg-director-port", 6666)
 
-simbase.esip = simbase.config.GetString("event-server-ip", "localhost")
+simbase.esip = simbase.config.GetString("event-server-ip", "127.0.0.1")
 simbase.esport = simbase.config.GetInt("event-server-port", 4343)
 
 
