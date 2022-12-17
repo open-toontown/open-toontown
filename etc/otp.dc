@@ -209,7 +209,7 @@ dclass AvatarHandle : TalkPath_whisper {
 
 dclass DistributedAvatar : DistributedSmoothNode, TalkPath_owner, TalkPath_whisper {
   string DcObjectType db;
-  setName(string) required broadcast db airecv;
+  setName(string = "unknownDistributedAvatar") required broadcast db airecv;
   friendsNotify(int32, int8) ownrecv airecv clsend;
   checkAvOnShard(uint32) clsend airecv;
   confirmAvOnShard(uint32, int8);
@@ -217,7 +217,7 @@ dclass DistributedAvatar : DistributedSmoothNode, TalkPath_owner, TalkPath_whisp
 
 dclass DistributedPlayer : DistributedAvatar {
   arrivedOnDistrict(uint32) ownrecv ram;
-  setAccountName(string) required ownrecv db;
+  setAccountName(string = "unknown") required ownrecv db;
   setWhisperFrom(uint32, string(0-256), uint32) ownrecv clsend;
   setWhisperWLFrom(uint32, string(0-256), uint32) ownrecv clsend;
   setWhisperSCFrom(uint32, uint16) ownrecv clsend;
@@ -228,14 +228,14 @@ dclass DistributedPlayer : DistributedAvatar {
   setWhitelistChatFlags(uint8) broadcast ownrecv ram airecv;
   setSC(uint16) broadcast ownsend airecv;
   setSCCustom(uint16) broadcast ownsend airecv;
-  setFriendsList(uint32uint8array) ownrecv required db airecv;
+  setFriendsList(uint32uint8array = {}) ownrecv required db airecv;
   setDISLname(string) broadcast ownrecv ram;
   setDISLid(uint32) broadcast ownrecv ram db airecv required;
   OwningAccount(uint32);
   WishName(string) db ram;
   WishNameState(string) db ram;
-  setPreviousAccess(uint8) required db airecv;
-  setAccess(uint8) broadcast ownrecv required ram airecv;
+  setPreviousAccess(uint8 access = 0) required db airecv;
+  setAccess(uint8 access = 2) broadcast ownrecv required ram airecv;
   setAsGM(bool) required ram broadcast ownrecv airecv;
 };
 

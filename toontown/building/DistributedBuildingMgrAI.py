@@ -384,7 +384,7 @@ class DistributedBuildingMgrAI:
             if os.path.exists(working):
                 os.remove(working)
             os.rename(fileName, working)
-            file=open(working, 'w')
+            file=open(working, 'wb')
             file.seek(0, 2)
             self.saveTo(file, block)
             file.close()
@@ -404,7 +404,7 @@ class DistributedBuildingMgrAI:
             # Move current file as the backup file:
             if os.path.exists(fileName):
                 os.rename(fileName, backup)
-            file=open(fileName, 'w')
+            file=open(fileName, 'wb')
             file.seek(0)
             self.saveTo(file)
             file.close()
@@ -433,7 +433,7 @@ class DistributedBuildingMgrAI:
         fileName=self.getFileName()
         try:
             # Try to open the backup file:
-            file=open(fileName+self.backupExtension, 'r')
+            file=open(fileName+self.backupExtension, 'rb')
             # Remove the (assumed) broken file:
             if os.path.exists(fileName):
                 os.remove(fileName)
@@ -441,7 +441,7 @@ class DistributedBuildingMgrAI:
             # OK, there's no backup file, good.
             try:
                 # Open the real file:
-                file=open(fileName, 'r')
+                file=open(fileName, 'rb')
             except IOError:
                 # OK, there's no file.  Start new list:
                 return {}
