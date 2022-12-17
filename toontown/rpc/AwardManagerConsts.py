@@ -1,6 +1,6 @@
 from enum import IntEnum
 
-GiveAwardErrors = IntEnum('GiveAwardErrors', ('Success', 'WrongGender', 'NotGiftable', 'FullMailbox', 'FullAwardMailbox', 'AlreadyInMailbox', 'AlreadyInGiftQueue', 'AlreadyInOrderedQueue', 'AlreadyInCloset', 'AlreadyBeingWorn', 'AlreadyInAwardMailbox', 'AlreadyInThirtyMinuteQueue', 'AlreadyInMyPhrases', 'AlreadyKnowDoodleTraining', 'AlreadyRented', 'GenericAlreadyHaveError', 'UnknownError', 'UnknownToon', 'NonToon'))
+GiveAwardErrors = IntEnum('GiveAwardErrors', ('Success', 'WrongGender', 'NotGiftable', 'FullMailbox', 'FullAwardMailbox', 'AlreadyInMailbox', 'AlreadyInGiftQueue', 'AlreadyInOrderedQueue', 'AlreadyInCloset', 'AlreadyBeingWorn', 'AlreadyInAwardMailbox', 'AlreadyInThirtyMinuteQueue', 'AlreadyInMyPhrases', 'AlreadyKnowDoodleTraining', 'AlreadyRented', 'GenericAlreadyHaveError', 'UnknownError', 'UnknownToon', 'NonToon'), start=0)
 GiveAwardErrorStrings = {GiveAwardErrors.Success: 'success',
  GiveAwardErrors.WrongGender: 'wrong gender',
  GiveAwardErrors.NotGiftable: 'item is not giftable',
