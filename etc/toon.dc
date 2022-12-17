@@ -443,63 +443,102 @@ typedef int16 pair16[2];
 dclass DistributedToon : DistributedPlayer {
   setDNAString(blob) required broadcast ownrecv db;
   setGM(uint8 = 0) required broadcast ownrecv db;
-  setMaxBankMoney(int16) required broadcast ownrecv db;
-  setBankMoney(int16) required broadcast ownrecv db;
-  setMaxMoney(int16) required broadcast ownrecv db;
-  setMoney(int16) required broadcast ownrecv db;
-  setMaxHp(int16) required broadcast ownrecv db;
-  setHp(int16) required broadcast ownrecv db;
+  setMaxBankMoney(int16 = 12000) required broadcast ownrecv db;
+  setBankMoney(int16 = 0) required broadcast ownrecv db;
+  setMaxMoney(int16 = 40) required broadcast ownrecv db;
+  setMoney(int16 = 0) required broadcast ownrecv db;
+  setMaxHp(int16 = 15) required broadcast ownrecv db;
+  setHp(int16 = 15) required broadcast ownrecv db;
+
   toonUp(uint16) broadcast ownrecv;
   takeDamage(uint16) broadcast ownrecv;
+
   setBattleId(uint32) required broadcast ram;
-  setExperience(blob) required ownrecv db;
-  setMaxCarry(uint8) required ownrecv db;
-  setTrackAccess(uint16array) required broadcast ownrecv db;
-  setTrackProgress(int8, uint32) required ownrecv db;
-  setTrackBonusLevel(int8array) required broadcast ownrecv db;
-  setInventory(blob) required ownrecv db;
-  setMaxNPCFriends(uint16) required ownrecv db;
-  setNPCFriendsDict(uint32uint8array) required ownrecv db;
-  setDefaultShard(uint32) required ownrecv db;
-  setDefaultZone(uint32) required ownrecv db;
-  setShtickerBook(blob) required ownrecv db;
-  setZonesVisited(uint32array) required ownrecv db;
-  setHoodsVisited(uint32array) required ownrecv db;
-  setInterface(blob) required ownrecv db;
-  setLastHood(uint32) required ownrecv db;
-  setTutorialAck(uint8) required ownrecv db;
-  setMaxClothes(uint32) required ownrecv db;
-  setClothesTopsList(uint8array) required ownrecv db;
-  setClothesBottomsList(uint8array) required ownrecv db;
-  setMaxAccessories(uint32) required ownrecv db;
-  setHatList(uint8array) required ownrecv db;
-  setGlassesList(uint8array) required ownrecv db;
-  setBackpackList(uint8array) required ownrecv db;
-  setShoesList(uint8array) required ownrecv db;
-  setHat(uint8, uint8, uint8) required broadcast db ownrecv;
-  setGlasses(uint8, uint8, uint8) required broadcast db ownrecv;
-  setBackpack(uint8, uint8, uint8) required broadcast db ownrecv;
-  setShoes(uint8, uint8, uint8) required broadcast db ownrecv;
-  setGardenSpecials(gardenSpecial []) required ownrecv db airecv;
+
+  setExperience(blob = { 0 * 14 }) required ownrecv db;
+  setMaxCarry(uint8 = 20) required ownrecv db;
+  // all I need is a single bit for each track, but uint8array is the
+  // smallest and it crashes
+  setTrackAccess(uint16array = {0,0,0,0,1,1,0}) required broadcast ownrecv db;
+  // Progress training a track. -1 trackId means no track, progress is a bit array
+  setTrackProgress(int8 trackId = -1, uint32 progress = 0) required ownrecv db;
+  // Indicates highest level bonus for each track
+  setTrackBonusLevel(int8array = {-1,-1,-1,-1,-1,-1,-1}) required broadcast ownrecv db;
+  // a 42 byte string of uint8s. We give some props for starters.
+  setInventory(blob = {0*7, 0*7, 0*7, 0*7, 1, 0*6, 1, 0*6, 0*7}) required ownrecv db;
+
+  setMaxNPCFriends(uint16 = 16) required ownrecv db;
+  setNPCFriendsDict(uint32uint8array = {}) required ownrecv db;
+
+  setDefaultShard(uint32 = 0) required ownrecv db;
+  setDefaultZone(uint32 = 0) required ownrecv db;
+  setShtickerBook(blob = {}) required ownrecv db;
+  setZonesVisited(uint32array = { 2000 }) required ownrecv db;
+  setHoodsVisited(uint32array = { 2000 }) required ownrecv db;
+  setInterface(blob = {}) required ownrecv db;
+  setLastHood(uint32 = 0) required ownrecv db;
+  setTutorialAck(uint8 = 0) required ownrecv db;
+
+  setMaxClothes(uint32 = 10) required ownrecv db;
+  setClothesTopsList(uint8array clothesTopsList = {}) required ownrecv db;
+  setClothesBottomsList(uint8array clothesBottomsList = {}) required ownrecv db;
+  setMaxAccessories(uint32 = 0) required ownrecv db;
+  setHatList(uint8array = {}) required ownrecv db;
+  setGlassesList(uint8array = {}) required ownrecv db;
+  setBackpackList(uint8array = {}) required ownrecv db;
+  setShoesList(uint8array = {}) required ownrecv db;
+  setHat(uint8 = 0, uint8 = 0, uint8 = 0) required broadcast db ownrecv;
+  setGlasses(uint8 = 0, uint8 = 0, uint8 = 0) required broadcast db ownrecv;
+  setBackpack(uint8 = 0, uint8 = 0, uint8 = 0) required broadcast db ownrecv;
+  setShoes(uint8 = 0, uint8 = 0, uint8 = 0) required broadcast db ownrecv;
+
+  setGardenSpecials(gardenSpecial [] = {}) required ownrecv db airecv;
+
   setEarnedExperience(uint16array) ownrecv;
   setTunnelIn(int16, int16/10, int16/10, int16/10, int16/100, int32/100) ownsend broadcast;
   setTunnelOut(int16, int16/10, int16/10, int16/10, int16/10, int16/100, int32/100) ownsend broadcast;
   setAnimState(char [0-1024], int16/1000, int16) broadcast ram ownsend airecv;
+
   setEmoteState(int16, int16/1000, int16) broadcast ram ownsend;
-  setEmoteAccess(uint8array) required ownrecv db;
-  setCustomMessages(uint16array) required ownrecv db;
+  setEmoteAccess(uint8array bits = {1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}) required ownrecv db;
+
+  // Special custom SpeedChat messages we have bought.
+  setCustomMessages(uint16array customMessages = {}) required ownrecv db;
+
   setSleepAutoReply(uint32) broadcast clsend ownrecv;
-  setResistanceMessages(pair16 []) required ownrecv db;
-  setPetTrickPhrases(uint8array) required ownrecv db;
-  setCatalogSchedule(uint16, uint32) required ownrecv db;
-  setCatalog(blob, blob, blob) required ownrecv db;
-  setMailboxContents(blob) required ownrecv db;
-  setDeliverySchedule(blob) required ownrecv db airecv;
-  setGiftSchedule(blob) required ownrecv db airecv;
-  setAwardMailboxContents(blob) required ownrecv db;
-  setAwardSchedule(blob) required ownrecv db airecv;
-  setAwardNotify(uint8) required ownrecv db;
-  setCatalogNotify(uint8, uint8) required ownrecv db;
+
+  // Special resistance SpeedChat messages we have earned.
+  setResistanceMessages(pair16 resistanceMessages[] = {}) required ownrecv db;
+
+  // Pet trick-training phrases
+  setPetTrickPhrases(uint8array petTricks = {0}) required ownrecv db;
+
+  // When did our catalog delivery start, and what is the last catalog
+  // we were issued?
+  setCatalogSchedule(uint16 currentWeek = 0, uint32 nextTime = 0) required ownrecv db;
+  setCatalog(blob monthlyCatalog = {}, blob weeklyCatalog = {}, blob backCatalog = {}) required ownrecv db;
+
+  // It is important that setDeliverySchedule appears after
+  // setMailboxContents, or the server will initialize these in the
+  // wrong order.  Since calling setDeliverySchedule can actually
+  // change the value of setMailboxContents, we must have already
+  // initialized setMailboxContents before setDeliverySchedule can
+  // safely be called.
+  setMailboxContents(blob mailboxContents = {}) required ownrecv db;
+  setDeliverySchedule(blob onDelivery = {}) required ownrecv db airecv;
+  setGiftSchedule(blob onGiftDelivery = {}) required ownrecv db airecv;
+
+  // For awards, to side step mailbox being full for free players
+  setAwardMailboxContents(blob awardMailboxContents = {}) required ownrecv db;
+  setAwardSchedule(blob onGiftDelivery = {}) required ownrecv db airecv;
+  setAwardNotify(uint8 awardNotify=0) required ownrecv db;
+
+  // It is similarly important that setCatalogNotify appears after
+  // both setCatalog and setMailboxContents and setAwardMailboxContents, since the client
+  // double-checks the catalog and mailbox on receipt of the
+  // notification message.
+  setCatalogNotify(uint8 catalogNotify = 0, uint8 mailboxNotify = 0) required ownrecv db;
+
   playSplashEffect(int16/10, int16/10, int16/10) broadcast ownsend;
   setWhisperSCToontaskFrom(uint32, uint32, uint32, uint32, uint8) ownrecv clsend;
   setSCToontask(uint32, uint32, uint32, uint8) broadcast ownsend;

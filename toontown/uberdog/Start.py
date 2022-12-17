@@ -29,7 +29,7 @@ if os.getenv('TTMODELS'):
     # doesn't hurt to add it again.
     getModelPath().appendDirectory(Filename.expandFrom("$TTMODELS/built"))
 
-from direct.showbase.PythonUtil import *
+from otp.otpbase.PythonUtil import *
 from otp.uberdog.UberDogGlobal import *
 from toontown.coderedemption import TTCodeRedemptionConsts
 from toontown.uberdog.ToontownUberDog import ToontownUberDog
