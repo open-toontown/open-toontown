@@ -273,6 +273,48 @@ class MaxToon(MagicWord):
 
         return f"Successfully maxed {toon.getName()}!"
 
+class AbortMinigame(MagicWord):
+    aliases = ["exitgame", "exitminigame", "quitgame", "quitminigame"]
+    desc = "Aborts an ongoing minigame."
+    execLocation = MagicWordConfig.EXEC_LOC_CLIENT
+    arguments = []
+
+    def handleWord(self, invoker, avId, toon, *args):
+        messenger.send("minigameAbort")
+        return "Requested minigame abort."
+
+class RequestMinigame(MagicWord):
+    aliases = ["minigame"]
+    desc = "Requests a specified trolley minigame to be loaded."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("minigame", str, True), ("difficulty", float, False, 0)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        minigame = args[0]
+        difficulty = args[1]
+
+        mgId = None
+        mgDiff = None if args[1] == 0 else args[1]
+        mgKeep = None
+        mgSzId = None
+
+        from toontown.toonbase import ToontownGlobals
+        try:
+            mgId = int(minigame)
+            if mgId not in ToontownGlobals.MinigameIDs:
+                return f"Unknown minigame ID {mgId}."
+        except:
+            if minigame not in ToontownGlobals.MinigameNames:
+                return f"Unknown minigame name \"{minigame}\"."
+            mgId = ToontownGlobals.MinigameNames.get(minigame)
+
+        from toontown.minigame import MinigameCreatorAI
+        MinigameCreatorAI.RequestMinigame[avId] = (mgId, mgKeep, mgDiff, mgSzId)
+        retStr = f"Successfully requested minigame \"{minigame}\""
+        if mgDiff:
+            retStr += f" with difficulty {mgDiff}"
+        return retStr + "."
+
 # Instantiate all classes defined here to register them.
 # A bit hacky, but better than the old system
 for item in list(globals().values()):
