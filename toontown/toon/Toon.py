@@ -8,6 +8,7 @@ from .ToonHead import *
 from panda3d.core import *
 from panda3d.otp import *
 from direct.interval.IntervalGlobal import *
+from panda3d.direct import ShowInterval, HideInterval
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from otp.otpbase import OTPLocalizer

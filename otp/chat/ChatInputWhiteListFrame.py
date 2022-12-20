@@ -4,6 +4,7 @@ import sys
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from panda3d.core import *
+from panda3d.otp import *
 from otp.otpbase import OTPLocalizer
 from direct.task import Task
 from otp.chat.ChatInputTyped import ChatInputTyped
