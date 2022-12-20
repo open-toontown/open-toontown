@@ -242,7 +242,7 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
             self.logSuspiciousEvent(senderId, 'CogdoMazeGameAI.requestSuitHitByGag outside of Game state')
             return False
 
-        if suitType not in Globals.SuitTypes:
+        if suitType not in list(Globals.SuitTypes):
             self.logSuspiciousEvent(senderId, 'CogdoMazeGameAI.requestSuitHitByGag: invalid suit type %s' % suitType)
             return False
 
@@ -269,7 +269,7 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
             self.logSuspiciousEvent(senderId, 'CogdoMazeGameAI.requestHitBySuit outside of Game state')
             return False
 
-        if suitType not in Globals.SuitTypes:
+        if suitType not in list(Globals.SuitTypes):
             self.logSuspiciousEvent(senderId, 'CogdoMazeGameAI.requestHitBySuit: invalid suit type %s' % suitType)
             return False
 
