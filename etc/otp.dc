@@ -236,7 +236,7 @@ dclass DistributedPlayer : DistributedAvatar {
   WishNameState(string) db ram;
   setPreviousAccess(uint8 access = 0) required db airecv;
   setAccess(uint8 access = 2) broadcast ownrecv required ram airecv;
-  setAsGM(bool) required ram broadcast ownrecv airecv;
+  setAsGM(bool isGM = 0) required ram broadcast ownrecv airecv;
 };
 
 dclass MagicWordManager : DistributedObject {
