@@ -64,7 +64,7 @@ class Street(BattlePlace.BattlePlace):
          State.State('WaitForBattle', self.enterWaitForBattle, self.exitWaitForBattle, ['battle', 'walk']),
          State.State('battle', self.enterBattle, self.exitBattle, ['walk', 'teleportOut', 'died']),
          State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
-         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
+         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk', 'stopped']),
          State.State('elevatorIn', self.enterElevatorIn, self.exitElevatorIn, ['walk']),
          State.State('elevator', self.enterElevator, self.exitElevator, ['walk']),
          State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),

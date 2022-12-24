@@ -315,6 +315,30 @@ class RequestMinigame(MagicWord):
             retStr += f" with difficulty {mgDiff}"
         return retStr + "."
 
+class Quests(MagicWord):
+    aliases = ["quest", "tasks", "task", "toontasks"]
+    desc = "Quest manupliation"
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("command", str, True), ("index", int, False, -1)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        command = args[0]
+        index = args[1]
+        """
+        Commands:
+        - "finish": Finish a task (sets the progress to 1000), finishes all by default
+        """
+        if command == "finish":
+            if index == -1:
+                self.air.questManager.completeAllQuestsMagically(toon)
+                return "Finished all quests."
+            else:
+                if self.air.questManager.completeQuestMagically(toon, index):
+                    return f"Finished quest {index}."
+                return f"Quest {index} not found.  (Hint: Quest indexes start at 0)"
+        else:
+            return "Valid commands: \"finish\""
+
 # Instantiate all classes defined here to register them.
 # A bit hacky, but better than the old system
 for item in list(globals().values()):

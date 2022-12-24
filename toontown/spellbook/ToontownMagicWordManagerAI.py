@@ -77,11 +77,12 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
             self.notify.warning('requestExecuteMagicWord: Magic Word use requested but invoker avatar is non-existent!')
             return
 
+        # FIXME:
         # Same thing with the Toontorial. Magic Words are strictly forbidden here
         # Tell the user they can't use it because they're in the Toontorial
-        if hasattr(self.air, 'tutorialManager') and avId in list(self.air.tutorialManager.avId2fsm.keys()):
-            self.generateResponse(avId=avId, responseType="Tutorial")
-            return
+        # if hasattr(self.air, 'tutorialManager') and avId in list(self.air.tutorialManager.avId2fsm.keys()):
+            # self.generateResponse(avId=avId, responseType="Tutorial")
+            # return
 
         # Our Magic Word affectRange is either SELF (the invoker) or BOTH (invoker and a target)
         # Because of this, we should add the invoker to the target list
