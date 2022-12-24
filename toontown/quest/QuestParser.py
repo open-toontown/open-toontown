@@ -5,6 +5,7 @@ import copy
 from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from panda3d.core import *
+from panda3d.otp import *
 from direct.showbase import DirectObject
 from . import BlinkingArrows
 from toontown.toon import ToonHeadFrame
