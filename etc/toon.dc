@@ -1409,6 +1409,7 @@ dclass ToontownMagicWordManager : DistributedObject {
   requestExecuteMagicWord(int8, int8, int16, uint32, string) airecv clsend;
   executeMagicWord(string, string, uint32[], blob, int8, int8, int16, uint32);
   generateResponse(string, string, blob, string, int8, int8, int16, uint32, string);
+  teleportResponse(string loaderId, string whereId, string how, uint32 hoodId, uint32 zoneId, uint32 avId);
 };
 
 struct weeklyCalendarHoliday {

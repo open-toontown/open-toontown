@@ -259,3 +259,27 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
         else:
             self.generateResponse(responseType="SuccessNoResp", magicWord=word, args=args, affectRange=affectRange,
                                   affectType=affectType, affectExtra=affectExtra, lastClickedAvId=lastClickedAvId)
+    
+    def teleportResponse(self, loaderId, whereId, how, hoodId, zoneId, avId):
+        # The AI tells the avatar to go somewhere.  This is probably in
+        # response to a magic word requesting transfer to a zone.
+
+        place = base.cr.playGame.getPlace()
+        if loaderId == "":
+            loaderId = ZoneUtil.getBranchLoaderName(zoneId)
+        if whereId == "":
+            whereId = ZoneUtil.getToonWhereName(zoneId)
+        if how == "":
+            how = "teleportIn"
+        if hoodId == 0:
+            hoodId = place.loader.hood.id
+        if avId == 0:
+            avId = -1
+        place.fsm.forceTransition('teleportOut',
+                                  [{"loader": loaderId,
+                                    "where": whereId,
+                                    "how": how,
+                                    "hoodId": hoodId, 
+                                    "zoneId": zoneId, 
+                                    "shardId": None,
+                                    "avId": avId}])
