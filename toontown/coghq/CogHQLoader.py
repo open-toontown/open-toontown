@@ -143,6 +143,7 @@ class CogHQLoader(StateData.StateData):
     def enterCogHQBossBattle(self, requestStatus):
         self.placeClass = self.getBossPlaceClass()
         self.enterPlace(requestStatus)
+        self.hood.hideTitleText()
 
     def exitCogHQBossBattle(self):
         self.exitPlace()

@@ -856,3 +856,23 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         if battleDifficulty >= numDifficultyLevels:
             battleDifficulty = numDifficultyLevels - 1
         self.b_setBattleDifficulty(battleDifficulty)
+    
+    def getNextState(self):
+        currState = self.getCurrentOrNextState()
+        if currState == "Elevator":
+            return "Introduction"
+        elif currState == "Introduction":
+            return "BattleOne"
+        elif currState == "BattleOne":
+            return "RollToBattleTwo"
+        elif currState == "RollToBattleTwo":
+            return "PrepareBattleTwo"
+        elif currState in ("PrepareBattleTwo", "BattleTwo"):
+            return "PrepareBattleThree"
+        elif currState in ("PrepareBattleThree", "BattleThree", "NearVictory"):
+            return "Victory"
+        # Do not skip Victory, weird stuff may happen, like not collecting their rewards.
+        elif currState == "Reward":
+            return "Epilogue"
+        
+        return None

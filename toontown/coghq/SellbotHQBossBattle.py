@@ -9,7 +9,7 @@ class SellbotHQBossBattle(CogHQBossBattle.CogHQBossBattle):
 
     def __init__(self, loader, parentFSM, doneEvent):
         CogHQBossBattle.CogHQBossBattle.__init__(self, loader, parentFSM, doneEvent)
-        self.teleportInPosHpr = (0, 95, 18, 180, 0, 0)
+        self.teleportInPosHpr = (0, 61, 18, 180, 0, 0)
 
     def load(self):
         CogHQBossBattle.CogHQBossBattle.load(self)

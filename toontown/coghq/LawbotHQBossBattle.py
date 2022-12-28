@@ -9,7 +9,7 @@ class LawbotHQBossBattle(CogHQBossBattle.CogHQBossBattle):
 
     def __init__(self, loader, parentFSM, doneEvent):
         CogHQBossBattle.CogHQBossBattle.__init__(self, loader, parentFSM, doneEvent)
-        self.teleportInPosHpr = (88, -214, 0, 210, 0, 0)
+        self.teleportInPosHpr = (-2.84, -99.47, 0, 360, 0, 0)
 
     def load(self):
         CogHQBossBattle.CogHQBossBattle.load(self)

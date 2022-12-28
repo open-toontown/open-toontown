@@ -250,6 +250,9 @@ class MaxToon(MagicWord):
 
     def handleWord(self, invoker, avId, toon, *args):
         from toontown.toonbase import ToontownGlobals
+        from toontown.quest import Quests
+        from toontown.suit import SuitDNA
+        from toontown.coghq import CogDisguiseGlobals
 
         # TODO: Handle this better, like giving out all awards, set the quest tier, stuff like that.
         # This is mainly copied from Anesidora just so I can better work on things.
@@ -270,6 +273,14 @@ class MaxToon(MagicWord):
         toon.b_setMaxMoney(250)
         toon.b_setMoney(toon.maxMoney)
         toon.b_setBankMoney(toon.maxBankMoney)
+
+        toon.b_setQuests([])
+        toon.b_setQuestCarryLimit(ToontownGlobals.MaxQuestCarryLimit)
+        toon.b_setRewardHistory(Quests.LOOPING_FINAL_TIER, [])
+
+        toon.b_setCogParts([*CogDisguiseGlobals.PartsPerSuitBitmasks])
+        toon.b_setCogTypes([SuitDNA.suitsPerDept - 1] * 4)
+        toon.b_setCogLevels([ToontownGlobals.MaxCogSuitLevel] * 4)
 
         return f"Successfully maxed {toon.getName()}!"
 
@@ -338,6 +349,115 @@ class Quests(MagicWord):
                 return f"Quest {index} not found.  (Hint: Quest indexes start at 0)"
         else:
             return "Valid commands: \"finish\""
+
+class BossBattle(MagicWord):
+    aliases = ["boss"]
+    desc = "Create a new or manupliate the current boss battle."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("command", str, True), ("type", str, False, ""), ("start", int, False, 1)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        command = args[0].lower()
+        type = args[1].lower()
+        start = args[2]
+
+        """
+        Commands:
+          - create [type] [start: 1]: Creates a boss and teleports to it.
+          - start: Starts/Restarts the battle from the beginning.
+          - stop: Stops the battle by going to the Frolic state.
+          - skip: Skips the boss to the next state (needs getNextState to be implemented).
+          - final: Skips the boss to the final round.
+          - kill: Skips the boss to the Victory state.
+        """
+
+        # create command shortcut:
+        if command in ("vp", "cfo", "cj", "ceo"):
+            type = command
+            command = "create"
+            try:
+                start = int(args[1])
+            except ValueError:
+                start = 1
+        
+        from toontown.suit.DistributedBossCogAI import DistributedBossCogAI
+        boss = None
+        for do in self.air.doId2do.values():
+            if isinstance(do, DistributedBossCogAI):
+                if do.isToonKnown(invoker.doId):
+                    boss = do
+                    break
+
+        if command == "create":
+            if boss:
+                return "You're already in a boss battle.  Please finish this one."
+            if type == "vp":
+                from toontown.suit.DistributedSellbotBossAI import DistributedSellbotBossAI
+                boss = DistributedSellbotBossAI(self.air)
+            elif type == "cfo":
+                from toontown.suit.DistributedCashbotBossAI import DistributedCashbotBossAI
+                boss = DistributedCashbotBossAI(self.air)
+            elif type == "cj":
+                from toontown.suit.DistributedLawbotBossAI import DistributedLawbotBossAI
+                boss = DistributedLawbotBossAI(self.air)
+            elif type == "ceo":
+                from toontown.suit.DistributedBossbotBossAI import DistributedBossbotBossAI
+                boss = DistributedBossbotBossAI(self.air)
+            else:
+                return f"Unknown boss type: \"{type}\""
+            
+            zoneId = self.air.allocateZone()
+            boss.generateWithRequired(zoneId)
+            if start:
+                boss.addToon(avId)
+                boss.b_setState('WaitForToons')
+            else:
+                boss.b_setState('Frolic')
+
+            respText = f"Created {type.upper()} boss battle"
+            if not start:
+                respText += " in Frolic state"
+
+            return respText + ", teleporting...", ["cogHQLoader", "cogHQBossBattle", "movie" if start else "teleportIn", boss.getHoodId(), boss.zoneId, 0]
+        
+        # The following commands needs the invoker to be in a boss battle.
+        if not boss:
+            return "You ain't in a boss battle!  Use the \"create\" command to create a boss battle."
+
+        boss.acceptNewToons()
+        if command == "start":
+            boss.b_setState('WaitForToons')
+            return "Boss battle started!"
+
+        elif command == "stop":
+            boss.b_setState("Frolic")
+            return "Boss battle stopped!"
+
+        elif command == "skip":
+            try:
+                nextState = boss.getNextState()
+            except NotImplementedError:
+                return "\"getNextState\" is not implemented for this boss battle!"
+            if nextState:
+                boss.b_setState(nextState)
+                return f"Skipped to {nextState}!"
+            return f"Cannot skip \"{boss.getCurrentOrNextState()}\" state."
+
+        elif command in ("final", "pie", "crane"):
+            if boss.dept == 'c':
+                boss.b_setState("BattleFour")
+            else:
+                boss.b_setState("BattleThree")
+            return "Skipped to final round!"
+
+        elif command in ("kill", "victory", "finish"):
+            boss.b_setState("Victory")
+            return "Killed the boss!"
+
+        # The create command is already described when the invoker is not in a battle.  These are the commands
+        # they can use INSIDE the battle.
+        return respText + f"Unknown command: \"{command}\". Valid commands: \"start\", \"stop\", \"skip\", \"final\", \"kill\"."
+
 
 # Instantiate all classes defined here to register them.
 # A bit hacky, but better than the old system

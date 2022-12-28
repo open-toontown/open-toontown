@@ -9,7 +9,7 @@ class BossbotHQBossBattle(CogHQBossBattle.CogHQBossBattle):
 
     def __init__(self, loader, parentFSM, doneEvent):
         CogHQBossBattle.CogHQBossBattle.__init__(self, loader, parentFSM, doneEvent)
-        self.teleportInPosHpr = (88, -214, 0, 210, 0, 0)
+        self.teleportInPosHpr = (-1.40, 59.78, 0, 360, 0, 0)
         for stateName in ['movie']:
             state = self.fsm.getStateNamed(stateName)
             state.addTransition('crane')

@@ -685,3 +685,6 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def doNextAttack(self, task):
         self.b_setAttackCode(ToontownGlobals.BossCogNoAttack)
+    
+    def getNextState(self):
+        raise NotImplementedError

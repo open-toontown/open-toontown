@@ -714,8 +714,6 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                 empty = InventoryBase.InventoryBase(toon)
                 toon.b_setInventory(empty.makeNetString())
                 toon.b_setHp(0)
-                db = DatabaseObject.DatabaseObject(self.air, toonId)
-                db.storeObject(toon, ['setInventory', 'setHp'])
                 self.notify.info('killing mem leak from temporary DistributedToonAI %d' % toonId)
                 toon.deleteDummy()
         return

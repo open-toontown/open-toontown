@@ -118,6 +118,9 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.bubbleF.setTag('attackCode', str(ToontownGlobals.BossCogFrontAttack))
         self.bubbleF.stash()
 
+        # HACK: See toontown/coghq/CogHQBossBattle.py
+        messenger.send('announceBoss', [self])
+
     def disable(self):
         DistributedAvatar.DistributedAvatar.disable(self)
         self.battleAId = None

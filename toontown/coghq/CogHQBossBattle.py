@@ -110,10 +110,20 @@ class CogHQBossBattle(BattlePlace.BattlePlace):
         self.bossCog = bossCog
         if self.bossCog:
             self.bossCog.d_avatarEnter()
+        else:
+            # HACK: For some reason, when teleporting to a boss via a magic word, the place may load
+            # first instead of the boss cog.  So listen to when the boss is generated.
+            self.acceptOnce('announceBoss', self.__bossGenerate)
         self._telemLimiter = TLGatherAllAvs('CogHQBossBattle', RotationLimitToH)
         NametagGlobals.setMasterArrowsOn(1)
         base.localAvatar.inventory.setRespectInvasions(0)
         self.fsm.request(requestStatus['how'], [requestStatus])
+    
+    def __bossGenerate(self, boss):
+        if self.bossCog:
+            return
+        self.bossCog = boss
+        self.bossCog.d_avatarEnter()
 
     def exit(self):
         self.fsm.requestFinalState()
