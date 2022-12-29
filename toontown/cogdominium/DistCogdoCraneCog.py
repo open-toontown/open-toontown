@@ -1,4 +1,4 @@
-from pandac import PandaModules as PM
+from panda3d.core import *
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed.DistributedObject import DistributedObject
 from direct.interval import IntervalGlobal as IG
@@ -24,10 +24,10 @@ class DistCogdoCraneCog(Suit, DistributedObject):
 
     def _startMoveIval(self, entranceId, startT):
         self._stopMoveIval()
-        unitVecs = (PM.Vec3(1, 0, 0),
-         PM.Vec3(0, 1, 0),
-         PM.Vec3(-1, 0, 0),
-         PM.Vec3(0, -1, 0))
+        unitVecs = (Vec3(1, 0, 0),
+         Vec3(0, 1, 0),
+         Vec3(-1, 0, 0),
+         Vec3(0, -1, 0))
         machineDistance = 4
         entranceDistance = 60
         startPos = unitVecs[entranceId] * entranceDistance
@@ -41,7 +41,7 @@ class DistCogdoCraneCog(Suit, DistributedObject):
         self._moveIval.start(globalClock.getFrameTime() - startT)
 
     def _getFlyAwayDest(self):
-        return self.getPos() + PM.Vec3(0, 0, GameConsts.CogSettings.CogFlyAwayHeight.get())
+        return self.getPos() + Vec3(0, 0, GameConsts.CogSettings.CogFlyAwayHeight.get())
 
     def _stopMoveIval(self):
         if self._moveIval:
