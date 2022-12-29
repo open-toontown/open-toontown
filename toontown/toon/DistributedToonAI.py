@@ -1,5 +1,5 @@
 from otp.ai.AIBaseGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.otpbase import OTPGlobals
 from direct.directnotify import DirectNotifyGlobal
 from . import ToonDNA
@@ -3781,7 +3781,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         paidStatus = simbase.config.GetString('force-paid-status', 'none')
         if paidStatus == 'unpaid':
             access = 1
-        print('Setting Access %s' % access)
+        self.notify.debug('Setting Access %s' % access)
         if access == OTPGlobals.AccessInvalid:
             if not __dev__:
                 self.air.writeServerEvent('Setting Access', self.doId, 'setAccess not being sent by the OTP Server, changing access to unpaid')

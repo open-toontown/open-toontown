@@ -2,7 +2,7 @@ from direct.directtools.DirectSelection import *
 from direct.directtools.DirectUtil import ROUND_TO
 from direct.directtools.DirectGeometry import LineNodePath
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.showbase.DirectObject import DirectObject
 from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
@@ -1449,7 +1449,7 @@ class ObjectManager(NodePath, DirectObject):
             buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
             okButtonImage = (buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr'))
             cancelButtonImage = (buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr'))
-            self.verifyFrame = DirectFrame(pos=(-0.4, 0.1, 0.3), scale=0.75, relief=None, image=DGG.getDefaultDialogGeom(), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.2, 1, 1.3), text='', text_wordwrap=19, text_scale=0.06, text_pos=(0, 0.5), textMayChange=1, sortOrder=NO_FADE_SORT_INDEX)
+            self.verifyFrame = DirectFrame(pos=(-0.4, 0.1, 0.3), scale=0.75, relief=None, image=DGG.getDefaultDialogGeom(), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.2, 1, 1.3), text='', text_wordwrap=19, text_scale=0.06, text_pos=(0, 0.5), textMayChange=1, sortOrder=DGG.NO_FADE_SORT_INDEX)
             self.okButton = DirectButton(parent=self.verifyFrame, image=okButtonImage, relief=None, text=OTPLocalizer.DialogOK, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(-0.22, 0.0, -0.5))
             self.cancelButton = DirectButton(parent=self.verifyFrame, image=cancelButtonImage, relief=None, text=OTPLocalizer.DialogCancel, text_scale=0.05, text_pos=(0.0, -0.1), textMayChange=0, pos=(0.22, 0.0, -0.5))
             self.deleteItemText = DirectLabel(parent=self.verifyFrame, relief=None, text='', text_wordwrap=16, pos=(0.0, 0.0, -0.4), scale=0.09)

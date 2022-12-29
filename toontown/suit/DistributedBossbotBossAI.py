@@ -1,5 +1,5 @@
 import random, math
-from pandac.PandaModules import Point3
+from panda3d.core import Point3
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import FSM
 from direct.interval.IntervalGlobal import LerpPosInterval
@@ -87,7 +87,7 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
             self.battleOneBattlesMade = True
 
     def getHoodId(self):
-        return ToontownGlobals.LawbotHQ
+        return ToontownGlobals.BossbotHQ
 
     def generateSuits(self, battleNumber):
         if battleNumber == 1:
@@ -885,3 +885,29 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def toggleMove(self):
         self.moveAttackAllowed = not self.moveAttackAllowed
         return self.moveAttackAllowed
+    
+    def getNextState(self):
+        currState = self.getCurrentOrNextState()
+        if currState == "Elevator":
+            return "Introduction"
+        elif currState == "Introduction":
+            return "BattleOne"
+        elif currState == "BattleOne":
+            return "PrepareBattleTwo"
+        elif currState == "PrepareBattleTwo":
+            return "BattleTwo"
+        elif currState == "BattleTwo":
+            return "PrepareBattleThree"
+        elif currState == "PrepareBattleThree":
+            return "BattleThree"
+        elif currState == "BattleThree":
+            return "PrepareBattleFour"
+        elif currState == "PrepareBattleFour":
+            return "BattleFour"
+        elif currState == "BattleFour":
+            return "Victory"
+        # Do not skip Victory, weird stuff may happen, like not collecting their rewards.
+        elif currState == "Reward":
+            return "Epilogue"
+        
+        return None

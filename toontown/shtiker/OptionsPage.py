@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from . import ShtikerPage
 from toontown.toontowngui import TTDialog
 from direct.gui.DirectGui import *
@@ -8,8 +8,8 @@ from direct.task import Task
 from otp.speedchat import SpeedChat
 from otp.speedchat import SCColorScheme
 from otp.speedchat import SCStaticTextTerminal
-from direct.showbase import PythonUtil
 from direct.directnotify import DirectNotifyGlobal
+from enum import IntEnum
 speedChatStyles = ((2000,
   (200 / 255.0, 60 / 255.0, 229 / 255.0),
   (200 / 255.0, 135 / 255.0, 255 / 255.0),
@@ -50,7 +50,7 @@ speedChatStyles = ((2000,
   (170 / 255.0, 120 / 255.0, 20 / 255.0),
   (165 / 255.0, 120 / 255.0, 50 / 255.0),
   (210 / 255.0, 200 / 255.0, 180 / 255.0)))
-PageMode = PythonUtil.Enum('Options, Codes')
+PageMode = IntEnum('PageMode', ('Options', 'Codes'), start=0)
 
 class OptionsPage(ShtikerPage.ShtikerPage):
     notify = DirectNotifyGlobal.directNotify.newCategory('OptionsPage')
@@ -118,8 +118,8 @@ class OptionsTabPage(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('OptionsTabPage')
     DisplaySettingsTaskName = 'save-display-settings'
     DisplaySettingsDelay = 60
-    ChangeDisplaySettings = base.config.GetBool('change-display-settings', 1)
-    ChangeDisplayAPI = base.config.GetBool('change-display-api', 0)
+    ChangeDisplaySettings = ConfigVariableBool('change-display-settings', 1).value
+    ChangeDisplayAPI = ConfigVariableBool('change-display-api', 0).value
 
     def __init__(self, parent = aspect2d):
         self._parent = parent

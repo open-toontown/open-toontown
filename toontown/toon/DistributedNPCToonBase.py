@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.otp import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM

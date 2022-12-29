@@ -4,25 +4,22 @@ from . import ToonDNA
 from direct.task.Task import Task
 from toontown.suit import SuitDNA
 from direct.actor import Actor
-import string
 from .ToonHead import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.otp import *
 from direct.interval.IntervalGlobal import *
+from panda3d.direct import ShowInterval, HideInterval
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from otp.otpbase import OTPLocalizer
 from toontown.toonbase import TTLocalizer
-import random
 from toontown.effects import Wake
-from . import TTEmote
 from otp.avatar import Emote
 from . import Motion
 from toontown.hood import ZoneUtil
 from toontown.battle import SuitBattleGlobals
 from otp.otpbase import OTPGlobals
 from toontown.effects import DustCloud
-from direct.showbase.PythonUtil import Functor
 from toontown.distributed import DelayDelete
 from . import AccessoryGlobals
 import importlib
@@ -164,7 +161,7 @@ Phase6AnimList = (('headdown-putt', 'headdown-putt'),
 Phase9AnimList = (('push', 'push'),)
 Phase10AnimList = (('leverReach', 'leverReach'), ('leverPull', 'leverPull'), ('leverNeutral', 'leverNeutral'))
 Phase12AnimList = ()
-if not base.config.GetBool('want-new-anims', 1):
+if not ConfigVariableBool('want-new-anims', 1).value:
     LegDict = {'s': '/models/char/dogSS_Shorts-legs-',
      'm': '/models/char/dogMM_Shorts-legs-',
      'l': '/models/char/dogLL_Shorts-legs-'}
@@ -193,7 +190,7 @@ else:
 
 def loadModels():
     global Preloaded
-    preloadAvatars = base.config.GetBool('preload-avatars', 0)
+    preloadAvatars = ConfigVariableBool('preload-avatars', 0).value
     if preloadAvatars:
 
         def loadTex(path):
@@ -461,7 +458,7 @@ def unloadDialog():
 
 class Toon(Avatar.Avatar, ToonHead):
     notify = DirectNotifyGlobal.directNotify.newCategory('Toon')
-    afkTimeout = base.config.GetInt('afk-timeout', 600)
+    afkTimeout = ConfigVariableInt('afk-timeout', 600).value
 
     def __init__(self):
         try:
@@ -648,7 +645,7 @@ class Toon(Avatar.Avatar, ToonHead):
     def parentToonParts(self):
         if self.hasLOD():
             for lodName in self.getLODNames():
-                if base.config.GetBool('want-new-anims', 1):
+                if ConfigVariableBool('want-new-anims', 1).value:
                     if not self.getPart('torso', lodName).find('**/def_head').isEmpty():
                         self.attach('head', 'torso', 'def_head', lodName)
                     else:
@@ -675,12 +672,12 @@ class Toon(Avatar.Avatar, ToonHead):
 
     def setLODs(self):
         self.setLODNode()
-        levelOneIn = base.config.GetInt('lod1-in', 20)
-        levelOneOut = base.config.GetInt('lod1-out', 0)
-        levelTwoIn = base.config.GetInt('lod2-in', 80)
-        levelTwoOut = base.config.GetInt('lod2-out', 20)
-        levelThreeIn = base.config.GetInt('lod3-in', 280)
-        levelThreeOut = base.config.GetInt('lod3-out', 80)
+        levelOneIn = ConfigVariableInt('lod1-in', 20).value
+        levelOneOut = ConfigVariableInt('lod1-out', 0).value
+        levelTwoIn = ConfigVariableInt('lod2-in', 80).value
+        levelTwoOut = ConfigVariableInt('lod2-out', 20).value
+        levelThreeIn = ConfigVariableInt('lod3-in', 280).value
+        levelThreeOut = ConfigVariableInt('lod3-out', 80).value
         self.addLOD(1000, levelOneIn, levelOneOut)
         self.addLOD(500, levelTwoIn, levelTwoOut)
         self.addLOD(250, levelThreeIn, levelThreeOut)
@@ -705,14 +702,14 @@ class Toon(Avatar.Avatar, ToonHead):
         self.leftHand = None
         for lodName in self.getLODNames():
             hand = self.getPart('torso', lodName).find('**/joint_Rhold')
-            if base.config.GetBool('want-new-anims', 1):
+            if ConfigVariableBool('want-new-anims', 1).value:
                 if not self.getPart('torso', lodName).find('**/def_joint_right_hold').isEmpty():
                     hand = self.getPart('torso', lodName).find('**/def_joint_right_hold')
             else:
                 hand = self.getPart('torso', lodName).find('**/joint_Rhold')
             self.rightHands.append(hand)
             rightHand = rightHand.instanceTo(hand)
-            if base.config.GetBool('want-new-anims', 1):
+            if ConfigVariableBool('want-new-anims', 1).value:
                 if not self.getPart('torso', lodName).find('**/def_joint_left_hold').isEmpty():
                     hand = self.getPart('torso', lodName).find('**/def_joint_left_hold')
             else:
@@ -2044,7 +2041,7 @@ class Toon(Avatar.Avatar, ToonHead):
         self.startLookAround()
         self.openEyes()
         self.startBlink()
-        if config.GetBool('stuck-sleep-fix', 1):
+        if ConfigVariableBool('stuck-sleep-fix', 1).value:
             doClear = SLEEP_STRING in (self.nametag.getChat(), self.nametag.getStompText())
         else:
             doClear = self.nametag.getChat() == SLEEP_STRING

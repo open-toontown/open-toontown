@@ -1,7 +1,7 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from .DistributedNPCToonBase import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from . import NPCToons
 from toontown.toonbase import TTLocalizer
 from direct.distributed import DistributedObject
@@ -21,7 +21,7 @@ class DistributedNPCBlocker(DistributedNPCToonBase):
 
     def initToonState(self):
         self.setAnimState('neutral', 0.9, None, None)
-        posh = NPCToons.BlockerPositions[self.name]
+        posh = NPCToons.BlockerPositions[self._name]
         self.setPos(posh[0])
         self.setH(posh[1])
         return

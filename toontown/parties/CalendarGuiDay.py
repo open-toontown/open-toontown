@@ -1,7 +1,7 @@
 import datetime
 import functools
 import time
-from pandac.PandaModules import TextNode, Vec3, Vec4, PlaneNode, Plane, Point3
+from panda3d.core import TextNode, Vec3, Vec4, PlaneNode, Plane, Point3
 from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton, DirectScrolledList, DGG
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui import DirectGuiGlobals
@@ -531,7 +531,7 @@ class MiniInviteVisual(DirectFrame):
         DirectFrame.__init__(self, parent, pos=(0.1, 0, -0.018))
         self.checkedHeight = True
         self.partyInfo = partyInfo
-        self.parent = parent
+        self._parent = parent
         self.inviteBackgrounds = loader.loadModel('phase_4/models/parties/partyStickerbook')
         backgrounds = ['calendar_popup_birthday',
          'calendar_popup_fun',
@@ -547,9 +547,9 @@ class MiniInviteVisual(DirectFrame):
         return
 
     def show(self):
-        self.reparentTo(self.parent)
+        self.reparentTo(self._parent)
         self.setPos(0.1, 0, -0.018)
-        newParent = self.parent.getParent().getParent()
+        newParent = self._parent.getParent().getParent()
         self.wrtReparentTo(newParent)
         if self.whosePartyLabel['text'] == ' ':
             host = base.cr.identifyAvatar(self.partyInfo.hostId)
@@ -575,7 +575,7 @@ class MiniInviteVisual(DirectFrame):
     def destroy(self):
         del self.checkedHeight
         del self.partyInfo
-        del self.parent
+        del self._parent
         del self.background
         del self.whosePartyLabel
         del self.whenTextLabel

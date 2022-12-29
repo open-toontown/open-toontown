@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 import random
 import string
 import copy

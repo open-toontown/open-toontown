@@ -1,5 +1,5 @@
 import random
-from pandac.PandaModules import Point3
+from panda3d.core import Point3
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.distributed.ClockDelta import globalClockDelta

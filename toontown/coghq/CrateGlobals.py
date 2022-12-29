@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 CRATE_CLEAR = 0
 CRATE_POWERUP = 1
 CRATE_PUSH = 2

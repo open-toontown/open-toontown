@@ -4,7 +4,7 @@ from .BattleBase import *
 from . import BattleCalculatorAI
 from toontown.toonbase.ToontownBattleGlobals import *
 from .SuitBattleGlobals import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from . import BattleExperienceAI
 from direct.distributed import DistributedObjectAI
 from direct.fsm import ClassicFSM, State
@@ -714,8 +714,6 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                 empty = InventoryBase.InventoryBase(toon)
                 toon.b_setInventory(empty.makeNetString())
                 toon.b_setHp(0)
-                db = DatabaseObject.DatabaseObject(self.air, toonId)
-                db.storeObject(toon, ['setInventory', 'setHp'])
                 self.notify.info('killing mem leak from temporary DistributedToonAI %d' % toonId)
                 toon.deleteDummy()
         return

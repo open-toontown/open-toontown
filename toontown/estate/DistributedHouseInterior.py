@@ -1,6 +1,6 @@
 from toontown.toonbase.ToontownGlobals import *
 from toontown.toonbase.ToonBaseGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
@@ -99,7 +99,7 @@ class DistributedHouseInterior(DistributedObject.DistributedObject):
 
             return
         numSurfaceTypes = CatalogSurfaceItem.NUM_ST_TYPES
-        numRooms = min(len(self.wallpaper) / numSurfaceTypes, len(RoomNames))
+        numRooms = min(len(self.wallpaper) // numSurfaceTypes, len(RoomNames))
         for room in range(numRooms):
             roomName = RoomNames[room]
             roomNode = self.interior.find(roomName)

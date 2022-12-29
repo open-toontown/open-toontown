@@ -1,19 +1,19 @@
-import os
 import datetime
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObject
+from direct.showbase.DirectObject import DirectObject
 from otp.chat.WhiteList import WhiteList
 from toontown.toonbase import TTLocalizer
 
-class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
+class TTWhiteList(WhiteList, DirectObject):
     RedownloadTaskName = 'RedownloadWhitelistTask'
-    WhitelistBaseDir = config.GetString('whitelist-base-dir', '')
-    WhitelistStageDir = config.GetString('whitelist-stage-dir', 'whitelist')
-    WhitelistOverHttp = config.GetBool('whitelist-over-http', True)
-    WhitelistFileName = config.GetString('whitelist-filename', 'twhitelist.dat')
+    WhitelistBaseDir = ConfigVariableString('whitelist-base-dir', '').value
+    WhitelistStageDir = ConfigVariableString('whitelist-stage-dir', 'whitelist').value
+    WhitelistOverHttp = ConfigVariableBool('whitelist-over-http', False).value
+    WhitelistFileName = ConfigVariableString('whitelist-filename', 'twhitelist.dat').value
 
     def __init__(self):
+        DirectObject.__init__(self)
         self.redownloadingWhitelist = False
         self.startRedownload = datetime.datetime.now()
         self.endRedownload = datetime.datetime.now()
@@ -30,15 +30,19 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
         data = vfs.readFile(filename, 1)
         lines = data.split(b'\n')
         WhiteList.__init__(self, lines)
-        self.redownloadWhitelist()
         self.defaultWord = TTLocalizer.ChatGarblerDefault[0]
-        self.accept('updateWhitelist', self.handleNewWhitelist)
+        if self.WhitelistOverHttp:
+            self.redownloadWhitelist()
+            self.accept('updateWhitelist', self.handleNewWhitelist)
 
     def unload(self):
-        self.ignore('updateWhitelist')
-        self.removeDownloadingTextTask()
+        if self.WhitelistOverHttp:
+            self.ignore('updateWhitelist')
+            self.removeDownloadingTextTask()
 
     def redownloadWhitelist(self):
+        if not self.WhitelistOverHttp:
+            return
         self.percentDownload = 0.0
         self.notify.info('starting redownloadWhitelist')
         self.startRedownload = datetime.datetime.now()
@@ -72,8 +76,8 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
             self.updateWhitelist()
 
     def getWhitelistUrl(self):
-        result = base.config.GetString('fallback-whitelist-url', 'http://cdn.toontown.disney.go.com/toontown/en/')
-        override = base.config.GetString('whitelist-url', '')
+        result = ConfigVariableString('fallback-whitelist-url', 'http://cdn.toontown.disney.go.com/toontown/en/').value
+        override = ConfigVariableString('whitelist-url', '').value
         if override:
             self.notify.info('got an override url,  using %s for the whitelist' % override)
             result = override
@@ -108,22 +112,7 @@ class TTWhiteList(WhiteList, DistributedObject.DistributedObject):
     def findWhitelistDir(self):
         if self.WhitelistOverHttp:
             return self.WhitelistStageDir
-        searchPath = DSearchPath()
-        if AppRunnerGlobal.appRunner:
-            searchPath.appendDirectory(Filename.expandFrom('$TT_3_5_ROOT/phase_3.5/models/news'))
-        else:
-            basePath = os.path.expandvars('$TTMODELS') or './ttmodels'
-            searchPath.appendDirectory(Filename.fromOsSpecific(basePath + '/built/' + self.NewsBaseDir))
-            searchPath.appendDirectory(Filename(self.NewsBaseDir))
-        pfile = Filename(self.WhitelistFileName)
-        found = vfs.resolveFilename(pfile, searchPath)
-        if not found:
-            self.notify.warning('findWhitelistDir - no path: %s' % self.WhitelistFileName)
-            self.setErrorMessage(TTLocalizer.NewsPageErrorDownloadingFile % self.WhitelistFileName)
-            return None
-        self.notify.debug('found whitelist file %s' % pfile)
-        realDir = pfile.getDirname()
-        return realDir
+        return None
 
     def downloadWhitelistTask(self, task):
         if self.ch.run():

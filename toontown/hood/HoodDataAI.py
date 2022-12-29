@@ -4,7 +4,7 @@ from toontown.building import DistributedBuildingMgrAI
 from toontown.suit import DistributedSuitPlannerAI
 from toontown.safezone import ButterflyGlobals
 from toontown.safezone import DistributedButterflyAI
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.toontown import *
 from toontown.toon import NPCToons
 

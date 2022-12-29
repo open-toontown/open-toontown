@@ -1,4 +1,4 @@
-from pandac.PandaModules import Filename
+from panda3d.core import Filename
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import DGG, DirectFrame, DirectButton
 from toontown.shtiker import IssueFrame
@@ -33,7 +33,7 @@ class IssueFrameV2(IssueFrame.IssueFrame):
 
     def isSectionInIndex(self, sectionIdent):
         for name in self.newsIndexEntries:
-            if sectionIdent.encode('utf-8') in name and self.dateStr.encode('utf-8') in name:
+            if sectionIdent in name and self.dateStr in name:
                 return True
 
         return False

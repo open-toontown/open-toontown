@@ -1,13 +1,11 @@
 import os
-import time
 import datetime
 import functools
-from pandac.PandaModules import Filename, DSearchPath, TextNode
-from pandac.PandaModules import HTTPClient, Ramfile, DocumentSpec
+from panda3d.core import Filename, DSearchPath, ConfigVariableString, ConfigVariableBool
+from panda3d.core import HTTPClient, Ramfile, DocumentSpec
 from direct.showbase import DirectObject
 from direct.gui.DirectGui import DirectFrame, DGG
 from direct.directnotify import DirectNotifyGlobal
-from direct.task.Task import Task
 from direct.showbase import AppRunnerGlobal
 from toontown.shtiker import IssueFrame
 from toontown.shtiker import IssueFrameV2
@@ -17,15 +15,15 @@ class DirectNewsFrame(DirectObject.DirectObject):
     TaskName = 'HtmlViewUpdateTask'
     TaskChainName = 'RedownladTaskChain'
     RedownloadTaskName = 'RedownloadNewsTask'
-    NewsBaseDir = config.GetString('news-base-dir', '/httpNews')
-    NewsStageDir = config.GetString('news-stage-dir', 'news')
+    NewsBaseDir = ConfigVariableString('news-base-dir', '/httpNews').value
+    NewsStageDir = ConfigVariableString('news-stage-dir', 'news').value
     FrameDimensions = (-1.30666637421,
      1.30666637421,
      -0.751666665077,
      0.751666665077)
     notify = DirectNotifyGlobal.directNotify.newCategory('DirectNewsFrame')
-    NewsIndexFilename = config.GetString('news-index-filename', 'http_news_index.txt')
-    NewsOverHttp = config.GetBool('news-over-http', True)
+    NewsIndexFilename = ConfigVariableString('news-index-filename', 'http_news_index.txt').value
+    NewsOverHttp = ConfigVariableBool('news-over-http', True).value
     CacheIndexFilename = 'cache_index.txt'
     SectionIdents = ['hom',
      'new',
@@ -253,7 +251,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
         self.newsFiles = []
         filename = self.rf.readline()
         while filename:
-            filename = filename.strip()
+            filename = filename.decode('utf-8').strip()
             if filename:
                 self.newsFiles.append(filename)
             filename = self.rf.readline()
@@ -274,7 +272,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
         return self.downloadNextFile(task)
 
     def downloadNextFile(self, task):
-        while self.nextNewsFile < len(self.newsFiles) and b'aaver' in self.newsFiles[self.nextNewsFile]:
+        while self.nextNewsFile < len(self.newsFiles) and 'aaver' in self.newsFiles[self.nextNewsFile]:
             self.nextNewsFile += 1
 
         if self.nextNewsFile >= len(self.newsFiles):
@@ -295,7 +293,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
         self.percentDownloaded = float(self.nextNewsFile) / float(len(self.newsFiles))
         self.filename = self.newsFiles[self.nextNewsFile]
         self.nextNewsFile += 1
-        self.url = self.newsUrl + self.filename.decode('utf-8')
+        self.url = self.newsUrl + self.filename
         localFilename = Filename(self.newsDir, self.filename)
         self.notify.info('testing for %s' % localFilename.getFullpath())
         doc = DocumentSpec(self.url)
@@ -323,7 +321,7 @@ class DirectNewsFrame(DirectObject.DirectObject):
                 del self.newsCache[self.filename]
                 self.saveNewsCache()
             return self.downloadNextFile(task)
-        self.notify.info('downloaded %s' % self.filename.decode('utf-8'))
+        self.notify.info('downloaded %s' % self.filename)
         size = self.ch.getFileSize()
         doc = self.ch.getDocumentSpec()
         date = ''
@@ -370,8 +368,8 @@ class DirectNewsFrame(DirectObject.DirectObject):
                 self.redownloadNews()
 
     def getInGameNewsUrl(self):
-        result = base.config.GetString('fallback-news-url', 'http://cdn.toontown.disney.go.com/toontown/en/gamenews/')
-        override = base.config.GetString('in-game-news-url', '')
+        result = ConfigVariableString('fallback-news-url', 'http://cdn.toontown.disney.go.com/toontown/en/gamenews/').value
+        override = ConfigVariableString('in-game-news-url', '').value
         if override:
             self.notify.info('got an override url,  using %s for in game news' % override)
             result = override
@@ -392,8 +390,8 @@ class DirectNewsFrame(DirectObject.DirectObject):
         majorVer = 1
         minorVer = 0
         for entry in self.newsIndexEntries:
-            if b'aaver' in entry and dateStr.encode('utf-8') in entry:
-                parts = entry.split(b'_')
+            if 'aaver' in entry and dateStr in entry:
+                parts = entry.split('_')
                 if len(parts) > 5:
                     try:
                         majorVer = int(parts[5])

@@ -1,9 +1,9 @@
 from otp.avatar import Avatar
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.otp import *
 from direct.task import Task
 import random
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 AnimDict = {'mk': (('walk', 'walk', 3),
         ('run', 'run', 3),

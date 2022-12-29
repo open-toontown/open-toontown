@@ -1,7 +1,4 @@
 from bisect import bisect_left
-import string
-import sys
-import os
 
 class WhiteList:
 
@@ -14,10 +11,7 @@ class WhiteList:
         self.numWords = len(self.words)
 
     def cleanText(self, text):
-        if type(text) == bytes:
-            text = text.decode('utf-8').strip('.,?!')
-        else:
-            text = text.strip('.,?!')
+        text = text.strip('.,?!')
         text = text.lower().encode('utf-8')
         return text
 

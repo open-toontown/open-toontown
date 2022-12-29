@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.toontown import *
 from direct.showbase.PythonUtil import reduceAngle, randFloat, normalDistrib
 from direct.showbase import DirectObject

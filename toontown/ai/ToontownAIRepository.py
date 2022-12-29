@@ -49,6 +49,7 @@ from toontown.spellbook.ToontownMagicWordManagerAI import ToontownMagicWordManag
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
 from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
+from toontown.tutorial.TutorialManagerAI import TutorialManagerAI
 from toontown.uberdog.DistributedInGameNewsMgrAI import DistributedInGameNewsMgrAI
 import os
 
@@ -236,6 +237,10 @@ class ToontownAIRepository(ToontownInternalRepository):
         # Generate our estate manager...
         self.estateMgr = EstateManagerAI(self)
         self.estateMgr.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
+
+        # Generate our Tutorial manager...
+        self.tutorialManager = TutorialManagerAI(self)
+        self.tutorialManager.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
 
     def generateHood(self, hoodConstructor, zoneId):
         # Bossbot HQ doesn't use DNA, so we skip over that.

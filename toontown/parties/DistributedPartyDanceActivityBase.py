@@ -1,8 +1,7 @@
 import random
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.FunctionInterval import Wait, Func
 from direct.interval.MetaInterval import Sequence, Parallel
-from direct.showbase.PythonUtil import lerp, Enum
 from direct.fsm import FSM
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
@@ -17,8 +16,9 @@ from toontown.parties.PartyDanceActivityToonFSM import ToonDancingStates
 from toontown.parties.KeyCodes import KeyCodes
 from toontown.parties.KeyCodesGui import KeyCodesGui
 from toontown.parties import PartyGlobals
+from enum import IntEnum
 DANCE_FLOOR_COLLISION = 'danceFloor_collision'
-DanceViews = Enum(('Normal', 'Dancing', 'Isometric'))
+DanceViews = IntEnum('DanceViews', ('Normal', 'Dancing', 'Isometric'), start=0)
 
 class DistributedPartyDanceActivityBase(DistributedPartyActivity):
     notify = directNotify.newCategory('DistributedPartyDanceActivity')

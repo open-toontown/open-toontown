@@ -11,7 +11,8 @@ from direct.task import Task
 from direct.showbase import PythonUtil
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui import DirectGuiGlobals
-from pandac.PandaModules import *
+from panda3d.core import *
+from panda3d.otp import WhisperPopup
 from otp.avatar import LocalAvatar
 from otp.login import LeaveToPayDialog
 from otp.avatar import PositionExaminer
@@ -167,6 +168,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.physControls.event.addAgainPattern('again%in')
             self.oldPos = None
             self.questMap = None
+            self.lerpFurnitureButton = None
 
     def wantLegacyLifter(self):
         return True
@@ -293,7 +295,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
                 self.__piePowerMeter.destroy()
                 self.__piePowerMeter = None
             taskMgr.remove('unlockGardenButtons')
-            taskMgr.remove('lerpFurnitureButton')
+            if self.lerpFurnitureButton:
+                self.lerpFurnitureButton.finish()
+                self.lerpFurnitureButton = None
             if self.__furnitureGui:
                 self.__furnitureGui.destroy()
             del self.__furnitureGui
@@ -1179,8 +1183,11 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
                 self.__furnitureGui.setScale(0.06)
             elif self.cr.furnitureManager != None:
                 self.showFurnitureGui()
-                taskMgr.remove('lerpFurnitureButton')
-                self.__furnitureGui.lerpPosHprScale(pos=Point3(-1.19, 0.0, 0.33), hpr=Vec3(0.0, 0.0, 0.0), scale=Vec3(0.04, 0.04, 0.04), time=1.0, blendType='easeInOut', task='lerpFurnitureButton')
+                if self.lerpFurnitureButton:
+                    self.lerpFurnitureButton.finish()
+                    self.lerpFurnitureButton = None
+                self.lerpFurnitureButton = self.__furnitureGui.posHprScaleInterval(pos=Point3(-1.19, 0.0, 0.33), hpr=Vec3(0.0, 0.0, 0.0), scale=Vec3(0.04, 0.04, 0.04), duration=1.0, blendType='easeInOut', name='lerpFurnitureButton')
+                self.lerpFurnitureButton.start()
         if hasattr(self, 'inEstate') and self.inEstate:
             self.loadGardeningGui()
             self.hideGardeningGui()

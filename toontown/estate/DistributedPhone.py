@@ -11,7 +11,7 @@ from direct.distributed import ClockDelta
 from direct.showbase import PythonUtil
 from direct.showutil import Rope
 from direct.directnotify.DirectNotifyGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 import string
 from toontown.quest import Quests
@@ -44,6 +44,7 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
         self.intervalAvatar = None
         self.phoneInUse = 0
         self.origToonHpr = None
+        self.lerpCameraSeq = None
         return
 
     def announceGenerate(self):
@@ -116,7 +117,10 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
     def setupCamera(self, mode):
         camera.wrtReparentTo(render)
         if mode == PhoneGlobals.PHONE_MOVIE_PICKUP:
-            camera.lerpPosHpr(4, -4, base.localAvatar.getHeight() - 0.5, 35, -8, 0, 1, other=base.localAvatar, blendType='easeOut', task=self.uniqueName('lerpCamera'))
+            quat = Quat()
+            quat.setHpr((35, -8, 0))
+            self.lerpCameraSeq = camera.posQuatInterval(1, Point3(4, -4, base.localAvatar.getHeight() - 0.5), quat, other=base.localAvatar, blendType='easeOut', name=self.uniqueName('lerpCamera'))
+            self.lerpCameraSeq.start()
 
     def setupCord(self):
         if self.cord:
@@ -190,7 +194,9 @@ class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
     def freeAvatar(self):
         if self.hasLocalAvatar:
             base.localAvatar.speed = 0
-            taskMgr.remove(self.uniqueName('lerpCamera'))
+            if self.lerpCameraSeq:
+                self.lerpCameraSeq.finish()
+                self.lerpCameraSeq = None
             base.localAvatar.posCamera(0, 0)
             if base.cr.playGame.place != None:
                 base.cr.playGame.getPlace().setState('walk')

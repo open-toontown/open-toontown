@@ -1,9 +1,7 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.particles import ParticleEffect
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-from direct.showbase import AppRunnerGlobal
-import os
 
 class RocketExplosion(NodePath):
 
@@ -19,19 +17,14 @@ class RocketExplosion(NodePath):
         self.effect = ParticleEffect.ParticleEffect('RocketFire')
         self.smokeEffect = ParticleEffect.ParticleEffect('RocketSmoke')
         particleSearchPath = DSearchPath()
-        if AppRunnerGlobal.appRunner:
-            particleSearchPath.appendDirectory(Filename.expandFrom('$TT_3_5_ROOT/phase_3.5/etc'))
-        else:
-            basePath = os.path.expandvars('$TOONTOWN') or './toontown'
-            particleSearchPath.appendDirectory(Filename.fromOsSpecific(basePath + '/src/effects'))
-            particleSearchPath.appendDirectory(Filename('phase_3.5/etc'))
-            particleSearchPath.appendDirectory(Filename('phase_4/etc'))
-            particleSearchPath.appendDirectory(Filename('phase_5/etc'))
-            particleSearchPath.appendDirectory(Filename('phase_6/etc'))
-            particleSearchPath.appendDirectory(Filename('phase_7/etc'))
-            particleSearchPath.appendDirectory(Filename('phase_8/etc'))
-            particleSearchPath.appendDirectory(Filename('phase_9/etc'))
-            particleSearchPath.appendDirectory(Filename('.'))
+        if __debug__:
+            particleSearchPath.appendDirectory(Filename('resources/phase_3.5/etc'))
+            particleSearchPath.appendDirectory(Filename('resources/phase_4/etc'))
+            particleSearchPath.appendDirectory(Filename('resources/phase_5/etc'))
+            particleSearchPath.appendDirectory(Filename('resources/phase_6/etc'))
+            particleSearchPath.appendDirectory(Filename('resources/phase_7/etc'))
+            particleSearchPath.appendDirectory(Filename('resources/phase_8/etc'))
+            particleSearchPath.appendDirectory(Filename('resources/phase_9/etc'))
         pfile = Filename('tt_p_efx_rocketLaunchFire.ptf')
         found = vfs.resolveFilename(pfile, particleSearchPath)
         if not found:

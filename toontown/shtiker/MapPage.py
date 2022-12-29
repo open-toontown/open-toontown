@@ -4,7 +4,7 @@ from direct.showbase import PythonUtil
 from otp.otpbase import PythonUtil as OTPPythonUtil
 from toontown.hood import ZoneUtil
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 
 class MapPage(ShtikerPage.ShtikerPage):

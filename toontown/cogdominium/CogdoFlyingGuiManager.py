@@ -1,4 +1,4 @@
-from pandac.PandaModules import NodePath
+from panda3d.core import NodePath
 from toontown.toonbase import ToontownIntervals
 from toontown.toonbase.ToontownTimer import ToontownTimer
 from .CogdoFlyingGameGuis import CogdoFlyingFuelGui, CogdoFlyingProgressGui

@@ -59,8 +59,8 @@ def recordCreationStack(cls):
 # __dev__ is not defined at import time, call this after it's defined
 def recordFunctorCreationStacks():
     global Functor
-    from pandac.PandaModules import getConfigShowbase
-    config = getConfigShowbase()
+    from direct.showbase import DConfig
+    config = DConfig
     # off by default, very slow
     if __dev__ and config.GetBool('record-functor-creation-stacks', 0):
         if not hasattr(Functor, '_functorCreationStacksRecorded'):

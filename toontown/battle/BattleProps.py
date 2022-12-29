@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase import OTPGlobals
@@ -237,7 +237,7 @@ class PropPool:
         self.propCache = []
         self.propStrings = {}
         self.propTypes = {}
-        self.maxPoolSize = base.config.GetInt('prop-pool-size', 8)
+        self.maxPoolSize = ConfigVariableInt('prop-pool-size', 8).value
         for p in Props:
             phase = p[0]
             propName = p[1]

@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed.MsgTypes import *
 from direct.directnotify import DirectNotifyGlobal
 from . import LoginBase
@@ -24,7 +24,7 @@ class LoginTTAccount(LoginBase.LoginBase):
             datagram.addString(cr.serverVersion)
             datagram.addUint32(cr.hashVal)
             self.__addTokenType(datagram)
-            datagram.addString(cr.wantMagicWords)
+            datagram.addString('YES' if cr.wantMagicWords else 'NO')
         else:
             datagram.addUint16(CLIENT_LOGIN_2)
             self.__addPlayToken(datagram)

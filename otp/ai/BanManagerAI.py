@@ -1,6 +1,6 @@
 import urllib.request, urllib.parse, urllib.error
 import os
-from pandac.PandaModules import HTTPClient, Ramfile
+from panda3d.core import HTTPClient, Ramfile
 from direct.directnotify import DirectNotifyGlobal
 
 class BanManagerAI:

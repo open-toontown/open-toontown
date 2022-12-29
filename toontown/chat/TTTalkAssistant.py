@@ -6,7 +6,7 @@ from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase import OTPGlobals
 from otp.speedchat import SCDecoders
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.chat.ChatGlobals import *
 from otp.chat.TalkGlobals import *
 from otp.speedchat import SpeedChatGlobals

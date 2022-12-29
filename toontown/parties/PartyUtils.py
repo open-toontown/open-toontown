@@ -3,7 +3,7 @@ import time
 import datetime
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.LerpInterval import LerpFunc
-from pandac.PandaModules import Vec3
+from panda3d.core import Vec3
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToontownTimer import ToontownTimer
 from toontown.parties import PartyGlobals

@@ -1,4 +1,4 @@
-from pandac.PandaModules import Vec3, Vec4, Point3, TextNode, VBase4
+from panda3d.core import Vec3, Vec4, Point3, TextNode, VBase4
 from direct.gui.DirectGui import DGG, DirectFrame, DirectButton, DirectLabel, DirectScrolledList, DirectCheckButton
 from direct.gui import DirectGuiGlobals
 from direct.showbase import DirectObject
@@ -8,6 +8,7 @@ from toontown.toonbase import TTLocalizer
 from toontown.toontowngui import TTDialog
 from toontown.parties import PartyGlobals
 from toontown.parties import PartyUtils
+import functools
 
 class PublicPartyGui(DirectFrame):
     notify = directNotify.newCategory('PublicPartyGui')
@@ -80,7 +81,7 @@ class PublicPartyGui(DirectFrame):
             else:
                 return 1
 
-        sortedList.sort(cmp, reverse=True)
+        sortedList.sort(key=functools.cmp_to_key(cmp), reverse=True)
         indexToCut = -1
         for index, partyTuple in enumerate(sortedList):
             numberOfGuests = partyTuple[2]

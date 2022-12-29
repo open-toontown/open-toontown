@@ -1,7 +1,7 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from .DistributedNPCToonBase import *
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from . import NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.fishing import FishSellGUI
@@ -16,12 +16,15 @@ class DistributedNPCFisherman(DistributedNPCToonBase):
         self.button = None
         self.popupInfo = None
         self.fishGui = None
+        self.lerpCameraSeq = None
         return
 
     def disable(self):
         self.ignoreAll()
         taskMgr.remove(self.uniqueName('popupFishGUI'))
-        taskMgr.remove(self.uniqueName('lerpCamera'))
+        if self.lerpCameraSeq:
+            self.lerpCameraSeq.finish()
+            self.lerpCameraSeq = None
         if self.popupInfo:
             self.popupInfo.destroy()
             self.popupInfo = None
@@ -73,7 +76,9 @@ class DistributedNPCFisherman(DistributedNPCToonBase):
     def resetFisherman(self):
         self.ignoreAll()
         taskMgr.remove(self.uniqueName('popupFishGUI'))
-        taskMgr.remove(self.uniqueName('lerpCamera'))
+        if self.lerpCameraSeq:
+            self.lerpCameraSeq.finish()
+            self.lerpCameraSeq = None
         if self.fishGui:
             self.fishGui.destroy()
             self.fishGui = None
@@ -93,7 +98,9 @@ class DistributedNPCFisherman(DistributedNPCToonBase):
         if mode == NPCToons.SELL_MOVIE_CLEAR:
             return
         if mode == NPCToons.SELL_MOVIE_TIMEOUT:
-            taskMgr.remove(self.uniqueName('lerpCamera'))
+            if self.lerpCameraSeq:
+                self.lerpCameraSeq.finish()
+                self.lerpCameraSeq = None
             if self.isLocalToon:
                 self.ignore(self.fishGuiDoneEvent)
                 if self.popupInfo:
@@ -113,7 +120,10 @@ class DistributedNPCFisherman(DistributedNPCToonBase):
             self.setupAvatars(self.av)
             if self.isLocalToon:
                 camera.wrtReparentTo(render)
-                camera.lerpPosHpr(-5, 9, base.localAvatar.getHeight() - 0.5, -150, -2, 0, 1, other=self, blendType='easeOut', task=self.uniqueName('lerpCamera'))
+                quat = Quat()
+                quat.setHpr((-150, -2, 0))
+                self.lerpCameraSeq = camera.posQuatInterval(1, Point3(-5, 9, base.localAvatar.getHeight() - 0.5), quat, other=self, blendType='easeOut', name=self.uniqueName('lerpCamera'))
+                self.lerpCameraSeq.start()
             if self.isLocalToon:
                 taskMgr.doMethodLater(1.0, self.popupFishGUI, self.uniqueName('popupFishGUI'))
         elif mode == NPCToons.SELL_MOVIE_COMPLETE:

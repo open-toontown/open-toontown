@@ -3,7 +3,7 @@ from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import FSM
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.task import Task
 from toontown.fishing import BingoGlobals
 from toontown.fishing import BingoCardGui

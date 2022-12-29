@@ -1,5 +1,5 @@
-from pandac.PandaModules import CollisionSphere, CollisionNode
-from pandac.PandaModules import NodePath, BitMask32
+from panda3d.core import CollisionSphere, CollisionNode
+from panda3d.core import NodePath, BitMask32
 from direct.showbase.DirectObject import DirectObject
 from direct.interval.MetaInterval import Sequence
 from direct.interval.FunctionInterval import Func, Wait

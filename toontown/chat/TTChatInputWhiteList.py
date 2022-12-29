@@ -4,7 +4,7 @@ from direct.showbase import DirectObject
 from otp.otpbase import OTPGlobals
 import sys
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.otpbase import OTPLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
@@ -192,7 +192,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
                     flag = 1
 
             for word in words:
-                if word == '' or self.whiteList.isWord(word.encode('utf-8')) or not base.cr.whiteListChatEnabled:
+                if word == '' or self.whiteList.isWord(word) or not base.cr.whiteListChatEnabled:
                     newwords.append(word)
                 else:
                     if self.checkBeforeSend:
@@ -206,7 +206,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
 
             if not strict:
                 lastword = words[-1]
-                if lastword == '' or self.whiteList.isPrefix(lastword.encode('utf-8')) or not base.cr.whiteListChatEnabled:
+                if lastword == '' or self.whiteList.isPrefix(lastword) or not base.cr.whiteListChatEnabled:
                     newwords[-1] = lastword
                 elif flag:
                     newwords[-1] = '\x01WLDisplay\x01' + lastword + '\x02'

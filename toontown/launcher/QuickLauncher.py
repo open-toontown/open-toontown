@@ -1,6 +1,6 @@
 import os
 from direct.showbase.EventManagerGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.launcher.LauncherBase import LauncherBase
 from toontown.toonbase import TTLocalizer
 
@@ -12,7 +12,7 @@ class QuickLauncher(LauncherBase):
         print('Running: ToontownQuickLauncher')
         self.toontownBlueKey = 'TOONTOWN_BLUE'
         LauncherBase.__init__(self)
-        self.useTTSpecificLogin = config.GetBool('tt-specific-login', 0)
+        self.useTTSpecificLogin = ConfigVariableBool('tt-specific-login', 0).value
         if self.useTTSpecificLogin:
             self.toontownPlayTokenKey = 'LOGIN_TOKEN'
         else:

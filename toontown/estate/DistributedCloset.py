@@ -1,8 +1,8 @@
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase.ToontownGlobals import *
 from toontown.toonbase.ToonBaseGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from toontown.toonbase import ToontownGlobals
@@ -50,6 +50,7 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
         self.topDeleted = 0
         self.bottomDeleted = 0
         self.closetTrack = None
+        self.lerpCameraSeq = None
         self.avMoveTrack = None
         self.scale = 1.0
         self.fsm = ClassicFSM.ClassicFSM('Closet', [State.State('off', self.enterOff, self.exitOff, ['ready', 'open', 'closed']),
@@ -105,7 +106,9 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
         self.ignore(self.closetSphereEnterEvent)
         self.ignoreAll()
         taskMgr.remove(self.uniqueName('popupChangeClothesGUI'))
-        taskMgr.remove(self.uniqueName('lerpCamera'))
+        if self.lerpCameraSeq:
+            self.lerpCameraSeq.finish()
+            self.lerpCameraSeq = None
         taskMgr.remove(self.uniqueName('lerpToon'))
         if self.closetTrack:
             self.closetTrack.finish()
@@ -154,7 +157,10 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
             self._openDoors()
             if self.customerId == base.localAvatar.doId:
                 camera.wrtReparentTo(self)
-                camera.lerpPosHpr(-7.58, -6.02, 6.9, 286.3, 336.8, 0, 1, other=self, blendType='easeOut', task=self.uniqueName('lerpCamera'))
+                quat = Quat()
+                quat.setHpr((286.3, 336.8, 0))
+                self.lerpCameraSeq = camera.posQuatInterval(1, Point3(-7.58, -6.02, 6.9), quat, other=self, blendType='easeOut', name=self.uniqueName('lerpCamera'))
+                self.lerpCameraSeq.start()
                 camera.setPosHpr(self, -7.58, -6.02, 6.9, 286.3, 336.8, 0)
             if self.av:
                 if self.avMoveTrack:
@@ -252,7 +258,9 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
     def resetCloset(self):
         self.ignoreAll()
         taskMgr.remove(self.uniqueName('popupChangeClothesGUI'))
-        taskMgr.remove(self.uniqueName('lerpCamera'))
+        if self.lerpCameraSeq:
+            self.lerpCameraSeq.finish()
+            self.lerpCameraSeq = None
         taskMgr.remove(self.uniqueName('lerpToon'))
         if self.closetGUI:
             self.closetGUI.hideButtons()
@@ -393,7 +401,9 @@ class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
                 self.freeAvatar()
                 return
         elif mode == ClosetGlobals.CLOSET_MOVIE_TIMEOUT:
-            taskMgr.remove(self.uniqueName('lerpCamera'))
+            if self.lerpCameraSeq:
+                self.lerpCameraSeq.finish()
+                self.lerpCameraSeq = None
             taskMgr.remove(self.uniqueName('lerpToon'))
             if self.isLocalToon:
                 self.ignore(self.purchaseDoneEvent)

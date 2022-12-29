@@ -1,1 +1,1 @@
-from pandac.PandaModules import *
+from panda3d.core import *

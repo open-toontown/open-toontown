@@ -5209,7 +5209,7 @@ PetTutorialPage2 = "Use the new 'Pets' area in the SpeedChat menu to get a Doodl
 PetTutorialPage3 = "Purchase new Doodle tricks from Clarabelle's Cattlelog.  Better tricks give better Toon-Ups!"
 
 def getPetGuiAlign():
-    from pandac.PandaModules import TextNode
+    from panda3d.core import TextNode
     return TextNode.ACenter
 
 

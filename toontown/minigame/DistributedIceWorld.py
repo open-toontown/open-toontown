@@ -1,5 +1,5 @@
-from pandac.PandaModules import Vec4, BitMask32, Quat, Point3, NodePath
-from pandac.PandaModules import OdePlaneGeom, OdeBody, OdeSphereGeom, OdeMass, OdeUtil, OdeBoxGeom
+from panda3d.core import Vec4, BitMask32, Quat, NodePath
+from panda3d.ode import OdePlaneGeom, OdeBody, OdeSphereGeom, OdeMass, OdeUtil, OdeBoxGeom
 from direct.directnotify import DirectNotifyGlobal
 from toontown.minigame import DistributedMinigamePhysicsWorld
 from toontown.minigame import IceGameGlobals

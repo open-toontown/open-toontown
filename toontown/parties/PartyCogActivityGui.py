@@ -4,8 +4,8 @@ from direct.showbase.DirectObject import DirectObject
 from direct.interval.LerpInterval import LerpScaleInterval
 from direct.interval.MetaInterval import Sequence
 from direct.interval.FunctionInterval import Wait, Func
-from pandac.PandaModules import Point3, VBase4
-from pandac.PandaModules import TextNode
+from panda3d.core import Point3, VBase4
+from panda3d.core import TextNode
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownIntervals
 from toontown.toonbase import TTLocalizer

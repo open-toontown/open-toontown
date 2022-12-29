@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from direct.fsm.ClassicFSM import *
@@ -11,7 +11,7 @@ from toontown.pets import PetDNA
 from .PetDNA import HeadParts, EarParts, NoseParts, TailParts, BodyTypes, BodyTextures, AllPetColors, getColors, ColorScales, PetEyeColors, EarTextures, TailTextures, getFootTexture, getEarTexture, GiraffeTail, LeopardTail, PetGenders
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
-from direct.showbase import PythonUtil
+from enum import IntEnum
 import random
 Component2IconDict = {'boredom': 'Bored',
  'restlessness': None,
@@ -29,7 +29,7 @@ Component2IconDict = {'boredom': 'Bored',
 class Pet(Avatar.Avatar):
     notify = DirectNotifyGlobal.directNotify.newCategory('Pet')
     SerialNum = 0
-    Interactions = PythonUtil.Enum('SCRATCH, BEG, EAT, NEUTRAL')
+    Interactions = IntEnum('Interactions', ('SCRATCH', 'BEG', 'EAT', 'NEUTRAL'), start=0)
     InteractAnims = {Interactions.SCRATCH: ('toPet', 'pet', 'fromPet'),
      Interactions.BEG: ('toBeg', 'beg', 'fromBeg'),
      Interactions.EAT: ('eat', 'swallow', 'neutral'),

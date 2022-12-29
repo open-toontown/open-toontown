@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from .DistributedNPCToonBase import *
 from toontown.quest import QuestParser
 from toontown.quest import QuestChoiceGui
@@ -15,6 +15,7 @@ class DistributedNPCToon(DistributedNPCToonBase):
         self.curQuestMovie = None
         self.questChoiceGui = None
         self.trackChoiceGui = None
+        self.lerpCameraSeq = None
         return
 
     def delayDelete(self):
@@ -86,7 +87,9 @@ class DistributedNPCToon(DistributedNPCToonBase):
         self.detectAvatars()
         self.initPos()
         if isLocalToon:
-            taskMgr.remove(self.uniqueName('lerpCamera'))
+            if self.lerpCameraSeq:
+                self.lerpCameraSeq.finish()
+                self.lerpCameraSeq = None
             base.localAvatar.posCamera(0, 0)
             base.cr.playGame.getPlace().setState('walk')
             self.sendUpdate('setMovieDone', [])
@@ -96,9 +99,15 @@ class DistributedNPCToon(DistributedNPCToonBase):
     def setupCamera(self, mode):
         camera.wrtReparentTo(render)
         if mode == NPCToons.QUEST_MOVIE_QUEST_CHOICE or mode == NPCToons.QUEST_MOVIE_TRACK_CHOICE:
-            camera.lerpPosHpr(5, 9, self.getHeight() - 0.5, 155, -2, 0, 1, other=self, blendType='easeOut', task=self.uniqueName('lerpCamera'))
+            quat = Quat()
+            quat.setHpr((155, -2, 0))
+            self.lerpCameraSeq = camera.posQuatInterval(1, Point3(5, 9, self.getHeight() - 0.5), quat, other=self, blendType='easeOut', name=self.uniqueName('lerpCamera'))
+            self.lerpCameraSeq.start()
         else:
-            camera.lerpPosHpr(-5, 9, self.getHeight() - 0.5, -150, -2, 0, 1, other=self, blendType='easeOut', task=self.uniqueName('lerpCamera'))
+            quat = Quat()
+            quat.setHpr((-150, -2, 0))
+            self.lerpCameraSeq = camera.posQuatInterval(1, Point3(-5, 9, self.getHeight() - 0.5), quat, other=self, blendType='easeOut', name=self.uniqueName('lerpCamera'))
+            self.lerpCameraSeq.start()
 
     def setMovie(self, mode, npcId, avId, quests, timestamp):
         timeStamp = ClockDelta.globalClockDelta.localElapsedTime(timestamp)

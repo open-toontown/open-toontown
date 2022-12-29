@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.distributed.ToontownMsgTypes import *
 from toontown.char import Char
 from otp.avatar import Avatar

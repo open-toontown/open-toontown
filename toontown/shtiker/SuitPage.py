@@ -2,7 +2,7 @@ from . import ShtikerPage
 from direct.task.Task import Task
 from . import SummonCogDialog
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.suit import SuitDNA
@@ -468,9 +468,9 @@ class SuitPage(ShtikerPage.ShtikerPage):
                 quota = str(COG_QUOTAS[1][index % SuitDNA.suitsPerDept])
             panel.quotaLabel['text'] = TTLocalizer.SuitPageQuota % (count, quota)
         elif status == COG_COMPLETE1:
-            panel['image_color'] = PANEL_COLORS_COMPLETE1[index / SuitDNA.suitsPerDept]
+            panel['image_color'] = PANEL_COLORS_COMPLETE1[index // SuitDNA.suitsPerDept]
         elif status == COG_COMPLETE2:
-            panel['image_color'] = PANEL_COLORS_COMPLETE2[index / SuitDNA.suitsPerDept]
+            panel['image_color'] = PANEL_COLORS_COMPLETE2[index // SuitDNA.suitsPerDept]
 
     def updateAllCogs(self, status):
         for index in range(0, len(base.localAvatar.cogs)):

@@ -6,7 +6,7 @@ from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from toontown.toonbase import ToontownGlobals
 from toontown.hood import ZoneUtil
 from toontown.building import Elevator
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.otp import *
 from panda3d.toontown import *
 
