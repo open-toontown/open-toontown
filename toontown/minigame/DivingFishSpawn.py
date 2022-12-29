@@ -111,6 +111,7 @@ class DivingFishSpawn(DirectObject):
                 fish.sound = None
             fish.moveLerp = None
             fish.specialLerp = None
+            fish.cleanup()
             fish.removeNode()
             del fish
 

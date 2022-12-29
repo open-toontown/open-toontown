@@ -285,7 +285,7 @@ class MaxToon(MagicWord):
         return f"Successfully maxed {toon.getName()}!"
 
 class AbortMinigame(MagicWord):
-    aliases = ["exitgame", "exitminigame", "quitgame", "quitminigame"]
+    aliases = ["exitgame", "exitminigame", "quitgame", "quitminigame", "skipgame", "skipminigame"]
     desc = "Aborts an ongoing minigame."
     execLocation = MagicWordConfig.EXEC_LOC_CLIENT
     arguments = []
@@ -294,22 +294,49 @@ class AbortMinigame(MagicWord):
         messenger.send("minigameAbort")
         return "Requested minigame abort."
 
-class RequestMinigame(MagicWord):
-    aliases = ["minigame"]
-    desc = "Requests a specified trolley minigame to be loaded."
+class Minigame(MagicWord):
+    aliases = ["mg"]
+    desc = "Teleport to or request the next trolley minigame."
     execLocation = MagicWordConfig.EXEC_LOC_SERVER
-    arguments = [("minigame", str, True), ("difficulty", float, False, 0)]
+    arguments = [("command", str, True), ("minigame", str, False, ''), ("difficulty", float, False, 0)]
 
     def handleWord(self, invoker, avId, toon, *args):
-        minigame = args[0]
-        difficulty = args[1]
-
-        mgId = None
-        mgDiff = None if args[1] == 0 else args[1]
-        mgKeep = None
-        mgSzId = None
+        command = args[0]
+        minigame = args[1]
+        difficulty = args[2]
 
         from toontown.toonbase import ToontownGlobals
+        from toontown.hood import ZoneUtil
+        from toontown.minigame import MinigameCreatorAI
+        if command in ToontownGlobals.MinigameNames:
+            # Shortcut
+            minigame = args[0]
+            try:
+                difficulty = float(args[2])
+            except ValueError:
+                difficulty = 0
+            
+            if toon.zoneId in MinigameCreatorAI.MinigameZoneRefs:
+                # Already in minigame zone, assume request
+                command = "request"
+            elif toon.zoneId == ZoneUtil.getSafeZoneId(toon.zoneId):
+                # Assume teleport
+                command = "teleport"
+            else:
+                # Request by default
+                command = "request"
+        
+        isTeleport = command in ('teleport', 'tp')
+        isRequest = command in ('request', 'next')
+
+        mgId = None
+        mgDiff = None if difficulty == 0 else difficulty
+        mgKeep = None
+        mgSzId = ZoneUtil.getSafeZoneId(toon.zoneId) if isTeleport else None
+
+        if not any ((isTeleport, isRequest)):
+            return f"Unknown command or minigame \"{command}\".  Valid commands: \"teleport\", \"request\", or a minigame to automatically teleport or request"
+
         try:
             mgId = int(minigame)
             if mgId not in ToontownGlobals.MinigameIDs:
@@ -319,12 +346,29 @@ class RequestMinigame(MagicWord):
                 return f"Unknown minigame name \"{minigame}\"."
             mgId = ToontownGlobals.MinigameNames.get(minigame)
 
-        from toontown.minigame import MinigameCreatorAI
-        MinigameCreatorAI.RequestMinigame[avId] = (mgId, mgKeep, mgDiff, mgSzId)
-        retStr = f"Successfully requested minigame \"{minigame}\""
-        if mgDiff:
-            retStr += f" with difficulty {mgDiff}"
-        return retStr + "."
+        if any((isTeleport, isRequest)):
+            if isTeleport and (ZoneUtil.isDynamicZone(toon.zoneId) or not toon.zoneId == mgSzId):
+                return "Target needs to be in a playground to teleport to a minigame."
+            MinigameCreatorAI.RequestMinigame[avId] = (mgId, mgKeep, mgDiff, mgSzId)
+            if isTeleport:
+                try:
+                    result = MinigameCreatorAI.createMinigame(self.air, [avId], mgSzId)
+                except:
+                    return f"Unable to create \"{minigame}\" minigame"
+        
+                minigameZone = result['minigameZone']
+                retStr =  f"Teleporting {toon.getName()} to minigame \"{minigame}\""
+                if mgDiff:
+                    retStr += f" with difficulty {mgDiff}"
+                return retStr + "...", avId, ["minigame", "minigame", "", mgSzId, minigameZone, 0]
+
+            # isRequest
+            retStr = f"Successfully requested minigame \"{minigame}\""
+            if mgDiff:
+                retStr += f" with difficulty {mgDiff}"
+            return retStr + "."
+        
+        return f"Unknown command or minigame \"{command}\".  Valid commands: \"teleport\", \"request\", or a minigame to automatically teleport or request"
 
 class Quests(MagicWord):
     aliases = ["quest", "tasks", "task", "toontasks"]
