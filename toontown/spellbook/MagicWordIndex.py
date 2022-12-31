@@ -554,6 +554,73 @@ class BossBattle(MagicWord):
         boss.requestDelete()
         self.air.deallocateZone(bossZone)
 
+class Fireworks(MagicWord):
+    aliases = ["firework"]
+    desc = "Starts a firework show."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("name", str, False, "newyear"), ("hood", str, False, "")]
+
+    # List of firework shows currently in progress
+    fireworkShows = {}
+
+    def handleWord(self, invoker, avId, toon, *args):
+        name = args[0]
+        hood = args[1]
+
+        from toontown.toonbase import ToontownGlobals
+        from toontown.parties import PartyGlobals
+        name2showId = {
+            'newyear': ToontownGlobals.NEWYEARS_FIREWORKS,
+            'newyears': ToontownGlobals.NEWYEARS_FIREWORKS,
+            'summer': ToontownGlobals.JULY4_FIREWORKS,
+            'combo': ToontownGlobals.COMBO_FIREWORKS,
+            'party': PartyGlobals.FireworkShows.Summer
+        }
+
+        if name not in name2showId:
+            return f"Unknown firework name \"{name}\".  Valid names: {list(name2showId.keys())}"
+        showId = name2showId[name]
+
+        zoneToStyleDict = {
+        ToontownGlobals.DonaldsDock : 5,
+        ToontownGlobals.ToontownCentral : 0,
+        ToontownGlobals.TheBrrrgh : 4,
+        ToontownGlobals.MinniesMelodyland : 3,
+        ToontownGlobals.DaisyGardens : 1,
+        ToontownGlobals.OutdoorZone : 0,
+        ToontownGlobals.GoofySpeedway : 0,
+        ToontownGlobals.DonaldsDreamland : 2
+        }
+        
+        from toontown.hood import ZoneUtil
+        zones = []
+        if not hood:
+            zones = (toon.zoneId,)
+        elif hood == "all":
+            zones = zoneToStyleDict.keys()
+        else:
+            return "Missing hood argument."
+        
+        # Generate our firework shows
+        from toontown.effects.DistributedFireworkShowAI import DistributedFireworkShowAI
+        count = 0
+        for zone in zones:
+            if zone not in self.fireworkShows:
+                show = DistributedFireworkShowAI(self.air, self)
+                show.generateWithRequired(zone)
+                self.fireworkShows[zone] = show
+                show.d_startShow(showId, zoneToStyleDict.get(zone, 0))
+                count += 1
+        
+        return f"Started firework {'show' if count == 1 else 'shows'} in {count} {'zone' if count == 1 else 'zones'}!"
+    
+    def stopShow(self, zoneId):
+        if zoneId in self.fireworkShows:
+            show = self.fireworkShows[zoneId]
+            show.requestDelete()
+            del self.fireworkShows[zoneId]
+
+
 # Instantiate all classes defined here to register them.
 # A bit hacky, but better than the old system
 for item in list(globals().values()):
