@@ -217,6 +217,10 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def makeBattleOneBattles(self):
         self.postBattleState = 'RollToBattleTwo'
         self.initializeBattles(1, ToontownGlobals.SellbotBossBattleOnePosHpr)
+    
+    @staticmethod
+    def getEndOfBattleMovieDuration():
+        return 5
 
     def generateSuits(self, battleNumber):
         if self.nerfed:

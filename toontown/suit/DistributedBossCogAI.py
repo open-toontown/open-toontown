@@ -524,6 +524,10 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         if self.battleB:
             self.handleRoundDone(self.battleB, self.suitsB, self.activeSuitsB, toonIds, totalHp, deadSuits)
 
+    @staticmethod
+    def getEndOfBattleMovieDuration():
+        return 0
+
     def handleBattleADone(self, zoneId, toonIds):
         if self.battleA:
             self.battleA.requestDelete()
