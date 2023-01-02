@@ -146,6 +146,9 @@ class DistributedFishingSpot(DistributedObject.DistributedObject):
         self.area = self.pond.getArea()
         self.waterLevel = FishingTargetGlobals.getWaterLevel(self.area)
 
+    def getPondDoId(self):
+        return self.pond.doId
+
     def allowedToEnter(self):
         if hasattr(base, 'ttAccess') and base.ttAccess and base.ttAccess.canAccess():
             return True

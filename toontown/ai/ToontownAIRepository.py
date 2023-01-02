@@ -43,6 +43,7 @@ from toontown.racing.DistributedStartingBlockAI import DistributedViewingBlockAI
 from toontown.racing.DistributedViewPadAI import DistributedViewPadAI
 from toontown.racing.RaceManagerAI import RaceManagerAI
 from toontown.safezone.SafeZoneManagerAI import SafeZoneManagerAI
+from toontown.safezone.DistributedFishingSpotAI import DistributedFishingSpotAI
 from toontown.shtiker.CogPageManagerAI import CogPageManagerAI
 from toontown.spellbook.ToontownMagicWordManagerAI import ToontownMagicWordManagerAI
 from toontown.suit.SuitInvasionManagerAI import SuitInvasionManagerAI
@@ -50,6 +51,7 @@ from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
 from toontown.tutorial.TutorialManagerAI import TutorialManagerAI
 from toontown.uberdog.DistributedInGameNewsMgrAI import DistributedInGameNewsMgrAI
+from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
 import os
 
 
@@ -374,7 +376,45 @@ class ToontownAIRepository(ToontownInternalRepository):
         return loadDNAFileAI(dnaStore, dnaFileName)
 
     def findFishingPonds(self, dnaData, zoneId, area):
-        return [], []  # TODO
+        fishingPonds, fishingPondGroups = [], []
+        # Every hood starts off with a 'parent' group in their DNA.
+        parentGroup = dnaData.at(0)
+        # The following should *never* happen, but sanity checks are good.
+        if not isinstance(parentGroup, DNAGroup):
+            self.notify.warning('findFishingPonds - first element was not a DNAGroup, possible incorrect DNA (%s)' % zoneId)
+            return [], []
+        # Rinse and repeat once more for the visgroup.
+        parentVisgroup = parentGroup.at(0)
+        if not isinstance(parentVisgroup, DNAVisGroup):
+            self.notify.warning('findFishingPonds - first child of root was not a DNAVisGroup, possible incorrect DNA (%s)' % zoneId)
+            return [], []
+        # Iterate through the visgroup's children.
+        for i in range(parentVisgroup.getNumChildren()):
+            child = parentVisgroup.at(i)
+            if 'fishing_pond' in child.getName():
+                # Generate a distributed AI object for the found pond group.
+                fishingPond = DistributedFishingPondAI(self)
+                fishingPond.setArea(area)
+                fishingPond.generateWithRequired(zoneId)
+                # Append the AI object and the DNA group accordingly to our result arrays.
+                fishingPonds.append(fishingPond)
+                fishingPondGroups.append(child)
+        # Return our results.
+        return fishingPonds, fishingPondGroups 
+
+    def findFishingSpots(self, dnaGroup, distPond):
+        fishingSpots = []
+        for i in range(dnaGroup.getNumChildren()):
+            child = dnaGroup.at(i)
+            if 'fishing_spot' in child.getName():
+                # Generate a distributed AI object for the found fishing spot group.
+                x, y, z = child.getPos()
+                h, p, r = child.getHpr()
+                fishingSpot = DistributedFishingSpotAI(self, distPond, x, y, z, h, p, r)
+                fishingSpot.generateWithRequired(distPond.zoneId)
+                # Append the AI object and the DNA group accordingly to our result arrays.
+                fishingSpots.append(fishingSpot)
+        return fishingSpots
 
     def findPartyHats(self, dnaData, zoneId):
         return []  # TODO
