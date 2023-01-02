@@ -1,9 +1,9 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
 from direct.showbase import Transitions
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from . import LaffMeter
 
 class DeathForceAcknowledge:

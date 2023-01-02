@@ -41,7 +41,6 @@ class CharLonelyStateAI(StateData.StateData):
 
 class CharChattyStateAI(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('CharChattyStateAI')
-    notify.setDebug(True)
 
     def __init__(self, doneEvent, character):
         StateData.StateData.__init__(self, doneEvent)

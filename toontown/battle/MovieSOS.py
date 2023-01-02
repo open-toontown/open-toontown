@@ -2,7 +2,7 @@ from direct.interval.IntervalGlobal import *
 from . import MovieCamera
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import TTLocalizer
-from pandac.PandaModules import *
+from panda3d.core import *
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieSOS')
 
 def doSOSs(calls):

@@ -8,7 +8,7 @@ from toontown.battle import DistributedBattleFinalAI
 from toontown.building import SuitPlannerInteriorAI
 from toontown.battle import BattleBase
 from toontown.coghq import CogDisguiseGlobals
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.suit import SuitDNA
 import random
 AllBossCogs = []
@@ -524,6 +524,10 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
         if self.battleB:
             self.handleRoundDone(self.battleB, self.suitsB, self.activeSuitsB, toonIds, totalHp, deadSuits)
 
+    @staticmethod
+    def getEndOfBattleMovieDuration():
+        return 0
+
     def handleBattleADone(self, zoneId, toonIds):
         if self.battleA:
             self.battleA.requestDelete()
@@ -685,3 +689,6 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def doNextAttack(self, task):
         self.b_setAttackCode(ToontownGlobals.BossCogNoAttack)
+    
+    def getNextState(self):
+        raise NotImplementedError

@@ -39,14 +39,15 @@ from otp.distributed import OtpDoGlobals
 from otp.distributed.TelemetryLimiter import TelemetryLimiter
 from otp.ai.GarbageLeakServerEventAggregator import GarbageLeakServerEventAggregator
 from .PotentialAvatar import PotentialAvatar
+from enum import IntEnum
 
 class OTPClientRepository(ClientRepositoryBase):
     notify = directNotify.newCategory('OTPClientRepository')
     avatarLimit = 6
-    WishNameResult = Enum(['Failure',
+    WishNameResult = IntEnum('WishNameResult', ('Failure',
      'PendingApproval',
      'Approved',
-     'Rejected'])
+     'Rejected'), start=0)
 
     def __init__(self, serverVersion, launcher = None, playGame = None):
         ClientRepositoryBase.__init__(self)
@@ -774,7 +775,7 @@ class OTPClientRepository(ClientRepositoryBase):
         def doneWait(task, self = self):
             self.loginFSM.request('waitForShardList')
 
-        if __dev__:
+        if __debug__:
             delay = 0.0
         else:
             delay = 6.5 + random.random() * 2.0

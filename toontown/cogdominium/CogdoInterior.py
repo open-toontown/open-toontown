@@ -1,4 +1,4 @@
-from pandac.PandaModules import ModelPool, TexturePool
+from panda3d.core import ModelPool, TexturePool
 from direct.task.Task import Task
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State

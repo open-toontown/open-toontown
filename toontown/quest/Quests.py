@@ -1743,11 +1743,10 @@ class TrackChoiceQuest(Quest):
 
 class FriendQuest(Quest):
     def filterFunc(avatar):
-        if len(avatar.getFriendsList()) == 0:
+        if not config.GetBool('skip-friend-quest', False) and len(avatar.getFriendsList()) == 0:
             return 1
         else:
             return 0
-
     filterFunc = staticmethod(filterFunc)
 
     def __init__(self, id, quest):
@@ -1889,6 +1888,13 @@ class MailboxQuest(Quest):
 
 
 class PhoneQuest(Quest):
+    def filterFunc(avatar):
+        if not config.GetBool('skip-phone-quest', False):
+            return 1
+        else:
+            return 0
+    filterFunc = staticmethod(filterFunc)
+
     def __init__(self, id, quest):
         Quest.__init__(self, id, quest)
 
@@ -2115,7 +2121,7 @@ QuestDict = {
         'type'),
        ToonHQ,
        ToonHQ,
-       NA,
+       100,
        150,
        DefaultDialog),
  150: (TT_TIER,
@@ -2123,7 +2129,7 @@ QuestDict = {
        (FriendQuest,),
        Same,
        Same,
-       NA,
+       100,
        175,
        DefaultDialog),
  160: (TT_TIER,

@@ -1,7 +1,7 @@
 import math
-from pandac.PandaModules import NodePath, Vec3
-from pandac.PandaModules import CollisionTraverser, CollisionHandlerQueue
-from pandac.PandaModules import CollisionRay, CollisionNode
+from panda3d.core import NodePath, Vec3
+from panda3d.core import CollisionTraverser, CollisionHandlerQueue
+from panda3d.core import CollisionRay, CollisionNode
 from math import pi, sin, cos
 from direct.showbase.PythonUtil import bound as clamp
 from otp.otpbase import OTPGlobals

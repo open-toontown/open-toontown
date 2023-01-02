@@ -155,7 +155,7 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
 def createNpcsInZone(air, zoneId):
     npcs = []
     canonicalZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
-    npcIdList = zone2NpcDict.get(canonicalZoneId, [])
+    npcIdList = sorted(zone2NpcDict.get(canonicalZoneId, []))
     for i in range(len(npcIdList)):
         npcId = npcIdList[i]
         npcDesc = NPCToonDict.get(npcId)

@@ -3,8 +3,8 @@ from direct.showbase.DirectObject import DirectObject
 from direct.interval.IntervalGlobal import LerpFunc, ActorInterval, LerpPosInterval
 from direct.interval.MetaInterval import Sequence
 from direct.directutil import Mopath
-from direct.showbase import PythonUtil
-from pandac.PandaModules import *
+from panda3d.core import *
+from panda3d.physics import *
 from toontown.toonbase import ToontownGlobals
 from toontown.suit import Suit
 from toontown.suit import SuitDNA
@@ -15,6 +15,7 @@ from .CogdoFlyingUtil import swapAvatarShadowPlacer
 from direct.particles import ParticleEffect
 from direct.particles import Particles
 from direct.particles import ForceGroup
+from enum import IntEnum
 
 class CogdoFlyingObtacleFactory:
 
@@ -90,7 +91,7 @@ class CogdoFlyingObtacleFactory:
 class CogdoFlyingObstacle(DirectObject):
     EnterEventName = 'CogdoFlyingObstacle_Enter'
     ExitEventName = 'CogdoFlyingObstacle_Exit'
-    MotionTypes = PythonUtil.Enum(('BackForth', 'Loop'))
+    MotionTypes = IntEnum('MotionTypes', ('BackForth', 'Loop'), start=0)
 
     def __init__(self, type, index, model, collSolid, motionPath = None, motionPattern = None, blendMotion = True, instanceModel = True):
         self.type = type
@@ -191,7 +192,7 @@ class CogdoFlyingObstacle(DirectObject):
         messenger.send(CogdoFlyingObstacle.ExitEventName, [self, collEntry])
 
 
-from pandac.PandaModules import TransformState
+from panda3d.core import TransformState
 
 class CogdoFlyingWhirlwind(CogdoFlyingObstacle):
 

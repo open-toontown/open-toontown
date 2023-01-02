@@ -11,7 +11,8 @@ from direct.task import Task
 from direct.showbase import PythonUtil
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui import DirectGuiGlobals
-from pandac.PandaModules import *
+from panda3d.core import *
+from panda3d.otp import WhisperPopup
 from otp.avatar import LocalAvatar
 from otp.login import LeaveToPayDialog
 from otp.avatar import PositionExaminer

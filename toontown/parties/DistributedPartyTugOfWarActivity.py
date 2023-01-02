@@ -1,9 +1,9 @@
 import math
-from pandac.PandaModules import CollisionTube
-from pandac.PandaModules import CollisionNode
-from pandac.PandaModules import Point3
-from pandac.PandaModules import VBase3
-from pandac.PandaModules import RopeNode
+from panda3d.core import CollisionTube
+from panda3d.core import CollisionNode
+from panda3d.core import Point3
+from panda3d.core import VBase3
+from panda3d.core import RopeNode
 from direct.interval.IntervalGlobal import LerpPosHprInterval
 from direct.interval.IntervalGlobal import LerpPosInterval
 from direct.interval.IntervalGlobal import Wait

@@ -3,7 +3,7 @@ import string
 import os
 import sys
 import datetime
-from pandac.PandaModules import loadPrcFileData, WindowProperties
+from panda3d.core import loadPrcFileData, WindowProperties
 from otp.otpgui import OTPDialog
 from otp.otpbase import OTPGlobals
 from otp.otpbase import OTPRender

@@ -1,4 +1,4 @@
-from pandac.PandaModules import Vec4
+from panda3d.core import Vec4
 from direct.gui.DirectGui import DirectFrame, DirectLabel
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownIntervals

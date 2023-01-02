@@ -1,4 +1,5 @@
-from pandac import PandaModules as PM
+from panda3d.core import *
+from panda3d.physics import *
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from toontown.cogdominium.DistCogdoLevelGameAI import DistCogdoLevelGameAI
 from toontown.cogdominium.DistCogdoCraneAI import DistCogdoCraneAI
@@ -10,11 +11,11 @@ from toontown.cogdominium.DistCogdoCraneCogAI import DistCogdoCraneCogAI
 from toontown.suit.SuitDNA import SuitDNA
 import random
 
-class DistCogdoCraneGameAI(CogdoCraneGameBase, DistCogdoLevelGameAI, PM.NodePath):
+class DistCogdoCraneGameAI(CogdoCraneGameBase, DistCogdoLevelGameAI, NodePath):
     notify = directNotify.newCategory('DistCogdoCraneGameAI')
 
     def __init__(self, air, interior):
-        PM.NodePath.__init__(self, uniqueName('CraneGameAI'))
+        NodePath.__init__(self, uniqueName('CraneGameAI'))
         DistCogdoLevelGameAI.__init__(self, air, interior)
         self._cranes = [
             None] * CogdoGameConsts.MaxPlayers
@@ -27,11 +28,11 @@ class DistCogdoCraneGameAI(CogdoCraneGameBase, DistCogdoLevelGameAI, PM.NodePath
 
     def enterLoaded(self):
         DistCogdoLevelGameAI.enterLoaded(self)
-        self.scene = PM.NodePath('scene')
-        cn = PM.CollisionNode('walls')
-        cs = PM.CollisionSphere(0, 0, 0, 13)
+        self.scene = NodePath('scene')
+        cn = CollisionNode('walls')
+        cs = CollisionSphere(0, 0, 0, 13)
         cn.addSolid(cs)
-        cs = PM.CollisionInvSphere(0, 0, 0, 42)
+        cs = CollisionInvSphere(0, 0, 0, 42)
         cn.addSolid(cs)
         self.attachNewNode(cn)
         for i in range(CogdoGameConsts.MaxPlayers):

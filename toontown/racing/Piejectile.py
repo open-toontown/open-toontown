@@ -3,7 +3,8 @@ import random
 from direct.showbase.PythonUtil import *
 from direct.showbase.DirectObject import DirectObject
 from direct.task import Task
-from pandac.PandaModules import *
+from panda3d.core import *
+from panda3d.physics import *
 from direct.fsm import FSM
 from direct.distributed import DistributedSmoothNode
 from otp.avatar import ShadowCaster

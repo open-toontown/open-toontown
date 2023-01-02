@@ -1,7 +1,7 @@
 from direct.interval.FunctionInterval import Func
 from direct.interval.LerpInterval import LerpFunc
 from direct.interval.MetaInterval import Sequence
-from pandac.PandaModules import TextNode
+from panda3d.core import TextNode
 from toontown.toonbase import ToontownGlobals
 from . import CogdoGameConsts
 

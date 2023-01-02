@@ -1,16 +1,15 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase import PythonUtil
 from toontown.toonbase import TTLocalizer
-from pandac.PandaModules import *
+from panda3d.core import *
 from .KartShopGlobals import *
-import types
+from enum import IntEnum
 if (__debug__):
     import pdb
 import copy
-KartDNA = PythonUtil.Enum('bodyType, bodyColor, accColor,                             ebType, spType, fwwType,                             bwwType, rimsType, decalType')
+KartDNA = IntEnum('KartDNA', ('bodyType', 'bodyColor', 'accColor', 'ebType', 'spType', 'fwwType', 'bwwType', 'rimsType', 'decalType'), start=0)
 InvalidEntry = -1
-KartInfo = PythonUtil.Enum('name, model, cost, viewDist, decalId, LODmodel1, LODmodel2')
-AccInfo = PythonUtil.Enum('name, model, cost, texCard, attach')
+KartInfo = IntEnum('KartInfo', ('name', 'model', 'cost', 'viewDist', 'decalId', 'LODmodel1', 'LODmodel2'), start=0)
+AccInfo = IntEnum('AccInfo', ('name', 'model', 'cost', 'texCard', 'attach'), start=0)
 kNames = TTLocalizer.KartDNA_KartNames
 KartDict = {0: (kNames[0],
      'phase_6/models/karting/Kart1_Final',

@@ -1,7 +1,7 @@
 import calendar
 from datetime import datetime
 from datetime import timedelta
-from pandac.PandaModules import Vec3, Vec4, Point3, TextNode, VBase4
+from panda3d.core import Vec3, Vec4, Point3, TextNode, VBase4
 from otp.otpbase import OTPLocalizer
 from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel, DirectScrolledList, DirectCheckButton
 from direct.gui import DirectGuiGlobals
@@ -22,7 +22,7 @@ from toontown.parties.PartyInfo import PartyInfo
 from toontown.parties import PartyUtils
 from toontown.parties.PartyEditor import PartyEditor
 from otp.otpbase import OTPGlobals
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 
 class PartyPlanner(DirectFrame, FSM):

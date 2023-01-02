@@ -1,4 +1,4 @@
-from pandac.PandaModules import Vec4
+from panda3d.core import Vec4
 from direct.gui.DirectGui import DirectFrame, DGG
 from direct.task import Task
 from direct.showbase.PythonUtil import bound

@@ -1,10 +1,10 @@
 if __name__ == '__main__':
     from direct.directbase import DirectStart
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
-from direct.showbase import DirectObject, PythonUtil
+from panda3d.core import *
+from direct.showbase import DirectObject
 from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownTimer
@@ -13,17 +13,18 @@ from toontown.racing.Kart import Kart
 from toontown.shtiker.KartPage import KartViewer
 from .KartDNA import *
 from toontown.toontowngui.TeaserPanel import TeaserPanel
+from enum import IntEnum
 if (__debug__):
     import pdb
-MENUS = PythonUtil.Enum('MainMenu, BuyKart, BuyAccessory, ReturnKart, ConfirmBuyAccessory, ConfirmBuyKart, BoughtKart, BoughtAccessory, TeaserPanel')
-MM_OPTIONS = PythonUtil.Enum('Cancel, BuyAccessory, BuyKart', -1)
-BK_OPTIONS = PythonUtil.Enum('Cancel, BuyKart', -1)
-BA_OPTIONS = PythonUtil.Enum('Cancel, BuyAccessory', -1)
-RK_OPTIONS = PythonUtil.Enum('Cancel, ReturnKart', -1)
-CBK_OPTIONS = PythonUtil.Enum('Cancel, BuyKart', -1)
-CBA_OPTIONS = PythonUtil.Enum('Cancel, BuyAccessory', -1)
-BTK_OPTIONS = PythonUtil.Enum('Ok', -1)
-BTA_OPTIONS = PythonUtil.Enum('Ok', -1)
+MENUS = IntEnum('MENUS', ('MainMenu, BuyKart, BuyAccessory, ReturnKart, ConfirmBuyAccessory, ConfirmBuyKart, BoughtKart, BoughtAccessory, TeaserPanel'), start=0)
+MM_OPTIONS = IntEnum('MM_OPTIONS', ('Cancel, BuyAccessory, BuyKart'), start=-1)
+BK_OPTIONS = IntEnum('BK_OPTIONS', ('Cancel, BuyKart'), start=-1)
+BA_OPTIONS = IntEnum('BA_OPTIONS', ('Cancel, BuyAccessory'), start=-1)
+RK_OPTIONS = IntEnum('RK_OPTIONS', ('Cancel, ReturnKart'), start=-1)
+CBK_OPTIONS = IntEnum('CBK_OPTIONS', ('Cancel, BuyKart'), start=-1)
+CBA_OPTIONS = IntEnum('CBA_OPTIONS', ('Cancel, BuyAccessory'), start=-1)
+BTK_OPTIONS = IntEnum('BTK_OPTIONS', ('Ok'), start=-1)
+BTA_OPTIONS = IntEnum('BTA_OPTIONS', ('Ok'), start=-1)
 KS_TEXT_SIZE_BIG = TTLocalizer.KSGtextSizeBig
 KS_TEXT_SIZE_SMALL = TTLocalizer.KSGtextSizeSmall
 

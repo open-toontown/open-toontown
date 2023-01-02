@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.coghq import DistributedHealBarrelAI
 from toontown.coghq import DistributedGagBarrelAI
 PieToonup = 1

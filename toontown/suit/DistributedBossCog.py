@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.otp import *
 from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
@@ -117,6 +117,9 @@ class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
         self.bubbleF = self.rotateNode.attachNewNode(bubbleFNode)
         self.bubbleF.setTag('attackCode', str(ToontownGlobals.BossCogFrontAttack))
         self.bubbleF.stash()
+
+        # HACK: See toontown/coghq/CogHQBossBattle.py
+        messenger.send('announceBoss', [self])
 
     def disable(self):
         DistributedAvatar.DistributedAvatar.disable(self)

@@ -1,5 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.toontown import *
 from toontown.toonbase.ToonBaseGlobal import *
 from .DistributedMinigame import *
@@ -14,7 +14,7 @@ import math
 from toontown.toon import ToonHead
 from . import PhotoGameGlobals
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 from toontown.golf import BuildGeometry
 from toontown.toon import Toon

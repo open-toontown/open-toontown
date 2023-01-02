@@ -68,7 +68,7 @@ class CatalogMouldingItem(CatalogSurfaceItem):
         return MouldingTypes[self.patternIndex][MTBasePrice]
 
     def loadTexture(self):
-        from pandac.PandaModules import Texture
+        from panda3d.core import Texture
         filename = MouldingTypes[self.patternIndex][MTTextureName]
         texture = loader.loadTexture(filename)
         texture.setMinfilter(Texture.FTLinearMipmapLinear)

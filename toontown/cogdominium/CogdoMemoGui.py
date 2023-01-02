@@ -1,5 +1,5 @@
 from direct.gui.DirectGui import DGG, DirectFrame, DirectLabel
-from pandac.PandaModules import TextNode
+from panda3d.core import TextNode
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import ToontownIntervals
 from toontown.toonbase import TTLocalizer

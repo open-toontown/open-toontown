@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from . import ToonHood
 from toontown.town import TutorialTownLoader
 from toontown.toonbase.ToontownGlobals import *

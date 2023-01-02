@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.avatar import Avatar
 from toontown.hood import ZoneUtil
 from toontown.launcher import DownloadForceAcknowledge

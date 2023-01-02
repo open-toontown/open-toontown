@@ -217,6 +217,10 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def makeBattleOneBattles(self):
         self.postBattleState = 'RollToBattleTwo'
         self.initializeBattles(1, ToontownGlobals.SellbotBossBattleOnePosHpr)
+    
+    @staticmethod
+    def getEndOfBattleMovieDuration():
+        return 5
 
     def generateSuits(self, battleNumber):
         if self.nerfed:
@@ -452,3 +456,23 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
                 barrel.requestDelete()
 
             self.barrels = []
+
+    def getNextState(self):
+        currState = self.getCurrentOrNextState()
+        if currState == "Elevator":
+            return "Introduction"
+        elif currState == "Introduction":
+            return "BattleOne"
+        elif currState == "BattleOne":
+            return "RollToBattleTwo"
+        elif currState == "RollToBattleTwo":
+            return "PrepareBattleTwo"
+        elif currState in ("PrepareBattleTwo", "BattleTwo"):
+            return "PrepareBattleThree"
+        elif currState in ("PrepareBattleThree", "BattleThree", "NearVictory"):
+            return "Victory"
+        # Do not skip Victory, weird stuff may happen, like not collecting their rewards.
+        elif currState == "Reward":
+            return "Epilogue"
+        
+        return None

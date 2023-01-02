@@ -1,13 +1,12 @@
 from direct.showbase.DirectObject import DirectObject
 from toontown.toonbase.ToontownGlobals import *
 from direct.directnotify import DirectNotifyGlobal
-from pandac.PandaModules import *
+from panda3d.core import *
 from . import VineGameGlobals
 from direct.interval.SoundInterval import SoundInterval
 
 class VineBat(NodePath, DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('VineBat')
-    notify.setDebug(True)
     RADIUS = 1.7
 
     def __init__(self, batIndex, timeToTraverseField):

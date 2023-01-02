@@ -1,7 +1,7 @@
 from toontown.safezone import DistributedSZTreasure
 from toontown.toonbase import ToontownGlobals
 from direct.interval.IntervalGlobal import *
-from pandac.PandaModules import Point3
+from panda3d.core import Point3
 Models = {ToontownGlobals.ToontownCentral: 'phase_4/models/props/icecream',
  ToontownGlobals.DonaldsDock: 'phase_6/models/props/starfish_treasure',
  ToontownGlobals.TheBrrrgh: 'phase_8/models/props/snowflake_treasure',

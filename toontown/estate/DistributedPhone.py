@@ -11,7 +11,7 @@ from direct.distributed import ClockDelta
 from direct.showbase import PythonUtil
 from direct.showutil import Rope
 from direct.directnotify.DirectNotifyGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 import string
 from toontown.quest import Quests
