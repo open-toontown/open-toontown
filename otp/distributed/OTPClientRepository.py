@@ -791,7 +791,7 @@ class OTPClientRepository(ClientRepositoryBase):
         def doneWait(task, self = self):
             self.loginFSM.request('waitForShardList')
 
-        if __dev__:
+        if __debug__:
             delay = 0.0
         else:
             delay = 6.5 + random.random() * 2.0

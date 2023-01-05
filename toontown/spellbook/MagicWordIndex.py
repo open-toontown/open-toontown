@@ -13,11 +13,14 @@ import collections, types
 
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
+from direct.showbase.DirectObject import DirectObject
+from direct.showbase.PythonUtil import *
 
 from panda3d.otp import NametagGroup, WhisperPopup
 
 from otp.otpbase import OTPLocalizer
 from otp.otpbase import OTPGlobals
+from otp.otpbase.PythonUtil import *
 
 from . import MagicWordConfig
 import time, random, re, json
@@ -25,7 +28,7 @@ import time, random, re, json
 magicWordIndex = collections.OrderedDict()
 
 
-class MagicWord:
+class MagicWord(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('MagicWord')
 
     # Whether this Magic word should be considered "hidden"
@@ -424,13 +427,12 @@ class BossBattle(MagicWord):
             except ValueError:
                 start = 1
         
-        from toontown.suit.DistributedBossCogAI import DistributedBossCogAI
+        from toontown.suit.DistributedBossCogAI import AllBossCogs
         boss = None
-        for do in self.air.doId2do.values():
-            if isinstance(do, DistributedBossCogAI):
-                if do.isToonKnown(invoker.doId):
-                    boss = do
-                    break
+        for bc in AllBossCogs:
+            if bc.isToonKnown(invoker.doId):
+                boss = bc
+                break
 
         if command == "create":
             if boss:
@@ -457,6 +459,8 @@ class BossBattle(MagicWord):
                 boss.b_setState('WaitForToons')
             else:
                 boss.b_setState('Frolic')
+            
+            self.acceptOnce(boss.uniqueName('BossDone'), self.__destroyBoss, extraArgs=[boss])
 
             respText = f"Created {type.upper()} boss battle"
             if not start:
@@ -464,6 +468,49 @@ class BossBattle(MagicWord):
 
             return respText + ", teleporting...", ["cogHQLoader", "cogHQBossBattle", "movie" if start else "teleportIn", boss.getHoodId(), boss.zoneId, 0]
         
+        elif command == "list":
+            # List all the ongoing boss battles.
+            dept2name = {'c': 'ceo',
+                         'l': 'cj',
+                         'm': 'cfo',
+                         's': 'vp'}
+            name2dept = invertDict(dept2name)
+
+            if not AllBossCogs:
+                return "No ongoing boss battles."
+                
+            respText = "\nBoss Battles:"
+
+            if type:
+                # Filter by boss type
+                dept = name2dept.get(type)
+                if not dept:
+                    return f"Can't filter by unknown type \"{type.upper()}\""
+                bossBattles = (boss for boss in AllBossCogs if boss.dept == dept)
+            else:
+                bossBattles = AllBossCogs
+
+            for boss in bossBattles:
+                index = AllBossCogs.index(boss)
+                respText += f"\n - #{index}: {dept2name.get(boss.dept, '???').upper()}, {boss.zoneId}, {boss.state}, {len(boss.involvedToons)}"
+            return respText
+        
+        elif command == "join":
+            # Join an ongoing boss battle.
+            if boss:
+                return "You're already in a boss battle.  Please finish this one."
+            try:
+                index = int(type)
+            except ValueError:
+                return "Boss index not an integer!"
+            
+            if index not in range(len(AllBossCogs)):
+                return "Index out of range!"
+            
+            boss = AllBossCogs[index]
+            return "Teleporting to boss battle...", ["cogHQLoader", "cogHQBossBattle", "", boss.getHoodId(), boss.zoneId, 0]
+
+
         # The following commands needs the invoker to be in a boss battle.
         if not boss:
             return "You ain't in a boss battle!  Use the \"create\" command to create a boss battle."
@@ -501,6 +548,77 @@ class BossBattle(MagicWord):
         # The create command is already described when the invoker is not in a battle.  These are the commands
         # they can use INSIDE the battle.
         return respText + f"Unknown command: \"{command}\". Valid commands: \"start\", \"stop\", \"skip\", \"final\", \"kill\"."
+
+    def __destroyBoss(self, boss):
+        bossZone = boss.zoneId
+        boss.requestDelete()
+        self.air.deallocateZone(bossZone)
+
+class Fireworks(MagicWord):
+    aliases = ["firework"]
+    desc = "Starts a firework show."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("name", str, False, "newyear"), ("hood", str, False, "")]
+
+    # List of firework shows currently in progress
+    fireworkShows = {}
+
+    def handleWord(self, invoker, avId, toon, *args):
+        name = args[0]
+        hood = args[1]
+
+        from toontown.toonbase import ToontownGlobals
+        from toontown.parties import PartyGlobals
+        name2showId = {
+            'newyear': ToontownGlobals.NEWYEARS_FIREWORKS,
+            'newyears': ToontownGlobals.NEWYEARS_FIREWORKS,
+            'summer': ToontownGlobals.JULY4_FIREWORKS,
+            'combo': ToontownGlobals.COMBO_FIREWORKS,
+            'party': PartyGlobals.FireworkShows.Summer
+        }
+
+        if name not in name2showId:
+            return f"Unknown firework name \"{name}\".  Valid names: {list(name2showId.keys())}"
+        showId = name2showId[name]
+
+        zoneToStyleDict = {
+        ToontownGlobals.DonaldsDock : 5,
+        ToontownGlobals.ToontownCentral : 0,
+        ToontownGlobals.TheBrrrgh : 4,
+        ToontownGlobals.MinniesMelodyland : 3,
+        ToontownGlobals.DaisyGardens : 1,
+        ToontownGlobals.OutdoorZone : 0,
+        ToontownGlobals.GoofySpeedway : 0,
+        ToontownGlobals.DonaldsDreamland : 2
+        }
+        
+        from toontown.hood import ZoneUtil
+        zones = []
+        if not hood:
+            zones = (toon.zoneId,)
+        elif hood == "all":
+            zones = zoneToStyleDict.keys()
+        else:
+            return "Missing hood argument."
+        
+        # Generate our firework shows
+        from toontown.effects.DistributedFireworkShowAI import DistributedFireworkShowAI
+        count = 0
+        for zone in zones:
+            if zone not in self.fireworkShows:
+                show = DistributedFireworkShowAI(self.air, self)
+                show.generateWithRequired(zone)
+                self.fireworkShows[zone] = show
+                show.d_startShow(showId, zoneToStyleDict.get(zone, 0))
+                count += 1
+        
+        return f"Started firework {'show' if count == 1 else 'shows'} in {count} {'zone' if count == 1 else 'zones'}!"
+    
+    def stopShow(self, zoneId):
+        if zoneId in self.fireworkShows:
+            show = self.fireworkShows[zoneId]
+            show.requestDelete()
+            del self.fireworkShows[zoneId]
 
 
 # Instantiate all classes defined here to register them.

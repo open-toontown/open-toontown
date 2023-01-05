@@ -264,6 +264,10 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
     def makeBattleOneBattles(self):
         self.postBattleState = 'RollToBattleTwo'
         self.initializeBattles(1, ToontownGlobals.LawbotBossBattleOnePosHpr)
+    
+    @staticmethod
+    def getEndOfBattleMovieDuration():
+        return 5
 
     def generateSuits(self, battleNumber):
         if battleNumber == 1:
