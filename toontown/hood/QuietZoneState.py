@@ -281,9 +281,19 @@ class QuietZoneState(StateData.StateData):
             messenger.send(self.getEnterWaitForSetZoneResponseMsg(), [self._requestStatus])
             base.cr.handlerArgs = self._requestStatus
             zoneId = self._requestStatus['zoneId']
+            where = self._requestStatus['where']
             base.cr.dumpAllSubShardObjects()
             base.cr.resetDeletedSubShardDoIds()
-            base.cr.sendSetZoneMsg(zoneId)
+            if __astron__ and where == 'street':
+                visZones = [ZoneUtil.getBranchZone(zoneId)]
+                # Assuming that the DNA have been loaded by bulk load before this.
+                loader = base.cr.playGame.hood.loader
+                visZones += [loader.node2zone[x] for x in loader.nodeDict[zoneId]]
+                if zoneId not in visZones:
+                    visZones.append(zoneId)
+                base.cr.sendSetZoneMsg(zoneId, visZones)
+            else:
+                base.cr.sendSetZoneMsg(zoneId)
             self.waitForDatabase('WaitForSetZoneResponse')
             self.fsm.request('waitForSetZoneComplete')
 

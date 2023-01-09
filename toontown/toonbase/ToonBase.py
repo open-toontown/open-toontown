@@ -50,7 +50,7 @@ class ToonBase(OTPBase.OTPBase):
         self.disableShowbaseMouse()
         base.debugRunningMultiplier /= OTPGlobals.ToonSpeedFactor
         self.toonChatSounds = ConfigVariableBool('toon-chat-sounds', 1).value
-        self.placeBeforeObjects = ConfigVariableBool('place-before-objects', 1).value
+        self.placeBeforeObjects = ConfigVariableBool('place-before-objects', 0).value
         self.endlessQuietZone = False
         self.wantDynamicShadows = 0
         self.exitErrorCode = 0

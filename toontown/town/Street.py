@@ -352,8 +352,8 @@ class Street(BattlePlace.BattlePlace):
                 if not __astron__:
                     base.cr.sendSetZoneMsg(newZoneId)
                 else:
-                    visZones = [self.loader.node2zone[x] for x in self.loader.nodeDict[newZoneId]]
-                    visZones.append(ZoneUtil.getBranchZone(newZoneId))
+                    visZones = [ZoneUtil.getBranchZone(newZoneId)]
+                    visZones += [self.loader.node2zone[x] for x in self.loader.nodeDict[newZoneId]]
                     if newZoneId not in visZones:
                         visZones.append(newZoneId)
                     base.cr.sendSetZoneMsg(newZoneId, visZones)
