@@ -149,3 +149,16 @@ class CogHQLoader(StateData.StateData):
         self.exitPlace()
         self.placeClass = None
         return
+    
+    if __astron__:
+        @staticmethod
+        def genDNAFileName(zoneId):
+            from toontown.toonbase import ToontownGlobals
+            zoneId = ZoneUtil.getCanonicalZoneId(zoneId)
+            hoodId = ZoneUtil.getCanonicalHoodId(zoneId)
+            hood = ToontownGlobals.dnaMap[hoodId]
+            phase = ToontownGlobals.streetPhaseMap[hoodId]
+            if hoodId == zoneId:
+                zoneId = 'sz'
+
+            return 'phase_%s/dna/%s_%s.dna' % (phase, hood, zoneId)
