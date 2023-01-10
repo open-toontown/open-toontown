@@ -97,13 +97,14 @@ class BattlePlace(Place.Place):
         if newZoneId != self.zoneId:
             if newZoneId != None:
                 if __astron__:
-                    if hasattr(self, 'zoneVisDict'):
-                        visList = self.zoneVisDict[newZoneId]
-                    else:
-                        visList = base.cr.playGame.getPlace().loader.zoneVisDict[newZoneId]
+                    # NOTE: This gets generated during the Quiet Zone transition.
+                    # See: toontown/hood/QuietZoneState.py (getCogHQViszones)
+                    visList = base.cr.playGame.getPlace().loader.zoneVisDict[newZoneId]
 
                     if newZoneId not in visList:
                         visList.append(newZoneId)
+                    if ZoneUtil.getBranchZone(newZoneId) not in visList:
+                        visList.append(ZoneUtil.getBranchZone(newZoneId))
 
                     base.cr.sendSetZoneMsg(newZoneId, visList)
                 else:
