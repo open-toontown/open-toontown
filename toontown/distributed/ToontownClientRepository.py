@@ -101,6 +101,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.old_setzone_interest_handle = None
         self.setZoneQueue = Queue()
         self.accept(ToontownClientRepository.SetZoneDoneEvent, self._handleEmuSetZoneDone)
+        self.previousInterestZones = None
         self._deletedSubShardDoIds = set()
         self.toonNameDict = {}
         self.gameFSM.addState(State.State('skipTutorialRequest', self.enterSkipTutorialRequest, self.exitSkipTutorialRequest, ['playGame', 'gameOff', 'tutorialQuestion']))
@@ -1036,12 +1037,25 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         if op == ToontownClientRepository.SetInterest:
             parentId, interestZones, name = args
             if self.old_setzone_interest_handle == None:
+                if interestZones == []:
+                    # Empty zones at startup, don't do anything to save bandwidth, just send the event.
+                    self._handleEmuSetZoneDone()
+                    return
                 self.old_setzone_interest_handle = self.addInterest(parentId, interestZones, name, ToontownClientRepository.SetZoneDoneEvent)
             else:
-                self.alterInterest(self.old_setzone_interest_handle, parentId, interestZones, name, ToontownClientRepository.SetZoneDoneEvent)
+                if type(interestZones) == list:
+                    interestZones.sort()
+                if self.previousInterestZones == interestZones:
+                    # Don't do anything to save bandwidth, just send the event.
+                    self._handleEmuSetZoneDone()
+                    return
+                else:
+                    self.alterInterest(self.old_setzone_interest_handle, parentId, interestZones, name, ToontownClientRepository.SetZoneDoneEvent)
+            self.previousInterestZones = interestZones
         elif op == ToontownClientRepository.ClearInterest:
             self.removeInterest(self.old_setzone_interest_handle, ToontownClientRepository.SetZoneDoneEvent)
             self.old_setzone_interest_handle = None
+            self.previousInterestZones = None
         else:
             self.notify.error('unknown setZone op: %s' % op)
         return
