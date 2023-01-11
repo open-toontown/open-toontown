@@ -440,7 +440,7 @@ class DistributedLevel(DistributedObject.DistributedObject, Level.Level):
             vizList = list(self.zoneNums)
             vizList.remove(LevelConstants.UberZoneEntId)
         uberZone = self.getZoneId(LevelConstants.UberZoneEntId)
-        visibleZoneIds = [OTPGlobals.UberZone, self.levelZone, uberZone]
+        visibleZoneIds = [self.levelZone, uberZone]
         for vz in vizList:
             if vz is not LevelConstants.UberZoneEntId:
                 visibleZoneIds.append(self.getZoneId(vz))
