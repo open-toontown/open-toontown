@@ -2853,14 +2853,22 @@ dclass TTAvatarFriendsManager : AvatarFriendsManager {
 dclass TTPlayerFriendsManager : PlayerFriendsManager {
 };
 
+struct Friend {
+  uint32 doId;
+  string name;
+  blob dnaString;
+  uint32 petId;
+};
+
+// Astron-specific Friends Manager
 dclass ToontownFriendsManager : DistributedObject {
   getFriendsListRequest() clsend;
-  getFriendsListResponse(blob);
-  friendOnline(blob);
-  friendOffline(blob);
-  goingOffline(uint32);
-  getAvatarDetailsRequest(uint32) clsend;
-  getAvatarDetailsResponse(blob);
+  getFriendsListResponse(bool success, Friend friends[]);
+  friendOnline(uint32 friendId, uint8 commonChatFlags, uint8 whitelistChatFlags);
+  friendOffline(uint32 friendId);
+  goingOffline(uint32 friendId);
+  getAvatarDetailsRequest(uint32 avId) clsend;
+  getAvatarDetailsResponse(blob avatarDetails);
   makeFriends(uint32, uint32, uint8, uint32);
   makeFriendsResponse(uint32, uint32, uint8, uint32) airecv;
   removeFriend(uint32) clsend;

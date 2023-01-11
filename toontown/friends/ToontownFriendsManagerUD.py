@@ -80,18 +80,7 @@ class GetFriendsListOperation(FriendsOperation):
             self._handleDone()
 
     def __sendFriendsList(self, success):
-        datagram = PyDatagram()
-        datagram.addUint8(0 if success else 1)  # error
-        if success:
-            count = len(self.friendsList)
-            datagram.addUint16(count)  # count
-            for i in range(count):
-                datagram.addUint32(self.friendsList[i][0])  # doId
-                datagram.addString(self.friendsList[i][1])  # name
-                datagram.addBlob(self.friendsList[i][2])  # dnaString
-                datagram.addUint32(self.friendsList[i][3])  # petId
-
-        self.friendsManager.sendUpdateToAvatarId(self.sender, 'getFriendsListResponse', [datagram.getMessage()])
+        self.friendsManager.sendUpdateToAvatarId(self.sender, 'getFriendsListResponse', [success, self.friendsList if success else []])
         for friendId in self.onlineFriends:
             self.friendsManager.sendFriendOnline(self.sender, friendId, 0, 1)
 
@@ -446,16 +435,10 @@ class ToontownFriendsManagerUD(DistributedObjectGlobalUD):
         self.air.send(datagram)
 
     def sendFriendOnline(self, avId, friendId, commonChatFlags, whitelistChatFlags):
-        datagram = PyDatagram()
-        datagram.addUint32(friendId)  # doId
-        datagram.addUint8(commonChatFlags)  # commonChatFlags
-        datagram.addUint8(whitelistChatFlags)  # whitelistChatFlags
-        self.sendUpdateToAvatarId(avId, 'friendOnline', [datagram.getMessage()])
+        self.sendUpdateToAvatarId(avId, 'friendOnline', [friendId, commonChatFlags, whitelistChatFlags])
 
     def sendFriendOffline(self, avId, friendId):
-        datagram = PyDatagram()
-        datagram.addUint32(friendId)
-        self.sendUpdateToAvatarId(avId, 'friendOffline', [datagram.getMessage()])
+        self.sendUpdateToAvatarId(avId, 'friendOffline', [friendId])
 
     def sendUpdateToAvatar(self, avId, fieldName, args=[]):
         dclass = self.air.dclassesByName['DistributedToonUD']

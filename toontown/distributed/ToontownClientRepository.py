@@ -901,6 +901,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def handleGetFriendsList(self, di):
         error = di.getUint8()
+        friends = []
         if error:
             self.notify.warning('Got error return from friends list.')
             self.friendsListError = 1
@@ -910,25 +911,30 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                 doId = di.getUint32()
                 name = di.getString()
                 dnaString = di.getBlob()
-                dna = ToonDNA.ToonDNA()
-                dna.makeFromNetString(dnaString)
                 petId = di.getUint32()
-                handle = FriendHandle.FriendHandle(doId, name, dna, petId)
-                self.friendsMap[doId] = handle
-                if doId in self.friendsOnline:
-                    self.friendsOnline[doId] = handle
-                if doId in self.friendPendingChatSettings:
-                    self.notify.debug('calling setCommonAndWL %s' % str(self.friendPendingChatSettings[doId]))
-                    handle.setCommonAndWhitelistChatFlags(*self.friendPendingChatSettings[doId])
 
-            if base.wantPets and base.localAvatar.hasPet():
+                friends.append((doId, name, dnaString, petId))
+        self.setFriendsMap(friends)
 
-                def handleAddedPet():
-                    self.friendsMapPending = 0
-                    messenger.send('friendsMapComplete')
+    def setFriendsMap(self, friends):
+        for doId, name, dnaString, petId in friends:
+            dna = ToonDNA.ToonDNA()
+            dna.makeFromNetString(dnaString)
+            handle = FriendHandle.FriendHandle(doId, name, dna, petId)
+            self.friendsMap[doId] = handle
+            if doId in self.friendsOnline:
+                self.friendsOnline[doId] = handle
+            if doId in self.friendPendingChatSettings:
+                self.notify.debug('calling setCommonAndWL %s' % str(self.friendPendingChatSettings[doId]))
+                handle.setCommonAndWhitelistChatFlags(*self.friendPendingChatSettings[doId])
 
-                self.addPetToFriendsMap(handleAddedPet)
-                return
+        if base.wantPets and base.localAvatar.hasPet():
+            def handleAddedPet():
+                self.friendsMapPending = 0
+                messenger.send('friendsMapComplete')
+            self.addPetToFriendsMap(handleAddedPet)
+            return
+
         self.friendsMapPending = 0
         messenger.send('friendsMapComplete')
 
@@ -967,6 +973,9 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             commonChatFlags = di.getUint8()
         if di.getRemainingSize() > 0:
             whitelistChatFlags = di.getUint8()
+        self.setFriendOnline(doId, commonChatFlags, whitelistChatFlags)
+    
+    def setFriendOnline(self, doId, commonChatFlags, whitelistChatFlags):
         self.notify.debug('Friend %d now online. common=%d whitelist=%d' % (doId, commonChatFlags, whitelistChatFlags))
         if doId not in self.friendsOnline:
             self.friendsOnline[doId] = self.identifyFriend(doId)
@@ -976,6 +985,9 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def handleFriendOffline(self, di):
         doId = di.getUint32()
+        self.setFriendOffline(doId)
+    
+    def setFriendOffline(self, doId):
         self.notify.debug('Friend %d now offline.' % doId)
         try:
             del self.friendsOnline[doId]

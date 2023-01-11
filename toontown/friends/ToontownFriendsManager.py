@@ -10,20 +10,18 @@ class ToontownFriendsManager(DistributedObjectGlobal):
     def sendGetFriendsListRequest(self):
         self.sendUpdate('getFriendsListRequest')
 
-    def getFriendsListResponse(self, friendsList):
-        datagram = PyDatagram(friendsList)
-        di = PyDatagramIterator(datagram)
-        self.cr.handleGetFriendsList(di)
+    def getFriendsListResponse(self, success, friendsList):
+        if not success:
+            self.notify.warning('An error has occurred when retrieving friends list.')
+            self.cr.friendsListError = 1
 
-    def friendOnline(self, friend):
-        datagram = PyDatagram(friend)
-        di = PyDatagramIterator(datagram)
-        self.cr.handleFriendOnline(di)
+        self.cr.setFriendsMap(friendsList)
 
-    def friendOffline(self, friend):
-        datagram = PyDatagram(friend)
-        di = PyDatagramIterator(datagram)
-        self.cr.handleFriendOffline(di)
+    def friendOnline(self, friendId, commonChatFlags, whitelistChatFlags):
+        self.cr.setFriendOnline(friendId, commonChatFlags, whitelistChatFlags)
+
+    def friendOffline(self, friendId):
+        self.cr.setFriendOffline(friendId)
 
     def sendGetAvatarDetailsRequest(self, avId):
         self.sendUpdate('getAvatarDetailsRequest', [avId])
