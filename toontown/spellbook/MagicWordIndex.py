@@ -397,6 +397,19 @@ class Quests(MagicWord):
         else:
             return "Valid commands: \"finish\""
 
+class Factory(MagicWord):
+    desc = "Quickly start a Sellbot Factory."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [('sideEnterace', int, False, 0)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        if not hasattr(self.air, "factoryMgr"):
+            return "No factory manager."
+        
+        from toontown.toonbase import ToontownGlobals
+        zoneId = self.air.factoryMgr.createFactory(ToontownGlobals.SellbotFactoryInt, 1 if args[0] > 0 else 0, [avId])
+        return "Created factory, teleporting...", avId, ["cogHQLoader", "factoryInterior", "", ToontownGlobals.SellbotHQ, zoneId, 0]
+
 class BossBattle(MagicWord):
     aliases = ["boss"]
     desc = "Create a new or manupliate the current boss battle."

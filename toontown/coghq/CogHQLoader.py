@@ -18,7 +18,7 @@ class CogHQLoader(StateData.StateData):
         self.parentFSMState = parentFSMState
         self.placeDoneEvent = 'cogHQLoaderPlaceDone'
         self.townBattleDoneEvent = 'town-battle-done'
-        self.fsm = ClassicFSM.ClassicFSM('CogHQLoader', [State.State('start', None, None, ['quietZone', 'cogHQExterior', 'cogHQBossBattle']),
+        self.fsm = ClassicFSM.ClassicFSM('CogHQLoader', [State.State('start', None, None, ['quietZone', 'cogHQExterior', 'factoryInterior', 'cogHQBossBattle']),
          State.State('cogHQExterior', self.enterCogHQExterior, self.exitCogHQExterior, ['quietZone', 'cogHQLobby']),
          State.State('cogHQLobby', self.enterCogHQLobby, self.exitCogHQLobby, ['quietZone', 'cogHQExterior', 'cogHQBossBattle']),
          State.State('cogHQBossBattle', self.enterCogHQBossBattle, self.exitCogHQBossBattle, ['quietZone']),
