@@ -17,6 +17,9 @@ from toontown.toonbase import ToontownAccess
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.launcher import ToontownDownloadWatcher
+from PyQt6.QtGui import *
+from PyQt6.QtCore import *
+from PyQt6.QtWidgets import *
 
 class ToonBase(OTPBase.OTPBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonBase')
@@ -395,3 +398,30 @@ class ToonBase(OTPBase.OTPBase):
 
     def playMusic(self, music, looping = 0, interrupt = 1, volume = None, time = 0.0):
         OTPBase.OTPBase.playMusic(self, music, looping, interrupt, volume, time)
+
+    if __debug__:
+
+        def openInjector(self):
+            self.qApp = QApplication([])
+            layout = QVBoxLayout()
+            self.injector = QWidget()
+            self.injector.setWindowTitle("Injector")
+            self.injector.setGeometry(100, 100, 400, 300)
+            helloMsg = QLabel("<h1>Injector</h1>")
+            helloMsg.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            inputBox = QPlainTextEdit()
+            injectBtn = QPushButton("Inject")
+            layout.addWidget(helloMsg)
+            layout.addWidget(inputBox)
+            layout.addWidget(injectBtn)
+            injectBtn.clicked.connect(lambda: self.__injectCode(inputBox.toPlainText()))
+            self.injector.setLayout(layout)
+            self.injector.show()
+        
+        def __injectCode(self, code):
+            try: 
+                print(eval(code, globals()))
+            except Exception as err: 
+                self.notify.warning(err)
+
+        

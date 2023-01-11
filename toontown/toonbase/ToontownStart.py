@@ -43,6 +43,8 @@ ToonBase.ToonBase()
 if base.win == None:
     print('Unable to open window; aborting.')
     sys.exit()
+if __debug__:
+    base.openInjector()
 launcher.setPandaErrorCode(0)
 launcher.setPandaWindowOpen()
 ConfigVariableDouble('decompressor-step-time').setValue(0.01)
