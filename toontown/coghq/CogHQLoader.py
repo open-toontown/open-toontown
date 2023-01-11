@@ -18,7 +18,7 @@ class CogHQLoader(StateData.StateData):
         self.parentFSMState = parentFSMState
         self.placeDoneEvent = 'cogHQLoaderPlaceDone'
         self.townBattleDoneEvent = 'town-battle-done'
-        self.fsm = ClassicFSM.ClassicFSM('CogHQLoader', [State.State('start', None, None, ['quietZone', 'cogHQExterior', 'cogHQBossBattle']),
+        self.fsm = ClassicFSM.ClassicFSM('CogHQLoader', [State.State('start', None, None, ['quietZone', 'cogHQExterior', 'factoryInterior', 'cogHQBossBattle']),
          State.State('cogHQExterior', self.enterCogHQExterior, self.exitCogHQExterior, ['quietZone', 'cogHQLobby']),
          State.State('cogHQLobby', self.enterCogHQLobby, self.exitCogHQLobby, ['quietZone', 'cogHQExterior', 'cogHQBossBattle']),
          State.State('cogHQBossBattle', self.enterCogHQBossBattle, self.exitCogHQBossBattle, ['quietZone']),
@@ -149,3 +149,16 @@ class CogHQLoader(StateData.StateData):
         self.exitPlace()
         self.placeClass = None
         return
+    
+    if __astron__:
+        @staticmethod
+        def genDNAFileName(zoneId):
+            from toontown.toonbase import ToontownGlobals
+            zoneId = ZoneUtil.getCanonicalZoneId(zoneId)
+            hoodId = ZoneUtil.getCanonicalHoodId(zoneId)
+            hood = ToontownGlobals.dnaMap[hoodId]
+            phase = ToontownGlobals.streetPhaseMap[hoodId]
+            if hoodId == zoneId:
+                zoneId = 'sz'
+
+            return 'phase_%s/dna/%s_%s.dna' % (phase, hood, zoneId)

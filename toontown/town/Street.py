@@ -132,7 +132,8 @@ class Street(BattlePlace.BattlePlace):
         self.enterZone(requestStatus['zoneId'])
         self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.loader.nodeList, self.zoneId)
         self.fsm.request(requestStatus['how'], [requestStatus])
-        self.replaceStreetSignTextures()
+        if base.cr.wantStreetSign:
+            self.replaceStreetSignTextures()
         return
 
     def exit(self, visibilityFlag = 1):
