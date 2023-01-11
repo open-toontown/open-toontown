@@ -72,7 +72,9 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.catalogManager = None
         self.welcomeValleyManager = None
         self.newsManager = None
-        self.streetSign = None
+        self.wantStreetSign = ConfigVariableBool('want-street-sign', 0).value
+        if self.wantStreetSign:
+            self.streetSign = None
         self.distributedDistrict = None
         self.partyManager = None
         self.inGameNewsMgr = None
@@ -84,7 +86,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.deliveryManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TOONTOWN_DELIVERY_MANAGER, 'DistributedDeliveryManager')
         if ConfigVariableBool('want-code-redemption', 1).value:
             self.codeRedemptionManager = self.generateGlobalObject(OtpDoGlobals.OTP_DO_ID_TOONTOWN_CODE_REDEMPTION_MANAGER, 'TTCodeRedemptionMgr')
-        self.streetSign = None
+        if self.wantStreetSign:
+            self.streetSign = None
         self.furnitureManager = None
         self.objectManager = None
         self.magicWordManager = None
@@ -458,7 +461,8 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
          base.localAvatar.defaultZone,
          -1])
         self._userLoggingOut = False
-        if not self.streetSign:
+        
+        if self.wantStreetSign and not self.streetSign:
             self.streetSign = StreetSign.StreetSign()
         return
 
