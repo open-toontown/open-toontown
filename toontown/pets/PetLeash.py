@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from otp.movement import Impulse
 
 class PetLeash(Impulse.Impulse):

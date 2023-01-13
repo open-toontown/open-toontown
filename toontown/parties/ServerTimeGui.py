@@ -1,4 +1,4 @@
-from pandac.PandaModules import TextNode
+from panda3d.core import TextNode
 from direct.gui.DirectGui import DirectFrame, DirectLabel
 from direct.interval.IntervalGlobal import Func, Sequence, Wait
 from toontown.toonbase import ToontownGlobals

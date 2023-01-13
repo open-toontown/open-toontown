@@ -1,4 +1,4 @@
-from pandac.PandaModules import NodePath
+from panda3d.core import NodePath
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from toontown.estate import DistributedStatuary

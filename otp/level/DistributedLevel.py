@@ -1,5 +1,5 @@
 from direct.distributed.ClockDelta import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.showbase.PythonUtil import Functor, sameElements, list2dict, uniqueElements
 from direct.interval.IntervalGlobal import *
 from toontown.distributed.ToontownMsgTypes import *
@@ -440,7 +440,7 @@ class DistributedLevel(DistributedObject.DistributedObject, Level.Level):
             vizList = list(self.zoneNums)
             vizList.remove(LevelConstants.UberZoneEntId)
         uberZone = self.getZoneId(LevelConstants.UberZoneEntId)
-        visibleZoneIds = [OTPGlobals.UberZone, self.levelZone, uberZone]
+        visibleZoneIds = [self.levelZone, uberZone]
         for vz in vizList:
             if vz is not LevelConstants.UberZoneEntId:
                 visibleZoneIds.append(self.getZoneId(vz))

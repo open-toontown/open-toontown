@@ -1,6 +1,6 @@
 from direct.distributed.DistributedObject import DistributedObject
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
-from pandac.PandaModules import *
+from panda3d.otp import WhisperPopup
 from otp.otpbase import OTPGlobals
 
 class DistributedChatManager(DistributedObjectGlobal):

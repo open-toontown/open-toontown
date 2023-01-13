@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObject import DistributedObject
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.building import ToonInteriorColors
 from toontown.hood import ZoneUtil
 from toontown.toonbase.ToonBaseGlobal import *

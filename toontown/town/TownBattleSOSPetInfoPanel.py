@@ -1,7 +1,7 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 from toontown.pets import Pet, PetTricks, PetDetailPanel
 from toontown.speedchat import TTSCPetTrickMenu

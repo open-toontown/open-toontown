@@ -1,5 +1,5 @@
 from toontown.toonbase import ToontownGlobals
-from pandac.PandaModules import BitMask32
+from panda3d.core import BitMask32
 ShowScoresDuration = 4.0
 EndlessGame = config.GetBool('endless-2d-game', 0)
 ScoreToJellyBeansMultiplier = 5

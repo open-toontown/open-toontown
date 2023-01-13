@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
@@ -6,7 +6,7 @@ from direct.task import Task
 from math import *
 from direct.distributed.ClockDelta import *
 from toontown.golf import GolfGlobals
-from pandac.PandaModules import LineSegs
+from panda3d.core import LineSegs
 AUTO_HIDE_TIMEOUT = 3
 
 class GolfScoreBoard:

@@ -1,6 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.task import Task
 from toontown.fishing.FishPhoto import DirectRegion
 from toontown.shtiker.ShtikerPage import ShtikerPage

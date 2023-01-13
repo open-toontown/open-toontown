@@ -17,6 +17,7 @@ class DistributedBattleFinalAI(DistributedBattleBaseAI.DistributedBattleBaseAI):
         DistributedBattleBaseAI.DistributedBattleBaseAI.__init__(self, air, bossCog.zoneId, finishCallback)
         self.bossCogId = bossCog.doId
         self.battleNumber = bossCog.battleNumber
+        self.rewardDuration = bossCog.getEndOfBattleMovieDuration()
         self.battleSide = battleSide
         self.streetBattle = 0
         self.roundCallback = roundCallback
@@ -112,7 +113,7 @@ class DistributedBattleFinalAI(DistributedBattleBaseAI.DistributedBattleBaseAI):
         return None
 
     def enterReward(self):
-        self.timer.startCallback(FLOOR_REWARD_TIMEOUT + 5, self.serverRewardDone)
+        self.timer.startCallback(FLOOR_REWARD_TIMEOUT + self.rewardDuration, self.serverRewardDone)
         return None
 
     def exitReward(self):

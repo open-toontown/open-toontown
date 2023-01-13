@@ -5,7 +5,7 @@ from toontown.toonbase import ToontownGlobals
 from toontown.coghq import StageLayout, DistributedStageRoomAI
 from toontown.coghq import BattleExperienceAggregatorAI
 from toontown.building import DistributedElevatorFloorAI
-from pandac.PandaModules import *
+from panda3d.core import *
 
 class DistributedStageAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStageAI')

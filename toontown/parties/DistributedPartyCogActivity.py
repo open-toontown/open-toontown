@@ -1,5 +1,5 @@
 from direct.distributed.ClockDelta import globalClockDelta
-from pandac.PandaModules import Point3
+from panda3d.core import Point3
 from toontown.toonbase import TTLocalizer
 from . import PartyGlobals
 from .DistributedPartyTeamActivity import DistributedPartyTeamActivity

@@ -3,7 +3,7 @@ from . import HoodDataAI, ZoneUtil
 from toontown.toonbase import ToontownGlobals
 from toontown.safezone import OZTreasurePlannerAI
 from toontown.racing import DistributedStartingBlockAI
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.toontown import *
 from toontown.racing.RaceGlobals import *
 from toontown.classicchars import DistributedGoofySpeedwayAI

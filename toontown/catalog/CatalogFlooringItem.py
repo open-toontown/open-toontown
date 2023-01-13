@@ -83,7 +83,7 @@ class CatalogFlooringItem(CatalogSurfaceItem):
         return FlooringTypes[self.patternIndex][FTBasePrice]
 
     def loadTexture(self):
-        from pandac.PandaModules import Texture
+        from panda3d.core import Texture
         filename = FlooringTypes[self.patternIndex][FTTextureName]
         texture = loader.loadTexture(filename)
         texture.setMinfilter(Texture.FTLinearMipmapLinear)

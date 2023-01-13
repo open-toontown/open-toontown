@@ -1,5 +1,5 @@
 from toontown.toonbase import ToontownGlobals
-from pandac.PandaModules import BitMask32
+from panda3d.core import BitMask32
 NumVines = 20
 GameDuration = 70
 ShowScoresDuration = 4.0

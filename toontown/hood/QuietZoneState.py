@@ -1,7 +1,9 @@
-from pandac.PandaModules import *
+from panda3d.core import *
+from panda3d.toontown import *
 from direct.showbase.PythonUtil import Functor, PriorityCallbacks
 from direct.task import Task
 from toontown.distributed.ToontownMsgTypes import *
+from toontown.toonbase import ToontownGlobals
 from otp.otpbase import OTPGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
@@ -262,10 +264,11 @@ class QuietZoneState(StateData.StateData):
             self.fsm.request('waitForSetZoneResponse')
 
     def gotZoneRedirect(self, zoneId):
-        self.notify.info('Redirecting to zone %s.' % zoneId)
-        base.cr.handlerArgs['zoneId'] = zoneId
-        base.cr.handlerArgs['hoodId'] = ZoneUtil.getHoodId(zoneId)
-        self.fsm.request('waitForSetZoneResponse')
+        if hasattr(self, 'fsm'):
+            self.notify.info('Redirecting to zone %s.' % zoneId)
+            base.cr.handlerArgs['zoneId'] = zoneId
+            base.cr.handlerArgs['hoodId'] = ZoneUtil.getHoodId(zoneId)
+            self.fsm.request('waitForSetZoneResponse')
 
     def exitWaitForZoneRedirect(self):
         self.notify.debug('exitWaitForZoneRedirect()')
@@ -281,11 +284,69 @@ class QuietZoneState(StateData.StateData):
             messenger.send(self.getEnterWaitForSetZoneResponseMsg(), [self._requestStatus])
             base.cr.handlerArgs = self._requestStatus
             zoneId = self._requestStatus['zoneId']
+            where = self._requestStatus['where']
             base.cr.dumpAllSubShardObjects()
             base.cr.resetDeletedSubShardDoIds()
-            base.cr.sendSetZoneMsg(zoneId)
+            if __astron__:
+                # Add viszones to streets and Cog HQs:
+                visZones = []
+                if where == 'street':
+                    visZones = self.getStreetViszones(zoneId)
+                    if zoneId not in visZones:
+                        visZones.append(zoneId)
+                    base.cr.sendSetZoneMsg(zoneId, visZones)
+                elif where in ('cogHQExterior', 'factoryExterior'):
+                    visZones = self.getCogHQViszones(zoneId)
+                    if zoneId not in visZones:
+                        visZones.append(zoneId)
+                if len(visZones) < 1 or (len(visZones) == 1 and visZones[0] == zoneId):
+                    base.cr.sendSetZoneMsg(zoneId)
+                else:
+                    base.cr.sendSetZoneMsg(zoneId, visZones)
+            else:
+                base.cr.sendSetZoneMsg(zoneId)
             self.waitForDatabase('WaitForSetZoneResponse')
             self.fsm.request('waitForSetZoneComplete')
+    
+    if __astron__:
+        def getStreetViszones(self, zoneId):
+            visZones = [ZoneUtil.getBranchZone(zoneId)]
+            # Assuming that the DNA have been loaded by bulk load before this (see Street.py).
+            loader = base.cr.playGame.hood.loader
+            visZones += [loader.node2zone[x] for x in loader.nodeDict[zoneId]]
+            self.notify.debug(f'getStreetViszones(zoneId={zoneId}): returning visZones: {visZones}')
+            return visZones
+        
+        def getCogHQViszones(self, zoneId):
+            loader = base.cr.playGame.hood.loader
+
+            if zoneId in (ToontownGlobals.LawbotOfficeExt, ToontownGlobals.BossbotHQ):
+                # There are no viszones for these zones, just return an empty list.
+                return []
+            
+            # First, we need to load the DNA file for this Cog HQ.
+            dnaStore = DNAStorage()
+            dnaFileName = loader.genDNAFileName(zoneId)
+            loadDNAFileAI(dnaStore, dnaFileName)
+
+            # Next, we need to collect all of the visgroup zone IDs.
+            loader.zoneVisDict = {}
+            for i in range(dnaStore.getNumDNAVisGroupsAI()):
+                visGroup = dnaStore.getDNAVisGroupAI(i)
+                groupFullName = visGroup.getName()
+                visZoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
+                visZoneId = ZoneUtil.getTrueZoneId(visZoneId, zoneId)
+                visibles = []
+                for i in range(visGroup.getNumVisibles()):
+                    visibles.append(int(visGroup.getVisibleName(i)))
+
+                # Now we'll store it in the loader since we need them when we enter a Cog battle.
+                loader.zoneVisDict[visZoneId] = visibles
+            
+            # Finally, we want interest in all visgroups due to this being a Cog HQ.
+            visZones = list(loader.zoneVisDict.values())[0]
+            self.notify.debug(f'getCogHQViszones(zoneId={zoneId}): returning visZones: {visZones}')
+            return visZones
 
     def exitWaitForSetZoneResponse(self):
         self.notify.debug('exitWaitForSetZoneResponse()')

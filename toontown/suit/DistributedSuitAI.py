@@ -1,5 +1,5 @@
 from otp.ai.AIBaseGlobal import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.toontown import *
 from direct.distributed.ClockDelta import *
 from otp.avatar import DistributedAvatarAI

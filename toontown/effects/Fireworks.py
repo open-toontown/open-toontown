@@ -2,7 +2,8 @@ from direct.interval.IntervalGlobal import *
 from direct.particles import ParticleEffect
 from direct.particles import Particles
 from direct.particles import ForceGroup
-from pandac.PandaModules import *
+from panda3d.core import *
+from panda3d.physics import *
 import random
 from .FireworkGlobals import *
 colors = {WHITE: Vec4(1, 1, 1, 1),

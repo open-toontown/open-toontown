@@ -1,6 +1,6 @@
 from otp.level import DistributedEntity
 from direct.directnotify import DirectNotifyGlobal
-from pandac.PandaModules import NodePath
+from panda3d.core import NodePath
 from otp.level import BasicEntities
 
 class DistributedCrushableEntity(DistributedEntity.DistributedEntity, NodePath, BasicEntities.NodePathAttribs):

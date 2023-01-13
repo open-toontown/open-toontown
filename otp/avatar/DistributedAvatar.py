@@ -1,6 +1,6 @@
 import time
 import string
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.distributed import DistributedNode
 from direct.actor.DistributedActor import DistributedActor
 from direct.interval.IntervalGlobal import *

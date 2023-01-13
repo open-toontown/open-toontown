@@ -79,7 +79,7 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
 
         # Same thing with the Toontorial. Magic Words are strictly forbidden here
         # Tell the user they can't use it because they're in the Toontorial
-        if hasattr(self.air, 'tutorialManager') and avId in list(self.air.tutorialManager.avId2fsm.keys()):
+        if hasattr(self.air, 'tutorialManager') and avId in self.air.tutorialManager.playerDict:
             self.generateResponse(avId=avId, responseType="Tutorial")
             return
 
@@ -273,7 +273,15 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
             returnValue = command.executeWord()
             # If we have a return value, pass it over to the invoker
             if returnValue:
-                self.generateResponse(avId=avId, responseType="Success", returnValue=returnValue)
+                # If the word returns more than one values, assume that the word wants to teleport the target somewhere.
+                if type(returnValue) is tuple:
+                    teleportingAvId = avId
+                    if len(returnValue) == 3:
+                        teleportingAvId = returnValue[1]
+                    self.sendTeleportResponse(teleportingAvId, *returnValue[-1])
+                    self.generateResponse(avId=avId, responseType="Success", returnValue=returnValue[0])
+                else:
+                    self.generateResponse(avId=avId, responseType="Success", returnValue=returnValue)
             # Otherwise just throw a default response to them
             else:
                 self.generateResponse(avId=avId, responseType="SuccessNoResp", magicWord=magicWord,
@@ -296,3 +304,6 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
         # Execute the Magic Word on the client, because it's a client-sided Magic Word
         self.sendUpdateToAvatarId(avId, "executeMagicWord", [word, commandName, targetIds, parsedArgList, affectRange,
                                                              affectType, affectExtra, lastClickedAvId])
+    
+    def sendTeleportResponse(self, avId, loaderId, whereId, how, hoodId, zoneId, targetAvId):
+        self.sendUpdateToAvatarId(avId, "teleportResponse", [loaderId, whereId, how, hoodId, zoneId, targetAvId])

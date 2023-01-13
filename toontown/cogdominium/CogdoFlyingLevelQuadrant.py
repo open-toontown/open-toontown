@@ -1,6 +1,6 @@
 import math
 from direct.directutil import Mopath
-from pandac.PandaModules import NodePath, Point3, Vec4
+from panda3d.core import NodePath, Point3, Vec4
 from .CogdoFlyingObjects import CogdoFlyingPlatform
 from . import CogdoFlyingGameGlobals as Globals
 

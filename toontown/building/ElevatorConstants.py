@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 ELEVATOR_NORMAL = 0
 ELEVATOR_VP = 1
 ELEVATOR_MINT = 2

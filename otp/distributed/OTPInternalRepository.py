@@ -1,6 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.AstronInternalRepository import AstronInternalRepository
 from direct.distributed.PyDatagram import *
+from direct.distributed.MsgTypes import *
+from direct.showbase.PythonUtil import makeList
 
 
 # TODO: Remove Astron dependence.
@@ -41,3 +43,7 @@ class OTPInternalRepository(AstronInternalRepository):
             dg.addUint16(fieldId)
 
         self.send(dg)
+    
+    def _getMsgName(self, msgId):
+        # TODO: Remove Astron dependence.
+        return makeList(MsgId2Names.get(msgId, f'UNKNOWN MESSAGE: {msgId}'))[0]

@@ -64,7 +64,7 @@ class Street(BattlePlace.BattlePlace):
          State.State('WaitForBattle', self.enterWaitForBattle, self.exitWaitForBattle, ['battle', 'walk']),
          State.State('battle', self.enterBattle, self.exitBattle, ['walk', 'teleportOut', 'died']),
          State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
-         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk']),
+         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk', 'stopped']),
          State.State('elevatorIn', self.enterElevatorIn, self.exitElevatorIn, ['walk']),
          State.State('elevator', self.enterElevator, self.exitElevator, ['walk']),
          State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
@@ -132,7 +132,8 @@ class Street(BattlePlace.BattlePlace):
         self.enterZone(requestStatus['zoneId'])
         self.tunnelOriginList = base.cr.hoodMgr.addLinkTunnelHooks(self, self.loader.nodeList, self.zoneId)
         self.fsm.request(requestStatus['how'], [requestStatus])
-        self.replaceStreetSignTextures()
+        if base.cr.wantStreetSign:
+            self.replaceStreetSignTextures()
         return
 
     def exit(self, visibilityFlag = 1):
@@ -352,8 +353,8 @@ class Street(BattlePlace.BattlePlace):
                 if not __astron__:
                     base.cr.sendSetZoneMsg(newZoneId)
                 else:
-                    visZones = [self.loader.node2zone[x] for x in self.loader.nodeDict[newZoneId]]
-                    visZones.append(ZoneUtil.getBranchZone(newZoneId))
+                    visZones = [ZoneUtil.getBranchZone(newZoneId)]
+                    visZones += [self.loader.node2zone[x] for x in self.loader.nodeDict[newZoneId]]
                     if newZoneId not in visZones:
                         visZones.append(newZoneId)
                     base.cr.sendSetZoneMsg(newZoneId, visZones)

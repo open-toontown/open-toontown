@@ -1,5 +1,6 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
+from direct.showbase import DConfig
 from direct.showbase.MessengerGlobal import *
 from direct.showbase.BulletinBoardGlobal import *
 from direct.task.TaskManagerGlobal import *
@@ -20,7 +21,7 @@ class AIBase:
     notify = directNotify.newCategory('AIBase')
 
     def __init__(self):
-        self.config = getConfigShowbase()
+        self.config = DConfig
         __builtins__['__dev__'] = self.config.GetBool('want-dev', 0)
         __builtins__['__astron__'] = self.config.GetBool('astron-support', 1)
         __builtins__['__execWarnings__'] = self.config.GetBool('want-exec-warnings', 0)

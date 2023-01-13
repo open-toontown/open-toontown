@@ -1,5 +1,6 @@
 import random
-from pandac.PandaModules import *
+from panda3d.core import *
+from panda3d.physics import *
 from direct.interval.IntervalGlobal import Sequence, Func, Parallel, Wait, LerpHprInterval, LerpScaleInterval, LerpFunctionInterval
 from otp.otpbase import OTPGlobals
 from toontown.toonbase import ToontownGlobals

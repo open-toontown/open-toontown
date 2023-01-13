@@ -1,4 +1,4 @@
-from pandac.PandaModules import *
+from panda3d.core import *
 from toontown.toonbase import ToontownGlobals
 from enum import IntEnum
 OurPetsMoodChangedKey = 'OurPetsMoodChanged'

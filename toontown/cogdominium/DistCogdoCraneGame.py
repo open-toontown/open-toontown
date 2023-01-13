@@ -1,4 +1,5 @@
-from pandac import PandaModules as PM
+from panda3d.core import *
+from panda3d.physics import *
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.task.Task import Task
 from otp.level import LevelConstants
@@ -46,15 +47,15 @@ class DistCogdoCraneGame(CogdoCraneGameBase, DistCogdoLevelGame):
         self.stick = loader.loadModel('phase_10/models/cogHQ/CBCraneStick.bam')
         self.cableTex = self.craneArm.findTexture('MagnetControl')
         self.moneyBag = loader.loadModel('phase_10/models/cashbotHQ/MoneyBag')
-        self.geomRoot = PM.NodePath('geom')
+        self.geomRoot = NodePath('geom')
         self.sceneRoot = self.geomRoot.attachNewNode('sceneRoot')
         self.sceneRoot.setPos(35.84, -115.46, 6.46)
-        self.physicsMgr = PM.PhysicsManager()
-        integrator = PM.LinearEulerIntegrator()
+        self.physicsMgr = PhysicsManager()
+        integrator = LinearEulerIntegrator()
         self.physicsMgr.attachLinearIntegrator(integrator)
-        fn = PM.ForceNode('gravity')
+        fn = ForceNode('gravity')
         self.fnp = self.geomRoot.attachNewNode(fn)
-        gravity = PM.LinearVectorForce(0, 0, GameConsts.Settings.Gravity.get())
+        gravity = LinearVectorForce(0, 0, GameConsts.Settings.Gravity.get())
         fn.addForce(gravity)
         self.physicsMgr.addLinearForce(gravity)
         self._gravityForce = gravity
@@ -72,7 +73,7 @@ class DistCogdoCraneGame(CogdoCraneGameBase, DistCogdoLevelGame):
         self.endVault.findAllMatches('**/Safes').detach()
         self.endVault.findAllMatches('**/MagnetControlsAll').detach()
         cn = self.endVault.find('**/wallsCollision').node()
-        cn.setIntoCollideMask(OTPGlobals.WallBitmask | ToontownGlobals.PieBitmask | PM.BitMask32.lowerOn(3) << 21)
+        cn.setIntoCollideMask(OTPGlobals.WallBitmask | ToontownGlobals.PieBitmask | BitMask32.lowerOn(3) << 21)
         walls = self.endVault.find('**/RollUpFrameCillison')
         walls.detachNode()
         self.evWalls = self.replaceCollisionPolysWithPlanes(walls)
@@ -83,29 +84,29 @@ class DistCogdoCraneGame(CogdoCraneGameBase, DistCogdoLevelGame):
         self.evFloor = self.replaceCollisionPolysWithPlanes(floor)
         self.evFloor.reparentTo(self.endVault)
         self.evFloor.setName('floor')
-        plane = PM.CollisionPlane(PM.Plane(PM.Vec3(0, 0, 1), PM.Point3(0, 0, -50)))
-        planeNode = PM.CollisionNode('dropPlane')
+        plane = CollisionPlane(Plane(Vec3(0, 0, 1), Point3(0, 0, -50)))
+        planeNode = CollisionNode('dropPlane')
         planeNode.addSolid(plane)
         planeNode.setCollideMask(ToontownGlobals.PieBitmask)
         self.geomRoot.attachNewNode(planeNode)
 
     def replaceCollisionPolysWithPlanes(self, model):
-        newCollisionNode = PM.CollisionNode('collisions')
-        newCollideMask = PM.BitMask32(0)
+        newCollisionNode = CollisionNode('collisions')
+        newCollideMask = BitMask32(0)
         planes = []
         collList = model.findAllMatches('**/+CollisionNode')
         if not collList:
             collList = [model]
         for cnp in collList:
             cn = cnp.node()
-            if not isinstance(cn, PM.CollisionNode):
+            if not isinstance(cn, CollisionNode):
                 self.notify.warning('Not a collision node: %s' % repr(cnp))
                 break
             newCollideMask = newCollideMask | cn.getIntoCollideMask()
             for i in range(cn.getNumSolids()):
                 solid = cn.getSolid(i)
-                if isinstance(solid, PM.CollisionPolygon):
-                    plane = PM.Plane(solid.getPlane())
+                if isinstance(solid, CollisionPolygon):
+                    plane = Plane(solid.getPlane())
                     planes.append(plane)
                 else:
                     self.notify.warning('Unexpected collision solid: %s' % repr(solid))
@@ -117,11 +118,11 @@ class DistCogdoCraneGame(CogdoCraneGameBase, DistCogdoLevelGame):
         lastPlane = None
         for plane in planes:
             if lastPlane == None or plane.compareTo(lastPlane, threshold) != 0:
-                cp = PM.CollisionPlane(plane)
+                cp = CollisionPlane(plane)
                 newCollisionNode.addSolid(cp)
                 lastPlane = plane
 
-        return PM.NodePath(newCollisionNode)
+        return NodePath(newCollisionNode)
 
     def exitLoaded(self):
         self.fnp.removeNode()
@@ -190,7 +191,7 @@ class DistCogdoCraneGame(CogdoCraneGameBase, DistCogdoLevelGame):
         def _handleGravityChanged(self, gravity):
             self.physicsMgr.removeLinearForce(self._gravityForce)
             self._gravityForceNode.removeForce(self._gravityForce)
-            self._gravityForce = PM.LinearVectorForce(0, 0, gravity)
+            self._gravityForce = LinearVectorForce(0, 0, gravity)
             self.physicsMgr.addLinearForce(self._gravityForce)
             self._gravityForceNode.addForce(self._gravityForce)
 

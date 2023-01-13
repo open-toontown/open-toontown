@@ -5,7 +5,7 @@ from direct.distributed.ClockDelta import *
 from direct.showbase.PythonUtil import Functor
 from direct.showbase.PythonUtil import StackTrace
 from direct.gui.DirectGui import *
-from pandac.PandaModules import *
+from panda3d.core import *
 from panda3d.otp import *
 from direct.fsm import FSM
 from direct.fsm import ClassicFSM

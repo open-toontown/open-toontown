@@ -1,4 +1,4 @@
-from pandac.PandaModules import NodePath, VBase4
+from panda3d.core import NodePath, VBase4
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.RandomNumGen import RandomNumGen
 from toontown.minigame.MazeBase import MazeBase

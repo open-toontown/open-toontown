@@ -319,6 +319,7 @@ class DistributedDivingGame(DistributedMinigame):
         for crab in self.crabs:
             crab.moveLerp.finish()
             crab.moveLerp = None
+            crab.cleanup()
             crab.removeNode()
             del crab
 
@@ -766,6 +767,7 @@ class DistributedDivingGame(DistributedMinigame):
             fish.moveLerp.finish()
             fish.specialLerp = None
             fish.moveLerp = None
+            fish.cleanup()
             fish.removeNode()
             del fish
             del self.spawners[spawnerId].fishArray[spawnId]

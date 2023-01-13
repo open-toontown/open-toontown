@@ -3,7 +3,7 @@ from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from toontown.building.ElevatorConstants import *
 from toontown.toon import NPCToons
-from pandac.PandaModules import NodePath
+from panda3d.core import NodePath
 from panda3d.otp import *
 from toontown.building import ElevatorUtils
 from toontown.toonbase import ToontownGlobals

@@ -467,7 +467,7 @@ dclass DistributedToon : DistributedPlayer {
   setHoodsVisited(uint32[] = [2000]) required ownrecv db;
   setInterface(blob = []) required ownrecv db;
   setLastHood(uint32 = 0) required ownrecv db;
-  setTutorialAck(uint8 = 1) required ownrecv db;
+  setTutorialAck(uint8 = 0) required ownrecv db;
   setMaxClothes(uint32 = 10) required ownrecv db;
   setClothesTopsList(uint8[] = []) required ownrecv db;
   setClothesBottomsList(uint8[] = []) required ownrecv db;
@@ -1409,6 +1409,7 @@ dclass ToontownMagicWordManager : DistributedObject {
   requestExecuteMagicWord(int8, int8, int16, uint32, string) airecv clsend;
   executeMagicWord(string, string, uint32[], blob, int8, int8, int16, uint32);
   generateResponse(string, string, blob, string, int8, int8, int16, uint32, string);
+  teleportResponse(string loaderId, string whereId, string how, uint32 hoodId, uint32 zoneId, uint32 avId);
 };
 
 struct weeklyCalendarHoliday {

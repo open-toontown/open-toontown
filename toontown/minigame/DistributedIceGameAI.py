@@ -1,4 +1,4 @@
-from pandac.PandaModules import Point3
+from panda3d.core import Point3
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.fsm import ClassicFSM, State
 from direct.task import Task
