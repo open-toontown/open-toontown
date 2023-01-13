@@ -7,11 +7,7 @@ class ToontownFriendsManagerAI(DistributedObjectGlobalAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownFriendsManagerAI')
 
     def sendFriendOnline(self, avId, friendId, commonChatFlags, whitelistChatFlags):
-        datagram = PyDatagram()
-        datagram.addUint32(friendId)  # doId
-        datagram.addUint8(commonChatFlags)  # commonChatFlags
-        datagram.addUint8(whitelistChatFlags)  # whitelistChatFlags
-        self.sendUpdateToAvatarId(avId, 'friendOnline', [datagram.getMessage()])
+        self.sendUpdateToAvatarId(avId, 'friendOnline', [friendId, commonChatFlags, whitelistChatFlags])
 
     def sendMakeFriends(self, avatarAId, avatarBId, flags, context):
         self.sendUpdate('makeFriends', [avatarAId, avatarBId, flags, context])
