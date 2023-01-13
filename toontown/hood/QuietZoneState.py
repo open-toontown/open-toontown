@@ -264,10 +264,11 @@ class QuietZoneState(StateData.StateData):
             self.fsm.request('waitForSetZoneResponse')
 
     def gotZoneRedirect(self, zoneId):
-        self.notify.info('Redirecting to zone %s.' % zoneId)
-        base.cr.handlerArgs['zoneId'] = zoneId
-        base.cr.handlerArgs['hoodId'] = ZoneUtil.getHoodId(zoneId)
-        self.fsm.request('waitForSetZoneResponse')
+        if hasattr(self, 'fsm'):
+            self.notify.info('Redirecting to zone %s.' % zoneId)
+            base.cr.handlerArgs['zoneId'] = zoneId
+            base.cr.handlerArgs['hoodId'] = ZoneUtil.getHoodId(zoneId)
+            self.fsm.request('waitForSetZoneResponse')
 
     def exitWaitForZoneRedirect(self):
         self.notify.debug('exitWaitForZoneRedirect()')
