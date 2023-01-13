@@ -352,7 +352,7 @@ class Minigame(MagicWord):
         if any((isTeleport, isRequest)):
             if isTeleport and (ZoneUtil.isDynamicZone(toon.zoneId) or not toon.zoneId == mgSzId):
                 return "Target needs to be in a playground to teleport to a minigame."
-            MinigameCreatorAI.RequestMinigame[avId] = (mgId, mgKeep, mgDiff, mgSzId)
+            MinigameCreatorAI.RequestMinigame[avId] = (mgId, mgKeep, mgDiff, ToontownGlobals.ToontownCentral if ZoneUtil.isWelcomeValley(mgSzId) else mgSzId)
             if isTeleport:
                 try:
                     result = MinigameCreatorAI.createMinigame(self.air, [avId], mgSzId)
