@@ -2,20 +2,20 @@ from .CatalogSurfaceItem import *
 MTTextureName = 0
 MTColor = 1
 MTBasePrice = 2
-MouldingTypes = {1000: ('phase_3.5/maps/molding_wood1.jpg', CTBasicWoodColorOnWhite, 150),
- 1010: ('phase_5.5/maps/bd_grey_border1.jpg', CTFlatColorDark, 150),
- 1020: ('phase_5.5/maps/dental_Border_wood_neutral.jpg', CTFlatColorDark, 150),
- 1030: ('phase_5.5/maps/littleFlowers_border.jpg', CTWhite, 150),
- 1040: ('phase_5.5/maps/littleFlowers_border_neutral.jpg', CTFlatColorDark, 150),
- 1050: ('phase_5.5/maps/ladybugs2_Border.jpg', CTFlatColorDark, 150),
- 1060: ('phase_5.5/maps/bd_grey_border1.jpg', CTValentinesColors, 150),
- 1070: ('phase_5.5/maps/bd_grey_border1.jpg', CTUnderwaterColors, 150),
- 1080: ('phase_5.5/maps/tt_t_ara_int_border_winterLights1.jpg', CTWhite, 150),
- 1085: ('phase_5.5/maps/tt_t_ara_int_border_winterLights2.jpg', CTWhite, 150),
- 1090: ('phase_5.5/maps/tt_t_ara_int_border_winterLights3.jpg', CTWhite, 150),
- 1100: ('phase_5.5/maps/tt_t_ara_int_border_valentine_cupid.jpg', CTWhite, 150),
- 1110: ('phase_5.5/maps/tt_t_ara_int_border_valentine_heart1.jpg', CTWhite, 150),
- 1120: ('phase_5.5/maps/tt_t_ara_int_border_valentine_heart2.jpg', CTWhite, 150)}
+MouldingTypes = {1000: ('phase_3.5/maps/molding_wood1.png', CTBasicWoodColorOnWhite, 150),
+ 1010: ('phase_5.5/maps/bd_grey_border1.png', CTFlatColorDark, 150),
+ 1020: ('phase_5.5/maps/dental_Border_wood_neutral.png', CTFlatColorDark, 150),
+ 1030: ('phase_5.5/maps/littleFlowers_border.png', CTWhite, 150),
+ 1040: ('phase_5.5/maps/littleFlowers_border_neutral.png', CTFlatColorDark, 150),
+ 1050: ('phase_5.5/maps/ladybugs2_Border.png', CTFlatColorDark, 150),
+ 1060: ('phase_5.5/maps/bd_grey_border1.png', CTValentinesColors, 150),
+ 1070: ('phase_5.5/maps/bd_grey_border1.png', CTUnderwaterColors, 150),
+ 1080: ('phase_5.5/maps/tt_t_ara_int_border_winterLights1.png', CTWhite, 150),
+ 1085: ('phase_5.5/maps/tt_t_ara_int_border_winterLights2.png', CTWhite, 150),
+ 1090: ('phase_5.5/maps/tt_t_ara_int_border_winterLights3.png', CTWhite, 150),
+ 1100: ('phase_5.5/maps/tt_t_ara_int_border_valentine_cupid.png', CTWhite, 150),
+ 1110: ('phase_5.5/maps/tt_t_ara_int_border_valentine_heart1.png', CTWhite, 150),
+ 1120: ('phase_5.5/maps/tt_t_ara_int_border_valentine_heart2.png', CTWhite, 150)}
 
 class CatalogMouldingItem(CatalogSurfaceItem):
 

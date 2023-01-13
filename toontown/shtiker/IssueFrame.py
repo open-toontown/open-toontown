@@ -23,7 +23,7 @@ class IssueFrame(DirectFrame):
      -0.751666665077,
      0.751666665077)
     notify = DirectNotifyGlobal.directNotify.newCategory('IssueFrame')
-    ContentPattern = 'tt_i_art_%s_%s%d.jpg'
+    ContentPattern = 'tt_i_art_%s_%s%d.png'
     SectionIdents = ['hom',
      'new',
      'evt',

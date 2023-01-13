@@ -688,15 +688,15 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
              KartDNA.fwwType,
              KartDNA.bwwType]:
                 texNodePath = getTexCardNode(accID)
-                tex = loader.loadTexture('phase_6/maps/%s.jpg' % texNodePath, 'phase_6/maps/%s_a.rgb' % texNodePath)
+                tex = loader.loadTexture('phase_6/maps/%s.png' % texNodePath)
             elif accType == KartDNA.rimsType:
                 if accID == InvalidEntry:
                     texNodePath = getTexCardNode(getDefaultRim())
                 else:
                     texNodePath = getTexCardNode(accID)
-                tex = loader.loadTexture('phase_6/maps/%s.jpg' % texNodePath, 'phase_6/maps/%s_a.rgb' % texNodePath)
+                tex = loader.loadTexture('phase_6/maps/%s.png' % texNodePath)
             elif accType in [KartDNA.bodyColor, KartDNA.accColor]:
-                tex = loader.loadTexture('phase_6/maps/Kartmenu_paintbucket.jpg', 'phase_6/maps/Kartmenu_paintbucket_a.rgb')
+                tex = loader.loadTexture('phase_6/maps/Kartmenu_paintbucket.png')
                 if accID == InvalidEntry:
                     self.kartView.component('geom0').setColorScale(getDefaultColor())
                 else:
@@ -704,9 +704,9 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             elif accType == KartDNA.decalType:
                 kartDecal = getDecalId(base.localAvatar.getKartBodyType())
                 texNodePath = getTexCardNode(accID)
-                tex = loader.loadTexture('phase_6/maps/%s.jpg' % texNodePath % kartDecal, 'phase_6/maps/%s_a.rgb' % texNodePath % kartDecal)
+                tex = loader.loadTexture('phase_6/maps/%s.png' % texNodePath % kartDecal)
             else:
-                tex = loader.loadTexture('phase_6/maps/NoAccessoryIcon3.jpg', 'phase_6/maps/NoAccessoryIcon3_a.rgb')
+                tex = loader.loadTexture('phase_6/maps/NoAccessoryIcon3.png')
             tex.setMinfilter(Texture.FTLinearMipmapLinear)
             self.kartView.component('geom0').setTexture(tex, 1)
             self.initialize = True
@@ -748,15 +748,15 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
              KartDNA.fwwType,
              KartDNA.bwwType]:
                 texNodePath = getTexCardNode(accID)
-                tex = loader.loadTexture('phase_6/maps/%s.jpg' % texNodePath, 'phase_6/maps/%s_a.rgb' % texNodePath)
+                tex = loader.loadTexture('phase_6/maps/%s.png' % texNodePath)
             elif accType == KartDNA.rimsType:
                 if accID == InvalidEntry:
                     texNodePath = getTexCardNode(getDefaultRim())
                 else:
                     texNodePath = getTexCardNode(accID)
-                tex = loader.loadTexture('phase_6/maps/%s.jpg' % texNodePath, 'phase_6/maps/%s_a.rgb' % texNodePath)
+                tex = loader.loadTexture('phase_6/maps/%s.png' % texNodePath)
             elif accType in [KartDNA.bodyColor, KartDNA.accColor]:
-                tex = loader.loadTexture('phase_6/maps/Kartmenu_paintbucket.jpg', 'phase_6/maps/Kartmenu_paintbucket_a.rgb')
+                tex = loader.loadTexture('phase_6/maps/Kartmenu_paintbucket.png')
                 if accID == InvalidEntry:
                     self.kartView.component('geom0').setColorScale(getDefaultColor())
                 else:
@@ -764,9 +764,9 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
             elif accType == KartDNA.decalType:
                 kartDecal = getDecalId(base.localAvatar.getKartBodyType())
                 texNodePath = getTexCardNode(accID)
-                tex = loader.loadTexture('phase_6/maps/%s.jpg' % texNodePath % kartDecal, 'phase_6/maps/%s_a.rgb' % texNodePath % kartDecal)
+                tex = loader.loadTexture('phase_6/maps/%s.png' % texNodePath % kartDecal)
             else:
-                tex = loader.loadTexture('phase_6/maps/NoAccessoryIcon3.jpg', 'phase_6/maps/NoAccessoryIcon3_a.rgb')
+                tex = loader.loadTexture('phase_6/maps/NoAccessoryIcon3.png')
             tex.setMinfilter(Texture.FTLinearMipmapLinear)
             self.kartView.component('geom0').setTexture(tex, 1)
             self.initialize = True

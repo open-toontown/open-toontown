@@ -324,12 +324,12 @@ class PropPool:
             lips.setPos(0, 0, -3.04)
             lips.flattenMedium()
         elif name == '5dollar':
-            tex = loader.loadTexture('phase_5/maps/dollar_5.jpg')
+            tex = loader.loadTexture('phase_5/maps/dollar_5.png')
             tex.setMinfilter(Texture.FTLinearMipmapLinear)
             tex.setMagfilter(Texture.FTLinear)
             self.props[name].setTexture(tex, 1)
         elif name == '10dollar':
-            tex = loader.loadTexture('phase_5/maps/dollar_10.jpg')
+            tex = loader.loadTexture('phase_5/maps/dollar_10.png')
             tex.setMinfilter(Texture.FTLinearMipmapLinear)
             tex.setMagfilter(Texture.FTLinear)
             self.props[name].setTexture(tex, 1)
