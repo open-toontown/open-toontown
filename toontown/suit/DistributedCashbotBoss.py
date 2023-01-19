@@ -19,6 +19,7 @@ from toontown.distributed import DelayDelete
 from toontown.chat import ResistanceChat
 from toontown.coghq import CogDisguiseGlobals
 from panda3d.core import *
+from panda3d.direct import ShowInterval
 from panda3d.physics import *
 from panda3d.otp import *
 import random
