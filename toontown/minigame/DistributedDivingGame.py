@@ -230,7 +230,7 @@ class DistributedDivingGame(DistributedMinigame):
         camera.setZ(36)
         camera.setH(0)
         camera.setX(0)
-        base.camLens.setFov(45)
+        base.camLens.setMinFov(45/(4/3))
         camera.setY(-54)
         base.camLens.setFar(1500)
         self.introMovie = self.getIntroMovie()
@@ -271,13 +271,13 @@ class DistributedDivingGame(DistributedMinigame):
         self.boatTilt = Sequence(LerpFunc(self.boatModel.setR, duration=5, fromData=5, toData=-5, blendType='easeInOut', name='tilt'), LerpFunc(self.boatModel.setR, duration=5, fromData=-5, toData=5, blendType='easeInOut', name='tilt'))
         self.boatTilt.loop()
         self.mapScaleRatio = 40
-        self.mapModel.reparentTo(aspect2d)
+        self.mapModel.reparentTo(base.a2dTopRight)
         self.mapModel.setScale(1.0 / self.mapScaleRatio)
         self.mapModel.setTransparency(1)
-        self.mapModel.setPos(1.15, -0.5, -0.125)
+        self.mapModel.setPos(-0.22,-0.5,-0.130)
         self.mapModel.setColorScale(1, 1, 1, 0.7)
         self.mapModel.hide()
-        if None != self.sndAmbience:
+        if self.sndAmbience is not None:
             self.sndAmbience.setLoop(True)
             self.sndAmbience.play()
             self.sndAmbience.setVolume(0.01)
@@ -294,7 +294,7 @@ class DistributedDivingGame(DistributedMinigame):
             self.toonSDs[avId].exit()
 
         base.camLens.setFar(ToontownGlobals.DefaultCameraFar)
-        base.camLens.setFov(ToontownGlobals.DefaultCameraFov)
+        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4/3))
         base.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
         self.arrowKeys.destroy()
         del self.arrowKeys
@@ -528,7 +528,8 @@ class DistributedDivingGame(DistributedMinigame):
         DistributedMinigame.setGameStart(self, timestamp)
         self.notify.debug('setGameStart')
         self.treasurePanel = TreasureScorePanel.TreasureScorePanel()
-        self.treasurePanel.setPos(-1.19, 0, 0.75)
+        self.treasurePanel.setPos(0.15,0, -0.27)
+        self.treasurePanel.reparentTo(base.a2dTopLeft)
         self.treasurePanel.makeTransparent(0.7)
         self.introMovie.finish()
         self.gameFSM.request('swim')

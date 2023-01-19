@@ -130,7 +130,8 @@ class TownBattle(StateData.StateData):
          TownBattleToonPanel.TownBattleToonPanel(2),
          TownBattleToonPanel.TownBattleToonPanel(3))
         self.timer = ToontownTimer.ToontownTimer()
-        self.timer.setPos(1.182, 0, 0.842)
+        self.timer.reparentTo(base.a2dTopRight)
+        self.timer.setPos(-0.15, 0, -0.16)
         self.timer.setScale(0.4)
         self.timer.hide()
         return

@@ -94,7 +94,7 @@ class MakeAToon(StateData.StateData):
         if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: MAKEATOON: Starting Make A Toon')
         base.cr.centralLogger.writeClientEvent('MAT - startingMakeAToon')
-        base.camLens.setFov(ToontownGlobals.MakeAToonCameraFov)
+        base.camLens.setMinFov(ToontownGlobals.MakeAToonCameraFov/ (4/3))
         base.playMusic(self.music, looping=1, volume=self.musicVolume)
         camera.setPosHpr(-5.7, -12.3501, 2.15, -24.8499, 2.73, 0)
         if self.warp:
@@ -116,7 +116,7 @@ class MakeAToon(StateData.StateData):
             self.fsm.request('GenderShop')
 
     def exit(self):
-        base.camLens.setFov(ToontownGlobals.DefaultCameraFov)
+        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4/3))
         self.guiTopBar.hide()
         self.guiBottomBar.hide()
         self.music.stop()

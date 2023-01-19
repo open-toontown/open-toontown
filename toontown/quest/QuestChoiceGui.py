@@ -10,7 +10,10 @@ class QuestChoiceGui(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('QuestChoiceGui')
 
     def __init__(self):
-        DirectFrame.__init__(self, relief=None, geom=DGG.getDefaultDialogGeom(), geom_color=Vec4(0.8, 0.6, 0.4, 1), geom_scale=(1.85, 1, 0.9), geom_hpr=(0, 0, -90), pos=(-0.85, 0, 0))
+        DirectFrame.__init__(self, relief=None, parent = base.a2dLeftCenter, 
+                             geom=DGG.getDefaultDialogGeom(),
+                             geom_color=Vec4(0.8, 0.6, 0.4, 1), geom_scale=(1.85, 1, 0.9),
+                            geom_hpr=(0, 0, -90), pos = (0.5,0,0),)
         self.initialiseoptions(QuestChoiceGui)
         self.questChoicePosters = []
         guiButton = loader.loadModel('phase_3/models/gui/quit_button')

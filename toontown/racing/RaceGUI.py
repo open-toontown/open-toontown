@@ -111,8 +111,8 @@ class RaceGUI:
         return
 
     def initRaceMode(self):
-        self.mapScene = self.raceModeRoot.attachNewNode('MapScene')
-        self.mapScene.setPos(1.1, 0, 0.75)
+        self.mapScene = base.a2dTopRight.attachNewNode('MapScene')
+        self.mapScene.setPos(-0.2, 0, -0.2)
         self.mapScene.setScale(0.25, 0.001, 0.25)
         maxT = self.race.curve.getMaxT()
         pt = Vec3(0, 0, 0)
@@ -132,19 +132,25 @@ class RaceGUI:
         self.faceStartPos = Vec3(-0.8, 0, 0.93)
         self.faceEndPos = Vec3(0.8, 0, 0.93)
         self.placeLabelNum = DirectLabel(relief=None, pos=TTLocalizer.RGUIplaceLabelNumPos, text='1', text_scale=0.35, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont())
-        self.placeLabelNum.reparentTo(self.raceModeRoot)
-        self.directObjList.append(self.placeLabelNum)
+        self.placeLabelNum.reparentTo(base.a2dBottomLeft)
+        self.directObjList.append(base.a2dBottomLeft)
         self.placeLabelStr = DirectLabel(relief=None, pos=TTLocalizer.RGUIplaceLabelStrPos, text=TTLocalizer.KartRace_FirstSuffix, text_scale=0.1, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont())
-        self.placeLabelStr.reparentTo(self.raceModeRoot)
+        self.placeLabelStr.reparentTo(base.a2dBottomLeft)
         self.directObjList.append(self.placeLabelStr)
-        self.lapLabel = DirectLabel(relief=None, pos=(1.1, 0, 0.45), text='1/' + str(self.race.lapCount), text_scale=0.1, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont())
-        self.lapLabel.reparentTo(self.raceModeRoot)
+        self.lapLabel = DirectLabel(relief=None, pos = (-0.22, 0, -0.5), 
+                                    text='1/' + str(self.race.lapCount),
+                                    text_scale=0.1, text_fg=(0.95, 0.95, 0, 1),
+                                    text_font=ToontownGlobals.getSignFont())
+        self.lapLabel.reparentTo(base.a2dTopRight)
         self.directObjList.append(self.lapLabel)
         self.photoFinishLabel = DirectLabel(relief=None, pos=(0, 0, -0.1), text=TTLocalizer.KartRace_PhotoFinish, text_scale=TTLocalizer.RGUIphotoFinish, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont())
         self.photoFinishLabel.hide()
         self.directObjList.append(self.photoFinishLabel)
-        self.wrongWayLabel = DirectLabel(relief=None, pos=(1.1, 0, 0.85), text=TTLocalizer.KartRace_WrongWay, text_scale=0.1, text_fg=(0.95, 0, 0, 1), text_font=ToontownGlobals.getSignFont())
-        self.wrongWayLabel.reparentTo(self.raceModeRoot)
+        self.wrongWayLabel = DirectLabel(relief=None, pos = (-0.22,0,-0.2),
+                                         text=TTLocalizer.KartRace_WrongWay, 
+                                         text_scale=0.1, text_fg=(0.95, 0, 0, 1),
+                                         text_font=ToontownGlobals.getSignFont())
+        self.wrongWayLabel.reparentTo(base.a2dTopRight)
         self.directObjList.append(self.wrongWayLabel)
         self.wrongWayLabel.setColorScale(Vec4(1, 1, 1, 0))
         self.wrongWaySeq = Sequence(self.wrongWayLabel.colorScaleInterval(0.25, colorScale=Vec4(1, 1, 1, 1), startColorScale=Vec4(1, 1, 1, 0)), self.wrongWayLabel.colorScaleInterval(0.25, colorScale=Vec4(1, 1, 1, 0), startColorScale=Vec4(1, 1, 1, 1)))
@@ -166,7 +172,10 @@ class RaceGUI:
         self.cardMaker.setName('GagIndicator')
         self.cardMaker.setFrame(-0.5, 0.5, -0.5, 0.5)
         self.cardMaker.setColor(1, 1, 1, 1)
-        self.gagPanel = DirectFrame(parent=self.raceModeRoot, relief=None, image=loader.loadModel('phase_6/models/karting/gag_panel'), image_scale=0.25, pos=(-1.13, 0, -0.5))
+        self.gagPanel = DirectFrame(parent=base.a2dBottomLeft, relief=None, 
+                                    image=loader.loadModel('phase_6/models/karting/gag_panel'),
+                                    image_scale=0.25, 
+                                    pos = (0.2,0,0.6))            
         self.directObjList.append(self.gagPanel)
         self.gag = self.gagPanel.attachNewNode('gag')
         self.gag.setScale(0.2)

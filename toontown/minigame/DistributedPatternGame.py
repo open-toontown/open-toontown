@@ -203,7 +203,7 @@ class DistributedPatternGame(DistributedMinigame):
         self.lt = base.localAvatar
         camera.reparentTo(render)
         camera.setPosHpr(0.0, -14.59, 10.56, 0.0, -16.39, 0.0)
-        base.camLens.setFov(24.66)
+        base.camLens.setMinFov(24.66/(4/3))
         NametagGlobals.setGlobalNametagScale(0.6)
         self.arrowKeys = ArrowKeys.ArrowKeys()
         self.room.reparentTo(render)
@@ -276,7 +276,7 @@ class DistributedPatternGame(DistributedMinigame):
         self.notify.debug('offstage')
         DistributedMinigame.offstage(self)
         self.music.stop()
-        base.camLens.setFov(ToontownGlobals.DefaultCameraFov)
+        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4/3))
         NametagGlobals.setGlobalNametagScale(1.0)
         self.arrowKeys.destroy()
         del self.arrowKeys

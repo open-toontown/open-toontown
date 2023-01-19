@@ -39,9 +39,16 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         self.apiChanged = 0
         screenSizes = [(640, 480),
          (800, 600),
+         (1280, 720),
          (1024, 768),
+         (1440, 900),
          (1280, 1024),
-         (1600, 1200)]
+         (1920, 1080),
+         (1600, 1200),
+         (2560, 1440),
+         (4096, 2160)
+         
+         ]
         displayInfo = base.pipe.getDisplayInformation()
         for i in range(displayInfo.getTotalDisplayModes()):
             width = displayInfo.getDisplayModeWidth(i)

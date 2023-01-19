@@ -92,15 +92,25 @@ def getCloseInterval(distObj, leftDoor, rightDoor, closeSfx, finalCloseSfx, type
 
 def getRideElevatorInterval(type = ELEVATOR_NORMAL):
     if type == ELEVATOR_VP or type == ELEVATOR_CFO or type == ELEVATOR_CJ:
+        cameraValue = 65
         yValue = 30
         zMin = 7.8
         zMid = 8
         zMax = 8.2
     elif type == ELEVATOR_BB:
+        cameraValue = 65
         yValue = 21
         zMin = 7
         zMid = 7.2
         zMax = 7.4
+    elif (type == ELEVATOR_CFO):
+         cameraValue = 59   
+         yValue = 30
+         zMin = 7.8
+         zMid = 8
+         zMax = 8.2    
+    else:
+         cameraValue = 55
     if type in (ELEVATOR_VP,
      ELEVATOR_CFO,
      ELEVATOR_CJ,
@@ -108,4 +118,5 @@ def getRideElevatorInterval(type = ELEVATOR_NORMAL):
         ival = Sequence(Wait(0.5), LerpPosInterval(camera, 0.5, Point3(0, yValue, zMin), startPos=Point3(0, yValue, zMid), blendType='easeOut'), LerpPosInterval(camera, 0.5, Point3(0, yValue, zMid), startPos=Point3(0, yValue, zMin)), Wait(1.0), LerpPosInterval(camera, 0.5, Point3(0, yValue, zMax), startPos=Point3(0, yValue, zMid), blendType='easeOut'), LerpPosInterval(camera, 1.0, Point3(0, yValue, zMid), startPos=Point3(0, yValue, zMax)))
     else:
         ival = Sequence(Wait(0.5), LerpPosInterval(camera, 0.5, Point3(0, 14, 3.8), startPos=Point3(0, 14, 4), blendType='easeOut'), LerpPosInterval(camera, 0.5, Point3(0, 14, 4), startPos=Point3(0, 14, 3.8)), Wait(1.0), LerpPosInterval(camera, 0.5, Point3(0, 14, 4.2), startPos=Point3(0, 14, 4), blendType='easeOut'), LerpPosInterval(camera, 1.0, Point3(0, 14, 4), startPos=Point3(0, 14, 4.2)))
+    base.camLens.setFov(cameraValue)
     return ival

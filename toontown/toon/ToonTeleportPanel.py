@@ -41,7 +41,10 @@ class ToonTeleportPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonTeleportPanel')
 
     def __init__(self, avId, avName, avDisableName):
-        DirectFrame.__init__(self, pos=(0.3, 0.1, 0.65), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.0, 1.0, 0.6), text='', text_wordwrap=13.5, text_scale=0.06, text_pos=(0.0, 0.18))
+        DirectFrame.__init__(self, pos = (-1, 0.1, -0.4), image_color=ToontownGlobals.GlobalDialogColor, 
+                             parent = base.a2dTopRight,
+                             image_scale=(1.0, 1.0, 0.6), text='', text_wordwrap=13.5, 
+                             text_scale=0.06, text_pos=(0.0, 0.18))
         messenger.send('releaseDirector')
         self['image'] = DGG.getDefaultDialogGeom()
         self.avId = avId

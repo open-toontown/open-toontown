@@ -43,7 +43,7 @@ def unloadAvatarDetail():
 class ToonAvatarDetailPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonAvatarDetailPanel')
 
-    def __init__(self, avId, avName, playerId = None, parent = aspect2dp, **kw):
+    def __init__(self, avId, avName, playerId = None, parent = base.a2dTopRight, **kw):
         print('ToonAvatarDetailPanel %s' % playerId)
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
         gui = loader.loadModel('phase_3.5/models/gui/avatar_panel_gui')
@@ -54,7 +54,7 @@ class ToonAvatarDetailPanel(DirectFrame):
         self.playerInfo = None
         if self.playerId:
             self.playerInfo = base.cr.playerFriendsManager.playerId2Info.get(playerId)
-        optiondefs = (('pos', (0.525, 0.0, 0.525), None),
+        optiondefs = (('pos', (-0.8, 0.0, -0.5), None),
          ('scale', 0.5, None),
          ('relief', None, None),
          ('image', detailPanel, None),
