@@ -1112,7 +1112,7 @@ class DistributedMazeGame(DistributedMinigame):
         iCamParent.setH(180)
         camera.reparentTo(iCamParent)
         toonHeight = base.localAvatar.getHeight()
-        camera.setPos(0, -15, toonHeight * 3)
+        camera.setPos(0, -8, toonHeight * 2)
         camera.lookAt(0, 0, toonHeight / 2.0)
         iCamParent.wrtReparentTo(origCamParent)
         waitDur = 5.0
