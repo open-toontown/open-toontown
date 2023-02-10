@@ -716,7 +716,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
          throwerId))
         if flyBallCode == ToontownGlobals.PieCodeBossCog and self.avId == localAvatar.doId and self.lastHitSequenceNum != self.__flyBallSequenceNum:
             self.lastHitSequenceNum = self.__flyBallSequenceNum
-            self.boss.d_ballHitBoss(1)
+            self.boss.d_ballHitBoss(2)
         elif flyBallCode == ToontownGlobals.PieCodeToon and self.avId == localAvatar.doId and self.lastHitSequenceNum != self.__flyBallSequenceNum:
             self.lastHitSequenceNum = self.__flyBallSequenceNum
             avatarDoId = entry.getIntoNodePath().getNetTag('avatarDoId')
