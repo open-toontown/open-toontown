@@ -1,6 +1,5 @@
-from pandac.PandaModules import NodePath, Point3, PlaneNode, TextNode
+from panda3d.core import NodePath, Point3, Plane, PlaneNode, TextNode
 from direct.interval.IntervalGlobal import *
-from direct.showbase.ShowBase import Plane
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.RandomNumGen import RandomNumGen
 from direct.interval.MetaInterval import Sequence, Parallel
