@@ -1,11 +1,18 @@
-from direct.interval.IntervalGlobal import *
-from direct.task.Task import Task
+from panda3d.core import Point3, Vec3
+
+from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.interval.IntervalGlobal import LerpHprInterval
+from direct.showbase.PythonUtil import fitSrcAngle2Dest
+from direct.task.TaskManagerGlobal import taskMgr
+
 from otp.otpbase import OTPGlobals
-from toontown.toonbase.ToonBaseGlobal import *
-from . import ArrowKeys
+
+from toontown.minigame.ArrowKeys import ArrowKeys
+from toontown.toonbase.ToonBaseGlobal import base
+
 
 class OrthoDrive:
-    notify = DirectNotifyGlobal.directNotify.newCategory('OrthoDrive')
+    notify = directNotify.newCategory('OrthoDrive')
     TASK_NAME = 'OrthoDriveTask'
     SET_ATREST_HEADING_TASK = 'setAtRestHeadingTask'
 
@@ -17,7 +24,7 @@ class OrthoDrive:
         self.priority = priority
         self.setHeading = setHeading
         self.upHeading = upHeading
-        self.arrowKeys = ArrowKeys.ArrowKeys()
+        self.arrowKeys = ArrowKeys()
         self.lt = base.localAvatar
         self.instantTurn = instantTurn
 
@@ -85,7 +92,7 @@ class OrthoDrive:
         if self.setHeading:
             self.__handleHeading(xVel, yVel)
         toonPos = self.lt.getPos()
-        dt = globalClock.getDt()
+        dt = base.clock.getDt()
         posOffset = vel * dt
         posOffset += toonPos - self.lastPos
         toonPos = self.lastPos
@@ -100,7 +107,7 @@ class OrthoDrive:
             toonPos = toonPos + posOffset
         self.lt.setPos(toonPos)
         self.lastPos = toonPos
-        return Task.cont
+        return task.cont
 
     def __handleHeading(self, xVel, yVel):
         def getHeading(xVel, yVel):
@@ -126,7 +133,7 @@ class OrthoDrive:
                 if ((self.lastXVel and self.lastYVel) and not (xVel and yVel)):
                     def setAtRestHeading(task, self = self, angle = curHeading):
                         self.atRestHeading = angle
-                        return Task.done
+                        return task.done
 
                     taskMgr.doMethodLater(0.05, setAtRestHeading, OrthoDrive.SET_ATREST_HEADING_TASK)
                 else:

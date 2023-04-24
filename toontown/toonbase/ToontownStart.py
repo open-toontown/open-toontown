@@ -6,7 +6,20 @@ class game:
 
 
 builtins.game = game()
-from panda3d.core import *
+from panda3d.core import (
+    ConfigVariableBool,
+    ConfigVariableDouble,
+    ConfigVariableString,
+    Filename,
+    HTTPClient,
+    Loader,
+    loadPrcFile,
+    TextNode,
+    Thread,
+    VBase3,
+    Vec4
+)
+
 import time
 import sys
 try:
@@ -38,8 +51,7 @@ print('ToontownStart: setting default font')
 from . import ToontownGlobals
 DirectGuiGlobals.setDefaultFontFunc(ToontownGlobals.getInterfaceFont)
 launcher.setPandaErrorCode(7)
-from . import ToonBase
-ToonBase.ToonBase()
+from .ToonBaseGlobal import base
 if base.win == None:
     print('Unable to open window; aborting.')
     sys.exit()
@@ -70,21 +82,19 @@ if base.musicManagerIsValid:
     DirectGuiGlobals.setDefaultClickSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 else:
     music = None
-from direct.gui.DirectGui import *
+from direct.gui.DirectGui import OnscreenText
 serverVersion = ConfigVariableString('server-version', 'no_version_set').value
 print('ToontownStart: serverVersion: ', serverVersion)
 version = OnscreenText(serverVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
 loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, TTLocalizer.TIP_NONE)
-from .ToonBaseGlobal import *
-from direct.showbase.MessengerGlobal import *
-from toontown.distributed import ToontownClientRepository
-cr = ToontownClientRepository.ToontownClientRepository(serverVersion, launcher)
+from toontown.distributed.ToontownClientRepository import ToontownClientRepository
+cr = ToontownClientRepository(serverVersion, launcher)
 cr.music = music
 del music
 base.initNametagGlobals()
 base.cr = cr
 loader.endBulkLoad('init')
-from otp.distributed.OtpDoGlobals import *
+from otp.distributed.OtpDoGlobals import OTP_DO_ID_FRIEND_MANAGER
 cr.generateGlobalObject(OTP_DO_ID_FRIEND_MANAGER, 'FriendManager')
 if not launcher.isDummy():
     base.startShow(cr, launcher.getGameServer())
@@ -97,7 +107,6 @@ del backgroundNode
 del tempLoader
 version.cleanup()
 del version
-base.loader = base.loader
 builtins.loader = base.loader
 autoRun = ConfigVariableBool('toontown-auto-run', 1)
 if autoRun and launcher.isDummy() and (not Thread.isTrueThreads() or __name__ == '__main__'):

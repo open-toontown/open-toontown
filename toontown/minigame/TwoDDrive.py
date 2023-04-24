@@ -1,11 +1,19 @@
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import Point3, Vec3
+
+from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.interval.IntervalGlobal import LerpHprInterval
+from direct.showbase.MessengerGlobal import messenger
+from direct.showbase.PythonUtil import fitSrcAngle2Dest
+from direct.task.TaskManagerGlobal import taskMgr
+
 from otp.otpbase import OTPGlobals
-from direct.interval.IntervalGlobal import *
-from . import ArrowKeys
-from direct.task.Task import Task
+
+from toontown.minigame.ArrowKeys import ArrowKeys
+from toontown.toonbase.ToonBaseGlobal import base
+
 
 class TwoDDrive:
-    notify = DirectNotifyGlobal.directNotify.newCategory('TwoDDrive')
+    notify = directNotify.newCategory('TwoDDrive')
     TASK_NAME = 'TwoDDriveTask'
     SET_ATREST_HEADING_TASK = 'setAtRestHeadingTask'
 
@@ -17,7 +25,7 @@ class TwoDDrive:
         self.priority = priority
         self.setHeading = setHeading
         self.upHeading = upHeading
-        self.arrowKeys = ArrowKeys.ArrowKeys()
+        self.arrowKeys = ArrowKeys()
         self.wasUpReleased = True
         self.lt = base.localAvatar
         base.localAvatar.useTwoDControls()
@@ -78,11 +86,11 @@ class TwoDDrive:
             elif self.arrowKeys.upPressed() and self.wasUpReleased:
                 self.wasUpReleased = False
                 if not self.game.isHeadInFloor:
-                    if localAvatar.controlManager.currentControls == localAvatar.controlManager.get('twoD'):
+                    if base.localAvatar.controlManager.currentControls == base.localAvatar.controlManager.get('twoD'):
                         base.localAvatar.controlManager.currentControls.jumpPressed()
         elif self.arrowKeys.upPressed():
             if not self.game.isHeadInFloor:
-                if localAvatar.controlManager.currentControls == localAvatar.controlManager.get('twoD'):
+                if base.localAvatar.controlManager.currentControls == base.localAvatar.controlManager.get('twoD'):
                     base.localAvatar.controlManager.currentControls.jumpPressed()
         if self.arrowKeys.leftPressed():
             xVel -= 1
@@ -110,7 +118,7 @@ class TwoDDrive:
         if self.setHeading:
             self.__handleHeading(xVel, yVel)
         toonPos = self.lt.getPos()
-        dt = globalClock.getDt()
+        dt = base.clock.getDt()
         posOffset = vel * dt
         if self.customCollisionCallback:
             toonPos = self.customCollisionCallback(toonPos, toonPos + posOffset)
@@ -118,7 +126,7 @@ class TwoDDrive:
             toonPos += posOffset
         self.lt.setPos(toonPos)
         self.lastPos = toonPos
-        return Task.cont
+        return task.cont
 
     def __handleHeading(self, xVel, yVel):
         def getHeading(xVel, yVel):
@@ -144,7 +152,7 @@ class TwoDDrive:
                 if ((self.lastXVel and self.lastYVel) and not (xVel and yVel)):
                     def setAtRestHeading(task, self = self, angle = curHeading):
                         self.atRestHeading = angle
-                        return Task.done
+                        return task.done
 
                     taskMgr.doMethodLater(0.05, setAtRestHeading, TwoDDrive.SET_ATREST_HEADING_TASK)
                 else:
