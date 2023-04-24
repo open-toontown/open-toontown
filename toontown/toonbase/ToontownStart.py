@@ -44,6 +44,7 @@ if launcher.isDummy():
     http = HTTPClient()
 else:
     http = launcher.http
+
 tempLoader = Loader()
 backgroundNode = tempLoader.loadSync(Filename('phase_3/models/gui/loading-background'))
 from direct.gui import DirectGuiGlobals
@@ -55,6 +56,7 @@ from .ToonBaseGlobal import base
 if base.win == None:
     print('Unable to open window; aborting.')
     sys.exit()
+
 launcher.setPandaErrorCode(0)
 launcher.setPandaWindowOpen()
 ConfigVariableDouble('decompressor-step-time').setValue(0.01)
@@ -77,11 +79,13 @@ if base.musicManagerIsValid:
         music.setLoop(1)
         music.setVolume(0.9)
         music.play()
+
     print('ToontownStart: Loading default gui sounds')
     DirectGuiGlobals.setDefaultRolloverSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
     DirectGuiGlobals.setDefaultClickSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 else:
     music = None
+
 from direct.gui.DirectGui import OnscreenText
 serverVersion = ConfigVariableString('server-version', 'no_version_set').value
 print('ToontownStart: serverVersion: ', serverVersion)
@@ -100,6 +104,7 @@ if not launcher.isDummy():
     base.startShow(cr, launcher.getGameServer())
 else:
     base.startShow(cr)
+
 backgroundNodePath.reparentTo(hidden)
 backgroundNodePath.removeNode()
 del backgroundNodePath

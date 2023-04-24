@@ -38,18 +38,17 @@ class OrthoDrive:
         self.__placeToonHOG(self.lt.getPos())
         taskMgr.add(self.__update, OrthoDrive.TASK_NAME, priority=self.priority)
         self.lastAction = None
-        return
 
     def __placeToonHOG(self, pos, h = None):
         if h == None:
             h = self.lt.getH()
+
         self.lt.setPos(pos)
         self.lt.setH(h)
         self.lastPos = pos
         self.atRestHeading = h
         self.lastXVel = 0
         self.lastYVel = 0
-        return
 
     def stop(self):
         self.notify.debug('stop')
@@ -59,7 +58,9 @@ class OrthoDrive:
         if hasattr(self, 'turnLocalToonIval'):
             if self.turnLocalToonIval.isPlaying():
                 self.turnLocalToonIval.pause()
+
             del self.turnLocalToonIval
+
         base.localAvatar.setSpeed(0, 0)
 
     def __update(self, task):
@@ -68,12 +69,16 @@ class OrthoDrive:
         yVel = 0
         if self.arrowKeys.upPressed():
             yVel += 1
+
         if self.arrowKeys.downPressed():
             yVel -= 1
+
         if self.arrowKeys.leftPressed():
             xVel -= 1
+
         if self.arrowKeys.rightPressed():
             xVel += 1
+
         vel.setX(xVel)
         vel.setY(yVel)
         vel.normalize()
@@ -89,8 +94,10 @@ class OrthoDrive:
                     self.lt.runSound()
                 else:
                     self.lt.stopSound()
+
         if self.setHeading:
             self.__handleHeading(xVel, yVel)
+
         toonPos = self.lt.getPos()
         dt = base.clock.getDt()
         posOffset = vel * dt
@@ -101,10 +108,12 @@ class OrthoDrive:
             if posOffsetLen > self.maxFrameMove:
                 posOffset *= self.maxFrameMove
                 posOffset /= posOffsetLen
+
         if self.customCollisionCallback:
             toonPos = self.customCollisionCallback(toonPos, toonPos + posOffset)
         else:
             toonPos = toonPos + posOffset
+
         self.lt.setPos(toonPos)
         self.lastPos = toonPos
         return task.cont
@@ -138,6 +147,8 @@ class OrthoDrive:
                     taskMgr.doMethodLater(0.05, setAtRestHeading, OrthoDrive.SET_ATREST_HEADING_TASK)
                 else:
                     self.atRestHeading = curHeading
+
                 orientToon(curHeading)
+
         self.lastXVel = xVel
         self.lastYVel = yVel

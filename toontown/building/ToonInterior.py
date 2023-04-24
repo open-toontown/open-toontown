@@ -1,31 +1,33 @@
-from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
-from direct.directnotify import DirectNotifyGlobal
-from toontown.hood import Place
-from toontown.hood import ZoneUtil
-from direct.showbase import DirectObject
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from direct.task import Task
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toon import NPCForceAcknowledge
-from toontown.toon import HealthForceAcknowledge
+from panda3d.core import ModelPool, TexturePool
+from panda3d.otp import NametagGlobals
 
-class ToonInterior(Place.Place):
-    notify = DirectNotifyGlobal.directNotify.newCategory('ToonInterior')
+from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.fsm.ClassicFSM import ClassicFSM
+from direct.fsm.State import State
+from direct.showbase.MessengerGlobal import messenger
+
+from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+
+from toontown.hood import ZoneUtil
+from toontown.hood.Place import Place
+from toontown.toon.HealthForceAcknowledge import HealthForceAcknowledge
+from toontown.toon.NPCForceAcknowledge import NPCForceAcknowledge
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase.ToonBaseGlobal import base
+
+
+class ToonInterior(Place):
+    notify = directNotify.newCategory('ToonInterior')
 
     def __init__(self, loader, parentFSMState, doneEvent):
-        Place.Place.__init__(self, loader, doneEvent)
+        Place.__init__(self, loader, doneEvent)
         self.dnaFile = 'phase_7/models/modules/toon_interior'
         self.isInterior = 1
         self.tfaDoneEvent = 'tfaDoneEvent'
         self.hfaDoneEvent = 'hfaDoneEvent'
         self.npcfaDoneEvent = 'npcfaDoneEvent'
-        self.fsm = ClassicFSM.ClassicFSM('ToonInterior', [State.State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn', 'tutorial']),
-         State.State('walk', self.enterWalk, self.exitWalk, ['sit',
+        self.fsm = ClassicFSM('ToonInterior', [State('start', self.enterStart, self.exitStart, ['doorIn', 'teleportIn', 'tutorial']),
+         State('walk', self.enterWalk, self.exitWalk, ['sit',
           'stickerBook',
           'doorOut',
           'DFA',
@@ -36,8 +38,8 @@ class ToonInterior(Place.Place):
           'phone',
           'stopped',
           'pet']),
-         State.State('sit', self.enterSit, self.exitSit, ['walk']),
-         State.State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
+         State('sit', self.enterSit, self.exitSit, ['walk']),
+         State('stickerBook', self.enterStickerBook, self.exitStickerBook, ['walk',
           'DFA',
           'trialerFA',
           'sit',
@@ -48,37 +50,37 @@ class ToonInterior(Place.Place):
           'phone',
           'stopped',
           'pet']),
-         State.State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
-         State.State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
-         State.State('DFA', self.enterDFA, self.exitDFA, ['DFAReject',
+         State('trialerFA', self.enterTrialerFA, self.exitTrialerFA, ['trialerFAReject', 'DFA']),
+         State('trialerFAReject', self.enterTrialerFAReject, self.exitTrialerFAReject, ['walk']),
+         State('DFA', self.enterDFA, self.exitDFA, ['DFAReject',
           'HFA',
           'NPCFA',
           'teleportOut',
           'doorOut']),
-         State.State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
-         State.State('NPCFA', self.enterNPCFA, self.exitNPCFA, ['NPCFAReject', 'HFA', 'teleportOut']),
-         State.State('NPCFAReject', self.enterNPCFAReject, self.exitNPCFAReject, ['walk']),
-         State.State('HFA', self.enterHFA, self.exitHFA, ['HFAReject', 'teleportOut', 'tunnelOut']),
-         State.State('HFAReject', self.enterHFAReject, self.exitHFAReject, ['walk']),
-         State.State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
-         State.State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk', 'stopped']),
-         State.State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
-         State.State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
-         State.State('quest', self.enterQuest, self.exitQuest, ['walk', 'doorOut']),
-         State.State('tutorial', self.enterTutorial, self.exitTutorial, ['walk', 'quest']),
-         State.State('purchase', self.enterPurchase, self.exitPurchase, ['walk', 'doorOut']),
-         State.State('pet', self.enterPet, self.exitPet, ['walk']),
-         State.State('phone', self.enterPhone, self.exitPhone, ['walk', 'doorOut']),
-         State.State('stopped', self.enterStopped, self.exitStopped, ['walk', 'doorOut']),
-         State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
+         State('DFAReject', self.enterDFAReject, self.exitDFAReject, ['walk']),
+         State('NPCFA', self.enterNPCFA, self.exitNPCFA, ['NPCFAReject', 'HFA', 'teleportOut']),
+         State('NPCFAReject', self.enterNPCFAReject, self.exitNPCFAReject, ['walk']),
+         State('HFA', self.enterHFA, self.exitHFA, ['HFAReject', 'teleportOut', 'tunnelOut']),
+         State('HFAReject', self.enterHFAReject, self.exitHFAReject, ['walk']),
+         State('doorIn', self.enterDoorIn, self.exitDoorIn, ['walk']),
+         State('doorOut', self.enterDoorOut, self.exitDoorOut, ['walk', 'stopped']),
+         State('teleportIn', self.enterTeleportIn, self.exitTeleportIn, ['walk']),
+         State('teleportOut', self.enterTeleportOut, self.exitTeleportOut, ['teleportIn']),
+         State('quest', self.enterQuest, self.exitQuest, ['walk', 'doorOut']),
+         State('tutorial', self.enterTutorial, self.exitTutorial, ['walk', 'quest']),
+         State('purchase', self.enterPurchase, self.exitPurchase, ['walk', 'doorOut']),
+         State('pet', self.enterPet, self.exitPet, ['walk']),
+         State('phone', self.enterPhone, self.exitPhone, ['walk', 'doorOut']),
+         State('stopped', self.enterStopped, self.exitStopped, ['walk', 'doorOut']),
+         State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
         self.parentFSMState = parentFSMState
 
     def load(self):
-        Place.Place.load(self)
+        Place.load(self)
         self.parentFSMState.addChild(self.fsm)
 
     def unload(self):
-        Place.Place.unload(self)
+        Place.unload(self)
         self.parentFSMState.removeChild(self.fsm)
         del self.parentFSMState
         del self.fsm
@@ -111,7 +113,7 @@ class ToonInterior(Place.Place):
     def enterTutorial(self, requestStatus):
         self.fsm.request('walk')
         base.localAvatar.b_setParent(ToontownGlobals.SPRender)
-        globalClock.tick()
+        base.clock.tick()
         base.transitions.irisIn()
         messenger.send('enterTutorialInterior')
 
@@ -134,7 +136,7 @@ class ToonInterior(Place.Place):
 
     def enterNPCFA(self, requestStatus):
         self.acceptOnce(self.npcfaDoneEvent, self.enterNPCFACallback, [requestStatus])
-        self.npcfa = NPCForceAcknowledge.NPCForceAcknowledge(self.npcfaDoneEvent)
+        self.npcfa = NPCForceAcknowledge(self.npcfaDoneEvent)
         self.npcfa.enter()
 
     def exitNPCFA(self):
@@ -161,7 +163,7 @@ class ToonInterior(Place.Place):
 
     def enterHFA(self, requestStatus):
         self.acceptOnce(self.hfaDoneEvent, self.enterHFACallback, [requestStatus])
-        self.hfa = HealthForceAcknowledge.HealthForceAcknowledge(self.hfaDoneEvent)
+        self.hfa = HealthForceAcknowledge(self.hfaDoneEvent)
         self.hfa.enter(1)
 
     def exitHFA(self):
@@ -191,10 +193,11 @@ class ToonInterior(Place.Place):
             base.localAvatar.setPosHpr(0, 0, ToontownGlobals.FloorOffset, 45.0, 0.0, 0.0)
         else:
             base.localAvatar.setPosHpr(2.5, 11.5, ToontownGlobals.FloorOffset, 45.0, 0.0, 0.0)
-        Place.Place.enterTeleportIn(self, requestStatus)
+
+        Place.enterTeleportIn(self, requestStatus)
 
     def enterTeleportOut(self, requestStatus):
-        Place.Place.enterTeleportOut(self, requestStatus, self.__teleportOutDone)
+        Place.enterTeleportOut(self, requestStatus, self.__teleportOutDone)
 
     def __teleportOutDone(self, requestStatus):
         hoodId = requestStatus['hoodId']
@@ -207,7 +210,6 @@ class ToonInterior(Place.Place):
         else:
             self.doneStatus = requestStatus
             messenger.send(self.doneEvent)
-        return
 
     def goHomeFailed(self, task):
         self.notifyUserGoHomeFailed()
@@ -215,7 +217,7 @@ class ToonInterior(Place.Place):
         self.doneStatus['avId'] = -1
         self.doneStatus['zoneId'] = self.getZoneId()
         self.fsm.request('teleportIn', [self.doneStatus])
-        return Task.done
+        return task.done
 
     def exitTeleportOut(self):
-        Place.Place.exitTeleportOut(self)
+        Place.exitTeleportOut(self)
