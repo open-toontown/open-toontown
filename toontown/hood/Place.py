@@ -1,30 +1,36 @@
-from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import StateData
-from direct.showbase.PythonUtil import PriorityCallbacks
-from toontown.safezone import PublicWalk
-from toontown.launcher import DownloadForceAcknowledge
-from . import TrialerForceAcknowledge
-from . import ZoneUtil
-from toontown.friends import FriendsListManager
-from toontown.toonbase import ToontownGlobals
-from toontown.toon.Toon import teleportDebug
-from toontown.estate import HouseGlobals
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPLocalizer
-from otp.avatar import Emote
-from otp.avatar.Avatar import teleportNotify
-from direct.task import Task
-from . import QuietZoneState
-from toontown.distributed import ToontownDistrictStats
+from panda3d.core import NodePath
+from panda3d.otp import NametagGlobals
 
-class Place(StateData.StateData, FriendsListManager.FriendsListManager):
-    notify = DirectNotifyGlobal.directNotify.newCategory('Place')
+from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.fsm.StateData import StateData
+from direct.showbase.MessengerGlobal import messenger
+from direct.showbase.PythonUtil import Functor, PriorityCallbacks, SubframeCall, uniqueName
+from direct.task.TaskManagerGlobal import taskMgr
+
+from otp.avatar.Avatar import teleportNotify
+from otp.avatar.Emote import globalEmote
+from otp.otpbase import OTPLocalizer
+
+from toontown.distributed import ToontownDistrictStats
+from toontown.estate import HouseGlobals
+from toontown.friends.FriendsListManager import FriendsListManager
+from toontown.hood import ZoneUtil
+from toontown.hood.QuietZoneState import QuietZoneState
+from toontown.hood.TrialerForceAcknowledge import TrialerForceAcknowledge
+from toontown.launcher.DownloadForceAcknowledge import DownloadForceAcknowledge
+from toontown.safezone.PublicWalk import PublicWalk
+from toontown.toon.Toon import teleportDebug
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase.ToonBaseGlobal import base
+
+
+class Place(StateData, FriendsListManager):
+    notify = directNotify.newCategory('Place')
 
     def __init__(self, loader, doneEvent):
-        StateData.StateData.__init__(self, doneEvent)
-        FriendsListManager.FriendsListManager.__init__(self)
+        StateData.__init__(self, doneEvent)
+        FriendsListManager.__init__(self)
         self.loader = loader
         self.dfaDoneEvent = 'dfaDoneEvent'
         self.trialerFADoneEvent = 'trialerFADoneEvent'
@@ -35,26 +41,27 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self._leftQuietZoneSubframeCall = None
         self._setZoneCompleteLocalCallbacks = PriorityCallbacks()
         self._setZoneCompleteSubframeCall = None
-        return
 
     def load(self):
-        StateData.StateData.load(self)
-        FriendsListManager.FriendsListManager.load(self)
+        StateData.load(self)
+        FriendsListManager.load(self)
         self.walkDoneEvent = 'walkDone'
-        self.walkStateData = PublicWalk.PublicWalk(self.fsm, self.walkDoneEvent)
+        self.walkStateData = PublicWalk(self.fsm, self.walkDoneEvent)
         self.walkStateData.load()
         self._tempFSM = self.fsm
 
     def unload(self):
-        StateData.StateData.unload(self)
-        FriendsListManager.FriendsListManager.unload(self)
+        StateData.unload(self)
+        FriendsListManager.unload(self)
         self.notify.info('Unloading Place (%s). Fsm in %s' % (self.zoneId, self._tempFSM.getCurrentState().getName()))
         if self._leftQuietZoneSubframeCall:
             self._leftQuietZoneSubframeCall.cleanup()
             self._leftQuietZoneSubframeCall = None
+
         if self._setZoneCompleteSubframeCall:
             self._setZoneCompleteSubframeCall.cleanup()
             self._setZoneCompleteSubframeCall = None
+
         self._leftQuietZoneLocalCallbacks = None
         self._setZoneCompleteLocalCallbacks = None
         del self._tempFSM
@@ -66,12 +73,12 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         if self.trialerFA:
             self.trialerFA.exit()
             del self.trialerFA
-        return
 
     def _getQZState(self):
         if hasattr(base, 'cr') and hasattr(base.cr, 'playGame'):
             if hasattr(base.cr.playGame, 'quietZoneStateData') and base.cr.playGame.quietZoneStateData:
                 return base.cr.playGame.quietZoneStateData
+
         return None
 
     def addLeftQuietZoneCallback(self, callback, priority = None):
@@ -82,22 +89,22 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
             token = self._leftQuietZoneLocalCallbacks.add(callback, priority=priority)
             if not self._leftQuietZoneSubframeCall:
                 self._leftQuietZoneSubframeCall = SubframeCall(self._doLeftQuietZoneCallbacks, taskMgr.getCurrentTask().getPriority() - 1)
+
             return token
 
     def removeLeftQuietZoneCallback(self, token):
         if token is not None:
             if token in self._leftQuietZoneLocalCallbacks:
                 self._leftQuietZoneLocalCallbacks.remove(token)
+
             qzsd = self._getQZState()
             if qzsd:
                 qzsd.removeLeftQuietZoneCallback(token)
-        return
 
     def _doLeftQuietZoneCallbacks(self):
         self._leftQuietZoneLocalCallbacks()
         self._leftQuietZoneLocalCallbacks.clear()
         self._leftQuietZoneSubframeCall = None
-        return
 
     def addSetZoneCompleteCallback(self, callback, priority = None):
         qzsd = self._getQZState()
@@ -107,29 +114,30 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
             token = self._setZoneCompleteLocalCallbacks.add(callback, priority=priority)
             if not self._setZoneCompleteSubframeCall:
                 self._setZoneCompleteSubframeCall = SubframeCall(self._doSetZoneCompleteLocalCallbacks, taskMgr.getCurrentTask().getPriority() - 1)
+
             return token
 
     def removeSetZoneCompleteCallback(self, token):
         if token is not None:
             if any(token == x[1] for x in self._setZoneCompleteLocalCallbacks._callbacks):
                 self._setZoneCompleteLocalCallbacks.remove(token)
+
             qzsd = self._getQZState()
             if qzsd:
                 qzsd.removeSetZoneCompleteCallback(token)
-        return
 
     def _doSetZoneCompleteLocalCallbacks(self):
         self._setZoneCompleteSubframeCall = None
         localCallbacks = self._setZoneCompleteLocalCallbacks
         self._setZoneCompleteLocalCallbacks()
         localCallbacks.clear()
-        return
 
     def setState(self, state):
         if hasattr(self, 'fsm'):
             curState = self.fsm.getName()
             if state == 'pet' or curState == 'pet':
                 self.preserveFriendsList()
+
             self.fsm.request(state)
 
     def getState(self):
@@ -148,10 +156,10 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
     def handleTeleportQuery(self, fromAvatar, toAvatar):
         if base.config.GetBool('want-tptrack', False):
-            if toAvatar == localAvatar:
+            if toAvatar == base.localAvatar:
                 toAvatar.doTeleportResponse(fromAvatar, toAvatar, toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId(), fromAvatar.doId)
             else:
-                self.notify.warning('handleTeleportQuery toAvatar.doId != localAvatar.doId' % (toAvatar.doId, localAvatar.doId))
+                self.notify.warning('handleTeleportQuery toAvatar.doId != localAvatar.doId' % (toAvatar.doId, base.localAvatar.doId))
         else:
             fromAvatar.d_teleportResponse(toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId())
 
@@ -159,6 +167,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         if self.isPeriodTimerEffective():
             if base.cr.periodTimerExpired:
                 taskMgr.doMethodLater(5, self.redoPeriodTimer, 'redoPeriodTimer')
+
             self.accept('periodTimerExpired', self.periodTimerExpired)
 
     def disablePeriodTimer(self):
@@ -167,7 +176,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
     def redoPeriodTimer(self, task):
         messenger.send('periodTimerExpired')
-        return Task.done
+        return task.done
 
     def periodTimerExpired(self):
         self.fsm.request('final')
@@ -209,10 +218,12 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self.walkStateData.enter()
         if teleportIn == 0:
             self.walkStateData.fsm.request('walking')
+
         self.acceptOnce(self.walkDoneEvent, self.handleWalkDone)
         if base.cr.productName in ['DisneyOnline-US', 'ES'] and not base.cr.isPaid() and base.localAvatar.tutorialAck:
             base.localAvatar.chatMgr.obscure(0, 0)
             base.localAvatar.chatMgr.normalButton.show()
+
         self.accept('teleportQuery', self.handleTeleportQuery)
         base.localAvatar.setTeleportAvailable(1)
         base.localAvatar.questPage.acceptOnscreenHooks()
@@ -225,6 +236,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self.exitFLM()
         if base.cr.productName in ['DisneyOnline-US', 'ES'] and not base.cr.isPaid() and base.localAvatar.tutorialAck and not base.cr.whiteListChatEnabled:
             base.localAvatar.chatMgr.obscure(1, 0)
+
         self.disablePeriodTimer()
         messenger.send('wakeup')
         self.walkStateData.exit()
@@ -233,13 +245,13 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self.ignore('teleportQuery')
         if base.cr.playGame.hood != None:
             base.cr.playGame.hood.hideTitleText()
+
         base.localAvatar.questPage.hideQuestsOnscreen()
         base.localAvatar.questPage.ignoreOnscreenHooks()
         base.localAvatar.invPage.ignoreOnscreenHooks()
         base.localAvatar.invPage.hideInventoryOnscreen()
         base.localAvatar.questMap.hide()
         base.localAvatar.questMap.ignoreOnscreenHooks()
-        return
 
     def handleWalkDone(self, doneStatus):
         mode = doneStatus['mode']
@@ -308,10 +320,12 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         target = base.cr.doFind('DistributedTarget')
         if target:
             target.hideGui()
+
         self.accept('teleportQuery', self.handleTeleportQuery)
         base.localAvatar.setTeleportAvailable(1)
         if page:
             base.localAvatar.book.setPage(page)
+
         base.localAvatar.b_setAnimState('OpenBook', 1, self.enterStickerBookGUI)
         base.localAvatar.obscureMoveFurnitureButton(1)
 
@@ -328,11 +342,12 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def __handleFallingAsleep(self, task):
         base.localAvatar.book.exit()
         base.localAvatar.b_setAnimState('CloseBook', 1, callback=self.__handleFallingAsleepBookClose)
-        return Task.done
+        return task.done
 
     def __handleFallingAsleepBookClose(self):
         if hasattr(self, 'fsm'):
             self.fsm.request('walk')
+
         base.localAvatar.forceGotoSleep()
 
     def exitStickerBook(self):
@@ -377,10 +392,11 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
             base.localAvatar.b_setAnimState('CloseBook', 1, callback=self.startPartyNow, extraArgs=[firstStart, hostId])
 
     def handleBookCloseTeleport(self, hoodId, zoneId):
-        if localAvatar.hasActiveBoardingGroup():
+        if base.localAvatar.hasActiveBoardingGroup():
             rejectText = TTLocalizer.BoardingCannotLeaveZone
-            localAvatar.elevatorNotifier.showMe(rejectText)
+            base.localAvatar.elevatorNotifier.showMe(rejectText)
             return
+
         self.requestLeave({'loader': ZoneUtil.getBranchLoaderName(zoneId),
          'where': ZoneUtil.getToonWhereName(zoneId),
          'how': 'teleportIn',
@@ -388,7 +404,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
          'zoneId': zoneId,
          'shardId': None,
          'avId': -1})
-        return
 
     def __handleBookCloseExit(self):
         base.localAvatar.b_setAnimState('TeleportOut', 1, self.__handleBookExitTeleport, [0])
@@ -396,14 +411,16 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def __handleBookExitTeleport(self, requestStatus):
         if base.cr.timeManager:
             base.cr.timeManager.setDisconnectReason(ToontownGlobals.DisconnectBookExit)
+
         base.transitions.fadeScreen(1.0)
         base.cr.gameFSM.request(self.exitTo)
 
     def goHomeNow(self, curZoneId):
-        if localAvatar.hasActiveBoardingGroup():
+        if base.localAvatar.hasActiveBoardingGroup():
             rejectText = TTLocalizer.BoardingCannotLeaveZone
-            localAvatar.elevatorNotifier.showMe(rejectText)
+            base.localAvatar.elevatorNotifier.showMe(rejectText)
             return
+
         hoodId = ToontownGlobals.MyEstate
         self.requestLeave({'loader': 'safeZoneLoader',
          'where': 'estate',
@@ -412,13 +429,13 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
          'zoneId': -1,
          'shardId': None,
          'avId': -1})
-        return
 
     def startPartyNow(self, firstStart, hostId):
-        if localAvatar.hasActiveBoardingGroup():
+        if base.localAvatar.hasActiveBoardingGroup():
             rejectText = TTLocalizer.BoardingCannotLeaveZone
-            localAvatar.elevatorNotifier.showMe(rejectText)
+            base.localAvatar.elevatorNotifier.showMe(rejectText)
             return
+
         base.localAvatar.creatingNewPartyWithMagicWord = False
         base.localAvatar.aboutToPlanParty = False
         hoodId = ToontownGlobals.PartyHood
@@ -436,6 +453,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
             if shardId == base.localAvatar.defaultShard:
                 shardId = None
+
             base.cr.playGame.getPlace().requestLeave({'loader': 'safeZoneLoader',
              'where': 'party',
              'how': 'teleportIn',
@@ -446,13 +464,13 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         else:
             if hostId is None:
                 hostId = base.localAvatar.doId
+
             base.cr.partyManager.sendAvatarToParty(hostId)
-            return
-        return
 
     def handleBookClose(self):
         if hasattr(self, 'fsm'):
             self.fsm.request('walk')
+
         if hasattr(self, 'toonSubmerged') and self.toonSubmerged == 1:
             if hasattr(self, 'walkStateData'):
                 self.walkStateData.fsm.request('swimming', [self.loader.swimSound])
@@ -469,26 +487,27 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def enterDFA(self, requestStatus):
         teleportDebug(requestStatus, 'enterDFA(%s)' % (requestStatus,))
         self.acceptOnce(self.dfaDoneEvent, self.enterDFACallback, [requestStatus])
-        self.dfa = DownloadForceAcknowledge.DownloadForceAcknowledge(self.dfaDoneEvent)
+        self.dfa = DownloadForceAcknowledge(self.dfaDoneEvent)
         self.dfa.enter(base.cr.hoodMgr.getPhaseFromHood(requestStatus['hoodId']))
 
     def exitDFA(self):
         self.ignore(self.dfaDoneEvent)
 
     def handleEnterTunnel(self, requestStatus, collEntry):
-        if localAvatar.hasActiveBoardingGroup():
+        if base.localAvatar.hasActiveBoardingGroup():
             rejectText = TTLocalizer.BoardingCannotLeaveZone
-            localAvatar.elevatorNotifier.showMe(rejectText)
+            base.localAvatar.elevatorNotifier.showMe(rejectText)
             dummyNP = NodePath('dummyNP')
-            dummyNP.reparentTo(render)
+            dummyNP.reparentTo(base.render)
             tunnelOrigin = requestStatus['tunnelOrigin']
-            dummyNP.setPos(localAvatar.getPos())
+            dummyNP.setPos(base.localAvatar.getPos())
             dummyNP.setH(tunnelOrigin.getH())
             dummyNP.setPos(dummyNP, 0, 4, 0)
-            localAvatar.setPos(dummyNP.getPos())
+            base.localAvatar.setPos(dummyNP.getPos())
             dummyNP.removeNode()
             del dummyNP
             return
+
         self.requestLeave(requestStatus)
 
     def enterDFACallback(self, requestStatus, doneStatus):
@@ -504,6 +523,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
                 out = {'teleportIn': 'teleportOut',
                  'tunnelIn': 'tunnelOut',
                  'doorIn': 'doorOut'}
+
             teleportDebug(requestStatus, 'requesting %s, requestStatus=%s' % (out[requestStatus['how']], requestStatus))
             self.fsm.request(out[requestStatus['how']], [requestStatus])
         elif doneStatus['mode'] == 'incomplete':
@@ -520,7 +540,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def enterTrialerFA(self, requestStatus):
         teleportDebug(requestStatus, 'enterTrialerFA(%s)' % requestStatus)
         self.acceptOnce(self.trialerFADoneEvent, self.trialerFACallback, [requestStatus])
-        self.trialerFA = TrialerForceAcknowledge.TrialerForceAcknowledge(self.trialerFADoneEvent)
+        self.trialerFA = TrialerForceAcknowledge(self.trialerFADoneEvent)
         self.trialerFA.enter(requestStatus['hoodId'])
 
     def exitTrialerFA(self):
@@ -589,6 +609,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         tunnelName = requestStatus.get('tunnelName')
         if tunnelName == None:
             tunnelName = base.cr.hoodMgr.makeLinkTunnelName(self.loader.hood.id, fromZoneId)
+
         self.doneStatus = {'loader': ZoneUtil.getLoaderName(zoneId),
          'where': ZoneUtil.getToonWhereName(zoneId),
          'how': how,
@@ -599,7 +620,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self.accept('tunnelOutMovieDone', self.__tunnelOutMovieDone)
         base.localAvatar.tunnelOut(tunnelOrigin)
         base.localAvatar.stopQuestMap()
-        return
 
     def __tunnelOutMovieDone(self):
         self.ignore('tunnelOutMovieDone')
@@ -621,11 +641,11 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def enterDied(self, requestStatus, callback = None):
         if callback == None:
             callback = self.__diedDone
+
         base.localAvatar.laffMeter.start()
-        camera.wrtReparentTo(render)
+        base.camera.wrtReparentTo(base.render)
         base.localAvatar.b_setAnimState('Died', 1, callback, [requestStatus])
         base.localAvatar.obscureMoveFurnitureButton(1)
-        return
 
     def __diedDone(self, requestStatus):
         self.doneStatus = requestStatus
@@ -643,6 +663,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
             base.cr.estateMgr.getLocalEstateZone(avId)
         else:
             base.cr.estateMgr.getLocalEstateZone(base.localAvatar.getDoId())
+
         if HouseGlobals.WANT_TELEPORT_TIMEOUT:
             taskMgr.doMethodLater(HouseGlobals.TELEPORT_TIMEOUT, self.goHomeFailed, 'goHomeFailed')
 
@@ -653,6 +674,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
             self.doneStatus['failed'] = 1
             self.goHomeFailed(None)
             return
+
         if ownerId == 0 and zoneId == 0:
             if self.doneStatus['shardId'] is None or self.doneStatus['shardId'] is base.localAvatar.defaultShard:
                 self.doneStatus['failed'] = 1
@@ -666,14 +688,15 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
                 self.doneStatus['how'] = 'teleportIn'
                 messenger.send(self.doneEvent)
                 return
+
         if self.doneStatus['zoneId'] == -1:
             self.doneStatus['zoneId'] = zoneId
         elif self.doneStatus['zoneId'] != zoneId:
             self.doneStatus['where'] = 'house'
+
         self.doneStatus['ownerId'] = ownerId
         messenger.send(self.doneEvent)
         messenger.send('localToonLeft')
-        return
 
     def goHomeFailed(self, task):
         self.notify.debug('goHomeFailed')
@@ -682,7 +705,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self.doneStatus['hood'] = base.localAvatar.lastHood
         self.doneStatus['zone'] = base.localAvatar.lastHood
         self.fsm.request('teleportIn', [self.doneStatus])
-        return Task.done
+        return task.done
 
     def notifyUserGoHomeFailed(self):
         self.notify.debug('notifyUserGoHomeFailed')
@@ -692,12 +715,13 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
             avatar = base.cr.identifyAvatar(failedToVisitAvId)
             if avatar:
                 avName = avatar.getName()
+
         if avName:
             message = TTLocalizer.EstateTeleportFailedNotFriends % avName
         else:
             message = TTLocalizer.EstateTeleportFailed
+
         base.localAvatar.setSystemMessage(0, message)
-        return
 
     def enterTeleportIn(self, requestStatus):
         self._tiToken = self.addSetZoneCompleteCallback(Functor(self._placeTeleportInPostZoneComplete, requestStatus), 100)
@@ -723,16 +747,16 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
                     teleportDebug(requestStatus, 'friend not here, giving up')
                     base.localAvatar.setSystemMessage(avId, OTPLocalizer.WhisperTargetLeftVisit % (friend.getName(),))
                     friend.d_teleportGiveup(base.localAvatar.doId)
+
         base.transitions.irisIn()
         self.nextState = requestStatus.get('nextState', 'walk')
         base.localAvatar.attachCamera()
         base.localAvatar.startUpdateSmartCamera()
         base.localAvatar.startPosHprBroadcast()
-        globalClock.tick()
+        base.clock.tick()
         base.localAvatar.b_setAnimState('TeleportIn', 1, callback=self.teleportInDone)
         base.localAvatar.d_broadcastPositionNow()
         base.localAvatar.b_setParent(ToontownGlobals.SPRender)
-        return
 
     def teleportInDone(self):
         if hasattr(self, 'fsm'):
@@ -748,7 +772,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         base.localAvatar.stopUpdateSmartCamera()
         base.localAvatar.detachCamera()
         base.localAvatar.stopPosHprBroadcast()
-        return
 
     def requestTeleport(self, hoodId, zoneId, shardId, avId):
         if avId > 0:
@@ -756,20 +779,25 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
               zoneId,
               shardId,
               avId),))
-        if localAvatar.hasActiveBoardingGroup():
+
+        if base.localAvatar.hasActiveBoardingGroup():
             if avId > 0:
                 teleportNotify.debug('requestTeleport: has active boarding group')
+
             rejectText = TTLocalizer.BoardingCannotLeaveZone
-            localAvatar.elevatorNotifier.showMe(rejectText)
+            base.localAvatar.elevatorNotifier.showMe(rejectText)
             return
+
         loaderId = ZoneUtil.getBranchLoaderName(zoneId)
         whereId = ZoneUtil.getToonWhereName(zoneId)
         if hoodId == ToontownGlobals.MyEstate:
             loaderId = 'safeZoneLoader'
             whereId = 'estate'
+
         if hoodId == ToontownGlobals.PartyHood:
             loaderId = 'safeZoneLoader'
             whereId = 'party'
+
         self.requestLeave({'loader': loaderId,
          'where': whereId,
          'how': 'teleportIn',
@@ -828,6 +856,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         if hasattr(self, 'fsm'):
             messenger.send('bankAsleep')
             self.fsm.request('walk')
+
         base.localAvatar.forceGotoSleep()
 
     def exitBanking(self):
@@ -850,6 +879,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def __handleFallingAsleepPhone(self, arg):
         if hasattr(self, 'fsm'):
             self.fsm.request('walk')
+
         messenger.send('phoneAsleep')
         base.localAvatar.forceGotoSleep()
 
@@ -863,12 +893,13 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
     def enterStopped(self):
         base.localAvatar.b_setAnimState('neutral', 1)
-        Emote.globalEmote.disableBody(base.localAvatar, 'enterStopped')
+        globalEmote.disableBody(base.localAvatar, 'enterStopped')
         self.accept('teleportQuery', self.handleTeleportQuery)
         if base.localAvatar.isDisguised:
             base.localAvatar.setTeleportAvailable(0)
         else:
             base.localAvatar.setTeleportAvailable(1)
+
         base.localAvatar.laffMeter.start()
         base.localAvatar.obscureMoveFurnitureButton(1)
         base.localAvatar.startSleepWatch(self.__handleFallingAsleepStopped)
@@ -877,11 +908,12 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def __handleFallingAsleepStopped(self, arg):
         if hasattr(self, 'fsm'):
             self.fsm.request('walk')
+
         base.localAvatar.forceGotoSleep()
         messenger.send('stoppedAsleep')
 
     def exitStopped(self):
-        Emote.globalEmote.releaseBody(base.localAvatar, 'exitStopped')
+        globalEmote.releaseBody(base.localAvatar, 'exitStopped')
         base.localAvatar.setTeleportAvailable(0)
         self.ignore('teleportQuery')
         base.localAvatar.laffMeter.stop()
@@ -892,7 +924,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
 
     def enterPet(self):
         base.localAvatar.b_setAnimState('neutral', 1)
-        Emote.globalEmote.disableBody(base.localAvatar, 'enterPet')
+        globalEmote.disableBody(base.localAvatar, 'enterPet')
         self.accept('teleportQuery', self.handleTeleportQuery)
         base.localAvatar.setTeleportAvailable(1)
         base.localAvatar.setTeleportAllowed(0)
@@ -902,7 +934,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def exitPet(self):
         base.localAvatar.setTeleportAvailable(0)
         base.localAvatar.setTeleportAllowed(1)
-        Emote.globalEmote.releaseBody(base.localAvatar, 'exitPet')
+        globalEmote.releaseBody(base.localAvatar, 'exitPet')
         self.ignore('teleportQuery')
         base.localAvatar.laffMeter.stop()
         self.exitFLM()
@@ -910,7 +942,7 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
     def enterQuietZone(self, requestStatus):
         self.quietZoneDoneEvent = uniqueName('quietZoneDone')
         self.acceptOnce(self.quietZoneDoneEvent, self.handleQuietZoneDone)
-        self.quietZoneStateData = QuietZoneState.QuietZoneState(self.quietZoneDoneEvent)
+        self.quietZoneStateData = QuietZoneState(self.quietZoneDoneEvent)
         self.quietZoneStateData.load()
         self.quietZoneStateData.enter(requestStatus)
 
@@ -920,7 +952,6 @@ class Place(StateData.StateData, FriendsListManager.FriendsListManager):
         self.quietZoneStateData.exit()
         self.quietZoneStateData.unload()
         self.quietZoneStateData = None
-        return
 
     def handleQuietZoneDone(self):
         how = base.cr.handlerArgs['how']
