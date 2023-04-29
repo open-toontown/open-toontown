@@ -1,19 +1,24 @@
-from toontown.toonbase.ToonBaseGlobal import *
-from panda3d.core import *
-from panda3d.toontown import *
-from toontown.toonbase.ToontownGlobals import *
-import random
-from direct.task.Task import Task
-from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from . import ToonInteriorColors
-import pickle
-from toontown.toonbase import TTLocalizer
+from panda3d.core import ModelNode, NodePath, TextNode
+from panda3d.toontown import DNADoor
 
-class DistributedHQInterior(DistributedObject.DistributedObject):
+from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.distributed.DistributedObject import DistributedObject
+from direct.task.TaskManagerGlobal import taskMgr
+
+from toontown.building import ToonInteriorColors
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase.ToonBaseGlobal import base
+
+import pickle
+from random import Random
+
+
+class DistributedHQInterior(DistributedObject):
+    notify = directNotify.newCategory('DistributedHQInterior')
 
     def __init__(self, cr):
-        DistributedObject.DistributedObject.__init__(self, cr)
+        DistributedObject.__init__(self, cr)
         self.dnaStore = cr.playGame.dnaStore
         self.leaderAvIds = []
         self.leaderNames = []
@@ -22,15 +27,15 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
         self.tutorial = 0
 
     def generate(self):
-        DistributedObject.DistributedObject.generate(self)
-        self.interior = loader.loadModel('phase_3.5/models/modules/HQ_interior')
-        self.interior.reparentTo(render)
+        DistributedObject.generate(self)
+        self.interior = base.loader.loadModel('phase_3.5/models/modules/HQ_interior')
+        self.interior.reparentTo(base.render)
         self.interior.find('**/cream').hide()
         self.interior.find('**/crashed_piano').hide()
         self.buildLeaderBoard()
 
     def announceGenerate(self):
-        DistributedObject.DistributedObject.announceGenerate(self)
+        DistributedObject.announceGenerate(self)
         self.setupDoors()
         self.interior.flattenMedium()
         emptyBoard = self.interior.find('**/empty_board')
@@ -41,6 +46,7 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
             return
         else:
             self.tutorial = flag
+
         if self.tutorial:
             self.interior.find('**/periscope').hide()
             self.interior.find('**/speakers').hide()
@@ -53,7 +59,7 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
         self.block = block
 
     def buildLeaderBoard(self):
-        self.leaderBoard = hidden.attachNewNode('leaderBoard')
+        self.leaderBoard = base.hidden.attachNewNode('leaderBoard')
         self.leaderBoard.setPosHprScale(0.1, 0, 4.5, 90, 0, 0, 0.9, 0.9, 0.9)
         z = 0
         row = self.buildTitleRow()
@@ -63,7 +69,7 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
         self.nameTextNodes = []
         self.scoreTextNodes = []
         self.trophyStars = []
-        for i in range(self.numLeaders):
+        for _ in range(self.numLeaders):
             row, nameText, scoreText, trophyStar = self.buildLeaderRow()
             self.nameTextNodes.append(nameText)
             self.scoreTextNodes.append(scoreText)
@@ -87,7 +93,7 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
             self.trophyStars[i].hide()
 
     def buildTitleRow(self):
-        row = hidden.attachNewNode('leaderRow')
+        row = base.hidden.attachNewNode('leaderRow')
         nameText = TextNode('titleRow')
         nameText.setFont(ToontownGlobals.getSignFont())
         nameText.setAlign(TextNode.ACenter)
@@ -98,7 +104,7 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
         return row
 
     def buildLeaderRow(self):
-        row = hidden.attachNewNode('leaderRow')
+        row = base.hidden.attachNewNode('leaderRow')
         nameText = TextNode('nameText')
         nameText.setFont(ToontownGlobals.getToonFont())
         nameText.setAlign(TextNode.ALeft)
@@ -135,15 +141,16 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
             doorModelName = doorModelName[:-1] + 'l'
         else:
             doorModelName = doorModelName[:-1] + 'r'
+
         door = self.dnaStore.findNode(doorModelName)
         return door
 
     def setupDoors(self):
-        self.randomGenerator = random.Random()
+        self.randomGenerator = Random()
         self.randomGenerator.seed(self.zoneId)
-        self.colors = ToonInteriorColors.colors[ToontownCentral]
+        self.colors = ToonInteriorColors.colors[ToontownGlobals.ToontownCentral]
         door = self.chooseDoor()
-        doorOrigins = render.findAllMatches('**/door_origin*')
+        doorOrigins = base.render.findAllMatches('**/door_origin*')
         numDoorOrigins = doorOrigins.getNumPaths()
         for npIndex in range(numDoorOrigins):
             doorOrigin = doorOrigins[npIndex]
@@ -173,10 +180,10 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
         del self.scoreTextNodes
         del self.trophyStars
         taskMgr.remove(self.uniqueName('starSpinHQ'))
-        DistributedObject.DistributedObject.disable(self)
+        DistributedObject.disable(self)
 
     def buildTrophyStar(self):
-        trophyStar = loader.loadModel('phase_3.5/models/gui/name_star')
+        trophyStar = base.loader.loadModel('phase_3.5/models/gui/name_star')
         trophyStar.hide()
         trophyStar.setPos(*TTLocalizer.DHQItrophyStarPos)
         return trophyStar
@@ -211,7 +218,7 @@ class DistributedHQInterior(DistributedObject.DistributedObject):
             trophyStar.hide()
 
     def __starSpin(self, task):
-        now = globalClock.getFrameTime()
+        now = base.clock.getFrameTime()
         r = now * task.trophyStarSpeed % 360.0
         task.trophyStar.setR(r)
-        return Task.cont
+        return task.cont

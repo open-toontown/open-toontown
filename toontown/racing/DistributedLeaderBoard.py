@@ -1,39 +1,39 @@
-from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from otp.otpbase import OTPTimer
+from panda3d.core import NodePath, TextNode
+
+from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.distributed.DistributedObject import DistributedObject
+
+from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
-from toontown.racing import KartShopGlobals
-from toontown.toonbase.ToonBaseGlobal import *
-from panda3d.core import *
-from toontown.toonbase.ToontownGlobals import *
-import random
+from toontown.toonbase.ToonBaseGlobal import base
+
 import pickle
 
-class DistributedLeaderBoard(DistributedObject.DistributedObject):
-    notify = DirectNotifyGlobal.directNotify.newCategory('DisributedLeaderBoard')
+
+class DistributedLeaderBoard(DistributedObject):
+    notify = directNotify.newCategory('DisributedLeaderBoard')
 
     def __init__(self, cr):
         self.notify.debug('__init__: initialization of local leaderboard')
-        DistributedObject.DistributedObject.__init__(self, cr)
+        DistributedObject.__init__(self, cr)
         self.corner = 0
         self.length = 0
         self.width = 0
         self.updateCount = 0
         self.board = None
         self.surface = None
-        return
 
     def generateInit(self):
-        DistributedObject.DistributedObject.generateInit(self)
+        DistributedObject.generateInit(self)
         self.board = NodePath(self.uniqueName('LeaderBoard'))
 
     def generate(self):
-        DistributedObject.DistributedObject.generate(self)
+        DistributedObject.generate(self)
         self.buildListParts()
 
     def announceGenerate(self):
-        DistributedObject.DistributedObject.announceGenerate(self)
-        self.board.reparentTo(render)
+        DistributedObject.announceGenerate(self)
+        self.board.reparentTo(base.render)
         self.accept('decorator-holiday-%d-ending' % ToontownGlobals.CRASHED_LEADERBOARD, self.showLists)
         self.accept('decorator-holiday-%d-starting' % ToontownGlobals.CRASHED_LEADERBOARD, self.hideLists)
         newsManager = base.cr.newsManager
@@ -72,7 +72,7 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
         z = zListTop
         self.nameTextNodes = []
         self.timeTextNodes = []
-        for i in range(10):
+        for _ in range(10):
             row, nameText, timeText, placeText = self.buildLeaderRow()
             self.nameTextNodes.append(nameText)
             placeText.setText(str(len(self.nameTextNodes)) + '.')
@@ -81,6 +81,7 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
             if len(self.nameTextNodes) == 6:
                 z = zListTop
                 x = 0.35
+
             row.setX(x)
             row.setZ(z)
             row.setY(1.6)
@@ -105,7 +106,7 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
                 self.timeTextNodes[i].setText('%02d:%02d:%02d' % (min, sec, hundredths * 100))
 
     def buildTitleRow(self):
-        row = hidden.attachNewNode('TitleRow')
+        row = base.hidden.attachNewNode('TitleRow')
         nameText = TextNode('titleRow')
         nameText.setFont(ToontownGlobals.getSignFont())
         nameText.setAlign(TextNode.ACenter)
@@ -117,7 +118,7 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
         return (row, nameText)
 
     def buildTrackRow(self):
-        row = hidden.attachNewNode('trackRow')
+        row = base.hidden.attachNewNode('trackRow')
         nameText = TextNode('trackRow')
         nameText.setFont(ToontownGlobals.getSignFont())
         nameText.setAlign(TextNode.ACenter)
@@ -129,7 +130,7 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
         return (row, nameText)
 
     def buildLeaderRow(self):
-        row = hidden.attachNewNode('leaderRow')
+        row = base.hidden.attachNewNode('leaderRow')
         nameText = TextNode('nameText')
         nameText.setFont(ToontownGlobals.getToonFont())
         nameText.setAlign(TextNode.ALeft)
@@ -166,4 +167,4 @@ class DistributedLeaderBoard(DistributedObject.DistributedObject):
         self.notify.debug('delete: deleting local leaderboard')
         self.ignoreAll()
         self.board.removeNode()
-        DistributedObject.DistributedObject.delete(self)
+        DistributedObject.delete(self)
