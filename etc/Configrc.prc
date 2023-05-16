@@ -13,6 +13,7 @@ depth-bits 24
 audio-sfx-active #t
 audio-music-active #t
 aspect-ratio 1.333333
+win-origin -1 -1
 
 # Models/Resources
 model-path resources
