@@ -11,7 +11,7 @@ from toontown.minigame import PlayingCardDeck
 from toontown.minigame import PairingGameGlobals
 from .OrthoWalk import OrthoWalk
 from .OrthoDrive import OrthoDrive
-from direct.interval.IntervalGlobal import Sequence, Parallel, Func, LerpColorScaleInterval, LerpScaleInterval, LerpFunctionInterval, Wait, SoundInterval
+from direct.interval.IntervalGlobal import Sequence, Parallel, Func, LerpColorScaleInterval, LerpScaleInterval, LerpFunctionInterval, Wait, SoundInterval, WaitInterval
 from toontown.toonbase.ToontownGlobals import GlobalDialogColor
 
 class DistributedPairingGame(DistributedMinigame):
