@@ -335,7 +335,7 @@ class Minigame(MagicWord):
         mgId = None
         mgDiff = None if difficulty == 0 else difficulty
         mgKeep = None
-        mgSzId = ZoneUtil.getSafeZoneId(toon.zoneId) if isTeleport else None
+        mgSzId = ZoneUtil.getSafeZoneId(toon.zoneId)
 
         if not any ((isTeleport, isRequest)):
             return f"Unknown command or minigame \"{command}\".  Valid commands: \"teleport\", \"request\", or a minigame to automatically teleport or request"
