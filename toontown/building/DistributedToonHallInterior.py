@@ -18,6 +18,10 @@ from toontown.hood import ZoneUtil
 from toontown.toon import ToonDNA
 from toontown.toon import ToonHead
 
+# Noah Hensley
+# This allows the Point3 class to be accessed - entering town hall won't crash (which was happening for me)
+from .ElevatorConstants import *
+
 class DistributedToonHallInterior(DistributedToonInterior):
 
     def __init__(self, cr):
