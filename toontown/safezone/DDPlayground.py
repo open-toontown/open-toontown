@@ -45,7 +45,8 @@ class DDPlayground(Playground.Playground):
         self.loader.hood.setNoFog()
 
         # Noah Hensley
-        self.__emergeCamera()
+        # Manually stops underwater ambience sound while exiting playground
+        self.loader.underwaterSound.stop()
 
     def enterStart(self):
         self.cameraSubmerged = 0
