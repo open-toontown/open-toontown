@@ -260,6 +260,8 @@ class ToonTeleportPanel(DirectFrame):
         return
 
     def exitTeleport(self):
+        # Noah Hensley
+        print("TEST - exitTeleport has been called")
         pass
 
     def __handleOk(self):
