@@ -41,6 +41,9 @@ class ToonTeleportPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonTeleportPanel')
 
     def __init__(self, avId, avName, avDisableName):
+        # Noah Hensley
+        print("TEST - ToonTeleportPanel has been initialized")
+
         DirectFrame.__init__(self, pos=(0.3, 0.1, 0.65), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.0, 1.0, 0.6), text='', text_wordwrap=13.5, text_scale=0.06, text_pos=(0.0, 0.18))
         messenger.send('releaseDirector')
         self['image'] = DGG.getDefaultDialogGeom()
@@ -105,18 +108,30 @@ class ToonTeleportPanel(DirectFrame):
         return
 
     def cleanup(self):
+        # Noah Hensley
+        print("TEST - cleanup has been called")
+
         self.fsm.request('off')
         del self.fsm
         self.ignore(self.avDisableName)
         self.destroy()
 
     def enterOff(self):
+        # Noah Hensley
+        print("TEST - enterOff has been called")
+
         pass
 
     def exitOff(self):
+        # Noah Hensley
+        print("TEST - exitOff has been called")
+
         pass
 
     def enterBegin(self):
+        # Noah Hensley
+        print("TEST - enterBegin has been called")
+
         myId = base.localAvatar.doId
         hasManager = hasattr(base.cr, 'playerFriendsManager')
         if self.avId == myId:
@@ -142,9 +157,15 @@ class ToonTeleportPanel(DirectFrame):
             self.fsm.request('wentAway')
 
     def exitBegin(self):
+        # Noah Hensley
+        print("TEST - exitBegin has been called")
+
         pass
 
     def enterCheckAvailability(self):
+        # Noah Hensley
+        print("TEST - enterCheckAvailability has been called")
+
         myId = base.localAvatar.getDoId()
         base.localAvatar.d_teleportQuery(myId, sendToId=self.avId)
         self['text'] = TTLocalizer.TeleportPanelCheckAvailability % self.avName
@@ -152,59 +173,107 @@ class ToonTeleportPanel(DirectFrame):
         self.bCancel.show()
 
     def exitCheckAvailability(self):
+        # Noah Hensley
+        print("TEST - exitCheckAvailability has been called")
+
         self.ignore('teleportResponse')
         self.bCancel.hide()
 
     def enterNotAvailable(self):
+        # Noah Hensley
+        print("TEST - enterNotAvailable has been called")
+
         self['text'] = TTLocalizer.TeleportPanelNotAvailable % self.avName
         self.bOk.show()
 
     def exitNotAvailable(self):
+        # Noah Hensley
+        print("TEST - exitNotAvailable has been called")
+
         self.bOk.hide()
 
     def enterIgnored(self):
+        # Noah Hensley
+        print("TEST - enterIgnored has been called")
+
         self['text'] = TTLocalizer.TeleportPanelNotAvailable % self.avName
         self.bOk.show()
 
     def exitIgnored(self):
+        # Noah Hensley
+        print("TEST - exitIgnored has been called")
+
         self.bOk.hide()
 
     def enterNotOnline(self):
+        # Noah Hensley
+        print("TEST - enterNotOnline has been called")
+
         self['text'] = TTLocalizer.TeleportPanelNotOnline % self.avName
         self.bOk.show()
 
     def exitNotOnline(self):
+        # Noah Hensley
+        print("TEST - exitNotOnline has been called")
+
         self.bOk.hide()
 
     def enterWentAway(self):
+        # Noah Hensley
+        print("TEST - enterWentAway has been called")
+
         self['text'] = TTLocalizer.TeleportPanelWentAway % self.avName
         self.bOk.show()
 
     def exitWentAway(self):
+        # Noah Hensley
+        print("TEST - exitWentAway has been called")
+
         self.bOk.hide()
 
     def enterUnknownHood(self, hoodId):
+        # Noah Hensley
+        print("TEST - exitUnknownHood has been called")
+
         self['text'] = TTLocalizer.TeleportPanelUnknownHood % base.cr.hoodMgr.getFullnameFromId(hoodId)
         self.bOk.show()
 
     def exitUnknownHood(self):
+        # Noah Hensley
+        print("TEST - exitUnknownHood has been called")
+
         self.bOk.hide()
 
     def enterUnavailableHood(self, hoodId):
+        # Noah Hensley
+        print("TEST - enterUnavailableHood has been called")
+
         self['text'] = TTLocalizer.TeleportPanelUnavailableHood % base.cr.hoodMgr.getFullnameFromId(hoodId)
         self.bOk.show()
 
     def exitUnavailableHood(self):
+        # Noah Hensley
+        print("TEST - exitUnavailableHood has been called")
+
         self.bOk.hide()
 
     def enterSelf(self):
+        # Noah Hensley
+        print("TEST - enterSelf has been called")
+
         self['text'] = TTLocalizer.TeleportPanelDenySelf
         self.bOk.show()
 
     def exitSelf(self):
+        # Noah Hensley
+        print("TEST - exitSelf has been called")
+
         self.bOk.hide()
 
     def enterOtherShard(self, shardId, hoodId, zoneId):
+        # Noah Hensley
+        print("TEST - enterOtherShard has been called")
+
         shardName = base.cr.getShardName(shardId)
         if shardName is None:
             self.fsm.request('notAvailable')
@@ -230,10 +299,16 @@ class ToonTeleportPanel(DirectFrame):
         return
 
     def exitOtherShard(self):
+        # Noah Hensley
+        print("TEST - exitOtherShard has been called")
+
         self.bYes.hide()
         self.bNo.hide()
 
     def enterTeleport(self, shardId, hoodId, zoneId):
+        # Noah Hensley
+        print("TEST - enterTeleport has been called")
+
         teleportNotify.debug('enterTeleport%s' % ((shardId, hoodId, zoneId),))
         hoodsVisited = base.localAvatar.hoodsVisited
         canonicalHoodId = ZoneUtil.getCanonicalZoneId(hoodId)
@@ -265,18 +340,33 @@ class ToonTeleportPanel(DirectFrame):
         pass
 
     def __handleOk(self):
+        # Noah Hensley
+        print("TEST - __handleOk has been called")
+
         unloadTeleportPanel()
 
     def __handleCancel(self):
+        # Noah Hensley
+        print("TEST - __handleCancel has been called")
+
         unloadTeleportPanel()
 
     def __handleYes(self):
+        # Noah Hensley
+        print("TEST - __handleYes has been called")
+
         self.fsm.request('teleport', [self.shardId, self.hoodId, self.zoneId])
 
     def __handleNo(self):
+        # Noah Hensley
+        print("TEST - __handleNo has been called")
+
         unloadTeleportPanel()
 
     def __teleportResponse(self, avId, available, shardId, hoodId, zoneId):
+        # Noah Hensley
+        print("TEST - __handleResponse has been called")
+
         teleportNotify.debug('__teleportResponse%s' % ((avId,
           available,
           shardId,
@@ -298,4 +388,7 @@ class ToonTeleportPanel(DirectFrame):
             self.fsm.request('teleport', [shardId, hoodId, zoneId])
 
     def __handleDisableAvatar(self):
+        # Noah Hensley
+        print("TEST - __handleDisableAvatar has been called")
+
         self.fsm.request('wentAway')
