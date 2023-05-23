@@ -954,6 +954,11 @@ class DistributedDivingGame(DistributedMinigame):
 
     def exitSwim(self):
         self.music.stop()
+
+        # Noah Hensley
+        # Manually stops underwater ambience sound while exiting minigame
+        self.sndAmbience.stop()
+
         self.ignore('resetClock')
         self.__killUpdateLocalToonTask()
         self.__killCrabTask()
