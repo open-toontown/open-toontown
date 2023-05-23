@@ -617,6 +617,10 @@ class DistributedRingGame(DistributedMinigame):
         self.__killCollisionDetectionTask()
         self.__destroyRings()
 
+        # Noah Hensley
+        # Manually stops underwater ambience sound while exiting minigame
+        self.sndAmbience.stop()
+
     def enterCleanup(self):
         self.notify.debug('enterCleanup')
         if not self.isSinglePlayer():
