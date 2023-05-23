@@ -40,6 +40,10 @@ class OZPlayground(Playground.Playground):
         taskMgr.remove('oz-check-cam-underwater')
         self.loader.hood.setNoFog()
 
+        # Noah Hensley
+        # Manually stops underwater ambience sound while exiting playground
+        self.loader.underwaterSound.stop()
+
     def doRequestLeave(self, requestStatus):
         self.fsm.request('trialerFA', [requestStatus])
 
