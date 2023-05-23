@@ -22,6 +22,9 @@ class DDPlayground(Playground.Playground):
         Playground.Playground.load(self)
 
     def unload(self):
+        # Noah Hensley
+        print("TESTING - unload function called")
+
         del self.activityFsm
         Playground.Playground.unload(self)
 
@@ -32,6 +35,9 @@ class DDPlayground(Playground.Playground):
         Playground.Playground.enter(self, requestStatus)
 
     def exit(self):
+        # Noah Hensley
+        print("TESTING - exit function called")
+
         Playground.Playground.exit(self)
         taskMgr.remove('dd-check-toon-underwater')
         taskMgr.remove('dd-check-cam-underwater')
@@ -113,11 +119,17 @@ class DDPlayground(Playground.Playground):
         return Task.cont
 
     def enterTeleportIn(self, requestStatus):
+        # Noah Hensley
+        print("TESTING - enterTeleportIn function called")
+
         self.toonSubmerged = -1
         taskMgr.remove('dd-check-toon-underwater')
         Playground.Playground.enterTeleportIn(self, requestStatus)
 
     def teleportInDone(self):
+        # Noah Hensley
+        print("TESTING - enterTeleportOut function called")
+
         self.toonSubmerged = -1
         taskMgr.add(self.__checkToonUnderwater, 'dd-check-toon-underwater')
         Playground.Playground.teleportInDone(self)
