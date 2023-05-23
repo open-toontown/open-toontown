@@ -44,6 +44,9 @@ class DDPlayground(Playground.Playground):
         taskMgr.remove('dd-seagulls')
         self.loader.hood.setNoFog()
 
+        # Noah Hensley
+        self.__emergeCamera()
+
     def enterStart(self):
         self.cameraSubmerged = 0
         self.toonSubmerged = 0
