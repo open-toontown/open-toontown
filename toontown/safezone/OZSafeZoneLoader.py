@@ -29,12 +29,18 @@ class OZPlayground(Playground.Playground):
         Playground.Playground.load(self)
 
     def unload(self):
+        # Noah Hensley
+        print("TESTING - unload called")
+
         Playground.Playground.unload(self)
 
     def enter(self, requestStatus):
         Playground.Playground.enter(self, requestStatus)
 
     def exit(self):
+        # Noah Hensley
+        print("TESTING - exit called")
+
         Playground.Playground.exit(self)
         taskMgr.remove('oz-check-toon-underwater')
         taskMgr.remove('oz-check-cam-underwater')
@@ -53,6 +59,9 @@ class OZPlayground(Playground.Playground):
             self.dfa.enter(5)
 
     def enterStart(self):
+        # Noah Hensley
+        print("TESTING - enterStart called")
+
         self.cameraSubmerged = 0
         self.toonSubmerged = 0
         taskMgr.add(self.__checkToonUnderwater, 'oz-check-toon-underwater')
@@ -106,6 +115,9 @@ class OZPlayground(Playground.Playground):
         self.toonSubmerged = 0
 
     def enterTeleportIn(self, requestStatus):
+        # Noah Hensley
+        print("TESTING - enterTeleportIn called")
+
         reason = requestStatus.get('reason')
         if reason == RaceGlobals.Exit_Barrier:
             requestStatus['nextState'] = 'popup'
@@ -119,17 +131,20 @@ class OZPlayground(Playground.Playground):
         self.toonSubmerged = -1
         self.cameraSubmerged = -1
         self.loader.underwaterSound.stop()
-        
+
         # self.__emergeCamera, will call this function next
-        
+
         taskMgr.remove('oz-check-toon-underwater')
         Playground.Playground.enterTeleportIn(self, requestStatus)
 
     def teleportInDone(self):
+        # Noah Hensley
+        print("TESTING - teleportInDone called")
+
         self.toonSubmerged = -1
-        
+
         # self.__emergeCamera, will call this function next
-        
+
         # Noah Hensley
         self.cameraSubmerged = -1
         self.loader.underwaterSound.stop()
