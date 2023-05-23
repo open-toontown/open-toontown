@@ -117,11 +117,18 @@ class OZPlayground(Playground.Playground):
             requestStatus['nextState'] = 'popup'
             self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RaceTimeoutNoRefund, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
         self.toonSubmerged = -1
+        self.cameraSubmerged = -1
+        self.loader.underwaterSound.stop()
+        
+        # self.__emergeCamera, will call this function next
+        
         taskMgr.remove('oz-check-toon-underwater')
         Playground.Playground.enterTeleportIn(self, requestStatus)
 
     def teleportInDone(self):
         self.toonSubmerged = -1
+        
+        # self.__emergeCamera, will call this function next
         
         # Noah Hensley
         self.cameraSubmerged = -1
