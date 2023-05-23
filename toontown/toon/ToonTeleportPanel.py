@@ -13,6 +13,9 @@ from toontown.hood import ZoneUtil
 globalTeleport = None
 
 def showTeleportPanel(avId, avName, avDisableName):
+    # Noah Hensley
+    print("TEST - showTeleportPanel has been initialized")
+    
     global globalTeleport
     if globalTeleport != None:
         globalTeleport.cleanup()
@@ -22,6 +25,9 @@ def showTeleportPanel(avId, avName, avDisableName):
 
 
 def hideTeleportPanel():
+    # Noah Hensley
+    print("TEST - hideTeleportPanel has been initialized")
+    
     global globalTeleport
     if globalTeleport != None:
         globalTeleport.cleanup()
@@ -30,6 +36,9 @@ def hideTeleportPanel():
 
 
 def unloadTeleportPanel():
+    # Noah Hensley
+    print("TEST - unloadTeleportPanel has been initialized")
+    
     global globalTeleport
     if globalTeleport != None:
         globalTeleport.cleanup()
