@@ -1,209 +1,383 @@
-from panda3d.core import *
-from toontown.toonbase import ToontownGlobals
-from . import Playground
-from toontown.launcher import DownloadForceAcknowledge
-from toontown.building import Elevator
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import TTLocalizer
-from toontown.racing import RaceGlobals
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.safezone import PicnicBasket
-from toontown.safezone import GolfKart
-from direct.task.Task import Task
+from panda3d.core import *
+from otp.avatar import Avatar
+from toontown.hood import ZoneUtil
+from toontown.launcher import DownloadForceAcknowledge
+from toontown.safezone.SafeZoneLoader import SafeZoneLoader
+from toontown.safezone.OZPlayground import OZPlayground
+from direct.actor import Actor
+from direct.interval.IntervalGlobal import *
+import random
+from toontown.distributed import DelayDelete
+from direct.distributed.ClockDelta import *
+from otp.otpbase import OTPGlobals
+import copy
+from toontown.effects import Bubbles
+import random
+if (__debug__):
+    import pdb
 
-class OZPlayground(Playground.Playground):
-    waterLevel = -0.53
+class OZSafeZoneLoader(SafeZoneLoader):
 
-    def __init__(self, loader, parentFSM, doneEvent):
-        Playground.Playground.__init__(self, loader, parentFSM, doneEvent)
-        self.parentFSM = parentFSM
-        self.picnicBasketBlockDoneEvent = 'picnicBasketBlockDone'
-        self.cameraSubmerged = -1
-        self.toonSubmerged = -1
-        self.fsm.addState(State.State('picnicBasketBlock', self.enterPicnicBasketBlock, self.exitPicnicBasketBlock, ['walk']))
-        state = self.fsm.getStateNamed('walk')
-        state.addTransition('picnicBasketBlock')
-        self.picnicBasketDoneEvent = 'picnicBasketDone'
+    def __init__(self, hood, parentFSM, doneEvent):
+        SafeZoneLoader.__init__(self, hood, parentFSM, doneEvent)
+        self.musicFile = 'phase_6/audio/bgm/OZ_SZ.ogg'
+        self.activityMusicFile = 'phase_6/audio/bgm/GS_KartShop.ogg'
+        self.dnaFile = 'phase_6/dna/outdoor_zone_sz.dna'
+        self.safeZoneStorageDNAFile = 'phase_6/dna/storage_OZ_sz.dna'
+        self.__toonTracks = {}
+        del self.fsm
+        self.fsm = ClassicFSM.ClassicFSM('SafeZoneLoader', [State.State('start', self.enterStart, self.exitStart, ['quietZone', 'playground', 'toonInterior']),
+         State.State('playground', self.enterPlayground, self.exitPlayground, ['quietZone', 'golfcourse']),
+         State.State('toonInterior', self.enterToonInterior, self.exitToonInterior, ['quietZone']),
+         State.State('quietZone', self.enterQuietZone, self.exitQuietZone, ['playground', 'toonInterior', 'golfcourse']),
+         State.State('golfcourse', self.enterGolfCourse, self.exitGolfCourse, ['quietZone', 'playground']),
+         State.State('final', self.enterFinal, self.exitFinal, ['start'])], 'start', 'final')
 
     def load(self):
-        Playground.Playground.load(self)
-
-    def unload(self):
-        # Noah Hensley
-        print("TESTING - unload called")
-
-        Playground.Playground.unload(self)
-
-    def enter(self, requestStatus):
-        Playground.Playground.enter(self, requestStatus)
-
-    def exit(self):
-        # Noah Hensley
-        print("TESTING - exit called")
-
-        Playground.Playground.exit(self)
-        taskMgr.remove('oz-check-toon-underwater')
-        taskMgr.remove('oz-check-cam-underwater')
-        self.loader.hood.setNoFog()
-
-    def doRequestLeave(self, requestStatus):
-        self.fsm.request('trialerFA', [requestStatus])
-
-    def enterDFA(self, requestStatus):
-        doneEvent = 'dfaDoneEvent'
-        self.accept(doneEvent, self.enterDFACallback, [requestStatus])
-        self.dfa = DownloadForceAcknowledge.DownloadForceAcknowledge(doneEvent)
-        if requestStatus['hoodId'] == ToontownGlobals.MyEstate:
-            self.dfa.enter(base.cr.hoodMgr.getPhaseFromHood(ToontownGlobals.MyEstate))
-        else:
-            self.dfa.enter(5)
-
-    def enterStart(self):
-        # Noah Hensley
-        print("TESTING - enterStart called")
-
-        self.cameraSubmerged = 0
-        self.toonSubmerged = 0
-        taskMgr.add(self.__checkToonUnderwater, 'oz-check-toon-underwater')
-        taskMgr.add(self.__checkCameraUnderwater, 'oz-check-cam-underwater')
-
-    def __checkCameraUnderwater(self, task):
-        if camera.getZ(render) < self.waterLevel:
-            self.__submergeCamera()
-        else:
-            self.__emergeCamera()
-        return Task.cont
-
-    def __checkToonUnderwater(self, task):
-        if base.localAvatar.getZ() < -4.0:
-            self.__submergeToon()
-        else:
-            self.__emergeToon()
-        return Task.cont
-
-    def __submergeCamera(self):
-        if self.cameraSubmerged == 1:
-            return
-        self.loader.hood.setUnderwaterFog()
-        base.playSfx(self.loader.underwaterSound, looping=1, volume=0.8)
-        self.cameraSubmerged = 1
-        self.walkStateData.setSwimSoundAudible(1)
-
-    def __emergeCamera(self):
-        if self.cameraSubmerged == 0:
-            return
-        self.loader.hood.setNoFog()
-        self.loader.underwaterSound.stop()
-        self.cameraSubmerged = 0
-        self.walkStateData.setSwimSoundAudible(0)
-
-    def __submergeToon(self):
-        if self.toonSubmerged == 1:
-            return
-        base.playSfx(self.loader.submergeSound)
-        if base.config.GetBool('disable-flying-glitch') == 0:
-            self.fsm.request('walk')
-        self.walkStateData.fsm.request('swimming', [self.loader.swimSound])
-        pos = base.localAvatar.getPos(render)
-        base.localAvatar.d_playSplashEffect(pos[0], pos[1], self.waterLevel)
-        self.toonSubmerged = 1
-
-    def __emergeToon(self):
-        if self.toonSubmerged == 0:
-            return
-        self.walkStateData.fsm.request('walking')
-        self.toonSubmerged = 0
-
-    def enterTeleportIn(self, requestStatus):
-        # Noah Hensley
-        print("TESTING - enterTeleportIn called")
-
-        reason = requestStatus.get('reason')
-        if reason == RaceGlobals.Exit_Barrier:
-            requestStatus['nextState'] = 'popup'
-            self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RaceTimeout, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
-        elif reason == RaceGlobals.Exit_Slow:
-            requestStatus['nextState'] = 'popup'
-            self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RacerTooSlow, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
-        elif reason == RaceGlobals.Exit_BarrierNoRefund:
-            requestStatus['nextState'] = 'popup'
-            self.dialog = TTDialog.TTDialog(text=TTLocalizer.KartRace_RaceTimeoutNoRefund, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
-        self.toonSubmerged = -1
-        self.cameraSubmerged = -1
-        self.loader.underwaterSound.stop()
-
-        # self.__emergeCamera, will call this function next
-
-        taskMgr.remove('oz-check-toon-underwater')
-        Playground.Playground.enterTeleportIn(self, requestStatus)
-
-    def teleportInDone(self):
-        # Noah Hensley
-        print("TESTING - teleportInDone called")
-
-        self.toonSubmerged = -1
-
-        # self.__emergeCamera, will call this function next
-
-        # Noah Hensley
-        self.cameraSubmerged = -1
-        self.loader.underwaterSound.stop()
-
-        taskMgr.add(self.__checkToonUnderwater, 'oz-check-toon-underwater')
-        Playground.Playground.teleportInDone(self)
-
-    def __cleanupDialog(self, value):
-        if self.dialog:
-            self.dialog.cleanup()
-            self.dialog = None
-        if hasattr(self, 'fsm'):
-            self.fsm.request('walk', [1])
+        self.done = 0
+        self.geyserTrack = None
+        SafeZoneLoader.load(self)
+        self.birdSound = list(map(base.loader.loadSfx, ['phase_4/audio/sfx/SZ_TC_bird1.ogg', 'phase_4/audio/sfx/SZ_TC_bird2.ogg', 'phase_4/audio/sfx/SZ_TC_bird3.ogg']))
+        self.underwaterSound = base.loader.loadSfx('phase_4/audio/sfx/AV_ambient_water.ogg')
+        self.swimSound = base.loader.loadSfx('phase_4/audio/sfx/AV_swim_single_stroke.ogg')
+        self.submergeSound = base.loader.loadSfx('phase_5.5/audio/sfx/AV_jump_in_water.ogg')
+        geyserPlacer = self.geom.find('**/geyser*')
+        waterfallPlacer = self.geom.find('**/waterfall*')
+        binMgr = CullBinManager.getGlobalPtr()
+        binMgr.addBin('water', CullBinManager.BTFixed, 29)
+        binMgr = CullBinManager.getGlobalPtr()
+        self.water = self.geom.find('**/water1*')
+        self.water.setTransparency(1)
+        self.water.setColorScale(1.0, 1.0, 1.0, 1.0)
+        self.water.setBin('water', 51, 1)
+        pool = self.geom.find('**/pPlane5*')
+        pool.setTransparency(1)
+        pool.setColorScale(1.0, 1.0, 1.0, 1.0)
+        pool.setBin('water', 50, 1)
+        self.geyserModel = loader.loadModel('phase_6/models/golf/golf_geyser_model')
+        self.geyserSound = loader.loadSfx('phase_6/audio/sfx/OZ_Geyser.ogg')
+        self.geyserSoundInterval = SoundInterval(self.geyserSound, node=geyserPlacer, listenerNode=base.camera, seamlessLoop=False, volume=1.0, cutOff=120)
+        self.geyserSoundNoToon = loader.loadSfx('phase_6/audio/sfx/OZ_Geyser_No_Toon.ogg')
+        self.geyserSoundNoToonInterval = SoundInterval(self.geyserSoundNoToon, node=geyserPlacer, listenerNode=base.camera, seamlessLoop=False, volume=1.0, cutOff=120)
+        if self.geyserModel:
+            self.geyserActor = Actor.Actor(self.geyserModel)
+            self.geyserActor.loadAnims({'idle': 'phase_6/models/golf/golf_geyser'})
+            self.geyserActor.reparentTo(render)
+            self.geyserActor.setPlayRate(8.6, 'idle')
+            self.geyserActor.loop('idle')
+            self.geyserActor.setDepthWrite(0)
+            self.geyserActor.setTwoSided(True, 11)
+            self.geyserActor.setColorScale(1.0, 1.0, 1.0, 1.0)
+            self.geyserActor.setBin('fixed', 0)
+            mesh = self.geyserActor.find('**/mesh_tide1')
+            joint = self.geyserActor.find('**/uvj_WakeWhiteTide1')
+            mesh.setTexProjector(mesh.findTextureStage('default'), joint, self.geyserActor)
+            self.geyserActor.setPos(geyserPlacer.getPos())
+            self.geyserActor.setZ(geyserPlacer.getZ() - 100.0)
+            self.geyserPos = geyserPlacer.getPos()
+            self.geyserPlacer = geyserPlacer
+            self.startGeyser()
+            base.sfxPlayer.setCutoffDistance(160)
+            self.geyserPoolSfx = loader.loadSfx('phase_6/audio/sfx/OZ_Geyser_BuildUp_Loop.ogg')
+            self.geyserPoolSoundInterval = SoundInterval(self.geyserPoolSfx, node=self.geyserPlacer, listenerNode=base.camera, seamlessLoop=True, volume=1.0, cutOff=120)
+            self.geyserPoolSoundInterval.loop()
+            self.bubbles = Bubbles.Bubbles(self.geyserPlacer, render)
+            self.bubbles.renderParent.setDepthWrite(0)
+            self.bubbles.start()
+        self.collBase = render.attachNewNode('collisionBase')
+        self.geyserCollSphere = CollisionSphere(0, 0, 0, 7.5)
+        self.geyserCollSphere.setTangible(1)
+        self.geyserCollNode = CollisionNode('barrelSphere')
+        self.geyserCollNode.setIntoCollideMask(OTPGlobals.WallBitmask)
+        self.geyserCollNode.addSolid(self.geyserCollSphere)
+        self.geyserNodePath = self.collBase.attachNewNode(self.geyserCollNode)
+        self.geyserNodePath.setPos(self.geyserPos[0], self.geyserPos[1], self.geyserPos[2] - 100.0)
+        self.waterfallModel = loader.loadModel('phase_6/models/golf/golf_waterfall_model')
+        if self.waterfallModel:
+            self.waterfallActor = Actor.Actor(self.waterfallModel)
+            self.waterfallActor.loadAnims({'idle': 'phase_6/models/golf/golf_waterfall'})
+            self.waterfallActor.reparentTo(render)
+            self.waterfallActor.setPlayRate(3.5, 'idle')
+            self.waterfallActor.loop('idle')
+            mesh = self.waterfallActor.find('**/mesh_tide1')
+            joint = self.waterfallActor.find('**/uvj_WakeWhiteTide1')
+            mesh.setTexProjector(mesh.findTextureStage('default'), joint, self.waterfallActor)
+        self.waterfallActor.setPos(waterfallPlacer.getPos())
+        self.accept('clientLogout', self._handleLogout)
         return
 
-    def enterPicnicBasketBlock(self, picnicBasket):
-        base.localAvatar.laffMeter.start()
-        base.localAvatar.b_setAnimState('off', 1)
-        base.localAvatar.cantLeaveGame = 1
-        self.accept(self.picnicBasketDoneEvent, self.handlePicnicBasketDone)
-        self.trolley = PicnicBasket.PicnicBasket(self, self.fsm, self.picnicBasketDoneEvent, picnicBasket.getDoId(), picnicBasket.seatNumber)
-        self.trolley.load()
-        self.trolley.enter()
+    def exit(self):
+        self.clearToonTracks()
+        SafeZoneLoader.exit(self)
+        self.ignore('clientLogout')
 
-    def exitPicnicBasketBlock(self):
-        base.localAvatar.laffMeter.stop()
-        base.localAvatar.cantLeaveGame = 0
-        self.ignore(self.trolleyDoneEvent)
-        self.trolley.unload()
-        self.trolley.exit()
-        del self.trolley
-
-    def detectedPicnicTableSphereCollision(self, picnicBasket):
-        self.fsm.request('picnicBasketBlock', [picnicBasket])
-
-    def handleStartingBlockDone(self, doneStatus):
-        self.notify.debug('handling StartingBlock done event')
-        where = doneStatus['where']
-        if where == 'reject':
-            self.fsm.request('walk')
-        elif where == 'exit':
-            self.fsm.request('walk')
-        elif where == 'racetrack':
-            self.doneStatus = doneStatus
-            messenger.send(self.doneEvent)
+    def startGeyser(self, task = None):
+        if hasattr(base.cr, 'DTimer') and base.cr.DTimer:
+            self.geyserCycleTime = 20.0
+            useTime = base.cr.DTimer.getTime()
+            timeToNextGeyser = 20.0 - useTime % 20.0
+            taskMgr.doMethodLater(timeToNextGeyser, self.doGeyser, 'geyser Task')
         else:
-            self.notify.error('Unknown mode: ' + where + ' in handleStartingBlockDone')
+            taskMgr.doMethodLater(5.0, self.startGeyser, 'start geyser Task')
 
-    def handlePicnicBasketDone(self, doneStatus):
-        self.notify.debug('handling picnic basket done event')
-        mode = doneStatus['mode']
-        if mode == 'reject':
-            self.fsm.request('walk')
-        elif mode == 'exit':
-            self.fsm.request('walk')
+    def doGeyser(self, task = None):
+        if not self.done:
+            self.setGeyserAnim()
+            useTime = base.cr.DTimer.getTime()
+            timeToNextGeyser = 20.0 - useTime % 20.0
+            taskMgr.doMethodLater(timeToNextGeyser, self.doGeyser, 'geyser Task')
+        return task.done
+
+    def restoreLocal(self, task = None):
+        place = base.cr.playGame.getPlace()
+        if place:
+            place.fsm.request('walk')
+        base.localAvatar.setTeleportAvailable(1)
+        base.localAvatar.collisionsOn()
+        base.localAvatar.dropShadow.show()
+
+    def restoreRemote(self, remoteAv, task = None):
+        if remoteAv in Avatar.Avatar.ActiveAvatars:
+            remoteAv.startSmooth()
+            remoteAv.dropShadow.show()
+
+    def setGeyserAnim(self, task = None):
+        if self.done:
+            return
+        maxSize = 0.4 * random.random() + 0.75
+        time = 1.0
+        self.geyserTrack = Sequence()
+        upPos = Vec3(self.geyserPos[0], self.geyserPos[1], self.geyserPos[2])
+        downPos = Vec3(self.geyserPos[0], self.geyserPos[1], self.geyserPos[2] - 8.0)
+        avList = copy.copy(Avatar.Avatar.ActiveAvatars)
+        avList.append(base.localAvatar)
+        playSound = 0
+        for av in avList:
+            distance = self.geyserPlacer.getDistance(av)
+            if distance < 7.0:
+                place = base.cr.playGame.getPlace()
+                local = 0
+                avPos = av.getPos()
+                upToon = Vec3(avPos[0], avPos[1], maxSize * self.geyserPos[2] + 40.0)
+                midToon = Vec3(avPos[0], avPos[1], maxSize * self.geyserPos[2] + 30.0)
+                downToon = Vec3(avPos[0], avPos[1], self.geyserPos[2])
+                returnPoints = [(7, 7),
+                 (8, 0),
+                 (-8, 3),
+                 (-7, 7),
+                 (3, -7),
+                 (0, 8),
+                 (-10, 0),
+                 (8, -3),
+                 (5, 8),
+                 (-8, 5),
+                 (-1, 7)]
+                pick = int((float(av.doId) - 11.0) / 13.0 % len(returnPoints))
+                returnChoice = returnPoints[pick]
+                toonReturn = Vec3(self.geyserPos[0] + returnChoice[0], self.geyserPos[1] + returnChoice[1], self.geyserPos[2] - 1.5)
+                topTrack = Sequence()
+                av.dropShadow.hide()
+                playSound = 1
+                if av == base.localAvatar:
+                    base.cr.playGame.getPlace().setState('fishing')
+                    base.localAvatar.setTeleportAvailable(0)
+                    base.localAvatar.collisionsOff()
+                    local = 1
+                else:
+                    topTrack.delayDeletes = [DelayDelete.DelayDelete(av, 'OZSafeZoneLoader.setGeyserAnim')]
+                    av.stopSmooth()
+                animTrack = Parallel()
+                toonTrack = Sequence()
+                toonTrack.append(Wait(0.5))
+                animTrack.append(ActorInterval(av, 'jump-idle', loop=1, endTime=11.5 * time))
+                animTrack.append(ActorInterval(av, 'neutral', loop=0, endTime=0.25 * time))
+                holder = render.attachNewNode('toon hold')
+                base.holder = holder
+                toonPos = av.getPos(render)
+                toonHpr = av.getHpr(render)
+                print('av Pos %s' % av.getPos())
+                base.toonPos = toonPos
+                holder.setPos(toonPos)
+                av.reparentTo(holder)
+                av.setPos(0, 0, 0)
+                lookAt = 180
+                toonH = (lookAt + toonHpr[0]) % 360
+                newHpr = Vec3(toonH, toonHpr[1], toonHpr[2])
+                if toonH < 180:
+                    lookIn = Vec3(0 + lookAt, -30, 0)
+                else:
+                    lookIn = Vec3(360 + lookAt, -30, 0)
+                print('Camera Hprs toon %s; lookIn %s; final %s' % (newHpr, lookIn, lookIn - newHpr))
+                if local == 1:
+                    camPosOriginal = camera.getPos()
+                    camHprOriginal = camera.getHpr()
+                    camParentOriginal = camera.getParent()
+                    cameraPivot = holder.attachNewNode('camera pivot')
+                    chooseHeading = random.choice([-10.0, 15.0, 40.0])
+                    cameraPivot.setHpr(chooseHeading, -20.0, 0.0)
+                    cameraArm = cameraPivot.attachNewNode('camera arm')
+                    cameraArm.setPos(0.0, -23.0, 3.0)
+                    camPosStart = Point3(0.0, 0.0, 0.0)
+                    camHprStart = Vec3(0.0, 0.0, 0.0)
+                    self.changeCamera(cameraArm, camPosStart, camHprStart)
+                    cameraTrack = Sequence()
+                    cameraTrack.append(Wait(11.0 * time))
+                    cameraTrack.append(Func(self.changeCamera, camParentOriginal, camPosOriginal, camHprOriginal))
+                    cameraTrack.start()
+                moveTrack = Sequence()
+                moveTrack.append(Wait(0.5))
+                moveTrack.append(LerpPosInterval(holder, 3.0 * time, pos=upToon, startPos=downToon, blendType='easeOut'))
+                moveTrack.append(LerpPosInterval(holder, 2.0 * time, pos=midToon, startPos=upToon, blendType='easeInOut'))
+                moveTrack.append(LerpPosInterval(holder, 1.0 * time, pos=upToon, startPos=midToon, blendType='easeInOut'))
+                moveTrack.append(LerpPosInterval(holder, 2.0 * time, pos=midToon, startPos=upToon, blendType='easeInOut'))
+                moveTrack.append(LerpPosInterval(holder, 1.0 * time, pos=upToon, startPos=midToon, blendType='easeInOut'))
+                moveTrack.append(LerpPosInterval(holder, 2.5 * time, pos=toonReturn, startPos=upToon, blendType='easeIn'))
+                animTrack.append(moveTrack)
+                animTrack.append(toonTrack)
+                topTrack.append(animTrack)
+                topTrack.append(Func(av.setPos, toonReturn))
+                topTrack.append(Func(av.reparentTo, render))
+                topTrack.append(Func(holder.remove))
+                if local == 1:
+                    topTrack.append(Func(self.restoreLocal))
+                else:
+                    topTrack.append(Func(self.restoreRemote, av))
+                topTrack.append(Func(self.clearToonTrack, av.doId))
+                self.storeToonTrack(av.doId, topTrack)
+                topTrack.start()
+
+        self.geyserTrack.append(Func(self.doPrint, 'geyser start'))
+        self.geyserTrack.append(Func(self.geyserNodePath.setPos, self.geyserPos[0], self.geyserPos[1], self.geyserPos[2]))
+        self.geyserTrack.append(Parallel(LerpScaleInterval(self.geyserActor, 2.0 * time, 0.75, 0.01), LerpPosInterval(self.geyserActor, 2.0 * time, pos=downPos, startPos=downPos)))
+        self.geyserTrack.append(Parallel(LerpScaleInterval(self.geyserActor, time, maxSize, 0.75), LerpPosInterval(self.geyserActor, time, pos=upPos, startPos=downPos)))
+        self.geyserTrack.append(Parallel(LerpScaleInterval(self.geyserActor, 2.0 * time, 0.75, maxSize), LerpPosInterval(self.geyserActor, 2.0 * time, pos=downPos, startPos=upPos)))
+        self.geyserTrack.append(Parallel(LerpScaleInterval(self.geyserActor, time, maxSize, 0.75), LerpPosInterval(self.geyserActor, time, pos=upPos, startPos=downPos)))
+        self.geyserTrack.append(Parallel(LerpScaleInterval(self.geyserActor, 2.0 * time, 0.75, maxSize), LerpPosInterval(self.geyserActor, 2.0 * time, pos=downPos, startPos=upPos)))
+        self.geyserTrack.append(Parallel(LerpScaleInterval(self.geyserActor, time, maxSize, 0.75), LerpPosInterval(self.geyserActor, time, pos=upPos, startPos=downPos)))
+        self.geyserTrack.append(Parallel(LerpScaleInterval(self.geyserActor, 4.0 * time, 0.01, maxSize), LerpPosInterval(self.geyserActor, 4.0 * time, pos=downPos, startPos=upPos)))
+        self.geyserTrack.append(Func(self.geyserNodePath.setPos, self.geyserPos[0], self.geyserPos[1], self.geyserPos[2] - 100.0))
+        self.geyserTrack.append(Func(self.doPrint, 'geyser end'))
+        self.geyserTrack.start()
+        if playSound:
+            self.geyserSoundInterval.start()
         else:
-            self.notify.error('Unknown mode: ' + mode + ' in handlePicnicBasketDone')
+            self.geyserSoundNoToonInterval.start()
 
-    def showPaths(self):
-        from toontown.classicchars import CCharPaths
-        from toontown.toonbase import TTLocalizer
-        self.showPathPoints(CCharPaths.getPaths(TTLocalizer.Chip))
+    def changeCamera(self, newParent, newPos, newHpr):
+        camera.reparentTo(newParent)
+        camera.setPosHpr(newPos, newHpr)
+
+    def doPrint(self, thing):
+        return 0
+        print(thing)
+
+    def unload(self):
+        del self.birdSound
+        SafeZoneLoader.unload(self)
+        self.done = 1
+        self.collBase.removeNode()
+        if self.geyserTrack:
+            self.geyserTrack.finish()
+        self.geyserTrack = None
+        self.geyserActor.cleanup()
+        self.geyserModel.removeNode()
+        self.waterfallActor.cleanup()
+        self.waterfallModel.removeNode()
+        self.bubbles.destroy()
+        del self.bubbles
+        self.geyserPoolSoundInterval.finish()
+        self.geyserPoolSfx.stop()
+        self.geyserPoolSfx = None
+        self.geyserPoolSoundInterval = None
+        self.geyserSoundInterval.finish()
+        self.geyserSound.stop()
+        self.geyserSoundInterval = None
+        self.geyserSound = None
+        self.geyserSoundNoToonInterval.finish()
+        self.geyserSoundNoToon.stop()
+        self.geyserSoundNoToonInterval = None
+        self.geyserSoundNoToon = None
+        return
+
+    def enterPlayground(self, requestStatus):
+        self.playgroundClass = OZPlayground
+        SafeZoneLoader.enterPlayground(self, requestStatus)
+
+    def exitPlayground(self):
+        taskMgr.remove('titleText')
+        self.hood.hideTitleText()
+        SafeZoneLoader.exitPlayground(self)
+        self.playgroundClass = None
+        return
+
+    def handlePlaygroundDone(self):
+        status = self.place.doneStatus
+        self.doneStatus = status
+        messenger.send(self.doneEvent)
+
+    def enteringARace(self, status):
+        if not status['where'] == 'golfcourse':
+            return 0
+        if ZoneUtil.isDynamicZone(status['zoneId']):
+            return status['hoodId'] == self.hood.hoodId
+        else:
+            return ZoneUtil.getHoodId(status['zoneId']) == self.hood.hoodId
+
+    def enteringAGolfCourse(self, status):
+        if not status['where'] == 'golfcourse':
+            return 0
+        if ZoneUtil.isDynamicZone(status['zoneId']):
+            return status['hoodId'] == self.hood.hoodId
+        else:
+            return ZoneUtil.getHoodId(status['zoneId']) == self.hood.hoodId
+
+    def enterGolfCourse(self, requestStatus):
+        if 'curseId' in requestStatus:
+            self.golfCourseId = requestStatus['courseId']
+        else:
+            self.golfCourseId = 0
+        self.accept('raceOver', self.handleRaceOver)
+        self.accept('leavingGolf', self.handleLeftGolf)
+        base.transitions.irisOut(t=0.2)
+
+    def exitGolfCourse(self):
+        del self.golfCourseId
+
+    def handleRaceOver(self):
+        print('you done!!')
+
+    def handleLeftGolf(self):
+        req = {'loader': 'safeZoneLoader',
+         'where': 'playground',
+         'how': 'teleportIn',
+         'zoneId': 6000,
+         'hoodId': 6000,
+         'shardId': None}
+        self.fsm.request('quietZone', [req])
+        return
+
+    def _handleLogout(self):
+        self.clearToonTracks()
+
+    def storeToonTrack(self, avId, track):
+        self.clearToonTrack(avId)
+        self.__toonTracks[avId] = track
+
+    def clearToonTrack(self, avId):
+        oldTrack = self.__toonTracks.get(avId)
+        if oldTrack:
+            oldTrack.pause()
+            DelayDelete.cleanupDelayDeletes(oldTrack)
+            del self.__toonTracks[avId]
+
+    def clearToonTracks(self):
+        keyList = []
+        for key in self.__toonTracks:
+            keyList.append(key)
+
+        for key in keyList:
+            if key in self.__toonTracks:
+                self.clearToonTrack(key)
