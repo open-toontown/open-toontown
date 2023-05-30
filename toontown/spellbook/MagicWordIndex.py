@@ -287,30 +287,33 @@ class MaxToon(MagicWord):
 
         return f"Successfully maxed {toon.getName()}!"
     
-class RestockInventory(MagicWord):
-    aliases = ['allstuff', 'restockinv', 'maxinv', 'maxinventory', 'restock']
-    desc = 'Gives target all the inventory they can carry.'
+class Inventory(MagicWord):
+    # by default restock the inventory
+    aliases = ['gags', 'inv']
+    desc = 'This allows you to modify your inventory in various ways.'
     execLocation = MagicWordConfig.EXEC_LOC_SERVER
-
+    arguments = [("command", str, False, ''), ("track", str, False, ""), ("level", int, False, 0), ("amount", int, False, 0)]
     def handleWord(self, invoker, avId, toon, *args):
-        toon.inventory.maxOutInv()
-        toon.d_setInventory(toon.inventory.makeNetString())
-        return ("Maxing out inventory for " + toon.getName() + ".")
+        command = args[0]
+        # the list of words that can be used to restock the inventory
+        restockInvWords = ['restock', 'max', 'all', '', 'fill']
+        # the list of words that can be used to empty the inventory
+        emptyInvWords = ['empty', 'zero', 'null', 'clear', 'none', 'reset']
+        if command in restockInvWords:
+            toon.inventory.maxOutInv()
+            toon.d_setInventory(toon.inventory.makeNetString())
+            return ("Maxing out inventory for " + toon.getName() + ".")
+        if command in emptyInvWords:
+            toon.inventory.zeroInv()
+            toon.d_setInventory(toon.inventory.makeNetString())
+            return ("Zeroing inventory for " + toon.getName() + ".")
 
-class EmptyInventory(MagicWord):
-    aliases = ['nostuff', 'emptyinv', 'zeroinv', 'zeroinventory']
-    desc = 'Gives target all the inventory they can carry.'
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-
-    def handleWord(self, invoker, avId, toon, *args):
-        toon.inventory.zeroInv()
-        toon.d_setInventory(toon.inventory.makeNetString())
-        return ("Zeroing inventory for " + toon.getName() + ".")
+            
     
 class SetPinkSlips(MagicWord):
     # this command gives the target toon the specified amount of pink slips
     # default is 255
-    aliases = ["pinkslips"]
+    aliases = ["pinkslips", "fires", 'setfires']
     desc = "Gives the target toon the specified amount of pink slips."
     execLocation = MagicWordConfig.EXEC_LOC_SERVER
     arguments = [("amount", int, False, 255)]
