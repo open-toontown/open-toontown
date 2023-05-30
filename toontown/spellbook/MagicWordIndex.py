@@ -286,7 +286,39 @@ class MaxToon(MagicWord):
         toon.b_setCogLevels([ToontownGlobals.MaxCogSuitLevel] * 4)
 
         return f"Successfully maxed {toon.getName()}!"
+    
+class RestockInventory(MagicWord):
+    aliases = ['allstuff', 'restockinv', 'maxinv', 'maxinventory', 'restock']
+    desc = 'Gives target all the inventory they can carry.'
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
 
+    def handleWord(self, invoker, avId, toon, *args):
+        toon.inventory.maxOutInv()
+        toon.d_setInventory(toon.inventory.makeNetString())
+        return ("Maxing out inventory for " + toon.getName() + ".")
+
+class EmptyInventory(MagicWord):
+    aliases = ['nostuff', 'emptyinv', 'zeroinv', 'zeroinventory']
+    desc = 'Gives target all the inventory they can carry.'
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        toon.inventory.zeroInv()
+        toon.d_setInventory(toon.inventory.makeNetString())
+        return ("Zeroing inventory for " + toon.getName() + ".")
+    
+class SetPinkSlips(MagicWord):
+    # this command gives the target toon the specified amount of pink slips
+    # default is 255
+    aliases = ["pinkslips"]
+    desc = "Gives the target toon the specified amount of pink slips."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("amount", int, False, 255)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        toon.b_setPinkSlips(args[0])
+        return f"Gave {toon.getName()} {args[0]} pink slips!" 
+    
 class AbortMinigame(MagicWord):
     aliases = ["exitgame", "exitminigame", "quitgame", "quitminigame", "skipgame", "skipminigame"]
     desc = "Aborts an ongoing minigame."
