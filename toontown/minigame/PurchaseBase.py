@@ -107,11 +107,14 @@ class PurchaseBase(StateData.StateData):
 
                     print("TESTING - addItem iteration")
 
-                    text = "Refilled"
+                    if self.toon.getMoney() <= 0:
+                        return
 
+                    text = "Refilled"
                     result = self.toon.inventory.addItem(track, level)
                     if result != -2 and result != -1 and result != 0:
                         self.toon.inventory.updateGUI(track, level)
+                        self.toon.setMoney(self.toon.getMoney() - 1)
                         messenger.send('boughtGag')
                     self.showStatusText(text)
 
