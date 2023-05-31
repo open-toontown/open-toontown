@@ -31,7 +31,7 @@ class PurchaseBase(StateData.StateData):
         self.pointDisplay = DirectLabel(parent=self.frame, relief=None, pos=(-1.15, 0.0, 0.16), text=str(self.toon.getMoney()), text_scale=0.2, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_pos=(0, -0.1, 0), image=self.jarImage, text_font=ToontownGlobals.getSignFont())
         self.statusLabel = DirectLabel(parent=self.frame, relief=None, pos=(-0.25, 0, 0.625), text=TTLocalizer.GagShopYouHave % self.toon.getMoney(), text_scale=TTLocalizer.PBstatusLabel, text_fg=(0.05, 0.14, 0.4, 1))
         # Noah Hensley
-        self.refillGags = DirectButton(parent=self.frame, relief=None, scale=1.04, pos=(0, 0, 0), image=(
+        self.refillGags = DirectButton(parent=self.frame, relief=None, scale=1.04, pos=(-0.25, 0.0, -0.5), image=(
         purchaseModels.find('**/PurchScrn_BTN_UP'), purchaseModels.find('**/PurchScrn_BTN_DN'),
         purchaseModels.find('**/PurchScrn_BTN_RLVR')), text=TTLocalizer.GagShopRefill, text_fg=(0, 0.1, 0.7, 1),
                                        text_scale=0.05, text_pos=(0, 0.015, 0), command=self.__handleRefill)
@@ -66,7 +66,68 @@ class PurchaseBase(StateData.StateData):
 
     # Noah Hensley
     def __handleRefill(self):
-        pass
+        # Code is copied and modified from NPCMaxOutInv function in InventoryBase.py
+        targetTrack = -1
+        result = 0
+        for level in range(5, -1, -1):
+            anySpotsAvailable = 1
+            while anySpotsAvailable == 1:
+                anySpotsAvailable = 0
+                trackResults = []
+                for track in range(len(Tracks)):
+                    """
+                    if targetTrack != -1 and targetTrack != track:
+                        continue
+
+                    if self.toon.getMoney() <= 0:
+                        return
+                    ret = self.toon.inventory.addItem(track, level)
+                    if ret == -2:
+                        text = TTLocalizer.GagShopTooManyProps
+                    elif ret == -1:
+                        text = TTLocalizer.GagShopTooManyOfThatGag % TTLocalizer.BattleGlobalAvPropStringsPlural[track][
+                            level]
+                    elif ret == 0:
+                        text = TTLocalizer.GagShopInsufficientSkill
+                    else:
+                        text = TTLocalizer.GagShopYouPurchased % TTLocalizer.BattleGlobalAvPropStringsSingular[track][
+                            level]
+                        self.toon.inventory.updateGUI(track, level)
+                        self.toon.setMoney(self.toon.getMoney() - 1)
+                        messenger.send('boughtGag')
+                    self.showStatusText(text)
+
+                    trackResults.append(result)
+                    if ret == -2:
+                        break
+                    """
+
+                    if targetTrack != -1 and targetTrack != track:
+                        continue
+
+                    print("TESTING - addItem iteration")
+
+                    text = "Refilled"
+
+                    result = self.toon.inventory.addItem(track, level)
+                    if result != -2 and result != -1 and result != 0:
+                        self.toon.inventory.updateGUI(track, level)
+                        messenger.send('boughtGag')
+                    self.showStatusText(text)
+
+                    trackResults.append(result)
+                    if result == -2:
+                        break
+
+
+                for res in trackResults:
+                    if res > 0:
+                        anySpotsAvailable = 1
+
+            if result == -2:
+                break
+
+        self.toon.inventory.calcTotalProps()
 
     def _teaserDone(self):
         self._teaserPanel.destroy()
