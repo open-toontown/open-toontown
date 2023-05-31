@@ -5363,6 +5363,7 @@ GagShopYouHave = 'You have %s jellybeans to spend'
 GagShopYouHaveOne = 'You have 1 jellybean to spend'
 GagShopTooManyProps = 'Sorry, you have too many props'
 GagShopDoneShopping = 'DONE\nSHOPPING'
+GagShopRefill = 'REFILL GAGS' # Noah Hensley
 GagShopTooManyOfThatGag = 'Sorry, you have enough %s already'
 GagShopInsufficientSkill = 'You do not have enough skill for that yet'
 GagShopYouPurchased = 'You purchased %s'

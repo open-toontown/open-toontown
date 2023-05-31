@@ -7,6 +7,9 @@ COUNT_DOWN_RATE = 0.075
 DELAY_AFTER_COUNT_DOWN = 0.0
 DELAY_AFTER_CELEBRATE = 3.0
 
+# Noah Hensley
+# ClerkPurchase is used in Gag Shops, NOT trolley
+
 class ClerkPurchase(PurchaseBase):
     activateMode = 'storePurchase'
 
@@ -27,6 +30,8 @@ class ClerkPurchase(PurchaseBase):
     def unload(self):
         PurchaseBase.unload(self)
         del self.backToPlayground
+        # Noah Hensley
+        del self.refillGags
         del self.timer
 
     def __handleBackToPlayground(self):
@@ -42,6 +47,8 @@ class ClerkPurchase(PurchaseBase):
         self.backToPlayground.reparentTo(self.toon.inventory.storePurchaseFrame)
         self.pointDisplay.reparentTo(self.toon.inventory.storePurchaseFrame)
         self.statusLabel.reparentTo(self.toon.inventory.storePurchaseFrame)
+        # Noah Hensley
+        self.refillGags.reparentTo(self.toon.inventory.storePurchaseFrame)
         self.timer.countdown(self.remain, self.__timerExpired)
 
     def exitPurchase(self):
@@ -49,4 +56,6 @@ class ClerkPurchase(PurchaseBase):
         self.backToPlayground.reparentTo(self.frame)
         self.pointDisplay.reparentTo(self.frame)
         self.statusLabel.reparentTo(self.frame)
+        # Noah Hensley
+        self.refillGags.reparentTo(self.frame)
         self.ignore('purchaseStateChange')

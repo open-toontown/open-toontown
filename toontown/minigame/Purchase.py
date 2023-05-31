@@ -23,6 +23,9 @@ COUNT_SFX_START_T = 0.079
 OVERMAX_SFX_MIN_DELAY = 0.067
 OVERMAX_SFX_START_T = 0.021
 
+# Noah Hensley
+# Purchase is used in Trolley, NOT Gag Shops
+
 class Purchase(PurchaseBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('Purchase')
 
