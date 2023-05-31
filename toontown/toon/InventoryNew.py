@@ -757,7 +757,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         totalProps = self.totalProps
         maxProps = self.toon.getMaxCarry()
         self.deleteEnterButton.show()
-        self.deleteEnterButton.setPos(-0.55, 0, -0.91)
+        self.deleteEnterButton.setPos(-0.83, 0, -0.91)  # Noah Hensley
         self.deleteEnterButton.setScale(0.75)
         self.deleteExitButton.hide()
         self.deleteExitButton.setPos(-0.55, 0, -0.91)

@@ -30,8 +30,6 @@ class ClerkPurchase(PurchaseBase):
     def unload(self):
         PurchaseBase.unload(self)
         del self.backToPlayground
-        # Noah Hensley
-        del self.refillGags
         del self.timer
 
     def __handleBackToPlayground(self):

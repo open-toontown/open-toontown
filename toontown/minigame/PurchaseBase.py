@@ -31,7 +31,7 @@ class PurchaseBase(StateData.StateData):
         self.pointDisplay = DirectLabel(parent=self.frame, relief=None, pos=(-1.15, 0.0, 0.16), text=str(self.toon.getMoney()), text_scale=0.2, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_pos=(0, -0.1, 0), image=self.jarImage, text_font=ToontownGlobals.getSignFont())
         self.statusLabel = DirectLabel(parent=self.frame, relief=None, pos=(-0.25, 0, 0.625), text=TTLocalizer.GagShopYouHave % self.toon.getMoney(), text_scale=TTLocalizer.PBstatusLabel, text_fg=(0.05, 0.14, 0.4, 1))
         # Noah Hensley
-        self.refillGags = DirectButton(parent=self.frame, relief=None, scale=1.04, pos=(-0.25, 0.0, -0.5), image=(
+        self.refillGags = DirectButton(parent=self.frame, relief=None, scale=0.85, pos=(-0.6, 0, -0.25), image=(
         purchaseModels.find('**/PurchScrn_BTN_UP'), purchaseModels.find('**/PurchScrn_BTN_DN'),
         purchaseModels.find('**/PurchScrn_BTN_RLVR')), text=TTLocalizer.GagShopRefillButton, text_fg=(0, 0.1, 0.7, 1),
                                        text_scale=0.05, text_pos=(0, 0.015, 0), command=self.__handleRefill)
