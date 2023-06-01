@@ -613,6 +613,8 @@ class Purchase(PurchaseBase):
         self.backToPlayground.reparentTo(self.toon.inventory.purchaseFrame)
         self.pointDisplay.reparentTo(self.toon.inventory.purchaseFrame)
         self.statusLabel.reparentTo(self.toon.inventory.purchaseFrame)
+        # Noah Hensley
+        self.refillGags.reparentTo(self.toon.inventory.purchaseFrame)
         for headFrame in self.headFrames:
             headFrame[1].show()
             headFrame[1].reparentTo(self.toon.inventory.purchaseFrame)
@@ -653,6 +655,8 @@ class Purchase(PurchaseBase):
         self.backToPlayground.reparentTo(self.frame)
         self.pointDisplay.reparentTo(self.frame)
         self.statusLabel.reparentTo(self.frame)
+        # Noah Hensley
+        self.refillGags.reparentTo(self.frame)
         self.ignore('purchaseStateChange')
         base.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
         if base.autoPlayAgain or self.doMetagamePlayAgain():
