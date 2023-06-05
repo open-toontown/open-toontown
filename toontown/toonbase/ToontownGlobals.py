@@ -312,6 +312,18 @@ Hoods = (DonaldsDock,
  CashbotHQ,
  LawbotHQ,
  GolfZone)
+
+# Noah Hensley
+HoodToListIndexMapper = {
+    ToontownCentral: 0,
+    DonaldsDock: 1,
+    DaisyGardens: 2,
+    MinniesMelodyland: 3,
+    TheBrrrgh: 4,
+    DonaldsDreamland: 5,
+    OutdoorZone: 6
+}
+
 HoodsForTeleportAll = (DonaldsDock,
  ToontownCentral,
  TheBrrrgh,
