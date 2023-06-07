@@ -3,6 +3,9 @@ from toontown.toonbase import ToontownGlobals
 
 class DistributedSZTreasureAI(DistributedTreasureAI.DistributedTreasureAI):
 
+    # Noah Hensley
+    # This class is the parent for all other Distributed Treasure AI classes for playgrounds
+
     def __init__(self, air, treasurePlanner, x, y, z):
         DistributedTreasureAI.DistributedTreasureAI.__init__(self, air, treasurePlanner, x, y, z)
         self.healAmount = treasurePlanner.healAmount
@@ -21,3 +24,5 @@ class DistributedSZTreasureAI(DistributedTreasureAI.DistributedTreasureAI):
                     av.toonUp(self.healAmount * 2)
                 else:
                     av.toonUp(self.healAmount)
+                # Noah Hensley
+                av.treasureNumIncrement()

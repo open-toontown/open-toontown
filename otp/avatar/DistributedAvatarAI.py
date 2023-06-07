@@ -11,10 +11,16 @@ class DistributedAvatarAI(DistributedNodeAI.DistributedNodeAI):
         DistributedNodeAI.DistributedNodeAI.__init__(self, air)
         self.hp = 0
         self.maxHp = 0
+        self.treasureNums = [58, 58, 58, 58, 58, 58, 58]
 
     def b_setName(self, name):
         self.setName(name)
         self.d_setName(name)
+
+    # Noah Hensley
+    def b_setTeasureNums(self, treasureNumsInput):
+        self.treasureNums = treasureNumsInput
+        self.d_setTreasureNums(treasureNumsInput)
 
     def d_setName(self, name):
         self.sendUpdate('setName', [name])
@@ -44,6 +50,10 @@ class DistributedAvatarAI(DistributedNodeAI.DistributedNodeAI):
 
     def d_setHp(self, hp):
         self.sendUpdate('setHp', [hp])
+
+    # Noah Hensley
+    def d_setTreasureNums(self, treasureNumsInput):
+        self.sendUpdate('setHoodTreasuresObtained', [treasureNumsInput])
 
     def setHp(self, hp):
         self.hp = hp
@@ -82,6 +92,11 @@ class DistributedAvatarAI(DistributedNodeAI.DistributedNodeAI):
             return
         self.hp = min(self.hp + num, self.maxHp)
         self.b_setHp(self.hp)
+
+    # Noah Hensley
+    def treasureNumIncrement(self, zoneId = 1000):
+        # TODO: Increment element in treasure list here, using the zoneID and HoodToListIndexMapper from globals
+        self.d_setTreasureNums(self.treasureNums)
 
     def getRadius(self):
         return OTPGlobals.AvatarDefaultRadius
