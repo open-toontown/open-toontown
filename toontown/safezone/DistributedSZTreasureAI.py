@@ -25,4 +25,5 @@ class DistributedSZTreasureAI(DistributedTreasureAI.DistributedTreasureAI):
                 else:
                     av.toonUp(self.healAmount)
                 # Noah Hensley
-                av.treasureNumIncrement()
+                # av.incrementHoodTreasuresObtained()
+                av.incrementTreasuresObtained()

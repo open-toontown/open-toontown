@@ -4,6 +4,7 @@ from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.distributed import DistributedNodeAI
 from direct.task import Task
+from toontown.toonbase.ToontownGlobals import *  # Noah Hensley
 
 class DistributedAvatarAI(DistributedNodeAI.DistributedNodeAI):
 
@@ -11,13 +12,15 @@ class DistributedAvatarAI(DistributedNodeAI.DistributedNodeAI):
         DistributedNodeAI.DistributedNodeAI.__init__(self, air)
         self.hp = 0
         self.maxHp = 0
-        self.treasureNums = [58, 58, 58, 58, 58, 58, 58]
+        self.treasureNums = []
+        self.treasures = 0
 
     def b_setName(self, name):
         self.setName(name)
         self.d_setName(name)
 
     # Noah Hensley
+    # TODO: This function is probably unused; remove and test if all runs well
     def b_setTeasureNums(self, treasureNumsInput):
         self.treasureNums = treasureNumsInput
         self.d_setTreasureNums(treasureNumsInput)
@@ -41,6 +44,42 @@ class DistributedAvatarAI(DistributedNodeAI.DistributedNodeAI):
     def setMaxHp(self, maxHp):
         self.maxHp = maxHp
 
+    # Noah Hensley
+    def b_setHoodTreasuresObtained(self, treasureNumsInput):
+        self.d_setHoodTreasuresObtained(treasureNumsInput)
+        self.setHoodTreasuresObtained(treasureNumsInput)
+
+    # Noah Hensley
+    def d_setHoodTreasuresObtained(self, treasureNumsInput):
+        self.sendUpdate('setHoodTreasuresObtained', [treasureNumsInput])
+
+    # Noah Hensley
+    def setHoodTreasuresObtained(self, treasureNumsInput):
+        self.treasureNums = treasureNumsInput
+
+    # Noah Hensley
+    def incrementHoodTreasuresObtained(self, zoneId=1000):
+        # TODO: Increment element in treasure list here, using the zoneID and HoodToListIndexMapper from globals
+        self.d_setHoodTreasuresObtained(self.treasureNums)
+
+    # Noah Hensley
+    def b_setTreasuresObtained(self, treasureNumsInput):
+        self.d_setHoodTreasuresObtained(treasureNumsInput)
+        self.setHoodTreasuresObtained(treasureNumsInput)
+
+    # Noah Hensley
+    def d_setTreasuresObtained(self, treasureNumsInput):
+        self.sendUpdate('setTreasuresObtained', [treasureNumsInput])
+
+    # Noah Hensley
+    def setTreasuresObtained(self, treasureInput):
+        self.treasures = treasureInput
+
+    # Noah Hensley
+    def incrementTreasuresObtained(self):
+        self.treasures += 1
+        self.d_setTreasuresObtained(self.treasures)
+
     def getMaxHp(self):
         return self.maxHp
 
@@ -50,10 +89,6 @@ class DistributedAvatarAI(DistributedNodeAI.DistributedNodeAI):
 
     def d_setHp(self, hp):
         self.sendUpdate('setHp', [hp])
-
-    # Noah Hensley
-    def d_setTreasureNums(self, treasureNumsInput):
-        self.sendUpdate('setHoodTreasuresObtained', [treasureNumsInput])
 
     def setHp(self, hp):
         self.hp = hp
@@ -92,11 +127,6 @@ class DistributedAvatarAI(DistributedNodeAI.DistributedNodeAI):
             return
         self.hp = min(self.hp + num, self.maxHp)
         self.b_setHp(self.hp)
-
-    # Noah Hensley
-    def treasureNumIncrement(self, zoneId = 1000):
-        # TODO: Increment element in treasure list here, using the zoneID and HoodToListIndexMapper from globals
-        self.d_setTreasureNums(self.treasureNums)
 
     def getRadius(self):
         return OTPGlobals.AvatarDefaultRadius

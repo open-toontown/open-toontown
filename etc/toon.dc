@@ -464,8 +464,9 @@ dclass DistributedToon : DistributedPlayer {
   setDefaultZone(uint32 = 0) required ownrecv db;
   setShtickerBook(blob = []) required ownrecv db;
   setZonesVisited(uint32[] = [2000]) required ownrecv db;
-  setHoodsVisited(uint32[] = [2000]) required ownrecv db;
+  setHoodsVisited(uint32[] = [2000]) required broadcast ownrecv db;
   setHoodTreasuresObtained(uint32[] = [0, 0, 0, 0, 0, 0, 0]) required ownrecv db;
+  setTreasuresObtained(uint16 = 0) required ownrecv db;
   setInterface(blob = []) required ownrecv db;
   setLastHood(uint32 = 0) required ownrecv db;
   setTutorialAck(uint8 = 0) required ownrecv db;
