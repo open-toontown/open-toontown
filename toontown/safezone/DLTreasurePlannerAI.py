@@ -6,6 +6,7 @@ class DLTreasurePlannerAI(RegenTreasurePlannerAI.RegenTreasurePlannerAI):
     def __init__(self, zoneId):
         self.healAmount = 12
         RegenTreasurePlannerAI.RegenTreasurePlannerAI.__init__(self, zoneId, DistributedDLTreasureAI.DistributedDLTreasureAI, 'DLTreasurePlanner', 20, 2)
+        self.hoodId = DonaldsDreamland  # Noah Hensley
         return None
 
     def initSpawnPoints(self):

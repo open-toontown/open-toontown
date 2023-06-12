@@ -58,8 +58,8 @@ class DistributedAvatarAI(DistributedNodeAI.DistributedNodeAI):
         self.treasureNums = treasureNumsInput
 
     # Noah Hensley
-    def incrementHoodTreasuresObtained(self, zoneId=1000):
-        # TODO: Increment element in treasure list here, using the zoneID and HoodToListIndexMapper from globals
+    def incrementHoodTreasuresObtained(self, hoodId):
+        self.treasureNums[HoodToListIndexMapper[hoodId]] += 1
         self.d_setHoodTreasuresObtained(self.treasureNums)
 
     # Noah Hensley

@@ -6,6 +6,7 @@ class DGTreasurePlannerAI(RegenTreasurePlannerAI.RegenTreasurePlannerAI):
     def __init__(self, zoneId):
         self.healAmount = 10
         RegenTreasurePlannerAI.RegenTreasurePlannerAI.__init__(self, zoneId, DistributedDGTreasureAI.DistributedDGTreasureAI, 'DGTreasurePlanner', 15, 2)
+        self.hoodId = DaisyGardens  # Noah Hensley
         return None
 
     def initSpawnPoints(self):

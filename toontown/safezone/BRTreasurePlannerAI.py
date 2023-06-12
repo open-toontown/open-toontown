@@ -6,6 +6,7 @@ class BRTreasurePlannerAI(RegenTreasurePlannerAI.RegenTreasurePlannerAI):
     def __init__(self, zoneId):
         self.healAmount = 12
         RegenTreasurePlannerAI.RegenTreasurePlannerAI.__init__(self, zoneId, DistributedBRTreasureAI.DistributedBRTreasureAI, 'BRTreasurePlanner', 20, 2)
+        self.hoodId = TheBrrrgh  # Noah Hensley
         return None
 
     def initSpawnPoints(self):

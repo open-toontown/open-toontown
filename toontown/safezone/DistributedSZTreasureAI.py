@@ -9,6 +9,8 @@ class DistributedSZTreasureAI(DistributedTreasureAI.DistributedTreasureAI):
     def __init__(self, air, treasurePlanner, x, y, z):
         DistributedTreasureAI.DistributedTreasureAI.__init__(self, air, treasurePlanner, x, y, z)
         self.healAmount = treasurePlanner.healAmount
+        self.zoneId = treasurePlanner.zoneId
+        self.hoodId = treasurePlanner.hoodId
 
     def validAvatar(self, av):
         return av.hp >= -1 and av.hp < av.maxHp
@@ -25,5 +27,5 @@ class DistributedSZTreasureAI(DistributedTreasureAI.DistributedTreasureAI):
                 else:
                     av.toonUp(self.healAmount)
                 # Noah Hensley
-                # av.incrementHoodTreasuresObtained()
+                av.incrementHoodTreasuresObtained(self.hoodId)
                 av.incrementTreasuresObtained()
