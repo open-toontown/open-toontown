@@ -52,6 +52,7 @@ from toontown.toon import ToonDNA
 from . import DistributedToon
 from . import Toon
 from . import LaffMeter
+from . import TreasureCounter  # Noah Hensley
 from toontown.quest import QuestMap
 from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
 WantNewsPage = base.config.GetBool('want-news-page', ToontownGlobals.DefaultWantNewsPageSetting)
@@ -62,6 +63,9 @@ AdjustmentForNewsButton = -0.275
 ClaraBaseXPos = 1.45
 if (__debug__):
     import pdb
+
+# Noah Hensley
+# This is the localAvatar object that is part of base
 
 class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     neverDisable = 1
@@ -243,7 +247,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def disable(self):
         self.laffMeter.destroy()
+        self.treasureCounter.destroy()  # Noah Hensley
         del self.laffMeter
+        del self.treasureCounter  # Noah Hensley
         self.questMap.destroy()
         self.questMap = None
         if hasattr(self, 'purchaseButton'):
@@ -375,6 +381,12 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         else:
             self.laffMeter.setPos(-1.2, 0.0, -0.87)
         self.laffMeter.stop()
+        # Noah Hensley
+        self.treasureCounter = TreasureCounter.TreasureCounter()
+        self.treasureCounter.setAvatar(self)
+        self.treasureCounter.setScale(0.075)
+        self.treasureCounter.setPos(-1.2, 0.0, -0.87)  # TODO: Change position later
+        self.treasureCounter.stop()
         self.questMap = QuestMap.QuestMap(self)
         self.questMap.stop()
         if not base.cr.isPaid():

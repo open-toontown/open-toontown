@@ -6,18 +6,14 @@ from toontown.toonbase import ToontownIntervals
 class LaffMeter(DirectFrame):
     deathColor = Vec4(0.58039216, 0.80392157, 0.34117647, 1.0)
 
-    def __init__(self, avdna, hp, maxHp, hoodTreasuresObtained = 0, hoodId = 0):  # Noah Hensley
+    def __init__(self, avdna, hp, maxHp):
         DirectFrame.__init__(self, relief=None, sortOrder=50)
         self.initialiseoptions(LaffMeter)
         self.container = DirectFrame(parent=self, relief=None)
         self.style = avdna
-        # Noah Hensley
-        # av refers to DistributedAvatar class
         self.av = None
         self.hp = hp
         self.maxHp = maxHp
-        self.hoodTreasuresObtained = hoodTreasuresObtained
-        self.hoodId = hoodId
         self.__obscured = 0
         if self.style.type == 't':
             self.isToon = 1
@@ -75,12 +71,6 @@ class LaffMeter(DirectFrame):
             self.tooth6 = DirectFrame(parent=self.openSmile, relief=None, image=gui.find('**/tooth_6'))
             self.maxLabel = DirectLabel(parent=self.eyes, relief=None, pos=(0.442, 0, 0.051), text='120', text_scale=0.4, text_font=ToontownGlobals.getInterfaceFont())
             self.hpLabel = DirectLabel(parent=self.eyes, relief=None, pos=(-0.398, 0, 0.051), text='120', text_scale=0.4, text_font=ToontownGlobals.getInterfaceFont())
-            # Noah Hensley
-            # TODO: Fix positioning for these labels
-            self.treasureLabel0 = DirectLabel(parent=self.container, relief=None, pos=(1.5, 0, 2.351), text='120',
-                                       text_scale=0.8, text_font=ToontownGlobals.getInterfaceFont())
-            self.treasureLabel1 = DirectLabel(parent=self.container, relief=None, pos=(-0.9, 0, 1.451), text='120',
-                                              text_scale=0.8, text_font=ToontownGlobals.getInterfaceFont())
             self.teeth = [self.tooth6,
              self.tooth5,
              self.tooth4,
@@ -119,9 +109,6 @@ class LaffMeter(DirectFrame):
             del self.fractions
             del self.maxLabel
             del self.hpLabel
-            # Noah Hensley
-            del self.treasureLabel0
-            del self.treasureLabel1
         DirectFrame.destroy(self)
 
     def adjustTeeth(self):
@@ -137,10 +124,6 @@ class LaffMeter(DirectFrame):
             if self.maxLabel['text'] != str(self.maxHp) or self.hpLabel['text'] != str(self.hp):
                 self.maxLabel['text'] = str(self.maxHp)
                 self.hpLabel['text'] = str(self.hp)
-                # Noah Hensley
-                self.treasureLabel0['text'] = 'Treasures Collected'
-                # TODO: Instead of displaying this list, get hoodId and display corresponding element from list
-                self.treasureLabel1['text'] = 'Here: ' + str(self.hoodTreasuresObtained)
 
     def animatedEffect(self, delta):
         if delta == 0 or self.av == None:
@@ -177,9 +160,6 @@ class LaffMeter(DirectFrame):
                 self.eyes.show()
                 self.maxLabel.show()
                 self.hpLabel.show()
-                # Noah Hensley
-                self.treasureLabel0.show()
-                self.treasureLabel1.show()
                 self.container['image_color'] = self.color
                 self.adjustTeeth()
             self.adjustText()
@@ -191,8 +171,6 @@ class LaffMeter(DirectFrame):
         if self.av:
             self.hp = self.av.hp
             self.maxHp = self.av.maxHp
-            self.hoodTreasuresObtained = self.av.hoodTreasuresObtained
-
         if self.isToon:
             if not self.__obscured:
                 self.show()
