@@ -33,6 +33,9 @@ class DistributedAvatar(DistributedActor, Avatar):
         self.hpText = None
         self.hp = None
         self.maxHp = None
+        # Noah Hensley
+        self.hoodTreasuresObtained = None
+        self.hoodId = None
         self.hpTextSeq = None
         return
 
@@ -153,6 +156,14 @@ class DistributedAvatar(DistributedActor, Avatar):
 
     def getMaxHp(self):
         return self.maxHp
+
+    # Noah Hensley
+    def setHoodTreasuresObtained(self, hoodTreasuredObtained):
+        self.hoodTreasuresObtained = hoodTreasuredObtained
+
+    # Noah Hensley
+    def getHoodTrasuredObtaines(self):
+        return self.hoodTreasuredObtained
 
     def getName(self):
         return Avatar.getName(self)
