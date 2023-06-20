@@ -42,10 +42,10 @@ class TreasureCounter(DirectFrame):
 
     def start(self):
         self.zoneId = self.av.getZoneId()
-        if self.zoneId == 22000:  # ID for welcome valley is set to TTC
-            self.zoneId = 2000
+        if self.zoneId == WelcomeValleyBegin:  # ID for welcome valley is set to TTC
+            self.zoneId = ToontownCentral
 
-        if self.zoneId in HoodToListIndexMapper:  # This ensures the text only shows in playgrounds
+        if self.zoneId in HoodToListIndexMapper:  # This ensures the text only shows in playgrounds with treasures
             if self.av:
                 self.hoodTreasuresObtained = self.av.hoodTreasuresObtained
 

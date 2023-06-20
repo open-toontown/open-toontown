@@ -19,12 +19,6 @@ class DistributedAvatarAI(DistributedNodeAI.DistributedNodeAI):
         self.setName(name)
         self.d_setName(name)
 
-    # Noah Hensley
-    # TODO: This function is probably unused; remove and test if all runs well
-    def b_setTeasureNums(self, treasureNumsInput):
-        self.treasureNums = treasureNumsInput
-        self.d_setTreasureNums(treasureNumsInput)
-
     def d_setName(self, name):
         self.sendUpdate('setName', [name])
 
