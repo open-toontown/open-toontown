@@ -2464,7 +2464,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         newText = ' '.join(newwords)
         return newText
 
-    def toonUp(self, hpGained, hasInteractivePropBonus = False, isTreasure = False):
+    def toonUp(self, hpGained, hasInteractivePropBonus = False):
         if self.hp == None or hpGained < 0:
             return
         oldHp = self.hp

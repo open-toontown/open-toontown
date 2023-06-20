@@ -42,6 +42,8 @@ class TreasureCounter(DirectFrame):
 
     def start(self):
         self.zoneId = self.av.getZoneId()
+        if self.zoneId == 22000:  # ID for welcome valley is set to TTC
+            self.zoneId = 2000
 
         if self.zoneId in HoodToListIndexMapper:  # This ensures the text only shows in playgrounds
             if self.av:
@@ -51,8 +53,6 @@ class TreasureCounter(DirectFrame):
                 self.show()
 
             self.treasureLabel.show()
-
-            # TODO: Put string literals in Localizer
             self.treasureLabel['text'] = TTLocalizer.TreasureLabelText + str(self.hoodTreasuresObtained[HoodToListIndexMapper[self.zoneId]])
         else:
             self.stop()
