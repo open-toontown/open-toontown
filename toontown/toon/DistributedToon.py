@@ -2464,7 +2464,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         newText = ' '.join(newwords)
         return newText
 
-    def toonUp(self, hpGained, hasInteractivePropBonus = False):
+    def toonUp(self, hpGained, hasInteractivePropBonus = False, isTreasure = False):
         if self.hp == None or hpGained < 0:
             return
         oldHp = self.hp
@@ -2476,6 +2476,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if hpGained > 0:
             self.showHpText(hpGained, hasInteractivePropBonus=hasInteractivePropBonus)
             self.hpChange(quietly=0)
+        base.localAvatar.treasureCounter.start()  # Noah Hensley
         return
 
     def showHpText(self, number, bonus = 0, scale = 1, hasInteractivePropBonus = False):

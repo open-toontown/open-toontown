@@ -4882,6 +4882,7 @@ EmoteSleep = 'Sleepy'
 TIPPageTitle = 'TIP'
 SuitBaseNameWithLevel = '%(name)s\n%(dept)s\nLevel %(level)s'
 HealthForceAcknowledgeMessage = 'You cannot leave the playground until your Laff meter is smiling!'
+TreasureLabelText = 'Treasures Collected\nHere: '  # Noah Hensley
 InventoryTotalGags = 'Total gags\n%d / %d'
 InventroyPinkSlips = '%s Pink Slips'
 InventroyPinkSlip = '1 Pink Slip'

@@ -1,13 +1,8 @@
 # Noah Hensley
 
-from panda3d.core import Vec4
 from direct.gui.DirectGui import DirectFrame, DirectLabel
 from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase import ToontownIntervals
-
-# TODO: Have this class be updated every time Toon collects a treasure
-# At the moment, it's just updated when it's initialized in LocalToon and when start is called in PublicWalk
-# Perhaps start could be called when the Toon collects a treasure
+from toontown.toonbase import TTLocalizer
 
 class TreasureCounter(DirectFrame):
 
@@ -18,7 +13,7 @@ class TreasureCounter(DirectFrame):
 
         self.av = None
         self.hoodTreasuresObtained = None
-        self.hoodId = None
+        self.zoneId = None
         self.__obscured = 0
 
         self.treasureLabel = None
@@ -34,29 +29,33 @@ class TreasureCounter(DirectFrame):
         return self.__obscured
 
     def load(self):
-        self.treasureLabel = DirectLabel(parent=self.container, relief=None, pos=(1.8, 0, 2.351), text='120',
+        # Original pos: 1.8, 0, 2.351
+        self.treasureLabel = DirectLabel(parent=self.container, relief=None, pos=(5.85, 0, -0.0), text='120',
                                    text_scale=0.8, text_font=getInterfaceFont())
 
     def destroy(self):
         del self.av
         del self.hoodTreasuresObtained
-        del self.hoodId
+        del self.zoneId
 
         DirectFrame.destroy(self)
 
-    def start(self, hoodId = 0):
-        self.hoodId = hoodId
-        if self.av:
-            self.hoodTreasuresObtained = self.av.hoodTreasuresObtained
+    def start(self):
+        self.zoneId = self.av.getZoneId()
 
-        if not self.__obscured:
-            self.show()
+        if self.zoneId in HoodToListIndexMapper:  # This ensures the text only shows in playgrounds
+            if self.av:
+                self.hoodTreasuresObtained = self.av.hoodTreasuresObtained
 
-        self.treasureLabel.show()
+            if not self.__obscured:
+                self.show()
 
-        # TODO: Put string literals in Localizer
-        # TODO: Instead of displaying this list, get hoodId and display corresponding element from list
-        self.treasureLabel['text'] = 'Treasures Collected\nHere: ' + str(self.hoodTreasuresObtained)
+            self.treasureLabel.show()
+
+            # TODO: Put string literals in Localizer
+            self.treasureLabel['text'] = TTLocalizer.TreasureLabelText + str(self.hoodTreasuresObtained[HoodToListIndexMapper[self.zoneId]])
+        else:
+            self.stop()
 
     def stop(self):
         self.hide()

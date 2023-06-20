@@ -20,12 +20,13 @@ class DistributedSZTreasureAI(DistributedTreasureAI.DistributedTreasureAI):
         if avId in self.air.doId2do:
             av = self.air.doId2do[avId]
             if self.validAvatar(av):
+                # Noah Hensley
+                av.incrementHoodTreasuresObtained(self.hoodId)
+                av.incrementTreasuresObtained()
                 if av.hp == -1:
                     av.hp = 0
                 if ToontownGlobals.VALENTINES_DAY in simbase.air.holidayManager.currentHolidays:
                     av.toonUp(self.healAmount * 2)
                 else:
                     av.toonUp(self.healAmount)
-                # Noah Hensley
-                av.incrementHoodTreasuresObtained(self.hoodId)
-                av.incrementTreasuresObtained()
+
