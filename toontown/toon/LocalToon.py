@@ -385,7 +385,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.treasureCounter = TreasureCounter.TreasureCounter()
         self.treasureCounter.setAvatar(self)
         self.treasureCounter.setScale(0.075)
-        self.treasureCounter.setPos(-1.2, 0.0, -0.87)  # TODO: Change position later
+        self.treasureCounter.setPos(-1.2, 0.0, -0.87)
         self.treasureCounter.stop()
         self.questMap = QuestMap.QuestMap(self)
         self.questMap.stop()
