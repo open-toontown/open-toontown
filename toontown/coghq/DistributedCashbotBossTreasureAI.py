@@ -4,7 +4,7 @@ class DistributedCashbotBossTreasureAI(DistributedSZTreasureAI.DistributedSZTrea
 
     def __init__(self, air, boss, goon, style, fx, fy, fz):
         pos = goon.getPos()
-        DistributedSZTreasureAI.DistributedSZTreasureAI.__init__(self, air, boss, pos[0], pos[1], 0)
+        DistributedSZTreasureAI.DistributedSZTreasureAI.__init__(self, air, boss, pos[0], pos[1], 0, True)  # Noah Hensley
         self.goonId = goon.doId
         self.style = style
         self.finalPosition = (fx, fy, fz)

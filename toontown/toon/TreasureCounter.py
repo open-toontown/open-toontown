@@ -3,6 +3,7 @@
 from direct.gui.DirectGui import DirectFrame, DirectLabel
 from toontown.toonbase.ToontownGlobals import *
 from toontown.toonbase import TTLocalizer
+from toontown.hood import ZoneUtil
 
 class TreasureCounter(DirectFrame):
 
@@ -42,7 +43,7 @@ class TreasureCounter(DirectFrame):
 
     def start(self):
         self.zoneId = self.av.getZoneId()
-        if self.zoneId == WelcomeValleyBegin:  # ID for welcome valley is set to TTC
+        if ZoneUtil.isWelcomeValley(self.zoneId):  # ID for welcome valley is set to TTC
             self.zoneId = ToontownCentral
 
         if self.zoneId in HoodToListIndexMapper:  # This ensures the text only shows in playgrounds with treasures
@@ -53,7 +54,7 @@ class TreasureCounter(DirectFrame):
                 self.show()
 
             self.treasureLabel.show()
-            self.treasureLabel['text'] = TTLocalizer.TreasureLabelText + str(self.hoodTreasuresObtained[HoodToListIndexMapper[self.zoneId]])
+            self.treasureLabel['text'] = TTLocalizer.TreasureLabelText % self.hoodTreasuresObtained[HoodToListIndexMapper[self.zoneId]]
         else:
             self.stop()
 

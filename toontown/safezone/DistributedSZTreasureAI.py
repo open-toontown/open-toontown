@@ -6,11 +6,16 @@ class DistributedSZTreasureAI(DistributedTreasureAI.DistributedTreasureAI):
     # Noah Hensley
     # This class is the parent for all other Distributed Treasure AI classes for playgrounds
 
-    def __init__(self, air, treasurePlanner, x, y, z):
+    def __init__(self, air, treasurePlanner, x, y, z, isBoss = False):
         DistributedTreasureAI.DistributedTreasureAI.__init__(self, air, treasurePlanner, x, y, z)
         self.healAmount = treasurePlanner.healAmount
-        self.zoneId = treasurePlanner.zoneId
-        self.hoodId = treasurePlanner.hoodId
+
+        # Noah Hensley
+        self.isBoss = isBoss
+        if not self.isBoss:
+            self.hoodId = treasurePlanner.hoodId
+        else:
+            self.hoodId = None  # Just to ensure this class always has a hoodId member variable
 
     def validAvatar(self, av):
         return av.hp >= -1 and av.hp < av.maxHp
@@ -21,8 +26,9 @@ class DistributedSZTreasureAI(DistributedTreasureAI.DistributedTreasureAI):
             av = self.air.doId2do[avId]
             if self.validAvatar(av):
                 # Noah Hensley
-                av.incrementHoodTreasuresObtained(self.hoodId)
-                av.incrementTreasuresObtained()
+                if not self.isBoss:
+                    av.incrementHoodTreasuresObtained(self.hoodId)
+                    av.incrementTreasuresObtained()
                 if av.hp == -1:
                     av.hp = 0
                 if ToontownGlobals.VALENTINES_DAY in simbase.air.holidayManager.currentHolidays:
