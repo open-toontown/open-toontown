@@ -4,6 +4,9 @@ from direct.task import Task
 from toontown.effects import DistributedFireworkShowAI
 
 class HolidayBaseAI:
+    """
+    Base class for all holidays
+    """
 
     def __init__(self, air, holidayId):
         self.air = air
@@ -14,3 +17,6 @@ class HolidayBaseAI:
 
     def stop(self):
         pass
+
+
+        

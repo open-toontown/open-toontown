@@ -117,14 +117,15 @@ class ToontownAIRepository(ToontownInternalRepository):
 
         # Setup necessary files and things.
         self.setupFiles()
-
+        
+        # Create our global objects.
+        self.notify.info('Creating global objects...')
+        self.createGlobals()
         # Create our local objects.
         self.notify.info('Creating local objects...')
         self.createLocals()
 
-        # Create our global objects.
-        self.notify.info('Creating global objects...')
-        self.createGlobals()
+
 
         # Create our zones.
         self.notify.info('Creating zones...')
