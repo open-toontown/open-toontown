@@ -1,1 +1,5 @@
-from .ToonBase import *
+__all__ = ['base']
+
+from .ToonBase import ToonBase
+
+base = ToonBase()

@@ -1,11 +1,19 @@
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import Point3, Vec3
+
+from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.interval.IntervalGlobal import LerpHprInterval
+from direct.showbase.MessengerGlobal import messenger
+from direct.showbase.PythonUtil import fitSrcAngle2Dest
+from direct.task.TaskManagerGlobal import taskMgr
+
 from otp.otpbase import OTPGlobals
-from direct.interval.IntervalGlobal import *
-from . import ArrowKeys
-from direct.task.Task import Task
+
+from toontown.minigame.ArrowKeys import ArrowKeys
+from toontown.toonbase.ToonBaseGlobal import base
+
 
 class TwoDDrive:
-    notify = DirectNotifyGlobal.directNotify.newCategory('TwoDDrive')
+    notify = directNotify.newCategory('TwoDDrive')
     TASK_NAME = 'TwoDDriveTask'
     SET_ATREST_HEADING_TASK = 'setAtRestHeadingTask'
 
@@ -17,7 +25,7 @@ class TwoDDrive:
         self.priority = priority
         self.setHeading = setHeading
         self.upHeading = upHeading
-        self.arrowKeys = ArrowKeys.ArrowKeys()
+        self.arrowKeys = ArrowKeys()
         self.wasUpReleased = True
         self.lt = base.localAvatar
         base.localAvatar.useTwoDControls()
@@ -25,7 +33,6 @@ class TwoDDrive:
         self.ONE_JUMP_PER_UP_PRESSED = True
         self.lastAction = None
         self.isMovingX = False
-        return
 
     def destroy(self):
         self.game = None
@@ -35,7 +42,6 @@ class TwoDDrive:
         del self.arrowKeys
         del self.customCollisionCallback
         self.lastAction = None
-        return
 
     def start(self):
         self.notify.debug('start')
@@ -47,6 +53,7 @@ class TwoDDrive:
     def __placeToonHOG(self, pos, h = None):
         if h == None:
             h = self.lt.getH()
+
         self.lt.setPos(pos)
         self.lt.setH(h)
         self.lastPos = pos
@@ -54,7 +61,6 @@ class TwoDDrive:
         self.oldAtRestHeading = h
         self.lastXVel = 0
         self.lastYVel = 0
-        return
 
     def stop(self):
         self.notify.debug('stop')
@@ -64,7 +70,9 @@ class TwoDDrive:
         if hasattr(self, 'turnLocalToonIval'):
             if self.turnLocalToonIval.isPlaying():
                 self.turnLocalToonIval.pause()
+
             del self.turnLocalToonIval
+
         base.localAvatar.setSpeed(0, 0)
         base.localAvatar.stopSound()
 
@@ -78,16 +86,19 @@ class TwoDDrive:
             elif self.arrowKeys.upPressed() and self.wasUpReleased:
                 self.wasUpReleased = False
                 if not self.game.isHeadInFloor:
-                    if localAvatar.controlManager.currentControls == localAvatar.controlManager.get('twoD'):
+                    if base.localAvatar.controlManager.currentControls == base.localAvatar.controlManager.get('twoD'):
                         base.localAvatar.controlManager.currentControls.jumpPressed()
         elif self.arrowKeys.upPressed():
             if not self.game.isHeadInFloor:
-                if localAvatar.controlManager.currentControls == localAvatar.controlManager.get('twoD'):
+                if base.localAvatar.controlManager.currentControls == base.localAvatar.controlManager.get('twoD'):
                     base.localAvatar.controlManager.currentControls.jumpPressed()
+
         if self.arrowKeys.leftPressed():
             xVel -= 1
+
         if self.arrowKeys.rightPressed():
             xVel += 1
+
         vel.setX(xVel)
         vel.setY(yVel)
         vel.normalize()
@@ -99,6 +110,7 @@ class TwoDDrive:
         elif self.isMovingX:
             self.isMovingX = False
             messenger.send('avatarStoppedX')
+
         speed = vel.length()
         action = self.lt.setSpeed(speed, 0)
         if action != self.lastAction:
@@ -107,18 +119,21 @@ class TwoDDrive:
                 base.localAvatar.runSound()
             else:
                 base.localAvatar.stopSound()
+
         if self.setHeading:
             self.__handleHeading(xVel, yVel)
+
         toonPos = self.lt.getPos()
-        dt = globalClock.getDt()
+        dt = base.clock.getDt()
         posOffset = vel * dt
         if self.customCollisionCallback:
             toonPos = self.customCollisionCallback(toonPos, toonPos + posOffset)
         else:
             toonPos += posOffset
+
         self.lt.setPos(toonPos)
         self.lastPos = toonPos
-        return Task.cont
+        return task.cont
 
     def __handleHeading(self, xVel, yVel):
         def getHeading(xVel, yVel):
@@ -144,11 +159,13 @@ class TwoDDrive:
                 if ((self.lastXVel and self.lastYVel) and not (xVel and yVel)):
                     def setAtRestHeading(task, self = self, angle = curHeading):
                         self.atRestHeading = angle
-                        return Task.done
+                        return task.done
 
                     taskMgr.doMethodLater(0.05, setAtRestHeading, TwoDDrive.SET_ATREST_HEADING_TASK)
                 else:
                     self.atRestHeading = curHeading
+
                 orientToon(curHeading)
+
         self.lastXVel = xVel
         self.lastYVel = yVel

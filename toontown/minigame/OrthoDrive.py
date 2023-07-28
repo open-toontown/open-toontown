@@ -1,11 +1,18 @@
-from direct.interval.IntervalGlobal import *
-from direct.task.Task import Task
+from panda3d.core import Point3, Vec3
+
+from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.interval.IntervalGlobal import LerpHprInterval
+from direct.showbase.PythonUtil import fitSrcAngle2Dest
+from direct.task.TaskManagerGlobal import taskMgr
+
 from otp.otpbase import OTPGlobals
-from toontown.toonbase.ToonBaseGlobal import *
-from . import ArrowKeys
+
+from toontown.minigame.ArrowKeys import ArrowKeys
+from toontown.toonbase.ToonBaseGlobal import base
+
 
 class OrthoDrive:
-    notify = DirectNotifyGlobal.directNotify.newCategory('OrthoDrive')
+    notify = directNotify.newCategory('OrthoDrive')
     TASK_NAME = 'OrthoDriveTask'
     SET_ATREST_HEADING_TASK = 'setAtRestHeadingTask'
 
@@ -17,7 +24,7 @@ class OrthoDrive:
         self.priority = priority
         self.setHeading = setHeading
         self.upHeading = upHeading
-        self.arrowKeys = ArrowKeys.ArrowKeys()
+        self.arrowKeys = ArrowKeys()
         self.lt = base.localAvatar
         self.instantTurn = instantTurn
 
@@ -31,18 +38,17 @@ class OrthoDrive:
         self.__placeToonHOG(self.lt.getPos())
         taskMgr.add(self.__update, OrthoDrive.TASK_NAME, priority=self.priority)
         self.lastAction = None
-        return
 
     def __placeToonHOG(self, pos, h = None):
         if h == None:
             h = self.lt.getH()
+
         self.lt.setPos(pos)
         self.lt.setH(h)
         self.lastPos = pos
         self.atRestHeading = h
         self.lastXVel = 0
         self.lastYVel = 0
-        return
 
     def stop(self):
         self.notify.debug('stop')
@@ -52,7 +58,9 @@ class OrthoDrive:
         if hasattr(self, 'turnLocalToonIval'):
             if self.turnLocalToonIval.isPlaying():
                 self.turnLocalToonIval.pause()
+
             del self.turnLocalToonIval
+
         base.localAvatar.setSpeed(0, 0)
 
     def __update(self, task):
@@ -61,12 +69,16 @@ class OrthoDrive:
         yVel = 0
         if self.arrowKeys.upPressed():
             yVel += 1
+
         if self.arrowKeys.downPressed():
             yVel -= 1
+
         if self.arrowKeys.leftPressed():
             xVel -= 1
+
         if self.arrowKeys.rightPressed():
             xVel += 1
+
         vel.setX(xVel)
         vel.setY(yVel)
         vel.normalize()
@@ -82,10 +94,12 @@ class OrthoDrive:
                     self.lt.runSound()
                 else:
                     self.lt.stopSound()
+
         if self.setHeading:
             self.__handleHeading(xVel, yVel)
+
         toonPos = self.lt.getPos()
-        dt = globalClock.getDt()
+        dt = base.clock.getDt()
         posOffset = vel * dt
         posOffset += toonPos - self.lastPos
         toonPos = self.lastPos
@@ -94,13 +108,15 @@ class OrthoDrive:
             if posOffsetLen > self.maxFrameMove:
                 posOffset *= self.maxFrameMove
                 posOffset /= posOffsetLen
+
         if self.customCollisionCallback:
             toonPos = self.customCollisionCallback(toonPos, toonPos + posOffset)
         else:
             toonPos = toonPos + posOffset
+
         self.lt.setPos(toonPos)
         self.lastPos = toonPos
-        return Task.cont
+        return task.cont
 
     def __handleHeading(self, xVel, yVel):
         def getHeading(xVel, yVel):
@@ -126,11 +142,13 @@ class OrthoDrive:
                 if ((self.lastXVel and self.lastYVel) and not (xVel and yVel)):
                     def setAtRestHeading(task, self = self, angle = curHeading):
                         self.atRestHeading = angle
-                        return Task.done
+                        return task.done
 
                     taskMgr.doMethodLater(0.05, setAtRestHeading, OrthoDrive.SET_ATREST_HEADING_TASK)
                 else:
                     self.atRestHeading = curHeading
+
                 orientToon(curHeading)
+
         self.lastXVel = xVel
         self.lastYVel = yVel

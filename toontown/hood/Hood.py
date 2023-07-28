@@ -1,24 +1,33 @@
-from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.distributed.ToontownMsgTypes import *
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import StateData
-from direct.task.Task import Task
-from toontown.minigame import Purchase
-from direct.gui import OnscreenText
-from toontown.building import SuitInterior
-from . import QuietZoneState
-from . import ZoneUtil
-from toontown.toonbase import TTLocalizer
-from toontown.toon.Toon import teleportDebug
-from direct.interval.IntervalGlobal import *
+from panda3d.core import (
+    CompassEffect,
+    ModelPool,
+    NodePath,
+    TexturePool,
+    TransparencyAttrib,
+    Vec4
+)
 
-class Hood(StateData.StateData):
-    notify = DirectNotifyGlobal.directNotify.newCategory('Hood')
+from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.fsm.StateData import StateData
+from direct.gui.OnscreenText import OnscreenText
+from direct.interval.IntervalGlobal import Sequence, Wait, Func
+from direct.showbase.MessengerGlobal import messenger
+from direct.showbase.PythonUtil import uniqueName
+from direct.task.TaskManagerGlobal import taskMgr
+
+from toontown.hood import ZoneUtil
+from toontown.hood.QuietZoneState import QuietZoneState
+from toontown.toon.Toon import teleportDebug
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase.ToonBaseGlobal import base
+
+
+class Hood(StateData):
+    notify = directNotify.newCategory('Hood')
 
     def __init__(self, parentFSM, doneEvent, dnaStore, hoodId):
-        StateData.StateData.__init__(self, doneEvent)
+        StateData.__init__(self, doneEvent)
         self.loader = 'not initialized'
         self.parentFSM = parentFSM
         self.dnaStore = dnaStore
@@ -31,21 +40,20 @@ class Hood(StateData.StateData):
         self.holidayStorageDNADict = {}
         self.spookySkyFile = None
         self.halloweenLights = []
-        return
 
     def enter(self, requestStatus):
-        hoodId = requestStatus['hoodId']
         zoneId = requestStatus['zoneId']
         hoodText = self.getHoodText(zoneId)
-        self.titleText = OnscreenText.OnscreenText(hoodText, fg=self.titleColor, font=getSignFont(), pos=(0, -0.5), scale=TTLocalizer.HtitleText, drawOrder=0, mayChange=1)
+        self.titleText = OnscreenText(hoodText, fg=self.titleColor, font=ToontownGlobals.getSignFont(), pos=(0, -0.5), scale=TTLocalizer.HtitleText, drawOrder=0, mayChange=1)
         self.fsm.request(requestStatus['loader'], [requestStatus])
 
     def getHoodText(self, zoneId):
         hoodText = base.cr.hoodMgr.getFullnameFromId(self.id)
-        if self.id != Tutorial:
-            streetName = StreetNames.get(ZoneUtil.getCanonicalBranchZone(zoneId))
+        if self.id != ToontownGlobals.Tutorial:
+            streetName = ToontownGlobals.StreetNames.get(ZoneUtil.getCanonicalBranchZone(zoneId))
             if streetName:
                 hoodText = hoodText + '\n' + streetName[-1]
+
         return hoodText
 
     def spawnTitleText(self, zoneId):
@@ -69,32 +77,35 @@ class Hood(StateData.StateData):
         if self.titleTextSeq:
             self.titleTextSeq.finish()
             self.titleTextSeq = None
+
         if self.titleText:
             self.titleText.cleanup()
             self.titleText = None
+
         base.localAvatar.stopChat()
-        return
 
     def load(self):
         if self.storageDNAFile:
-            loader.loadDNAFile(self.dnaStore, self.storageDNAFile)
+            base.loader.loadDNAFile(self.dnaStore, self.storageDNAFile)
+
         newsManager = base.cr.newsManager
         if newsManager:
             holidayIds = base.cr.newsManager.getDecorationHolidayId()
             for holiday in holidayIds:
                 for storageFile in self.holidayStorageDNADict.get(holiday, []):
-                    loader.loadDNAFile(self.dnaStore, storageFile)
+                    base.loader.loadDNAFile(self.dnaStore, storageFile)
 
             if ToontownGlobals.HALLOWEEN_COSTUMES not in holidayIds and ToontownGlobals.SPOOKY_COSTUMES not in holidayIds or not self.spookySkyFile:
-                self.sky = loader.loadModel(self.skyFile)
+                self.sky = base.loader.loadModel(self.skyFile)
                 self.sky.setTag('sky', 'Regular')
                 self.sky.setScale(1.0)
                 self.sky.setFogOff()
             else:
-                self.sky = loader.loadModel(self.spookySkyFile)
+                self.sky = base.loader.loadModel(self.spookySkyFile)
                 self.sky.setTag('sky', 'Halloween')
+
         if not newsManager:
-            self.sky = loader.loadModel(self.skyFile)
+            self.sky = base.loader.loadModel(self.skyFile)
             self.sky.setTag('sky', 'Regular')
             self.sky.setScale(1.0)
             self.sky.setFogOff()
@@ -105,6 +116,7 @@ class Hood(StateData.StateData):
             self.loader.exit()
             self.loader.unload()
             del self.loader
+
         del self.fsm
         del self.parentFSM
         self.dnaStore.resetHood()
@@ -134,12 +146,13 @@ class Hood(StateData.StateData):
         teleportDebug(requestStatus, 'Hood.enterQuietZone: status=%s' % requestStatus)
         self._quietZoneDoneEvent = uniqueName('quietZoneDone')
         self.acceptOnce(self._quietZoneDoneEvent, self.handleQuietZoneDone)
-        self.quietZoneStateData = QuietZoneState.QuietZoneState(self._quietZoneDoneEvent)
+        self.quietZoneStateData = QuietZoneState(self._quietZoneDoneEvent)
         self._enterWaitForSetZoneResponseMsg = self.quietZoneStateData.getEnterWaitForSetZoneResponseMsg()
         self.acceptOnce(self._enterWaitForSetZoneResponseMsg, self.handleWaitForSetZoneResponse)
         self._quietZoneLeftEvent = self.quietZoneStateData.getQuietZoneLeftEvent()
         if base.placeBeforeObjects:
             self.acceptOnce(self._quietZoneLeftEvent, self.handleLeftQuietZone)
+
         self.quietZoneStateData.load()
         self.quietZoneStateData.enter(requestStatus)
 
@@ -151,7 +164,6 @@ class Hood(StateData.StateData):
         self.quietZoneStateData.exit()
         self.quietZoneStateData.unload()
         self.quietZoneStateData = None
-        return
 
     def loadLoader(self, requestStatus):
         pass
@@ -159,19 +171,21 @@ class Hood(StateData.StateData):
     def handleWaitForSetZoneResponse(self, requestStatus):
         loaderName = requestStatus['loader']
         if loaderName == 'safeZoneLoader':
-            if not loader.inBulkBlock:
-                loader.beginBulkLoad('hood', TTLocalizer.HeadingToPlayground, safeZoneCountMap[self.id], 1, TTLocalizer.TIP_GENERAL)
+            if not base.loader.inBulkBlock:
+                base.loader.beginBulkLoad('hood', TTLocalizer.HeadingToPlayground, ToontownGlobals.safeZoneCountMap[self.id], 1, TTLocalizer.TIP_GENERAL)
+
             self.loadLoader(requestStatus)
-            loader.endBulkLoad('hood')
+            base.loader.endBulkLoad('hood')
         elif loaderName == 'townLoader':
-            if not loader.inBulkBlock:
+            if not base.loader.inBulkBlock:
                 zoneId = requestStatus['zoneId']
-                toPhrase = StreetNames[ZoneUtil.getCanonicalBranchZone(zoneId)][0]
-                streetName = StreetNames[ZoneUtil.getCanonicalBranchZone(zoneId)][-1]
-                loader.beginBulkLoad('hood', TTLocalizer.HeadingToStreet % {'to': toPhrase,
-                 'street': streetName}, townCountMap[self.id], 1, TTLocalizer.TIP_STREET)
+                toPhrase = ToontownGlobals.StreetNames[ZoneUtil.getCanonicalBranchZone(zoneId)][0]
+                streetName = ToontownGlobals.StreetNames[ZoneUtil.getCanonicalBranchZone(zoneId)][-1]
+                base.loader.beginBulkLoad('hood', TTLocalizer.HeadingToStreet % {'to': toPhrase,
+                 'street': streetName}, ToontownGlobals.townCountMap[self.id], 1, TTLocalizer.TIP_STREET)
+
             self.loadLoader(requestStatus)
-            loader.endBulkLoad('hood')
+            base.loader.endBulkLoad('hood')
         elif loaderName == 'minigame':
             pass
         elif loaderName == 'cogHQLoader':
@@ -197,6 +211,7 @@ class Hood(StateData.StateData):
         if self.titleTextSeq:
             self.titleTextSeq.finish()
             self.titleTextSeq = None
+
         self.hideTitleText()
         self.ignore(self.loaderDoneEvent)
         self.loader.exit()
@@ -215,7 +230,7 @@ class Hood(StateData.StateData):
             messenger.send(self.doneEvent)
 
     def startSky(self):
-        self.sky.reparentTo(camera)
+        self.sky.reparentTo(base.camera)
         self.sky.setZ(0.0)
         self.sky.setHpr(0.0, 0.0, 0.0)
         ce = CompassEffect.make(NodePath(), CompassEffect.PRot | CompassEffect.PZ)
@@ -223,17 +238,19 @@ class Hood(StateData.StateData):
 
     def stopSky(self):
         taskMgr.remove('skyTrack')
-        self.sky.reparentTo(hidden)
+        self.sky.reparentTo(base.hidden)
 
     def startSpookySky(self):
         if not self.spookySkyFile:
             return
+
         if hasattr(self, 'sky') and self.sky:
             self.stopSky()
-        self.sky = loader.loadModel(self.spookySkyFile)
+
+        self.sky = base.loader.loadModel(self.spookySkyFile)
         self.sky.setTag('sky', 'Halloween')
         self.sky.setColor(0.5, 0.5, 0.5, 1)
-        self.sky.reparentTo(camera)
+        self.sky.reparentTo(base.camera)
         self.sky.setTransparency(TransparencyAttrib.MDual, 1)
         fadeIn = self.sky.colorScaleInterval(1.5, Vec4(1, 1, 1, 1), startColorScale=Vec4(1, 1, 1, 0.25), blendType='easeInOut')
         fadeIn.start()
@@ -244,9 +261,10 @@ class Hood(StateData.StateData):
 
     def endSpookySky(self):
         if hasattr(self, 'sky') and self.sky:
-            self.sky.reparentTo(hidden)
+            self.sky.reparentTo(base.hidden)
+
         if hasattr(self, 'sky'):
-            self.sky = loader.loadModel(self.skyFile)
+            self.sky = base.loader.loadModel(self.skyFile)
             self.sky.setTag('sky', 'Regular')
             self.sky.setScale(1.0)
             self.startSky()

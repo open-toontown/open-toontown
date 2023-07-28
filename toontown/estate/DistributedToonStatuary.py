@@ -98,10 +98,10 @@ class DistributedToonStatuary(DistributedStatuary.DistributedStatuary):
         for node in self.toon.findAllMatches('**/*'):
             node.setState(RenderState.makeEmpty())
 
-        desatShirtTex = loader.loadTexture('phase_3/maps/desat_shirt_1.jpg')
-        desatSleeveTex = loader.loadTexture('phase_3/maps/desat_sleeve_1.jpg')
-        desatShortsTex = loader.loadTexture('phase_3/maps/desat_shorts_1.jpg')
-        desatSkirtTex = loader.loadTexture('phase_3/maps/desat_skirt_1.jpg')
+        desatShirtTex = loader.loadTexture('phase_3/maps/desat_shirt_1.png')
+        desatSleeveTex = loader.loadTexture('phase_3/maps/desat_sleeve_1.png')
+        desatShortsTex = loader.loadTexture('phase_3/maps/desat_shorts_1.png')
+        desatSkirtTex = loader.loadTexture('phase_3/maps/desat_skirt_1.png')
         if self.toon.hasLOD():
             for lodName in self.toon.getLODNames():
                 torso = self.toon.getPart('torso', lodName)
@@ -123,7 +123,7 @@ class DistributedToonStatuary(DistributedStatuary.DistributedStatuary):
     def setStoneTexture(self):
         gray = VBase4(1.6, 1.6, 1.6, 1)
         self.toon.setColor(gray, 10)
-        stoneTex = loader.loadTexture('phase_5.5/maps/smoothwall_1.jpg')
+        stoneTex = loader.loadTexture('phase_5.5/maps/smoothwall_1.png')
         ts = TextureStage('ts')
         ts.setPriority(1)
         self.toon.setTexture(ts, stoneTex)

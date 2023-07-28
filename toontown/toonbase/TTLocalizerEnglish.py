@@ -10,22 +10,24 @@ InterfaceFont = 'phase_3/models/fonts/ImpressBT.ttf'
 ToonFont = 'phase_3/models/fonts/ImpressBT.ttf'
 SuitFont = 'phase_3/models/fonts/vtRemingtonPortable.ttf'
 SignFont = 'phase_3/models/fonts/MickeyFont'
-MinnieFont = 'phase_3/models/fonts/MinnieFont'
-FancyFont = 'phase_3/models/fonts/Comedy'
-NametagFonts = ('phase_3/models/fonts/AnimGothic',
- 'phase_3/models/fonts/Aftershock',
- 'phase_3/models/fonts/JiggeryPokery',
- 'phase_3/models/fonts/Ironwork',
- 'phase_3/models/fonts/HastyPudding',
- 'phase_3/models/fonts/Comedy',
- 'phase_3/models/fonts/Humanist',
- 'phase_3/models/fonts/Portago',
- 'phase_3/models/fonts/Musicals',
- 'phase_3/models/fonts/Scurlock',
- 'phase_3/models/fonts/Danger',
- 'phase_3/models/fonts/Alie',
- 'phase_3/models/fonts/OysterBar',
- 'phase_3/models/fonts/RedDogSaloon')
+MinnieFont = 'phase_3/models/fonts/MinnieFont.ttf'
+FancyFont = 'phase_3/models/fonts/Comedy.ttf'
+NametagFonts = (
+ 'phase_3/models/fonts/AnimGothic.ttf',
+ 'phase_3/models/fonts/Aftershock.ttf',
+ 'phase_3/models/fonts/JiggeryPokery.ttf',
+ 'phase_3/models/fonts/Ironwork.ttf',
+ 'phase_3/models/fonts/HastyPudding.ttf',
+ 'phase_3/models/fonts/Comedy.ttf',
+ 'phase_3/models/fonts/Humanist.ttf',
+ 'phase_3/models/fonts/Portago.ttf',
+ 'phase_3/models/fonts/Musicals.ttf',
+ 'phase_3/models/fonts/Scurlock.ttf',
+ 'phase_3/models/fonts/Danger.ttf',
+ 'phase_3/models/fonts/Alie.ttf',
+ 'phase_3/models/fonts/OysterBar.ttf',
+ 'phase_3/models/fonts/RedDogSaloon.ttf'
+)
 NametagFontNames = ('Member',
  'Shivering',
  'Wonky',

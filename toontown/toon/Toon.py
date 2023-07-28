@@ -1165,7 +1165,7 @@ class Toon(Avatar.Avatar, ToonHead):
             for geom in geoms:
                 texName = ToonDNA.ShoesTextures[shoes[1]]
                 if self.style.legs == 'l' and shoes[0] == 3:
-                    texName = texName[:-4] + 'LL.jpg'
+                    texName = texName[:-4] + 'LL.png'
                 tex = loader.loadTexture(texName, okMissing=True)
                 if tex is None:
                     self.sendLogSuspiciousEvent('failed to load texture %s' % texName)
@@ -1995,7 +1995,7 @@ class Toon(Avatar.Avatar, ToonHead):
     def exitSitStart(self):
         self.playingAnim = 'neutral'
         if self.track != None:
-            self.track.finish()
+            self.track.pause()
             DelayDelete.cleanupDelayDeletes(self.track)
             self.track = None
         Emote.globalEmote.releaseBody(self)
