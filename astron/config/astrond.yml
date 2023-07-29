@@ -39,6 +39,10 @@ uberdogs:
       id: 4670
       anonymous: true
 
+    - class: ChatHandler
+      id: 4681
+      anonymous: false
+
 roles:
     - type: clientagent
       bind: 0.0.0.0:7198
