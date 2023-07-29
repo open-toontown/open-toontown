@@ -1,5 +1,9 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.DistributedObjectAI import DistributedObjectAI
+from . import DistributedSZTreasureAI
 
-class DistributedETreasureAI(DistributedObjectAI):
-    notify = DirectNotifyGlobal.directNotify.newCategory('DistributedETreasureAI')
+class DistributedETreasureAI(DistributedSZTreasureAI.DistributedSZTreasureAI):
+
+    def __init__(self, air, treasurePlanner, x, y, z):
+        DistributedSZTreasureAI.DistributedSZTreasureAI.__init__(self, air,
+                                                                 treasurePlanner,
+                                                                 x, y, z)
+        

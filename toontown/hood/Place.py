@@ -6,7 +6,7 @@ from direct.fsm.StateData import StateData
 from direct.showbase.MessengerGlobal import messenger
 from direct.showbase.PythonUtil import Functor, PriorityCallbacks, SubframeCall, uniqueName
 from direct.task.TaskManagerGlobal import taskMgr
-
+from direct.task import Task
 from otp.avatar.Avatar import teleportNotify
 from otp.avatar.Emote import globalEmote
 from otp.otpbase import OTPLocalizer
@@ -659,6 +659,7 @@ class Place(StateData, FriendsListManager):
         self.doneStatus = requestStatus
         avId = requestStatus['avId']
         self.acceptOnce('setLocalEstateZone', self.goHome)
+            
         if avId > 0:
             base.cr.estateMgr.getLocalEstateZone(avId)
         else:
@@ -705,7 +706,7 @@ class Place(StateData, FriendsListManager):
         self.doneStatus['hood'] = base.localAvatar.lastHood
         self.doneStatus['zone'] = base.localAvatar.lastHood
         self.fsm.request('teleportIn', [self.doneStatus])
-        return task.done
+        return Task.done
 
     def notifyUserGoHomeFailed(self):
         self.notify.debug('notifyUserGoHomeFailed')

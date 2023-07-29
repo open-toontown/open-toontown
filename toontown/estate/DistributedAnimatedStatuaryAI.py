@@ -1,5 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.DistributedObjectAI import DistributedObjectAI
 
-class DistributedAnimatedStatuaryAI(DistributedObjectAI):
+from toontown.estate.DistributedStatuaryAI import DistributedStatuaryAI
+
+
+class DistributedAnimatedStatuaryAI(DistributedStatuaryAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedAnimatedStatuaryAI')
