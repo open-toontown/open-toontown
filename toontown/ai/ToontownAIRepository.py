@@ -5,6 +5,7 @@ from panda3d.toontown import *
 from otp.ai.AIZoneData import AIZoneDataStore
 from otp.ai.TimeManagerAI import TimeManagerAI
 from otp.distributed.OtpDoGlobals import *
+from otp.friends.FriendManagerAI import FriendManagerAI
 from toontown.ai.HolidayManagerAI import HolidayManagerAI
 from toontown.ai.NewsManagerAI import NewsManagerAI
 from toontown.ai.WelcomeValleyManagerAI import WelcomeValleyManagerAI
@@ -232,6 +233,10 @@ class ToontownAIRepository(ToontownInternalRepository):
         self.partyManager = DistributedPartyManagerAI(self)
         self.partyManager.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
 
+        # Generate our friend manager...
+        self.friendManager = FriendManagerAI(self)
+        self.friendManager.generateWithRequired(OTP_ZONE_ID_MANAGEMENT)
+        
     def generateHood(self, hoodConstructor, zoneId):
         # Bossbot HQ doesn't use DNA, so we skip over that.
         if zoneId != ToontownGlobals.BossbotHQ:
