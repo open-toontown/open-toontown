@@ -747,11 +747,15 @@ class BattleCalculatorAI:
         toonId = self.toonAtkOrder[attackIndex]
         attack = self.battle.toonAttacks[toonId]
         atkTrack = self.__getActualTrack(attack)
+        TTOStyle = simbase.config.GetBool('want-tto-style-knockback', False)
         if atkTrack == HEAL or atkTrack == PETSOS:
             return
         tgts = self.__createToonTargetList(toonId)
         for currTgt in tgts:
-            tgtPos = self.battle.activeSuits.index(currTgt)
+            if not TTOStyle:
+               tgtPos = self.battle.activeSuits.index(currTgt)
+            else:
+               tgtPos = self.battle.suits.index(currTgt)
             attackerId = self.toonAtkOrder[attackIndex]
             attack = self.battle.toonAttacks[attackerId]
             track = self.__getActualTrack(attack)
