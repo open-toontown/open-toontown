@@ -98,10 +98,10 @@ def __createFishingPoleMultiTrack(lure, dollar, dollarName):
             suitTrack.append(Func(suit.loop, 'neutral'))
             suitTrack.append(Wait(3.5))
             suitName = suit.getStyleName()
-            simulatedPos, simulatedHpr = battle.getActorPosHpr(suit)
-            simulatedPos.setY(simulatedPos.getY() + MovieUtil.SUIT_EXTRA_REACH_DISTANCE)
+            knockBackedPos, knockBackedHpr = battle.getActorPosHpr(suit)
+            knockBackedPos.setY(knockBackedPos.getY() + MovieUtil.SUIT_EXTRA_REACH_DISTANCE)
             if suitName in MovieUtil.largeSuits:
-                moveTrack = lerpSuit(suit, 0.0, reachAnimDuration / 2.5, simulatedPos, battle, trapProp)
+                moveTrack = lerpSuit(suit, 0.0, reachAnimDuration / 2.5, knockBackedPos, battle, trapProp)
                 reachTrack = ActorInterval(suit, 'reach', duration=reachAnimDuration)
                 suitTrack.append(Parallel(moveTrack, reachTrack))
             else:
