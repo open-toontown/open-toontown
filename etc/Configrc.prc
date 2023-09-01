@@ -12,7 +12,9 @@ aux-display tinydisplay
 depth-bits 24
 audio-sfx-active #t
 audio-music-active #t
-aspect-ratio 1.333333
+#aspect-ratio 1.333333  # Removed for dynamic aspect ratio support
+framebuffer-multisample 1
+multisamples 4
 
 # Models/Resources
 model-path resources

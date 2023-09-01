@@ -55,10 +55,13 @@ class ToonBase(OTPBase.OTPBase):
         self.wantDynamicShadows = 0
         self.exitErrorCode = 0
         camera.setPosHpr(0, 0, 0, 0, 0, 0)
-        self.camLens.setFov(ToontownGlobals.DefaultCameraFov)
+        self.camLens.setMinFov(ToontownGlobals.DefaultCameraFov / (4. / 3.))
         self.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, ToontownGlobals.DefaultCameraFar)
         self.musicManager.setVolume(0.65)
         self.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
+        self.notify.info("Forcing Anti-alias attribute on render and render2d nodes.")
+        self.render.set_antialias(AntialiasAttrib.M_auto)
+        self.render2d.set_antialias(AntialiasAttrib.M_auto)
         tpm = TextPropertiesManager.getGlobalPtr()
         candidateActive = TextProperties()
         candidateActive.setTextColor(0, 0, 1, 1)

@@ -63,9 +63,10 @@ ConfigVariableDouble('decompressor-step-time').setValue(0.01)
 ConfigVariableDouble('extractor-step-time').setValue(0.01)
 backgroundNodePath = aspect2d.attachNewNode(backgroundNode, 0)
 backgroundNodePath.setPos(0.0, 0.0, 0.0)
-backgroundNodePath.setScale(render2d, VBase3(1))
+backgroundNodePath.setScale(aspect2d, VBase3(1.33, 1, 1))
 backgroundNodePath.find('**/fg').setBin('fixed', 20)
 backgroundNodePath.find('**/bg').setBin('fixed', 10)
+backgroundNodePath.find('**/bg').setScale(aspect2d, VBase3(base.getAspectRatio(), 1, 1))
 base.graphicsEngine.renderFrame()
 DirectGuiGlobals.setDefaultRolloverSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
 DirectGuiGlobals.setDefaultClickSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
@@ -89,7 +90,7 @@ else:
 from direct.gui.DirectGui import OnscreenText
 serverVersion = ConfigVariableString('server-version', 'no_version_set').value
 print('ToontownStart: serverVersion: ', serverVersion)
-version = OnscreenText(serverVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
+version = OnscreenText(serverVersion, parent=base.a2dBottomLeft, pos=(0.033, 0.025), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
 loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, TTLocalizer.TIP_NONE)
 from toontown.distributed.ToontownClientRepository import ToontownClientRepository
 cr = ToontownClientRepository(serverVersion, launcher)

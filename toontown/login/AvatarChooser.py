@@ -84,13 +84,25 @@ class AvatarChooser(StateData.StateData):
         gui2 = loader.loadModel('phase_3/models/gui/quit_button')
         newGui = loader.loadModel('phase_3/models/gui/tt_m_gui_pat_mainGui')
         self.pickAToonBG = newGui.find('**/tt_t_gui_pat_background')
-        self.pickAToonBG.reparentTo(hidden)
-        self.pickAToonBG.setPos(0.0, 2.73, 0.0)
+        self.pickAToonBG.reparentTo(base.aspect2d)
+        self.pickAToonBG.setPos(0.0, 1.75, 0.0)
         self.pickAToonBG.setScale(1, 1, 1)
-        self.title = OnscreenText(TTLocalizer.AvatarChooserPickAToon, scale=TTLocalizer.ACtitle, parent=hidden, font=ToontownGlobals.getSignFont(), fg=(1, 0.9, 0.1, 1), pos=(0.0, 0.82))
+        self.title = OnscreenText(TTLocalizer.AvatarChooserPickAToon,
+                                  scale=TTLocalizer.ACtitle, parent=hidden,
+                                  font=ToontownGlobals.getSignFont(), fg=(1, 0.9, 0.1, 1), pos=(0.0, 0.82))
         quitHover = gui.find('**/QuitBtn_RLVR')
-        self.quitButton = DirectButton(image=(quitHover, quitHover, quitHover), relief=None, text=TTLocalizer.AvatarChooserQuit, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_pos=TTLocalizer.ACquitButtonPos, text_scale=TTLocalizer.ACquitButton, image_scale=1, image1_scale=1.05, image2_scale=1.05, scale=1.05, pos=(1.08, 0, -0.907), command=self.__handleQuit)
-        self.logoutButton = DirectButton(relief=None, image=(quitHover, quitHover, quitHover), text=TTLocalizer.OptionsPageLogout, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_scale=TTLocalizer.AClogoutButton, text_pos=(0, -0.035), pos=(-1.17, 0, -0.914), image_scale=1.15, image1_scale=1.15, image2_scale=1.18, scale=0.5, command=self.__handleLogoutWithoutConfirm)
+        self.quitButton = DirectButton(image=(quitHover, quitHover, quitHover), relief=None,
+                                       text=TTLocalizer.AvatarChooserQuit, text_font=ToontownGlobals.getSignFont(),
+                                       text_fg=(0.977, 0.816, 0.133, 1), text_pos=TTLocalizer.ACquitButtonPos,
+                                       text_scale=TTLocalizer.ACquitButton, image_scale=1, image1_scale=1.05,
+                                       image2_scale=1.05, scale=1.1, parent=base.a2dBottomRight,
+                                       pos=(-0.28, 0, 0.1), command=self.__handleQuit)
+        self.logoutButton = DirectButton(relief=None, image=(quitHover, quitHover, quitHover),
+                                         text=TTLocalizer.OptionsPageLogout, text_font=ToontownGlobals.getSignFont(),
+                                         text_fg=(0.977, 0.816, 0.133, 1), text_scale=TTLocalizer.AClogoutButton,
+                                         text_pos=(0.0, -0.035), parent=base.a2dBottomLeft, pos=(0.28, 0.0, 0.1),
+                                         image_scale=1.15, image1_scale=1.15, image2_scale=1.18, scale=1,
+                                         command=self.__handleLogoutWithoutConfirm)
         self.logoutButton.hide()
         gui.removeNode()
         gui2.removeNode()
