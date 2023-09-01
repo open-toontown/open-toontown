@@ -4066,7 +4066,7 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             if self._gmType > MaxGMType:
                 self.notify.warning('toon %s has invalid GM type: %s' % (self.doId, self._gmType))
                 self._gmType = MaxGMType
-        self._updateGMName(formerType)
+        #self._updateGMName(formerType)
         return
 
     def isGM(self):
@@ -4079,20 +4079,20 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         return False
 
     def _updateGMName(self, formerType = None):
-        if formerType is None:
-            formerType = self._gmType
-        name = self.name
-        if formerType is not None:
-            gmPrefix = TTLocalizer.GM_NAMES[formerType] + ' '
-            if self._nameIsPrefixed(gmPrefix):
-                name = self.name[len(gmPrefix):]
-        if self._isGM:
-            gmPrefix = TTLocalizer.GM_NAMES[self._gmType] + ' '
-            newName = gmPrefix + name
-        else:
-            newName = name
-        if self.name != newName:
-            self.b_setName(newName)
+        #if formerType is None:
+        #    formerType = self._gmType
+        #name = self.name
+        #if formerType is not None:
+        #    gmPrefix = TTLocalizer.GM_NAMES[formerType] + ' '
+        #    if self._nameIsPrefixed(gmPrefix):
+        #        name = self.name[len(gmPrefix):]
+        #if self._isGM:
+        #    gmPrefix = TTLocalizer.GM_NAMES[self._gmType] + ' '
+        #    newName = gmPrefix + name
+        #else:
+        #    newName = name
+        #if self.name != newName:
+        #    self.b_setName(newName)
         return
 
     def setName(self, name):
@@ -4100,14 +4100,15 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         if self.WantOldGMNameBan:
             if self.isGenerated():
                 self._checkOldGMName()
-        self._updateGMName()
+        #self._updateGMName()
 
     def _checkOldGMName(self):
-        if '$' in set(self.name):
-            if config.GetBool('want-ban-old-gm-name', 0):
-                self.ban('invalid name: %s' % self.name)
-            else:
-                self.air.writeServerEvent('suspicious', self.doId, '$ found in toon name')
+        #if '$' in set(self.name):
+        #    if config.GetBool('want-ban-old-gm-name', 0):
+        #        self.ban('invalid name: %s' % self.name)
+        #    else:
+        #        self.air.writeServerEvent('suspicious', self.doId, '$ found in toon name')
+        pass
 
     def teleportResponseToAI(self, toAvId, available, shardId, hoodId, zoneId, fromAvId):
         if not self.WantTpTrack:
