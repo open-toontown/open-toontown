@@ -3,4 +3,4 @@ cd ..
 
 export LOGIN_TOKEN=dev
 
-venv/bin/python3 -m toontown.launcher.QuickStartLauncher
+python3 -m toontown.launcher.QuickStartLauncher
