@@ -20,3 +20,4 @@ venv/
 PPYTHON_PATH
 local/
 errorCode
+*.patch
