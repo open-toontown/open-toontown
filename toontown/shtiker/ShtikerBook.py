@@ -123,12 +123,28 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self['image'] = bookModel.find('**/big_book')
         self['image_scale'] = (2, 1, 1.5)
         self.resetFrameSize()
-        self.bookOpenButton = DirectButton(image=(bookModel.find('**/BookIcon_CLSD'), bookModel.find('**/BookIcon_OPEN'), bookModel.find('**/BookIcon_RLVR')), relief=None, pos=(1.175, 0, -0.83), scale=0.305, command=self.__open)
-        self.bookCloseButton = DirectButton(image=(bookModel.find('**/BookIcon_OPEN'), bookModel.find('**/BookIcon_CLSD'), bookModel.find('**/BookIcon_RLVR2')), relief=None, pos=(1.175, 0, -0.83), scale=0.305, command=self.__close)
+        self.bookOpenButton = DirectButton(image=(bookModel.find('**/BookIcon_CLSD'),
+                                                  bookModel.find('**/BookIcon_OPEN'),
+                                                  bookModel.find('**/BookIcon_RLVR')),
+                                           relief=None, pos=(-0.175, 0, 0.183), scale=0.305,
+                                           parent=base.a2dBottomRight, command=self.__open)
+        self.bookCloseButton = DirectButton(image=(bookModel.find('**/BookIcon_OPEN'),
+                                                   bookModel.find('**/BookIcon_CLSD'),
+                                                   bookModel.find('**/BookIcon_RLVR2')),
+                                            relief=None, pos=(-0.175, 0, 0.183), scale=0.305,
+                                            parent=base.a2dBottomRight, command=self.__close)
         self.bookOpenButton.hide()
         self.bookCloseButton.hide()
-        self.nextArrow = DirectButton(parent=self, relief=None, image=(bookModel.find('**/arrow_button'), bookModel.find('**/arrow_down'), bookModel.find('**/arrow_rollover')), scale=(0.1, 0.1, 0.1), pos=(0.838, 0, -0.661), command=self.__pageChange, extraArgs=[1])
-        self.prevArrow = DirectButton(parent=self, relief=None, image=(bookModel.find('**/arrow_button'), bookModel.find('**/arrow_down'), bookModel.find('**/arrow_rollover')), scale=(-0.1, 0.1, 0.1), pos=(-0.838, 0, -0.661), command=self.__pageChange, extraArgs=[-1])
+        self.nextArrow = DirectButton(parent=self, relief=None, image=(bookModel.find('**/arrow_button'),
+                                                                       bookModel.find('**/arrow_down'),
+                                                                       bookModel.find('**/arrow_rollover')),
+                                      scale=(0.1, 0.1, 0.1), pos=(0.838, 0, -0.661),
+                                      command=self.__pageChange, extraArgs=[1])
+        self.prevArrow = DirectButton(parent=self, relief=None, image=(bookModel.find('**/arrow_button'),
+                                                                       bookModel.find('**/arrow_down'),
+                                                                       bookModel.find('**/arrow_rollover')),
+                                      scale=(-0.1, 0.1, 0.1), pos=(-0.838, 0, -0.661),
+                                      command=self.__pageChange, extraArgs=[-1])
         bookModel.removeNode()
         self.openSound = base.loader.loadSfx('phase_3.5/audio/sfx/GUI_stickerbook_open.ogg')
         self.closeSound = base.loader.loadSfx('phase_3.5/audio/sfx/GUI_stickerbook_delete.ogg')
