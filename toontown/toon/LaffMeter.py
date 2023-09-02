@@ -6,11 +6,11 @@ from toontown.toonbase import ToontownIntervals
 class LaffMeter(DirectFrame):
     deathColor = Vec4(0.58039216, 0.80392157, 0.34117647, 1.0)
 
-    def __init__(self, avdna, hp, maxHp):
+    def __init__(self, av_dna, hp, maxHp):
         DirectFrame.__init__(self, relief=None, sortOrder=50)
         self.initialiseoptions(LaffMeter)
-        self.container = DirectFrame(parent=self, relief=None)
-        self.style = avdna
+        self.container = DirectFrame(parent=base.a2dBottomLeft, relief=None)
+        self.style = av_dna
         self.av = None
         self.hp = hp
         self.maxHp = maxHp

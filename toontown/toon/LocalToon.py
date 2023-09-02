@@ -369,18 +369,26 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.book.setPage(self.mapPage, enterPage=False)
         self.laffMeter = LaffMeter.LaffMeter(self.style, self.hp, self.maxHp)
         self.laffMeter.setAvatar(self)
-        self.laffMeter.setScale(0.075)
+        # Use laffMeter.container as that's what is actually parented to aspect2d
+        self.laffMeter.container.set_scale(0.075)
         if self.style.getAnimal() == 'monkey':
-            self.laffMeter.setPos(-1.18, 0.0, -0.87)
+            # Monkey icon tweaked due to large ears
+            self.laffMeter.container.set_pos(0.16, 0.0, 0.14)
         else:
-            self.laffMeter.setPos(-1.2, 0.0, -0.87)
+            self.laffMeter.container.set_pos(0.1325, 0.0, 0.1275)
         self.laffMeter.stop()
         self.questMap = QuestMap.QuestMap(self)
         self.questMap.stop()
         if not base.cr.isPaid():
-            guiButton = loader.loadModel('phase_3/models/gui/quit_button')
-            self.purchaseButton = DirectButton(parent=aspect2d, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=0.9, text=TTLocalizer.OptionsPagePurchase, text_scale=0.05, text_pos=(0, -0.01), textMayChange=0, pos=(0.885, 0, -0.94), sortOrder=100, command=self.__handlePurchase)
-            base.setCellsAvailable([base.bottomCells[4]], 0)
+            self.notify.error("CR.isPaid() is true. We shouldn't be calling legacy subscription code.")
+            #guiButton = loader.loadModel('phase_3/models/gui/quit_button')
+            #self.purchaseButton = DirectButton(parent=aspect2d, relief=None,
+            #                                   image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'),
+            #                                          guiButton.find('**/QuitBtn_RLVR')),
+            #                                   image_scale=0.9, text=TTLocalizer.OptionsPagePurchase, text_scale=0.05,
+            #                                   text_pos=(0, -0.01), textMayChange=0, pos=(0.885, 0, -0.94),
+            #                                   sortOrder=100, command=self.__handlePurchase)
+            #base.setCellsAvailable([base.bottomCells[4]], 0)
         self.accept('time-insert', self.__beginTossPie)
         self.accept('time-insert-up', self.__endTossPie)
         self.accept('time-delete', self.__beginTossPie)
@@ -397,19 +405,20 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         return
 
     def __handlePurchase(self):
-        self.purchaseButton.hide()
-        if (base.cr.isWebPlayToken() or __dev__):
-            if base.cr.isPaid():
-                if base.cr.productName in ['DisneyOnline-UK', 'DisneyOnline-AP', 'JP', 'DE', 'BR', 'FR']:
-                    paidNoParentPassword = launcher and launcher.getParentPasswordSet()
-                else:
-                    paidNoParentPassword = launcher and not launcher.getParentPasswordSet()
-            else:
-                paidNoParentPassword = 0
-            self.leaveToPayDialog = LeaveToPayDialog.LeaveToPayDialog(paidNoParentPassword, self.purchaseButton.show)
-            self.leaveToPayDialog.show()
-        else:
-            self.notify.error('You should not get here without a PlayToken')
+        self.notify.error("LocalToon.__handlePurchase() was called. We shouldn't be calling legacy subscription code.")
+        #self.purchaseButton.hide()
+        #if (base.cr.isWebPlayToken() or __dev__):
+        #    if base.cr.isPaid():
+        #        if base.cr.productName in ['DisneyOnline-UK', 'DisneyOnline-AP', 'JP', 'DE', 'BR', 'FR']:
+        #            paidNoParentPassword = launcher and launcher.getParentPasswordSet()
+        #        else:
+        #            paidNoParentPassword = launcher and not launcher.getParentPasswordSet()
+        #    else:
+        #        paidNoParentPassword = 0
+        #    self.leaveToPayDialog = LeaveToPayDialog.LeaveToPayDialog(paidNoParentPassword, self.purchaseButton.show)
+        #    self.leaveToPayDialog.show()
+        #else:
+        #    self.notify.error('You should not get here without a PlayToken')
 
     if base.wantKarts:
 
