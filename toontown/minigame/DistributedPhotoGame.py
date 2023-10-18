@@ -28,6 +28,8 @@ from toontown.makeatoon import NameGenerator
 from otp.otpbase import OTPGlobals
 from toontown.battle import BattleParticles
 from toontown.minigame import PhotoGameBase
+from panda3d.otp import *
+
 WORLD_SCALE = 2.0
 FAR_PLANE_DIST = 600 * WORLD_SCALE
 STAGE_Z_OFFSET = 7.0
