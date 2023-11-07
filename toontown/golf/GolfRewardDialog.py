@@ -1,5 +1,6 @@
 from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
+from direct.gui.DirectGui import *
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
