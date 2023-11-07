@@ -330,52 +330,7 @@ class AbortMinigame(MagicWord):
 
     def handleWord(self, invoker, avId, toon, *args):
         messenger.send("minigameAbort")
-        return "Requested minigame abort."  
-
-class SkipMiniGolfHole(MagicWord):
-    aliases = ["skipgolfhole", "skiphole"]
-    desc = "Skips the current golf hole."
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-    arguments = []
-
-    def handleWord(self, invoker, avId, toon, *args):
-        from toontown.golf.DistributedGolfCourseAI import DistributedGolfCourseAI
-        course = None
-        for do in simbase.air.doId2do.values():
-            if isinstance(do, DistributedGolfCourseAI):
-                if invoker.doId in do.avIdList:
-                    course = do
-                    break
-        if not course:
-            return "You aren't in a golf course!"
-
-        if course.isPlayingLastHole():
-            course.demand('WaitReward')
-        else:
-            course.holeOver()
-
-        return "Skipped the current hole."
-    
-class AbortGolfCourse(MagicWord):
-    aliases = ["abortminigolf", "abortgolf", "abortcourse", "leavegolf", "leavecourse"]
-    desc = "Aborts the current golf course."
-    execLocation = MagicWordConfig.EXEC_LOC_SERVER
-    arguments = []
-
-    def handleWord(self, invoker, avId, toon, *args):
-        from toontown.golf.DistributedGolfCourseAI import DistributedGolfCourseAI
-        course = None
-        for do in simbase.air.doId2do.values():
-            if isinstance(do, DistributedGolfCourseAI):
-                if invoker.doId in do.avIdList:
-                    course = do
-                    break
-        if not course:
-            return "You aren't in a golf course!"
-        
-        course.setCourseAbort()
-
-        return "Aborted golf course."
+        return "Requested minigame abort."
 
 class Minigame(MagicWord):
     aliases = ["mg"]
