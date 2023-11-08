@@ -4132,6 +4132,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def d_toggleSleep(self):
         self.sendUpdate('toggleSleep', [])
 
+    def d_magicWordTeleport(self, zone):
+        self.sendUpdate('magicWordTeleport', [zone])
+
     @staticmethod
     def staticGetLogicalZoneChangeAllEvent():
         return 'DOLogicalChangeZone-all'

@@ -2595,3 +2595,17 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             base.localAvatar.noSleep = 0
         else:
             base.localAvatar.noSleep = 1
+
+    def magicWordTeleport(self, zone):
+        hood = ZoneUtil.getHoodId(zone)
+        place = base.cr.playGame.getPlace()
+        try:
+            place.requestLeave({'loader': ZoneUtil.getBranchLoaderName(zone),
+            'where': ZoneUtil.getToonWhereName(zone),
+            'how': 'teleportIn',
+            'hoodId': hood,
+            'zoneId': zone,
+            'shardId': None,
+            'avId': -1})
+        except Exception: # Most likely cause is the place the person is in has no teleportOut state, for example, boss lobbies.
+            place.fsm.request('DFAReject') # We have to do this, or the Toon will be stuck.

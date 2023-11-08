@@ -619,6 +619,7 @@ dclass DistributedToon : DistributedPlayer {
   setDISLname(string) ram;
   setDISLid(uint32) ram db airecv;
   toggleSleep() ownrecv;
+  magicWordTeleport(uint32) ownrecv;
 };
 
 dclass DistributedCCharBase : DistributedObject {
