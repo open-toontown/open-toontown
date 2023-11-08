@@ -2589,3 +2589,9 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def getTransitioning(self):
         return self.transitioning
+
+    def toggleSleep(self):
+        if base.localAvatar.noSleep:
+            base.localAvatar.noSleep = 0
+        else:
+            base.localAvatar.noSleep = 1

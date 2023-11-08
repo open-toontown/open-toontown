@@ -705,6 +705,15 @@ class Teleport(MagicWord):
 
         return f"Successfully teleporting {toon.getName()} to zone {zone}."
 
+class ToggleSleep(MagicWord):
+    aliases = ["sleep", "nosleep", "neversleep", "togglesleeping", "insomnia"]
+    desc = "Toggles sleeping for the target."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        toon.d_toggleSleep()
+        return f"Toggled sleeping for {toon.getName()}."
+
 class Fireworks(MagicWord):
     aliases = ["firework"]
     desc = "Starts a firework show."

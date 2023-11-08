@@ -4129,6 +4129,9 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
          zoneId])
         self.air.send(dg)
 
+    def d_toggleSleep(self):
+        self.sendUpdate('toggleSleep', [])
+
     @staticmethod
     def staticGetLogicalZoneChangeAllEvent():
         return 'DOLogicalChangeZone-all'
