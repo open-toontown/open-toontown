@@ -176,7 +176,6 @@ class MagicWord(DirectObject):
     def handleWord(self, invoker, avId, toon, *args):
         raise NotImplementedError
 
-
 class SetHP(MagicWord):
     aliases = ["hp", "setlaff", "laff"]
     desc = "Sets the target's current laff."
@@ -200,7 +199,6 @@ class SetHP(MagicWord):
         toon.b_setHp(hp)
         return "{}'s laff has been set to {}.".format(toon.getName(), hp)
 
-
 class SetMaxHP(MagicWord):
     aliases = ["maxhp", "setmaxlaff", "maxlaff"]
     desc = "Sets the target's max laff."
@@ -219,7 +217,6 @@ class SetMaxHP(MagicWord):
         toon.toonUp(maxhp)
         return "{}'s max laff has been set to {}.".format(toon.getName(), maxhp)
 
-
 class ToggleOobe(MagicWord):
     aliases = ["oobe"]
     desc = "Toggles the out of body experience mode, which lets you move the camera freely."
@@ -231,7 +228,6 @@ class ToggleOobe(MagicWord):
     def handleWord(self, invoker, avId, toon, *args):
         base.oobe()
         return "Oobe mode has been toggled."
-
 
 class ToggleRun(MagicWord):
     aliases = ["run"]
@@ -308,8 +304,6 @@ class Inventory(MagicWord):
             toon.d_setInventory(toon.inventory.makeNetString())
             return ("Zeroing inventory for " + toon.getName() + ".")
 
-            
-    
 class SetPinkSlips(MagicWord):
     # this command gives the target toon the specified amount of pink slips
     # default is 255
@@ -333,7 +327,7 @@ class AbortMinigame(MagicWord):
         return "Requested minigame abort."  
 
 class SkipMiniGolfHole(MagicWord):
-    aliases = ["skipgolfhole", "skiphole"]
+    aliases = ["skipgolfhole", "skipgolf", "skiphole"]
     desc = "Skips the current golf hole."
     execLocation = MagicWordConfig.EXEC_LOC_SERVER
     arguments = []
