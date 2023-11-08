@@ -335,7 +335,7 @@ class SkipMiniGolfHole(MagicWord):
     def handleWord(self, invoker, avId, toon, *args):
         from toontown.golf.DistributedGolfCourseAI import DistributedGolfCourseAI
         course = None
-        for do in simbase.air.doId2do.values():
+        for do in simbase.air.doId2do.values(): # For all doids, check whether it's a golf course, then check if our target is part of it.
             if isinstance(do, DistributedGolfCourseAI):
                 if invoker.doId in do.avIdList:
                     course = do
@@ -343,7 +343,7 @@ class SkipMiniGolfHole(MagicWord):
         if not course:
             return "You aren't in a golf course!"
 
-        if course.isPlayingLastHole():
+        if course.isPlayingLastHole(): # If the Toon is on the final hole, calling holeOver() will softlock, so instead we move onto the reward screen.
             course.demand('WaitReward')
         else:
             course.holeOver()
@@ -359,7 +359,7 @@ class AbortGolfCourse(MagicWord):
     def handleWord(self, invoker, avId, toon, *args):
         from toontown.golf.DistributedGolfCourseAI import DistributedGolfCourseAI
         course = None
-        for do in simbase.air.doId2do.values():
+        for do in simbase.air.doId2do.values(): # For all doids, check whether it's a golf course, then check if our target is part of it.
             if isinstance(do, DistributedGolfCourseAI):
                 if invoker.doId in do.avIdList:
                     course = do
@@ -642,6 +642,68 @@ class BossBattle(MagicWord):
         bossZone = boss.zoneId
         boss.requestDelete()
         self.air.deallocateZone(bossZone)
+
+class GlobalTeleport(MagicWord):
+    aliases = ["globaltp", "tpaccess"]
+    desc = "Enables teleport access to all zones."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        from toontown.toonbase import ToontownGlobals
+        toon.b_setHoodsVisited(ToontownGlobals.HoodsForTeleportAll)
+        toon.b_setTeleportAccess(ToontownGlobals.HoodsForTeleportAll)
+        return f"Enabled teleport access to all zones for {toon.getName()}."
+    
+class Teleport(MagicWord):
+    aliases = ["tp", "goto"]
+    desc = "Teleport to a specified zone."
+    execLocation = MagicWordConfig.EXEC_LOC_CLIENT
+    arguments = [("zoneName", str, False, '')]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        from toontown.hood import ZoneUtil
+        from toontown.toonbase import ToontownGlobals
+        zoneName = args[0]
+        place = base.cr.playGame.getPlace()
+
+        # Can add stuff like streets to this too if you wanted, but if you do you'll want it to be a valid zone on that street. eg: 2100 is invalid, but any value 2101 to 2156 is fine.
+        # so if you wanted to add a silly street key, theroetically you could do something like this: 'sillystreet': ToontownGlobals.SillyStreet +1,
+        zoneName2Id = {'ttc': ToontownGlobals.ToontownCentral,
+                       'dd': ToontownGlobals.DonaldsDock,
+                       'dg': ToontownGlobals.DaisyGardens,
+                       'mml': ToontownGlobals.MinniesMelodyland,
+                       'tb': ToontownGlobals.TheBrrrgh,
+                       'ddl': ToontownGlobals.DonaldsDreamland,
+                       'gs': ToontownGlobals.GoofySpeedway,
+                       'oz': ToontownGlobals.OutdoorZone,
+                       'aa': ToontownGlobals.OutdoorZone,
+                       'gz': ToontownGlobals.GolfZone,
+                       'sbhq': ToontownGlobals.SellbotHQ,
+                       'factory': ToontownGlobals.SellbotFactoryExt,
+                       'cbhq': ToontownGlobals.CashbotHQ,
+                       'lbhq': ToontownGlobals.LawbotHQ,
+                       'bbhq': ToontownGlobals.BossbotHQ}
+        
+        try:
+            zone = zoneName2Id[zoneName]
+        except KeyError:
+            return "Unknown zone name!"
+
+        hood = ZoneUtil.getHoodId(zone)
+        
+        try:
+            place.requestLeave({'loader': ZoneUtil.getBranchLoaderName(zone),
+            'where': ZoneUtil.getToonWhereName(zone),
+            'how': 'teleportIn',
+            'hoodId': hood,
+            'zoneId': zone,
+            'shardId': None,
+            'avId': -1})
+        except Exception: # Most likely cause is the place the person is in has no teleportOut state, for example, boss lobbies.
+            place.fsm.request('DFAReject') # We have to do this, or the Toon will be stuck.
+            return f"Unable to teleport {toon.getName()} to zone {zone}."
+
+        return f"Successfully teleporting {toon.getName()} to zone {zone}."
 
 class Fireworks(MagicWord):
     aliases = ["firework"]
