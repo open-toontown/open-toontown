@@ -8,7 +8,7 @@ MESSAGE_DIRECTOR_IP="127.0.0.1:7199"
 EVENT_LOGGER_IP="127.0.0.1:7197"
 DISTRICT_NAME="Toon Valley"
 
-/usr/local/bin/python3.9 -m toontown.ai.AIStart --base-channel ${BASE_CHANNEL} \
+python3.9 -m toontown.ai.AIStart --base-channel ${BASE_CHANNEL} \
                --max-channels ${MAX_CHANNELS} --stateserver ${STATE_SERVER} \
                --messagedirector-ip ${MESSAGE_DIRECTOR_IP} \
                --eventlogger-ip ${EVENT_LOGGER_IP} --district-name "$DISTRICT_NAME"
