@@ -735,6 +735,21 @@ class SetGM(MagicWord):
         toon.b_setGM(0) # Reset it first, otherwise the Toon keeps the old icon, but the name still changes.
         toon.b_setGM(iconRequest)
         return f"GM icon set to {iconRequest} for {toon.getName()}"
+    
+class SetMaxCarry(MagicWord):
+    aliases = ["gagpouch", "pouch", "gagcapacity"]
+    desc = "Set a Toon's gag pouch size."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("pouchSize", int, True)]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        pouchSize = args[0]
+
+        if pouchSize > 255 or pouchSize < 0:
+            return "Specified pouch size must be between 1 and 255."
+
+        toon.b_setMaxCarry(pouchSize)
+        return f"Set gag pouch size to {pouchSize} for {toon.getName()}"
 
 class Fireworks(MagicWord):
     aliases = ["firework"]
