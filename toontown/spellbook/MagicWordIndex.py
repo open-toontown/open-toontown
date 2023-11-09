@@ -636,7 +636,7 @@ class BossBattle(MagicWord):
 
         # The create command is already described when the invoker is not in a battle.  These are the commands
         # they can use INSIDE the battle.
-        return respText + f"Unknown command: \"{command}\". Valid commands: \"start\", \"stop\", \"skip\", \"final\", \"kill\"."
+        return f"Unknown command: \"{command}\". Valid commands: \"start\", \"stop\", \"skip\", \"final\", \"kill\"."
 
     def __destroyBoss(self, boss):
         bossZone = boss.zoneId
