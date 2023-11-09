@@ -699,6 +699,25 @@ class ToggleSleep(MagicWord):
     def handleWord(self, invoker, avId, toon, *args):
         toon.d_toggleSleep()
         return f"Toggled sleeping for {toon.getName()}."
+    
+class ToggleImmortal(MagicWord):
+    aliases = ["immortal", "invincible", "invulnerable"]
+    desc = "Toggle immortal mode. This makes the Toon immune to damage."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        toon.setImmortalMode(not toon.immortalMode)
+        return f"Toggled immortal mode for {toon.getName()}"
+    
+class ToggleGhost(MagicWord):
+    aliases = ["ghost", "invisible", "spy"]
+    desc = "Toggle ghost mode."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        # 1 is for the attic, 2 enables you to see yourself other ghost toons. 0 is off.
+        toon.b_setGhostMode(2 if not toon.ghostMode else 0) # As it's primarily for moderation purposes, we set it to 2 here, or 0 if it's already on.
+        return f"Toggled ghost mode for {toon.getName()}"
 
 class Fireworks(MagicWord):
     aliases = ["firework"]
