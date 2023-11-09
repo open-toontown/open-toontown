@@ -2591,10 +2591,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         return self.transitioning
 
     def toggleSleep(self):
-        if base.localAvatar.noSleep:
-            base.localAvatar.noSleep = 0
-        else:
-            base.localAvatar.noSleep = 1
+        base.localAvatar.noSleep = not base.localAvatar.noSleep
 
     def magicWordTeleport(self, zone):
         hood = ZoneUtil.getHoodId(zone)
