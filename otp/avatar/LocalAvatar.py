@@ -985,9 +985,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         return
 
     def gotoSleep(self):
-        if self.noSleep:
-            return
-        if not self.sleepFlag:
+        if not self.sleepFlag and not self.noSleep:
             self.b_setAnimState('Sleep', self.animMultiplier)
             self.sleepFlag = 1
 
