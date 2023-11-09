@@ -732,6 +732,7 @@ class SetGM(MagicWord):
         if iconRequest > len(TTLocalizer.GM_NAMES) or iconRequest < 0:
             return "Invalid GM icon ID!"
         
+        toon.b_setGM(0) # Reset it first, otherwise the Toon keeps the old icon, but the name still changes.
         toon.b_setGM(iconRequest)
         return f"GM icon set to {iconRequest} for {toon.getName()}"
 
