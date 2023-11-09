@@ -115,8 +115,12 @@ class DistributedCannonGame(DistributedMinigame):
         self.dustCloud = DustCloud(base.render)
         purchaseModels = base.loader.loadModel('phase_4/models/gui/purchase_gui')
         self.jarImage = purchaseModels.find('**/Jar')
-        self.jarImage.reparentTo(base.hidden)
-        self.rewardPanel = DirectLabel(parent=base.hidden, relief=None, pos=(1.16, 0.0, 0.45), scale=0.65, text='', text_scale=0.2, text_fg=(0.95, 0.95, 0, 1), text_pos=(0, -.13), text_font=ToontownGlobals.getSignFont(), image=self.jarImage)
+        self.jarImage.reparentTo(hidden)
+        self.rewardPanel = DirectLabel(parent=hidden, relief=None, 
+                                       pos = (-0.17, 0.0, -0.55),
+                                       scale=0.65, text='', text_scale=0.2, 
+                                       text_fg=(0.95, 0.95, 0, 1), text_pos=(0, -.13), 
+                                       text_font=ToontownGlobals.getSignFont(), image=self.jarImage)
         self.rewardPanelTitle = DirectLabel(parent=self.rewardPanel, relief=None, pos=(0, 0, 0.06), scale=0.08, text=TTLocalizer.CannonGameReward, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1))
         self.music = base.loader.loadMusic('phase_4/audio/bgm/MG_cannon_game.ogg')
         self.sndCannonMove = base.loader.loadSfx('phase_4/audio/sfx/MG_cannon_adjust.ogg')
@@ -380,8 +384,7 @@ class DistributedCannonGame(DistributedMinigame):
         if not base.config.GetBool('endless-cannon-game', 0):
             self.timer.show()
             self.timer.countdown(CannonGameGlobals.GameTime, self.__gameTimerExpired)
-
-        self.rewardPanel.reparentTo(base.aspect2d)
+        self.rewardPanel.reparentTo(base.a2dTopRight)
         self.scoreMult = MinigameGlobals.getScoreMult(self.cr.playGame.hood.id)
         self.__startRewardCountdown()
         self.airborneToons = 0

@@ -68,7 +68,12 @@ class GroupPanel(DirectObject.DirectObject):
             frameZPos = 0.0278943
             quitButtonZPos = -0.30366
         guiButtons = loader.loadModel('phase_9/models/gui/tt_m_gui_brd_status')
-        self.frame = DirectFrame(relief=None, image=bgImage, image_scale=(0.5, 1, 0.5), image_pos=(0, 0, bgImageZPos), textMayChange=1, pos=(-1.044, 0, frameZPos))
+        self.frame = DirectFrame(relief=None, 
+                                 parent = base.a2dLeftCenter,
+                                 image=bgImage, image_scale=(0.5, 1, 0.5), 
+                                 image_pos=(0, 0, bgImageZPos), 
+                                 textMayChange=1, 
+                                 pos = (0.32, 0, frameZPos))
         self.frameBounds = self.frame.getBounds()
         leaveButtonGui = loader.loadModel('phase_3.5/models/gui/tt_m_gui_brd_leaveBtn')
         leaveImageList = (leaveButtonGui.find('**/tt_t_gui_brd_leaveUp'),
@@ -90,8 +95,20 @@ class GroupPanel(DirectObject.DirectObject):
         arrowGui = loader.loadModel('phase_9/models/gui/tt_m_gui_brd_arrow')
         hideImageList = (arrowGui.find('**/tt_t_gui_brd_arrow_up'), arrowGui.find('**/tt_t_gui_brd_arrow_down'), arrowGui.find('**/tt_t_gui_brd_arrow_hover'))
         showImageList = (arrowGui.find('**/tt_t_gui_brd_arrow_up'), arrowGui.find('**/tt_t_gui_brd_arrow_down'), arrowGui.find('**/tt_t_gui_brd_arrow_hover'))
-        self.hideButton = DirectButton(relief=None, text_pos=(0, 0.15), text_scale=0.06, text_align=TextNode.ALeft, text_fg=Vec4(0, 0, 0, 1), text_shadow=Vec4(1, 1, 1, 1), image=hideImageList, image_scale=(-0.35, 1, 0.5), pos=(-1.3081, 0, 0.03), scale=1.05, command=self.hide)
-        self.showButton = DirectButton(relief=None, text=('', TTLocalizer.BoardingGroupShow, TTLocalizer.BoardingGroupShow), text_pos=(0.03, 0), text_scale=0.06, text_align=TextNode.ALeft, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), image=showImageList, image_scale=(0.35, 1, 0.5), pos=(-1.3081, 0, 0.03), scale=1.05, command=self.show)
+        self.hideButton = DirectButton(relief=None, parent = base.a2dLeftCenter, text_pos=(0, 0.15), 
+                                       text_scale=0.06, 
+                                       text_align=TextNode.ALeft, text_fg=Vec4(0, 0, 0, 1), 
+                                       text_shadow=Vec4(1, 1, 1, 1), image=hideImageList, 
+                                       image_scale=(-0.35, 1, 0.5), 
+                                       pos=(-1.3081, 0, 0.03), scale=1.05, command=self.hide)
+        self.showButton = DirectButton(relief=None,  parent = base.a2dLeftCenter, 
+                                       text=('', TTLocalizer.BoardingGroupShow,
+                                             TTLocalizer.BoardingGroupShow), 
+                                       text_pos=(0.03, 0), text_scale=0.06, 
+                                       text_align=TextNode.ALeft, text_fg=Vec4(1, 1, 1, 1), 
+                                       text_shadow=Vec4(0, 0, 0, 1), image=showImageList,
+                                       image_scale=(0.35, 1, 0.5), pos=(-1.3081, 0, 0.03), 
+                                       scale=1.05, command=self.show)
         self.showButton.hide()
         self.frame.show()
         self.__makeAvatarNameScrolledList()

@@ -33,7 +33,7 @@ class DistributedIceGame(DistributedMinigame.DistributedMinigame, DistributedIce
          State.State('finalResults', self.enterFinalResults, self.exitFinalResults, ['cleanup']),
          State.State('cleanup', self.enterCleanup, self.exitCleanup, [])], 'off', 'cleanup')
         self.addChildGameFSM(self.gameFSM)
-        self.cameraThreeQuarterView = (0, -22, 45, 0, -62.89, 0)
+        self.cameraThreeQuarterView = (0, -16, 30, 0, -62.89, 0)
         self.tireDict = {}
         self.forceArrowDict = {}
         self.canDrive = False

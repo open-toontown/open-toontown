@@ -538,6 +538,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
             self.toon.loop('neutral')
             self.toon.startSmooth()
         NametagGlobals.setOnscreenChatForced(0)
+        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4/3))
         return
 
     def doHeadScale(self, model, scale):
@@ -606,9 +607,9 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         if not self.speedometer:
             cm = CardMaker('speed')
             cm.setFrame(-0.5, 0.5, -0.5, 0.5)
-            self.speedometerImages = aspect2d.attachNewNode('SpeedometerImages')
+            self.speedometerImages = base.a2dBottomRight.attachNewNode('SpeedometerImages')
             self.speedometerImages.setTransparency(True)
-            self.speedometerImages.setPos(1.24, 0.0, -0.98)
+            self.speedometerImages.setPos(-0.1, 0.0, 0.03)
             self.speedometerImages.setScale(0.75)
             m = loader.loadModel('phase_6/models/karting/speedometer')
             if self.getBodyColor() == InvalidEntry:
@@ -632,7 +633,10 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
             c = (bodyColor + Vec4(1, 1, 1, 1)) / 2.0
             c.setW(1.0)
             self.speedometerImages.attachNewNode(m.find('**/*ring').node()).setColorScale(c)
-            self.speedometer = DirectLabel(relief=None, pos=(1.24, 0.0, -0.98), text=str(0), text_scale=0.18, text_fg=bodyColor, text_pos=(-0.04, 0.02, 0), text_font=ToontownGlobals.getSignFont())
+            self.speedometer = DirectLabel(relief=None, pos = (-0.1, 0.0, 0.03), text=str(0), 
+                                           text_scale=0.18, text_fg=bodyColor, 
+                                           text_pos=(-0.04, 0.02, 0), text_font=ToontownGlobals.getSignFont())
+            self.speedometer.reparentTo(base.a2dBottomRight)
         else:
             self.showSpeedometer()
         self.arrowVert = 0
@@ -680,13 +684,13 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
 
     def startTurbo(self):
         newCameraPos = Point3(0, -25, 16)
-        newCameraFov = 90
+        newCameraFov = 70
         turboDuration = 3
-        startFov = base.camLens.getFov().getX()
+        startFov = ToontownGlobals.DefaultCameraFov/(4/3)
         if self.cameraTrack:
             self.cameraTrack.pause()
-        cameraZoomIn = Parallel(LerpPosInterval(camera, 2, newCameraPos), LerpFunc(base.camLens.setFov, fromData=startFov, toData=newCameraFov, duration=2))
-        cameraToNormal = Parallel(LerpPosInterval(camera, 1, Point3(0, -33, 16), newCameraPos), LerpFunc(base.camLens.setFov, fromData=newCameraFov, toData=ToontownGlobals.DefaultCameraFov, duration=1))
+        cameraZoomIn = Parallel(LerpPosInterval(camera, 2, newCameraPos), LerpFunc(base.camLens.setMinFov, fromData=startFov, toData=newCameraFov, duration=2))
+        cameraToNormal = Parallel(LerpPosInterval(camera, 1, Point3(0, -33, 16), newCameraPos), LerpFunc(base.camLens.setMinFov, fromData=newCameraFov, toData=startFov, duration=1))
         self.cameraTrack = Sequence(Func(self.turboStartSfx.play), cameraZoomIn, Func(lambda : self.setTurbo(True)), Wait(turboDuration), Func(self.__stopTurbo), cameraToNormal)
         self.cameraTrack.start()
 
@@ -1098,7 +1102,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         self.imHitMult = level
         if hasattr(self, 'cameraTrack') and self.cameraTrack:
             self.cameraTrack.pause()
-            cameraToNormal = Parallel(LerpPosInterval(camera, 0.05, Point3(0, -33, 16), startPos=camera.getPos()), LerpFunc(base.camLens.setFov, fromData=base.camLens.getFov()[0], toData=ToontownGlobals.DefaultCameraFov, duration=0.05))
+            cameraToNormal = Parallel(LerpPosInterval(camera, 0.05, Point3(0, -33, 16), startPos=camera.getPos()), LerpFunc(base.camLens.setMinFov, fromData=base.camLens.getFov()[0], toData=ToontownGlobals.DefaultCameraFov/(4/3), duration=0.05))
             cameraToNormal.start()
         self.__stopTurbo()
         self.stopped = True

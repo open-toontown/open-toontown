@@ -171,7 +171,7 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         self.quitEarlyButton.stash()
         self.flashText = OnscreenText(text='', pos=(0.0, -0.45), scale=0.2, fg=(1.0, 1.0, 0.65, 1.0), align=TextNode.ACenter, font=ToontownGlobals.getSignFont(), mayChange=True)
         self.timer = PartyUtils.getNewToontownTimer()
-        self.timer.reparentTo(self.screenPlaneElements)
+        self.timer.posInTopRightCorner()
         return
 
     def loadSounds(self):

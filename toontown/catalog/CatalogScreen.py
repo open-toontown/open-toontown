@@ -683,7 +683,9 @@ class CatalogScreen(DirectFrame):
         self.clarabelleFrame = DirectLabel(self, relief=None, image=guiItems.find('**/clarabelle_frame'))
         hangupGui = guiItems.find('**/hangup')
         hangupRolloverGui = guiItems.find('**/hangup_rollover')
-        self.hangup = DirectButton(self, relief=None, pos=(1.78, 0, -1.3), image=[hangupGui,
+        self.hangup = DirectButton(self, relief=None, pos = (1.78, 0, -1.3), 
+         scale = (0.7, 0.7, 0.7),
+         image=[hangupGui,
          hangupRolloverGui,
          hangupRolloverGui,
          hangupGui], text=['', TTLocalizer.CatalogHangUp, TTLocalizer.CatalogHangUp], text_fg=Vec4(1), text_scale=0.07, text_pos=(0.0, 0.14), command=self.hangUp)

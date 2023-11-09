@@ -6,8 +6,8 @@ ScoreToJellyBeansMultiplier = 5
 ScoreGainPerTreasure = 1
 ToonStartingPosition = (-39, 0, 13.59)
 CameraStartingPosition = (-28,
- -53,
- 17.3,
+ -34,
+ 18.3,
  0,
  0,
  0)

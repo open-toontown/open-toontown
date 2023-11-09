@@ -386,7 +386,12 @@ class ObjectManager(NodePath, DirectObject):
         base.setCellsAvailable(base.leftCells + [base.bottomCells[0]], 0)
         if self.guiInterval:
             self.guiInterval.finish()
-        self.guiInterval = self.furnitureGui.posHprScaleInterval(1.0, Point3(-1.16, 1, -0.03), Vec3(0), Vec3(0.06), startPos=Point3(-1.19, 1, 0.33), startHpr=Vec3(0), startScale=Vec3(0.04), blendType='easeInOut', name='lerpFurnitureButton')
+        self.guiInterval = self.furnitureGui.posHprScaleInterval(1.0, Point3(0.16,-0.6,-1.045), Vec3(0), Vec3(0.06), 
+                                                                 startPos = Point3(0.115, 0.0, -0.66),
+                                                                 startHpr=Vec3(0), 
+                                                                 startScale=Vec3(0.04),
+                                                                 blendType='easeInOut', 
+                                                                 name='lerpFurnitureButton')
         self.guiInterval.start()
         taskMgr.add(self.recenterButtonFrameTask, 'recenterButtonFrameTask', 10)
         messenger.send('wakeup')

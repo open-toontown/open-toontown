@@ -484,7 +484,8 @@ class DistributedCatchGame(DistributedMinigame):
             avName = self.getAvatarName(avId)
             scorePanel = MinigameAvatarScorePanel.MinigameAvatarScorePanel(avId, avName)
             scorePanel.setScale(0.9)
-            scorePanel.setPos(0.75 - spacing * (self.numPlayers - 1 - i), 0.0, 0.85)
+            scorePanel.setPos(-0.58 - spacing*((self.numPlayers-1)-i), 0.0, -0.15)
+            scorePanel.reparentTo(base.a2dTopRight)
             scorePanel.makeTransparent(0.75)
             self.scorePanels.append(scorePanel)
 

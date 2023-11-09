@@ -310,8 +310,7 @@ class DistributedTugOfWarGame(DistributedMinigame):
             self.setupTrack.finish()
             del self.setupTrack
             self.setupTrack = None
-
-        base.camLens.setFov(ToontownGlobals.DefaultCameraFov)
+        base.camLens.setMinFov(ToontownGlobals.DefaultCameraFov/(4/3))
         base.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, ToontownGlobals.DefaultCameraFar)
         NametagGlobals.setGlobalNametagScale(1.0)
         if self.arrowKeys:
@@ -363,7 +362,7 @@ class DistributedTugOfWarGame(DistributedMinigame):
         lerpDur = 8
         self.introTrack = LerpPosHprInterval(base.camera, lerpDur, pos=gameCamPos, hpr=gameCamHpr, blendType='easeInOut', name=self.uniqueName('introLerpCameraPos'))
         self.introTrack.start()
-        base.camLens.setFov(60 + 2 * self.numPlayers)
+        base.camLens.setMinFov(60 + 2 * self.numPlayers / (4/3))
         base.camLens.setFar(450.0)
 
     def sendGameType(self, index, suit):

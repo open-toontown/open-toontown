@@ -55,7 +55,8 @@ class AvatarChooser(StateData.StateData):
         self.quitButton.show()
         if base.cr.loginInterface.supportsRelogin():
             self.logoutButton.show()
-        self.pickAToonBG.reparentTo(base.camera)
+        self.pickAToonBG.reparentTo(aspect2d)
+        self.pickAToonBG.setBin('background', 1)
         choice = base.config.GetInt('auto-avatar-choice', -1)
         for panel in self.panelList:
             panel.show()

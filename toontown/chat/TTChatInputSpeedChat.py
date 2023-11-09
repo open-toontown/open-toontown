@@ -439,9 +439,9 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
         self.terminalSelectedEvent = self.speedChat.getEventName(SpeedChatGlobals.SCTerminalSelectedEvent)
         if base.config.GetBool('want-sc-auto-hide', 1):
             self.accept(self.terminalSelectedEvent, selectionMade)
-        self.speedChat.reparentTo(aspect2dp, DGG.FOREGROUND_SORT_INDEX)
-        scZ = 0.96
-        self.speedChat.setPos(-1.05, 0, scZ)
+        self.speedChat.reparentTo(base.a2dpTopLeft, DGG.FOREGROUND_SORT_INDEX)
+        scZ = -0.04
+        self.speedChat.setPos(0.28, 0, scZ)
         self.speedChat.setWhisperMode(self.whisperAvatarId != None)
         self.speedChat.enter()
         return
