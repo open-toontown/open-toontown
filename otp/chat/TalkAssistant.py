@@ -630,6 +630,7 @@ class TalkAssistant(DirectObject.DirectObject):
              message,
              [],
              0])
+            base.cr.chatHandler.sendChatMessage(message)
             messenger.send('chatUpdate', [message, chatFlags])
         return error
 
@@ -652,6 +653,7 @@ class TalkAssistant(DirectObject.DirectObject):
                  message,
                  [],
                  0], sendToId=receiverAvId)
+        base.cr.chatHandler.sendWhisperMessage(message, receiverAvId)
         return error
 
     def sendAccountTalk(self, message, receiverAccount):

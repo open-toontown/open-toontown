@@ -7,7 +7,7 @@ from otp.distributed import Account/AI/UD
 from otp.distributed import AstronAccount/AI/UD
 from otp.ai import TimeManager/AI
 from otp.avatar import DistributedAvatar/AI/UD
-from otp.avatar import DistributedPlayer/AI
+from otp.avatar import DistributedPlayer/AI/UD
 from otp.friends import FriendManager/AI
 from otp.friends import AvatarFriendsManager/UD
 from otp.friends import PlayerFriendsManager/UD
@@ -28,6 +28,7 @@ from otp.web import SettingsMgr/AI/UD
 from otp.status import StatusDatabase/UD
 from otp.avatar import AvatarHandle
 from otp.login import AstronLoginManager/UD
+from otp.chat import ChatHandler/UD
 
 typedef uint8 bool;
 
@@ -537,4 +538,8 @@ dclass AstronLoginManager : DistributedObject {
   acknowledgeAvatarNameResponse();
   requestRemoveAvatar(uint32) clsend;
   requestPlayAvatar(uint32) clsend;
+};
+dclass ChatHandler : DistributedObject {
+  chatMessage(string message) clsend;
+  whisperMessage(string message, DoId receiverAvId) clsend;
 };
