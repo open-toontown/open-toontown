@@ -860,6 +860,9 @@ class Toon(Avatar.Avatar, ToonHead):
         self.resetHeight()
         self.setupToonNodes()
         self.generateBackpack()
+        hands = self.getRightHands()
+        for bookActor, hand in zip(self.__bookActors, hands):
+            bookActor.reparentTo(hand)
 
     def generateToonHead(self, copy = 1):
         headHeight = ToonHead.generateToonHead(self, copy, self.style, ('1000', '500', '250'))

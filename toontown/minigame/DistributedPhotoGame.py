@@ -245,6 +245,11 @@ class DistributedPhotoGame(DistributedMinigame, PhotoGameBase.PhotoGameBase):
         self.removeChildGameFSM(self.gameFSM)
         del self.gameFSM
         self.ignoreAll()
+
+        for rayEntry in self.rayArray:
+            rayEntry[3].remove_node()
+        del self.rayArray
+
         return
 
     def onstage(self):
