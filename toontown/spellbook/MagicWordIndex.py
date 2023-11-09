@@ -750,6 +750,15 @@ class SetMaxCarry(MagicWord):
 
         toon.b_setMaxCarry(pouchSize)
         return f"Set gag pouch size to {pouchSize} for {toon.getName()}"
+    
+class ToggleInstantKill(MagicWord):
+    aliases = ["instantkill", "instakill"]
+    desc = "Toggle the ability to instantly kill a Cog with any gag."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+
+    def handleWord(self, invoker, avId, toon, *args):
+        toon.setInstantKillMode(not toon.instantKillMode)
+        return f"Toggled instant-kill mode for {toon.getName()}"
 
 class Fireworks(MagicWord):
     aliases = ["firework"]
