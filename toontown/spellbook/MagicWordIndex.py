@@ -555,7 +555,7 @@ class BossBattle(MagicWord):
             if not start:
                 respText += " in Frolic state"
 
-            return respText + ", teleporting...", ["cogHQLoader", "cogHQBossBattle", "movie" if start else "teleportIn", boss.getHoodId(), boss.zoneId, 0]
+            return respText + ", teleporting...", toon.doId, ["cogHQLoader", "cogHQBossBattle", "movie" if start else "teleportIn", boss.getHoodId(), boss.zoneId, 0]
         
         elif command == "list":
             # List all the ongoing boss battles.
@@ -597,7 +597,7 @@ class BossBattle(MagicWord):
                 return "Index out of range!"
             
             boss = AllBossCogs[index]
-            return "Teleporting to boss battle...", ["cogHQLoader", "cogHQBossBattle", "", boss.getHoodId(), boss.zoneId, 0]
+            return "Teleporting to boss battle...", toon.doId, ["cogHQLoader", "cogHQBossBattle", "", boss.getHoodId(), boss.zoneId, 0]
 
 
         # The following commands needs the invoker to be in a boss battle.
@@ -661,6 +661,7 @@ class Teleport(MagicWord):
     arguments = [("zoneName", str, False, '')]
 
     def handleWord(self, invoker, avId, toon, *args):
+        from toontown.hood import ZoneUtil
         from toontown.toonbase import ToontownGlobals
         zoneName = args[0]
 
@@ -686,10 +687,8 @@ class Teleport(MagicWord):
             zone = zoneName2Id[zoneName]
         except KeyError:
             return "Unknown zone name!"
-        
-        toon.d_magicWordTeleport(zone)
 
-        return f"Requested to teleport {toon.getName()} to zone {zone}."
+        return f"Requested to teleport {toon.getName()} to zone {zone}.", toon.doId, [ZoneUtil.getBranchLoaderName(zone), ZoneUtil.getToonWhereName(zone), "", ZoneUtil.getHoodId(zone), zone, 0]
 
 class ToggleSleep(MagicWord):
     aliases = ["sleep", "nosleep", "neversleep", "togglesleeping", "insomnia"]

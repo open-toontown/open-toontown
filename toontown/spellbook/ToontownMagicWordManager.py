@@ -275,11 +275,14 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
             hoodId = place.loader.hood.id
         if avId == 0:
             avId = -1
-        place.fsm.forceTransition('teleportOut',
-                                  [{"loader": loaderId,
-                                    "where": whereId,
-                                    "how": how,
-                                    "hoodId": hoodId, 
-                                    "zoneId": zoneId, 
-                                    "shardId": None,
-                                    "avId": avId}])
+        try:
+            place.fsm.forceTransition('teleportOut',
+                                    [{"loader": loaderId,
+                                        "where": whereId,
+                                        "how": how,
+                                        "hoodId": hoodId, 
+                                        "zoneId": zoneId, 
+                                        "shardId": None,
+                                        "avId": avId}])
+        except Exception: # Most likely cause is the place the avatar is in has no teleportOut state, for example, boss lobbies.
+            place.fsm.request('DFAReject') # We have to do this, or the avatar will be stuck.
