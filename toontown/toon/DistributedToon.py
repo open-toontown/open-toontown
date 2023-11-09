@@ -2528,7 +2528,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         self._handleGMName()
 
     def _handleGMName(self):
-        name = self.name
+        name = self._name
         self.setDisplayName(name)
         if self._isGM:
             self.setNametagStyle(5)

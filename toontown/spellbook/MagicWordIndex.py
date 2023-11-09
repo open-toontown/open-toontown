@@ -718,6 +718,22 @@ class ToggleGhost(MagicWord):
         # 1 is for the attic, 2 enables you to see yourself other ghost toons. 0 is off.
         toon.b_setGhostMode(2 if not toon.ghostMode else 0) # As it's primarily for moderation purposes, we set it to 2 here, or 0 if it's already on.
         return f"Toggled ghost mode for {toon.getName()}"
+    
+class SetGM(MagicWord):
+    aliases = ["icon", "seticon", "gm", "gmicon", "setgmicon"]
+    desc = "Sets the GM icon on the target."
+    execLocation = MagicWordConfig.EXEC_LOC_SERVER
+    arguments = [("iconRequest", int, False, 0),]
+
+    def handleWord(self, invoker, avId, toon, *args):
+        from toontown.toonbase import TTLocalizer
+
+        iconRequest = args[0]
+        if iconRequest > len(TTLocalizer.GM_NAMES) or iconRequest < 0:
+            return "Invalid GM icon ID!"
+        
+        toon.b_setGM(iconRequest)
+        return f"GM icon set to {iconRequest} for {toon.getName()}"
 
 class Fireworks(MagicWord):
     aliases = ["firework"]
