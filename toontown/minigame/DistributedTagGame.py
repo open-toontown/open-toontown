@@ -1,5 +1,6 @@
 from panda3d.core import *
 from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.otp import NametagGlobals
 from .DistributedMinigame import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
