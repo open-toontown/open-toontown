@@ -82,8 +82,7 @@ class CatalogItem:
     def storedInAttic(self):
         return 0
 
-    def notOfferedTo(self, avatar):
-        return 0
+   
 
     def getPurchaseLimit(self):
         return 0
@@ -120,11 +119,7 @@ class CatalogItem:
     def isRental(self):
         return 0
 
-    def forBoysOnly(self):
-        return 0
 
-    def forGirlsOnly(self):
-        return 0
 
     def setLoyaltyRequirement(self, days):
         self.loyaltyDays = days

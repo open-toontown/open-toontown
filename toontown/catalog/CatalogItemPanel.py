@@ -484,13 +484,8 @@ class CatalogItemPanel(DirectFrame):
                 return
             elif self.parentCatalogScreen.gotAvatar == 1:
                 avatar = self.parentCatalogScreen.giftAvatar
-                if self['item'].forBoysOnly() and avatar.getStyle().getGender() == 'f' or self['item'].forGirlsOnly() and avatar.getStyle().getGender() == 'm':
-                    self.giftButton.show()
-                    self.giftButton['state'] = DGG.DISABLED
-                    auxText = TTLocalizer.CatalogNoFit
-                    self.auxText['text'] = auxText
-                    return
-                elif self['item'].reachedPurchaseLimit(avatar):
+                
+                if self['item'].reachedPurchaseLimit(avatar):
                     self.giftButton.show()
                     self.giftButton['state'] = DGG.DISABLED
                     auxText = TTLocalizer.CatalogPurchasedGiftText

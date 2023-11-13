@@ -936,15 +936,7 @@ class CatalogFurnitureItem(CatalogAtticItem.CatalogAtticItem):
             return None
         return None
 
-    def notOfferedTo(self, avatar):
-        if self.getFlags() & FLCloset or self.getFlags() & FLTrunk:
-            decade = self.furnitureType - self.furnitureType % 10
-            forBoys = (decade == 500 or decade == 4000)
-            if avatar.getStyle().getGender() == 'm':
-                return not forBoys
-            else:
-                return forBoys
-        return 0
+
 
     def isDeletable(self):
         return self.getFlags() & (FLBank | FLCloset | FLPhone | FLTrunk) == 0

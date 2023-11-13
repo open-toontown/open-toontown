@@ -312,29 +312,9 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
     def storedInCloset(self):
         return 1
 
-    def notOfferedTo(self, avatar):
-        article = ClothingTypes[self.clothingType][CTArticle]
-        if article == AShirt or article == AShorts:
-            return 0
-        forBoys = (article == ABoysShirt or article == ABoysShorts)
-        if avatar.getStyle().getGender() == 'm':
-            return not forBoys
-        else:
-            return forBoys
+   
 
-    def forBoysOnly(self):
-        article = ClothingTypes[self.clothingType][CTArticle]
-        if article == ABoysShirt or article == ABoysShorts:
-            return 1
-        else:
-            return 0
-
-    def forGirlsOnly(self):
-        article = ClothingTypes[self.clothingType][CTArticle]
-        if article == AGirlsShirt or article == AGirlsSkirt or article == AGirlsShorts:
-            return 1
-        else:
-            return 0
+   
 
     def getPurchaseLimit(self):
         return 1

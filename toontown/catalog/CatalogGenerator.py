@@ -1642,9 +1642,9 @@ class CatalogGenerator:
             item = MetaItems[item]
         selection = []
         if isinstance(item, CatalogItem.CatalogItem):
-            if not item.notOfferedTo(avatar):
-                item.saleItem = saleItem
-                selection.append(item)
+           
+            item.saleItem = saleItem
+            selection.append(item)
         elif item != None:
             list = item[:]
             for i in range(chooseCount):
@@ -1661,7 +1661,7 @@ class CatalogGenerator:
         index = random.randrange(len(list))
         item = list[index]
         del list[index]
-        while item.notOfferedTo(avatar) or item.reachedPurchaseLimit(avatar) or item in duplicateItems or item in avatar.backCatalog or item in avatar.weeklyCatalog:
+        while item.reachedPurchaseLimit(avatar) or item in duplicateItems or item in avatar.backCatalog or item in avatar.weeklyCatalog:
             if len(list) == 0:
                 return None
             index = random.randrange(len(list))
