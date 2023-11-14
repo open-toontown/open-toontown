@@ -129,7 +129,6 @@ NSnameResult = (0.09, 0.084, 0.084)
 NSnameLabel = 0.1
 NStypeNotification = 0.08
 NScolorPrecede = True
-MATenterGenderShop = 0.18
 MATenterBodyShop = 0.18
 MATenterColorShop = 0.18
 MATenterClothesShop = 0.16

@@ -95,10 +95,6 @@ class MakeAToon(StateData.StateData):
         base.playMusic(self.music, looping=1, volume=self.musicVolume)
         camera.setPosHpr(-5.7, -12.3501, 2.15, -24.8499, 2.73, 0)
         if self.warp:
-            if self.toon.style.torso[1] == 's':
-                self.toon.gender = 's'
-            else:
-                self.toon.gender = 'd'
             self.toon.reparentTo(render)
             self.toon.loop('neutral')
             self.toon.setPosHpr(-4.1, -2, 0, 200, 0, 0)
@@ -203,8 +199,6 @@ class MakeAToon(StateData.StateData):
         ee.bind(DGG.B1PRESS, lambda x, ee = ee: self.toggleSlide())
         self.eee = ee
         self.room = loader.loadModel('phase_3/models/makeatoon/tt_m_ara_mat_room')
-        self.genderWalls = self.room.find('**/genderWalls')
-        self.genderProps = self.room.find('**/genderProps')
         self.bodyWalls = self.room.find('**/bodyWalls')
         self.bodyProps = self.room.find('**/bodyProps')
         self.colorWalls = self.room.find('**/colorWalls')
@@ -306,10 +300,6 @@ class MakeAToon(StateData.StateData):
         self.cleanupFocusOutIval()
         self.room.removeNode()
         del self.room
-        self.genderWalls.removeNode()
-        self.genderProps.removeNode()
-        del self.genderWalls
-        del self.genderProps
         self.bodyWalls.removeNode()
         self.bodyProps.removeNode()
         del self.bodyWalls

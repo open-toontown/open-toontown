@@ -9,21 +9,13 @@ class MakeClothesGUI(ClothesGUI.ClothesGUI):
 
     def setupScrollInterface(self):
         self.dna = self.toon.getStyle()
-        gender = self.dna.getGender()
-        if gender != self.gender:
-            self.tops = ToonDNA.getRandomizedTops(gender, tailorId=ToonDNA.MAKE_A_TOON)
-            self.bottoms = ToonDNA.getRandomizedBottoms(gender, tailorId=ToonDNA.MAKE_A_TOON)
-            self.gender = gender
-            self.topChoice = 0
-            self.bottomChoice = 0
         self.setupButtons()
 
     def setupButtons(self):
         ClothesGUI.ClothesGUI.setupButtons(self)
         if len(self.dna.torso) == 1:
-            if self.gender == 'm':
-                torsoStyle = 's'
-            elif self.girlInShorts == 1:
+           
+            if self.toonInShorts == 1:
                 torsoStyle = 's'
             else:
                 torsoStyle = 'd'

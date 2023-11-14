@@ -208,9 +208,9 @@ class NPCFriendCard(DirectFrame):
     def createNPCToonHead(self, NPCID, dimension = 0.5):
         NPCInfo = NPCToons.NPCToonDict[NPCID]
         dnaList = NPCInfo[2]
-        gender = NPCInfo[3]
+        eyelashes = NPCInfo[3]
         if dnaList == 'r':
-            dnaList = NPCToons.getRandomDNA(NPCID, gender)
+            dnaList = NPCToons.getRandomDNA(NPCID, eyelashes)
         dna = ToonDNA.ToonDNA()
         dna.newToonFromProperties(*dnaList)
         head = ToonHead.ToonHead()

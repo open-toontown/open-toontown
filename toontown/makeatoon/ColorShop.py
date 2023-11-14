@@ -18,17 +18,15 @@ class ColorShop(StateData.StateData):
         self.colorAll = 1
         return
 
-    def getGenderColorList(self, dna):
-        if self.dna.getGender() == 'm':
-            return ToonDNA.defaultBoyColorList
-        else:
-            return ToonDNA.defaultGirlColorList
+    def getColorList(self, dna):
+        return ToonDNA.defaultColorList
+        
 
     def enter(self, toon, shopsVisited = []):
         base.disableMouse()
         self.toon = toon
         self.dna = toon.getStyle()
-        colorList = self.getGenderColorList(self.dna)
+        colorList = self.getColorList(self.dna)
         try:
             self.headChoice = colorList.index(self.dna.headColor)
             self.armChoice = colorList.index(self.dna.armColor)
@@ -44,7 +42,7 @@ class ColorShop(StateData.StateData):
         self.startColor = 0
         self.acceptOnce('last', self.__handleBackward)
         self.acceptOnce('next', self.__handleForward)
-        choicePool = [self.getGenderColorList(self.dna), self.getGenderColorList(self.dna), self.getGenderColorList(self.dna)]
+        choicePool = [self.getColorList(self.dna), self.getColorList(self.dna), self.getColorList(self.dna)]
         self.shuffleButton.setChoicePool(choicePool)
         self.accept(self.shuffleFetchMsg, self.changeColor)
         self.acceptOnce('MAT-newToonCreated', self.shuffleButton.cleanHistory)
@@ -153,7 +151,7 @@ class ColorShop(StateData.StateData):
         self.ignore('MAT-newToonCreated')
 
     def __swapAllColor(self, offset):
-        colorList = self.getGenderColorList(self.dna)
+        colorList = self.getColorList(self.dna)
         length = len(colorList)
         choice = (self.headChoice + offset) % length
         self.__updateScrollButtons(choice, length, self.allLButton, self.allRButton)
@@ -164,7 +162,7 @@ class ColorShop(StateData.StateData):
         self.__swapLegColor(choice - oldLegColorIndex)
 
     def __swapHeadColor(self, offset):
-        colorList = self.getGenderColorList(self.dna)
+        colorList = self.getColorList(self.dna)
         length = len(colorList)
         self.headChoice = (self.headChoice + offset) % length
         self.__updateScrollButtons(self.headChoice, length, self.headLButton, self.headRButton)
@@ -173,7 +171,7 @@ class ColorShop(StateData.StateData):
         self.toon.swapToonColor(self.dna)
 
     def __swapArmColor(self, offset):
-        colorList = self.getGenderColorList(self.dna)
+        colorList = self.getColorList(self.dna)
         length = len(colorList)
         self.armChoice = (self.armChoice + offset) % length
         self.__updateScrollButtons(self.armChoice, length, self.armLButton, self.armRButton)
@@ -182,7 +180,7 @@ class ColorShop(StateData.StateData):
         self.toon.swapToonColor(self.dna)
 
     def __swapLegColor(self, offset):
-        colorList = self.getGenderColorList(self.dna)
+        colorList = self.getColorList(self.dna)
         length = len(colorList)
         self.legChoice = (self.legChoice + offset) % length
         self.__updateScrollButtons(self.legChoice, length, self.legLButton, self.legRButton)
@@ -210,7 +208,7 @@ class ColorShop(StateData.StateData):
 
     def changeColor(self):
         self.notify.debug('Entering changeColor')
-        colorList = self.getGenderColorList(self.dna)
+        colorList = self.getColorList(self.dna)
         newChoice = self.shuffleButton.getCurrChoice()
         newHeadColorIndex = colorList.index(newChoice[0])
         newArmColorIndex = colorList.index(newChoice[1])

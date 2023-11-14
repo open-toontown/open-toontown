@@ -45,8 +45,6 @@ class NameShop(StateData.StateData):
          '',
          '']
         self.toon = None
-        self.boy = 0
-        self.girl = 0
         self.allTitles = []
         self.allFirsts = []
         self.allPrefixes = []
@@ -134,20 +132,13 @@ class NameShop(StateData.StateData):
             return
         else:
             self.toon = toon
-            if self.toon.style.gender == 'm':
-                self.boy = 1
-                self.girl = 0
-            else:
-                self.boy = 0
-                self.girl = 1
         self.usedNames = usedNames
-        if not self.addedGenderSpecific or self.oldBoy != self.boy:
-            self.oldBoy = self.boy
+        if not self.addedGenderSpecific:
             self.listsLoaded = 0
-            self.allTitles = [' '] + [' '] + self.nameGen.boyTitles * self.boy + self.nameGen.girlTitles * self.girl + self.nameGen.neutralTitles
+            self.allTitles = [' '] + [' '] + self.nameGen.boyTitles + self.nameGen.girlTitles + self.nameGen.neutralTitles
             self.allTitles.sort()
             self.allTitles += [' '] + [' ']
-            self.allFirsts = [' '] + [' '] + self.nameGen.boyFirsts * self.boy + self.nameGen.girlFirsts * self.girl + self.nameGen.neutralFirsts
+            self.allFirsts = [' '] + [' '] + self.nameGen.boyFirsts + self.nameGen.girlFirsts + self.nameGen.neutralFirsts
             self.allFirsts.sort()
             self.allFirsts += [' '] + [' ']
             try:
@@ -644,7 +635,7 @@ class NameShop(StateData.StateData):
 
     def __randomName(self):
         self.notify.debug('Finding random name')
-        uberReturn = self.nameGen.randomNameMoreinfo(self.boy, self.girl)
+        uberReturn = self.nameGen.randomNameMoreinfo()
         flags = uberReturn[:3]
         names = uberReturn[3:7]
         fullName = uberReturn[-1]

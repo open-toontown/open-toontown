@@ -737,20 +737,14 @@ class DistributedPhotoGame(DistributedMinigame, PhotoGameBase.PhotoGameBase):
         for pathIndex in range(len(self.data['PATHS'])):
             path = self.data['PATHS'][pathIndex]
             subject = Toon.Toon()
-            gender = random.choice(['m', 'f'])
+            eyelashes = random.choice([0, 1])
             seed = int(random.random() * 571)
-            if gender == 'm':
-                boy = 1
-                girl = 0
-            else:
-                boy = 0
-                girl = 1
-            subject.setName(namegen.randomNameMoreinfo(boy=boy, girl=girl)[-1])
+            subject.setName(namegen.randomNameMoreinfo()[-1])
             self.nameCounter += 1
             subject.setPickable(0)
             subject.setPlayerType(NametagGroup.CCNonPlayer)
             dna = ToonDNA.ToonDNA()
-            dna.newToonRandom(seed, gender, 1)
+            dna.newToonRandom(seed, eyelashes, 1)
             subject.setDNAString(dna.makeNetString())
             subject.animFSM.request('neutral')
             subject.setTag('subjectIndex', '%s' % len(self.subjects))

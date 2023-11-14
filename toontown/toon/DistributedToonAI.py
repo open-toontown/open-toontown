@@ -489,10 +489,8 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         changed = False
         if self.isPlayerControlled():
             allowedColors = []
-            if self.dna.gender == 'm':
-                allowedColors = ToonDNA.defaultBoyColorList + [26]
-            else:
-                allowedColors = ToonDNA.defaultGirlColorList + [26]
+            allowedColors = ToonDNA.defaultColorList + [26]
+            
             if self.dna.legColor not in allowedColors:
                 self.dna.legColor = allowedColors[0]
                 changed = True

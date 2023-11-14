@@ -610,7 +610,7 @@ class Toon(Avatar.Avatar, ToonHead):
         return
 
     def updateToonDNA(self, newDNA, fForce = 0):
-        self.style.gender = newDNA.getGender()
+        self.style.eyelashes = newDNA.getEyelashes()
         oldDNA = self.style
         if fForce or newDNA.head != oldDNA.head:
             self.swapToonHead(newDNA.head)

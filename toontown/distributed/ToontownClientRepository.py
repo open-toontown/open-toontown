@@ -119,17 +119,16 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                 for head in ToonDNA.getHeadList(species):
                     for torso in ToonDNA.toonTorsoTypes:
                         for legs in ToonDNA.toonLegTypes:
-                            for gender in ('m', 'f'):
-                                print('species: %s, head: %s, torso: %s, legs: %s, gender: %s' % (species,
+                                print('species: %s, head: %s, torso: %s, legs: %s' % (species,
                                  head,
                                  torso,
                                  legs,
-                                 gender))
+                                 ))
                                 dna = ToonDNA.ToonDNA()
                                 dna.newToon((head,
                                  torso,
-                                 legs,
-                                 gender))
+                                 legs
+                                 ))
                                 toon = Toon.Toon()
                                 try:
                                     toon.setDNA(dna)

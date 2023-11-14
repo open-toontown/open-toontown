@@ -20,8 +20,7 @@ class ClothesGUI(StateData.StateData):
         self.type = type
         self.toon = None
         self.swapEvent = swapEvent
-        self.gender = '?'
-        self.girlInShorts = 0
+        self.toonInShorts = 0
         self.swappedTorso = 0
         return
 
@@ -119,18 +118,14 @@ class ClothesGUI(StateData.StateData):
         self.ignore(self.shuffleFetchMsg)
 
     def setupButtons(self):
-        self.girlInShorts = 0
-        if self.gender == 'f':
-            if self.bottomChoice == -1:
-                botTex = self.bottoms[0][0]
-            else:
-                botTex = self.bottoms[self.bottomChoice][0]
-            if ToonDNA.GirlBottoms[botTex][1] == ToonDNA.SHORTS:
-                self.girlInShorts = 1
-        if self.toon.style.getGender() == 'm':
-            self.bottomFrame['text'] = TTLocalizer.ClothesShopShorts
+        self.toonInShorts = 0
+        if self.bottomChoice == -1:
+            botTex = self.bottoms[0][0]
         else:
-            self.bottomFrame['text'] = TTLocalizer.ClothesShopBottoms
+            botTex = self.bottoms[self.bottomChoice][0]
+        if ToonDNA.Bottoms[botTex][1] == ToonDNA.SHORTS:
+            self.toonInShorts = 1
+        self.bottomFrame['text'] = TTLocalizer.ClothesShopBottoms
         self.acceptOnce('last', self.__handleBackward)
         self.acceptOnce('next', self.__handleForward)
         return None

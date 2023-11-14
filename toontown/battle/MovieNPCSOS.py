@@ -101,10 +101,12 @@ def teleportIn(attack, npc, pos = Point3(0, 0, 0), hpr = Vec3(180.0, 0.0, 0.0)):
 
 
 def teleportOut(attack, npc):
-    if npc.style.getGender() == 'm':
-        a = ActorInterval(npc, 'bow')
-    else:
+    # instead of gender check the torso type 
+
+    if npc.style.torso[1] == 'd':
         a = ActorInterval(npc, 'curtsy')
+    else:
+        a = ActorInterval(npc, 'bow')
     b = Func(npc.setChatAbsolute, TTLocalizer.MovieNPCSOSGoodbye, CFSpeech | CFTimeout)
     c = npc.getTeleportOutTrack()
     d = Func(npc.removeActive)

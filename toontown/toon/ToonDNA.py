@@ -358,7 +358,6 @@ GirlShirts = [(0, 0),
  (22, 0)]
 
 
-=
 
 def isValidBoyShirt(index):
     for pair in BoyShirts:
@@ -1348,7 +1347,7 @@ def getRandomGirlBottomAndColor(type):
     return (style[0], random.choice(style[1]))
 
 
-def getRandomizedTops(gender, tailorId = MAKE_A_TOON, generator = None):
+def getRandomizedTops(tailorId = MAKE_A_TOON, generator = None):
     if generator == None:
         generator = random
     collection = TailorCollections[tailorId]
@@ -1367,7 +1366,7 @@ def getRandomizedTops(gender, tailorId = MAKE_A_TOON, generator = None):
     return tops
 
 
-def getRandomizedBottoms(gender, tailorId = MAKE_A_TOON, generator = None):
+def getRandomizedBottoms(tailorId = MAKE_A_TOON, generator = None):
     if generator == None:
         generator = random
     collection = TailorCollections[tailorId]
@@ -1384,7 +1383,7 @@ def getRandomizedBottoms(gender, tailorId = MAKE_A_TOON, generator = None):
     return bottoms
 
 
-def getTops(gender, tailorId = MAKE_A_TOON):
+def getTops(tailorId = MAKE_A_TOON):
     collection = TailorCollections[tailorId][SHIRTS]
     tops = []
     for style in collection:
@@ -1397,11 +1396,10 @@ def getTops(gender, tailorId = MAKE_A_TOON):
     return tops
 
 
-def getAllTops(gender):
+def getAllTops():
     tops = []
     for style in list(ShirtStyles.keys()):
-        if gender == 'm':
-            if style[0] == 'g' or style[:3] == 'c_g':
+        if style[0] == 'g' or style[:3] == 'c_g':
                 continue
         elif style[0] == 'b' or style[:3] == 'c_b':
             continue
@@ -1414,7 +1412,7 @@ def getAllTops(gender):
     return tops
 
 
-def getBottoms(gender, tailorId = MAKE_A_TOON):
+def getBottoms(tailorId = MAKE_A_TOON):
     collection = TailorCollections[tailorId][BOTTOMS]
     bottoms = []
     for style in collection:
@@ -1424,7 +1422,7 @@ def getBottoms(gender, tailorId = MAKE_A_TOON):
     return bottoms
 
 
-def getAllBottoms(gender, output = 'both'):
+def getAllBottoms(output = 'both'):
     bottoms = []
     for style in list(BottomStyles.keys()):
        
@@ -2146,7 +2144,7 @@ class ToonDNA(AvatarDNA.AvatarDNA):
             self.botTex = defn[0]
             self.botTexColor = defn[1][colorIndex]
 
-    def newToonRandom(self, seed = None, eyelashes = 'm', npc = 0, stage = None):
+    def newToonRandom(self, seed = None, eyelashes = 0, npc = 0, stage = None):
         if seed:
             generator = random.Random()
             generator.seed(seed)
@@ -2157,7 +2155,7 @@ class ToonDNA(AvatarDNA.AvatarDNA):
          'l',
          'l',
          'l'])
-        self.gender = gender
+        self.eyelashes = eyelashes
         if not npc:
             if stage == MAKE_A_TOON:
                 if not base.cr.isPaid():
@@ -2270,8 +2268,10 @@ class ToonDNA(AvatarDNA.AvatarDNA):
         else:
             notify.error('unknown leg size: ', self.legs)
 
-    def getGender(self):
-        return self.gender
+
+    
+    def getEyelashes(self):
+        return self.eyelashes
 
     def getClothes(self):
         if len(self.torso) == 1:

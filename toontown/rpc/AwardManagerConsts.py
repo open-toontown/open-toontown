@@ -1,6 +1,5 @@
-GiveAwardErrors = Enum('Success, WrongGender, NotGiftable, FullMailbox, FullAwardMailbox, AlreadyInMailbox, AlreadyInGiftQueue, AlreadyInOrderedQueue, AlreadyInCloset, AlreadyBeingWorn, AlreadyInAwardMailbox, AlreadyInThirtyMinuteQueue, AlreadyInMyPhrases, AlreadyKnowDoodleTraining, AlreadyRented, GenericAlreadyHaveError, UnknownError, UnknownToon, NonToon,')
+GiveAwardErrors = Enum('Success, NotGiftable, FullMailbox, FullAwardMailbox, AlreadyInMailbox, AlreadyInGiftQueue, AlreadyInOrderedQueue, AlreadyInCloset, AlreadyBeingWorn, AlreadyInAwardMailbox, AlreadyInThirtyMinuteQueue, AlreadyInMyPhrases, AlreadyKnowDoodleTraining, AlreadyRented, GenericAlreadyHaveError, UnknownError, UnknownToon, NonToon,')
 GiveAwardErrorStrings = {GiveAwardErrors.Success: 'success',
- GiveAwardErrors.WrongGender: 'wrong gender',
  GiveAwardErrors.NotGiftable: 'item is not giftable',
  GiveAwardErrors.FullMailbox: 'mailbox is full',
  GiveAwardErrors.FullAwardMailbox: 'award mailbox is full',

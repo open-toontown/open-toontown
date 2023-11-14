@@ -19,7 +19,6 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
         self.isOwner = isOwner
         self.deleteEvent = deleteEvent
         self.cancelEvent = cancelEvent
-        self.genderChange = 0
         self.verify = None
         return
 
@@ -75,7 +74,6 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
     def setupScrollInterface(self):
         self.notify.debug('setupScrollInterface')
         self.dna = self.toon.getStyle()
-        self.gender = self.dna.getGender()
         self.swappedTorso = 0
         if self.topsList == None:
             self.topsList = self.toon.getClothesTopsList()
@@ -125,9 +123,6 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
             else:
                 self.bottomTrashButton['text'] = TTLocalizer.ClosetDeleteShorts
 
-    def setGender(self, gender):
-        self.ownerGender = gender
-        self.genderChange = 1
 
     def swapBottom(self, offset):
         length = len(self.bottoms)
@@ -140,11 +135,6 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
             return None
         self.toon.style.botTex = self.bottoms[self.bottomChoice][0]
         self.toon.style.botTexColor = self.bottoms[self.bottomChoice][1]
-        if self.genderChange == 1:
-            if self.bottomChoice > 0:
-                self.__handleGenderBender(1)
-            else:
-                self.__handleGenderBender(0)
         if self.toon.generateToonClothes() == 1:
             self.toon.loop('neutral', 0)
             self.swappedTorso = 1
@@ -152,20 +142,6 @@ class ClosetGUI(ClothesGUI.ClothesGUI):
             self.updateTrashButtons()
         if self.swapEvent != None:
             messenger.send(self.swapEvent)
-
-    def __handleGenderBender(self, type):
-        if type == 1:
-            if self.toon.style.gender != self.ownerGender and self.toon.style.gender == 'f':
-                self.toon.swapToonTorso(self.toon.style.torso[0] + 's', genClothes=0)
-                self.toon.loop('neutral', 0)
-                self.swappedTorso = 1
-            self.toon.style.gender = self.ownerGender
-        else:
-            self.toon.style.gender = self.gender
-            if self.toon.style.gender != self.ownerGender and self.toon.style.gender == 'm':
-                self.toon.swapToonTorso(self.toon.style.torso[0] + 's', genClothes=0)
-                self.toon.loop('neutral', 0)
-                self.swappedTorso = 1
 
     def removeTop(self, index):
         listLen = len(self.tops)

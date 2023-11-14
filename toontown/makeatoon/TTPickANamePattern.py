@@ -7,13 +7,14 @@ class TTPickANamePattern(PickANamePatternTwoPartLastName):
     NameParts = None
     LastNamePrefixesCapped = None
 
-    def _getNameParts(self, gender):
+    def _getNameParts(self):
         if TTPickANamePattern.NameParts is None:
             TTPickANamePattern.NameParts = {}
             ng = NameGenerator()
             TTPickANamePattern.NameParts['m'] = ng.getMaleNameParts()
             TTPickANamePattern.NameParts['f'] = ng.getFemaleNameParts()
-        return TTPickANamePattern.NameParts[gender]
+            TTPickANamePattern.NameParts['n'] = ng.getAllNameParts()
+        return TTPickANamePattern.NameParts['n']
 
     def _getLastNameCapPrefixes(self):
         if TTPickANamePattern.LastNamePrefixesCapped is None:

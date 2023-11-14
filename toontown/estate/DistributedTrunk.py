@@ -34,7 +34,7 @@ class DistributedTrunk(DistributedCloset.DistributedCloset):
         self.isFreePlayer = 0
 
     def printInfo(self):
-        print('avid: %s, gender: %s' % (self.av.doId, self.av.style.gender))
+        print('avid: %s, ' % (self.av.doId))
         print('current hat = %s, glasses = %s, backpack = %s, shoes = %s' % (self.av.getHat(),
          self.av.getGlasses(),
          self.av.getBackpack(),
@@ -44,10 +44,9 @@ class DistributedTrunk(DistributedCloset.DistributedCloset):
         print('backpackList = %s' % self.av.getBackpackList())
         print('shoesList = %s' % self.av.getShoesList())
 
-    def setState(self, mode, avId, ownerId, gender, hatList, glassesList, backpackList, shoesList):
+    def setState(self, mode, avId, ownerId, hatList, glassesList, backpackList, shoesList):
         self.notify.debug('setState, mode=%s, avId=%s, ownerId=%d' % (mode, avId, ownerId))
         self.isOwner = avId == ownerId
-        self.ownerGender = gender
         if mode == ClosetGlobals.CLOSED:
             self.fsm.request('closed')
             return
@@ -61,7 +60,7 @@ class DistributedTrunk(DistributedCloset.DistributedCloset):
                 else:
                     self.isFreePlayer = 0
                 if base.localAvatar.getDoId() == self.customerId:
-                    self.gender = self.av.style.gender
+                    self.eyelashes = self.av.style.eyelashes
                     self.hatList = hatList
                     self.glassesList = glassesList
                     self.backpackList = backpackList
@@ -112,8 +111,6 @@ class DistributedTrunk(DistributedCloset.DistributedCloset):
         if not self.closetGUI:
             self.closetGUI = TrunkGUI.TrunkGUI(self.isOwner, self.purchaseDoneEvent, self.cancelEvent, self.swapHatEvent, self.swapGlassesEvent, self.swapBackpackEvent, self.swapShoesEvent, self.deleteEvent, self.hatList, self.glassesList, self.backpackList, self.shoesList)
             self.closetGUI.load()
-            if self.gender != self.ownerGender:
-                self.closetGUI.setGender(self.ownerGender)
             self.closetGUI.enter(base.localAvatar)
             self.closetGUI.showButtons()
             oldHat = self.av.getHat()

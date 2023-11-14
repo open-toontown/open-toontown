@@ -392,16 +392,15 @@ class CatalogClothingItem(CatalogItem.CatalogItem):
             defn = ToonDNA.BottomStyles[str]
             dna.botTex = defn[0]
             dna.botTexColor = defn[1][self.colorIndex]
-        if dna.getGender() == 'f':
-            try:
-                bottomPair = ToonDNA.GirlBottoms[dna.botTex]
-            except:
-                bottomPair = ToonDNA.GirlBottoms[0]
+        try:
+            bottomPair = ToonDNA.Bottoms[dna.botTex]
+        except:
+            bottomPair = ToonDNA.Bottoms[0]
 
-            if dna.torso[1] == 's' and bottomPair[1] == ToonDNA.SKIRT:
-                dna.torso = dna.torso[0] + 'd'
-            elif dna.torso[1] == 'd' and bottomPair[1] == ToonDNA.SHORTS:
-                dna.torso = dna.torso[0] + 's'
+        if dna.torso[1] == 's' and bottomPair[1] == ToonDNA.SKIRT:
+            dna.torso = dna.torso[0] + 'd'
+        elif dna.torso[1] == 'd' and bottomPair[1] == ToonDNA.SHORTS:
+            dna.torso = dna.torso[0] + 's'
         avatar.b_setDNAString(dna.makeNetString())
         avatar.d_catalogGenClothes()
         return ToontownGlobals.P_ItemAvailable
