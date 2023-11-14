@@ -48,10 +48,10 @@ class BodyShop(StateData.StateData):
         self.__swapHead(0)
         self.__swapTorso(0)
         self.__swapLegs(0)
-        choicePool = [ToonDNA.toonHeadTypes, torsoPool, ToonDNA.toonLegTypes]
+        self.__swapEyelashes(0)
+        choicePool = [ToonDNA.toonHeadTypes, torsoPool, ToonDNA.toonLegTypes, [0, 1]]
         self.shuffleButton.setChoicePool(choicePool)
         self.accept(self.shuffleFetchMsg, self.changeBody)
-        self.acceptOnce('last', self.__handleBackward)
         self.accept('next', self.__handleForward)
         self.acceptOnce('MAT-newToonCreated', self.shuffleButton.cleanHistory)
         self.restrictHeadType(self.dna.head)
@@ -131,6 +131,44 @@ class BodyShop(StateData.StateData):
          shuffleArrowDown,
          shuffleArrowRollover,
          shuffleArrowDisabled), image_scale=halfButtonInvertScale, image1_scale=halfButtonInvertHoverScale, image2_scale=halfButtonInvertHoverScale, pos=(0.2, 0, 0), command=self.__swapLegs, extraArgs=[1])
+         # Creates the eyelashes frame
+        self.eyelashesFrame = DirectFrame(
+            parent=self.parentFrame,
+            image=shuffleFrame,
+            image_scale=halfButtonInvertScale,
+            relief=None,
+            pos=(0, 0, -0.9),
+            hpr=(0, 0, 3),
+            scale=0.9,
+            frameColor=(1, 1, 1, 1),
+            text=TTLocalizer.BodyShopEyelashes,
+            text_scale=0.0625,
+            text_pos=(-0.001, -0.015),
+            text_fg=(1, 1, 1, 1),
+        )
+
+        self.eyelashesLButton = DirectButton(
+            parent=self.eyelashesFrame,
+            relief=None,
+            image=(shuffleArrowUp, shuffleArrowDown, shuffleArrowRollover, shuffleArrowDisabled),
+            image_scale=halfButtonScale,
+            image1_scale=halfButtonHoverScale,
+            image2_scale=halfButtonHoverScale,
+            pos=(-0.2, 0, 0),
+            command=self.__swapEyelashes,
+            extraArgs=[-1],
+        )
+        self.eyelashesRButton = DirectButton(
+            parent=self.eyelashesFrame,
+            relief=None,
+            image=(shuffleArrowUp, shuffleArrowDown, shuffleArrowRollover, shuffleArrowDisabled),
+            image_scale=halfButtonInvertScale,
+            image1_scale=halfButtonInvertHoverScale,
+            image2_scale=halfButtonInvertHoverScale,
+            pos=(0.2, 0, 0),
+            command=self.__swapEyelashes,
+            extraArgs=[1],
+        )
         self.memberButton = DirectButton(relief=None, image=(upsellTex,
          upsellTex,
          upsellTex,
@@ -151,6 +189,7 @@ class BodyShop(StateData.StateData):
         self.headFrame.destroy()
         self.bodyFrame.destroy()
         self.legsFrame.destroy()
+        self.eyelashesFrame.destroy()
         self.speciesLButton.destroy()
         self.speciesRButton.destroy()
         self.headLButton.destroy()
@@ -159,12 +198,15 @@ class BodyShop(StateData.StateData):
         self.torsoRButton.destroy()
         self.legLButton.destroy()
         self.legRButton.destroy()
+        self.eyelashesLButton.destroy()
+        self.eyelashesRButton.destroy()
         self.memberButton.destroy()
         del self.parentFrame
         del self.speciesFrame
         del self.headFrame
         del self.bodyFrame
         del self.legsFrame
+        del self.eyelashesFrame
         del self.speciesLButton
         del self.speciesRButton
         del self.headLButton
@@ -173,6 +215,8 @@ class BodyShop(StateData.StateData):
         del self.torsoRButton
         del self.legLButton
         del self.legRButton
+        del self.eyelashesLButton
+        del self.eyelashesRButton
         del self.memberButton
         self.shuffleButton.unload()
         self.ignore('MAT-newToonCreated')
@@ -258,20 +302,22 @@ class BodyShop(StateData.StateData):
         self.toon.swapToonColor(self.dna)
         self.restrictHeadType(newHead)
 
-     def __swapEyelashes(self, offset):
+    def __swapEyelashes(self, offset):
         length = len([0,1])
         self.eyelashesChoice = (self.eyelashesChoice + offset ) % length
         self.__updateScrollButtons(self.eyelashesChoice, length, self.eyelashesStart,
-                                   self.eyelashesLButton, self.eyelashesRButton)
+                                self.eyelashesLButton, self.eyelashesRButton)
         self.eyelashes = [0, 1][self.eyelashesChoice]
         self.__updateEyelashes()
 
     def __updateEyelashes(self):
-        return 
-        #WIP
-        #TODO figure out what toggles eyelashes and use the model head based on if they want eyelashes or not
         self.__updateScrollButtons(self.eyelashesChoice, len([0, 1]), self.eyelashesStart,
                                    self.eyelashesLButton, self.eyelashesRButton)   
+        eyelashesIndex =  self.eyelashesChoice
+        self.dna.eyelashes = eyelashesIndex
+        self.toon.setEyelashes(eyelashesIndex) 
+        self.toon.setupEyelashes(self.dna)
+        self.toon.loop("neutral", 0)
     def __updateScrollButtons(self, choice, length, start, lButton, rButton):
         if choice == (start - 1) % length:
             rButton['state'] = DGG.DISABLED
@@ -301,9 +347,7 @@ class BodyShop(StateData.StateData):
         self.doneStatus = 'next'
         messenger.send(self.doneEvent)
 
-    def __handleBackward(self):
-        self.doneStatus = 'last'
-        messenger.send(self.doneEvent)
+
 
     def restrictHeadType(self, head):
         if not base.cr.isPaid():
@@ -322,15 +366,18 @@ class BodyShop(StateData.StateData):
         newHeadIndex = ToonDNA.toonHeadTypes.index(newHead) - ToonDNA.getHeadStartIndex(ToonDNA.getSpecies(newHead))
         newTorsoIndex = ToonDNA.toonTorsoTypes.index(newChoice[1])
         newLegsIndex = ToonDNA.toonLegTypes.index(newChoice[2])
+        newEyelashesIndex = random.randint(0,1)
         oldHead = self.toon.style.head
         oldSpeciesIndex = ToonDNA.toonSpeciesTypes.index(ToonDNA.getSpecies(oldHead))
         oldHeadIndex = ToonDNA.toonHeadTypes.index(oldHead) - ToonDNA.getHeadStartIndex(ToonDNA.getSpecies(oldHead))
         oldTorsoIndex = ToonDNA.toonTorsoTypes.index(self.toon.style.torso)
         oldLegsIndex = ToonDNA.toonLegTypes.index(self.toon.style.legs)
+        oldEyelashesIndex = self.toon.style.eyelashes
         self.__swapSpecies(newSpeciesIndex - oldSpeciesIndex)
         self.__swapHead(newHeadIndex - oldHeadIndex)
         self.__swapTorso(newTorsoIndex - oldTorsoIndex)
         self.__swapLegs(newLegsIndex - oldLegsIndex)
+        self.__swapEyelashes(newEyelashesIndex - oldEyelashesIndex)
 
     def getCurrToonSetting(self):
         return [self.toon.style.head, self.toon.style.torso, self.toon.style.legs]

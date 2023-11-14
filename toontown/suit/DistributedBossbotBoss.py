@@ -195,7 +195,7 @@ class DistributedBossbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
         npc.setPickable(0)
         npc.setPlayerType(NametagGroup.CCNonPlayer)
         dna = ToonDNA.ToonDNA()
-        dna.newToonRandom(335933, 'm', 1)
+        dna.newToonRandom(335933, 1, 1)
         dna.head = 'sls'
         npc.setDNAString(dna.makeNetString())
         npc.animFSM.request('neutral')

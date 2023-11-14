@@ -9,6 +9,10 @@ class MakeClothesGUI(ClothesGUI.ClothesGUI):
 
     def setupScrollInterface(self):
         self.dna = self.toon.getStyle()
+        self.tops = ToonDNA.getRandomizedTops(tailorId = ToonDNA.MAKE_A_TOON)
+        self.bottoms = ToonDNA.getRandomizedBottoms(tailorId = ToonDNA.MAKE_A_TOON)
+        self.topChoice = 0
+        self.bottomChoice = 0
         self.setupButtons()
 
     def setupButtons(self):

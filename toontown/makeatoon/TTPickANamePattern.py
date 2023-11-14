@@ -11,8 +11,6 @@ class TTPickANamePattern(PickANamePatternTwoPartLastName):
         if TTPickANamePattern.NameParts is None:
             TTPickANamePattern.NameParts = {}
             ng = NameGenerator()
-            TTPickANamePattern.NameParts['m'] = ng.getMaleNameParts()
-            TTPickANamePattern.NameParts['f'] = ng.getFemaleNameParts()
             TTPickANamePattern.NameParts['n'] = ng.getAllNameParts()
         return TTPickANamePattern.NameParts['n']
 

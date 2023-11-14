@@ -643,20 +643,40 @@ GirlBottoms = [('phase_3/maps/desat_skirt_1.png', SKIRT),
 
 
 Bottoms = GirlBottoms
-# cycle through boyshorts if any any of them are not in girlbottoms add them to bottoms 
-for pair in BoyShorts:
-    if pair[0] not in Bottoms:
-        Bottoms.append((pair, SHORTS))
+# add all shorts in BoyShorts to Bottoms 
+for short in BoyShorts:
+    Bottoms.append((short, SHORTS))
 
-# a function to convert old male bottoms id to new bottoms id
-def convertBoyShorts(oldId):
-   # go through boyshorts and bottoms 
-    for pair in BoyShorts:
-        # if the old id is in boyshorts return the new id 
-        if oldId == pair[0]:
-            return Bottoms.index(pair)
+# remove any duplicates
+for bottom in Bottoms:
+    if Bottoms.count(bottom) > 1:
+        Bottoms.remove(bottom)
 
+    
+
+
+
+
+# a function to convert old NPC bottom id to new bottoms id
+def convertNPCSBottoms(oldId, kind):
+    if kind == 'm':
+        for index, short in enumerate(BoyShorts):
+            if index == oldId:
+                return Bottoms.index((short, SHORTS))
+    elif kind == 'f':
+        for index, bottom in enumerate(GirlBottoms):
+            if index == oldId:
+                if bottom[1] == SKIRT:
+                    return Bottoms.index((bottom[0], SKIRT))
+                else:
+                    return Bottoms.index((bottom[0], SHORTS))
     return oldId
+
+
+
+
+        
+
 
 ClothesColors = [VBase4(0.933594, 0.265625, 0.28125, 1.0),
  VBase4(0.863281, 0.40625, 0.417969, 1.0),
@@ -2085,7 +2105,16 @@ class ToonDNA(AvatarDNA.AvatarDNA):
             notify.error("tuple must be in format ('%s', '%s', '%s', '%s')")
         return
 
-    def newToonFromProperties(self, head, torso, legs, eyelashes, armColor, gloveColor, legColor, headColor, topTexture, topTextureColor, sleeveTexture, sleeveTextureColor, bottomTexture, bottomTextureColor):
+    def newToonFromProperties(self, head, torso, legs, eyelashes, armColor, gloveColor, legColor, headColor, topTexture, topTextureColor, sleeveTexture, sleeveTextureColor, bottomTexture, bottomTextureColor, isNPC=0):
+        if eyelashes == 'm':
+            eyelashes = 1
+            kind = 'm'
+        elif eyelashes == 'f':
+            eyelashes = 0
+            kind = 'f'
+        if isNPC:
+            # convert the old bottom id to the new one
+            bottomTexture = convertNPCSBottoms(bottomTexture, kind)
         self.type = 't'
         self.head = head
         self.torso = torso

@@ -209,10 +209,14 @@ class NPCFriendCard(DirectFrame):
         NPCInfo = NPCToons.NPCToonDict[NPCID]
         dnaList = NPCInfo[2]
         eyelashes = NPCInfo[3]
+        if eyelashes == 'm':
+            eyelashes = 0
+        elif eyelashes == 'f':
+            eyelashes = 1
         if dnaList == 'r':
             dnaList = NPCToons.getRandomDNA(NPCID, eyelashes)
         dna = ToonDNA.ToonDNA()
-        dna.newToonFromProperties(*dnaList)
+        dna.newToonFromProperties(*dnaList, isNPC=True)
         head = ToonHead.ToonHead()
         head.setupHead(dna, forGui=1)
         self.fitGeometry(head, fFlip=1, dimension=dimension)

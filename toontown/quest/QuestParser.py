@@ -486,9 +486,53 @@ class NPCMoviePlayer(DirectObject.DirectObject):
         self.setVar(varName, dialogue)
         return
 
+    def parseLoadCCDialogue(self, line):
+        token, varName, filenameTemplate = line
+        # TODO figure out the option for ppl who want minnie to show them around
+        classicChar = 'mickey'
+       
+        filename = filenameTemplate % classicChar
+        if base.config.GetString('language', 'english') == 'japanese':
+            dialogue = base.loader.loadSfx(filename)
+        else:
+            dialogue = None
+        self.setVar(varName, dialogue)
+        return
 
+    def parseLoadChar(self, line):
+        token, name, charType = line
+        char = Char.Char()
+        dna = CharDNA.CharDNA()
+        dna.newChar(charType)
+        char.setDNA(dna)
+        if charType == 'mk' or charType == 'mn':
+            char.startEarTask()
+        char.nametag.manage(base.marginManager)
+        char.addActive()
+        char.hideName()
+        self.setVar(name, char)
 
-    
+    def parseLoadClassicChar(self, line):
+        token, name = line
+        char = Char.Char()
+        dna = CharDNA.CharDNA()
+        charType = 'mk'
+        dna.newChar(charType)
+        char.setDNA(dna)
+        char.startEarTask()
+        char.nametag.manage(base.marginManager)
+        char.addActive()
+        char.hideName()
+        self.setVar(name, char)
+        self.chars.append(char)
+
+    def parseUnloadChar(self, line):
+        token, name = line
+        char = self.getVar(name)
+        track = Sequence()
+        track.append(Func(self.__unloadChar, char))
+        track.append(Func(self.delVar, name))
+        return track    
 
 
     def parseLoadSuit(self, line):

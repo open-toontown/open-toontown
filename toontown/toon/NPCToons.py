@@ -63,6 +63,7 @@ TAILOR_COUNTDOWN_TIME = 300
 RTDNAFile = '/RTDNAFile.txt'
 saveDNA = False
 
+
 def getRandomDNA(seed, eyelashes):
     randomDNA = ToonDNA.ToonDNA()
     randomDNA.newToonRandom(seed, eyelashes, 1)
@@ -139,7 +140,8 @@ def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
             rtDnaFile = open(RTDNAFile, 'w')
             rtDnaFile.writelines(rtDNA)
         rtDnaFile.close()
-    dna.newToonFromProperties(*dnaList)
+
+    dna.newToonFromProperties(*dnaList, isNPC=True)
     npc.setDNAString(dna.makeNetString())
     npc.setHp(15)
     npc.setMaxHp(15)
@@ -179,7 +181,7 @@ def createLocalNPC(npcId):
         dnaList = getRandomDNA(npcId, eyelashes)
     else:
         dnaList = dnaType
-    dna.newToonFromProperties(*dnaList)
+    dna.newToonFromProperties(*dnaList, isNPC=True)
     npc.setDNAString(dna.makeNetString())
     npc.animFSM.request('neutral')
     return npc

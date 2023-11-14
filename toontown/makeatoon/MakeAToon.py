@@ -395,23 +395,55 @@ class MakeAToon(StateData.StateData):
     def bodyShopOpening(self):
         self.bs.showButtons()
         self.guiNextButton.show()
-        self.guiLastButton.show()
         self.rotateLeftButton.show()
         self.rotateRightButton.show()
 
+
+
     def enterBodyShop(self):
+        if hasattr(self, 'toon'):
+            if self.toon:
+                self.toon.show()
+             
+            else:
+                self.dna = ToonDNA.ToonDNA()
+                # stage = 1 is MAKE_A_TOON
+                self.dna.newToonRandom(eyelashes=random.randint(0, 1), stage=1)
+
+                self.toon = Toon.Toon()
+                self.toon.setDNA(self.dna)
+                # make sure the avatar uses its highest LOD
+                self.toon.useLOD(1000)
+                # make sure his name doesn't show up
+                self.toon.setNameVisible(0)
+                self.toon.startBlink()
+                self.toon.startLookAround()
+                self.toon.reparentTo(render)
+                self.toon.setPos(self.toonPosition)
+                self.toon.setHpr(self.toonHpr)
+                self.toon.setScale(self.toonScale)
+                self.toon.loop("neutral")
+                self.setNextButtonState(DGG.NORMAL)
+                self.setToon(self.toon)
+                messenger.send("MAT-newToonCreated")
         base.cr.centralLogger.writeClientEvent('MAT - enteringBodyShop')
-        self.toon.show()
+        if self.toon:
+            self.toon.show()
         self.shop = BODYSHOP
         self.guiTopBar['text'] = TTLocalizer.ShapeYourToonTitle
         self.guiTopBar['text_fg'] = (0.0, 0.98, 0.5, 1)
         self.guiTopBar['text_scale'] = TTLocalizer.MATenterBodyShop
-        self.accept('BodyShop-done', self.__handleBodyShopDone)
+        self.accept("BodyShop-done", self.__handleBodyShopDone)
         self.dropRoom(self.bodyWalls, self.bodyProps)
+
+        # we need to do this first for setup...
         self.bs.enter(self.toon, self.shopsVisited)
-        if BODYSHOP not in self.shopsVisited:
+
+        if (BODYSHOP not in self.shopsVisited):
             self.shopsVisited.append(BODYSHOP)
+
         self.bodyShopOpening()
+
 
     def exitBodyShop(self):
         self.squishRoom(self.bodyWalls)

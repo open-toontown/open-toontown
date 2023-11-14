@@ -28,7 +28,7 @@ class ShuffleButton:
         shuffleArrowDisabled = gui.find('**/tt_t_gui_mat_shuffleArrowDisabled')
         gui.removeNode()
         del gui
-        self.parentFrame = DirectFrame(parent=self.parent.parentFrame, relief=DGG.RAISED, pos=(0, 0, -1), frameColor=(1, 0, 0, 0))
+        self.parentFrame = DirectFrame(parent=self.parent.parentFrame, relief=DGG.RAISED, pos=(0, 0, -1.1), frameColor=(1, 0, 0, 0))
         self.shuffleFrame = DirectFrame(parent=self.parentFrame, image=shuffleFrame, image_scale=halfButtonInvertScale, relief=None, frameColor=(1, 1, 1, 1))
         self.shuffleFrame.hide()
         self.shuffleBtn = DirectButton(parent=self.parentFrame, relief=None, image=(shuffleUp, shuffleDown, shuffleUp), image_scale=halfButtonInvertScale, image1_scale=(-0.63, 0.6, 0.6), image2_scale=(-0.63, 0.6, 0.6), text=(TTLocalizer.ShuffleButton,
