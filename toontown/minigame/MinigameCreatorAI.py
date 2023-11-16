@@ -1,6 +1,7 @@
 import copy
 import random
 import time
+from panda3d.core import ConfigVariableBool, ConfigVariableInt
 from toontown.toonbase import ToontownGlobals
 from . import DistributedMinigameTemplateAI
 from . import DistributedRaceGameAI
@@ -21,10 +22,10 @@ from . import DistributedCogThiefGameAI
 from . import DistributedTwoDGameAI
 from . import DistributedTravelGameAI
 from . import TravelGameGlobals
-ALLOW_TEMP_MINIGAMES = simbase.config.GetBool('allow-temp-minigames', False)
+ALLOW_TEMP_MINIGAMES = ConfigVariableBool('allow-temp-minigames', False).getValue()
 if ALLOW_TEMP_MINIGAMES:
     from toontown.minigame.TempMinigameAI import *
-simbase.forcedMinigameId = simbase.config.GetInt('minigame-id', 0)
+simbase.forcedMinigameId = ConfigVariableInt('minigame-id', 0).getValue()
 RequestMinigame = {}
 MinigameZoneRefs = {}
 
@@ -162,19 +163,19 @@ def removeUnreleasedMinigames(startList, increaseChanceOfNewGames = 0):
         if currentTime < releaseTime:
             if gameId in randomList:
                 doRemove = True
-                if gameId == ToontownGlobals.CogThiefGameId and simbase.air.config.GetBool('force-allow-thief-game', 0):
+                if gameId == ToontownGlobals.CogThiefGameId and ConfigVariableBool('force-allow-thief-game', 0).getValue():
                     doRemove = False
                     if increaseChanceOfNewGames:
                         randomList += [gameId] * 4
-                elif gameId == ToontownGlobals.IceGameId and simbase.air.config.GetBool('force-allow-ice-game', 0):
+                elif gameId == ToontownGlobals.IceGameId and ConfigVariableBool('force-allow-ice-game', 0).getValue():
                     doRemove = False
                     if increaseChanceOfNewGames:
                         randomList += [gameId] * 4
-                elif gameId == ToontownGlobals.TwoDGameId and simbase.air.config.GetBool('force-allow-2d-game', 0):
+                elif gameId == ToontownGlobals.TwoDGameId and ConfigVariableBool('force-allow-2d-game', 0).getValue():
                     doRemove = False
                     if increaseChanceOfNewGames:
                         randomList += [gameId] * 4
-                elif gameId == ToontownGlobals.PhotoGameId and simbase.air.config.GetBool('force-allow-photo-game', 0):
+                elif gameId == ToontownGlobals.PhotoGameId and ConfigVariableBool('force-allow-photo-game', 0).getValue():
                     doRemove = False
                     if increaseChanceOfNewGames:
                         randomList += [gameId] * 4

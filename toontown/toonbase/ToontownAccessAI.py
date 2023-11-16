@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from otp.otpbase import OTPGlobals
 from otp.ai import BanManagerAI
 from toontown.toonbase import ToontownGlobals
@@ -9,7 +10,7 @@ def canAccess(avatarId, zoneId, function = ''):
         if cmp(function, 'DistributedBoardingPartyAI.checkBoard') == 0:
             return False
         simbase.air.writeServerEvent('suspicious', avatarId, 'User with rights: %s requesting enter for paid access content without proper rights in zone %s from %s' % (avatar.getGameAccess(), zoneId, function))
-        if simbase.config.GetBool('want-ban-ispaid', True):
+        if ConfigVariableBool('want-ban-ispaid', True).getValue():
             commentStr = 'User with rights: %s tried to gain access zone %s from function %s, an area they were not allowed to using TTInjector Hack' % (avatar.getGameAccess(), zoneId, function)
             dislId = avatar.DISLid
             simbase.air.banManager.ban(avatarId, dislId, commentStr)

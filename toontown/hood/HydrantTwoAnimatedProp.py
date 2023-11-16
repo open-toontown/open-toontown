@@ -1,10 +1,11 @@
+from panda3d.core import ConfigVariableDouble
 from toontown.hood import ZeroAnimatedProp
 from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 
 class HydrantTwoAnimatedProp(ZeroAnimatedProp.ZeroAnimatedProp):
     notify = DirectNotifyGlobal.directNotify.newCategory('HydrantTwoAnimatedProp')
-    PauseTimeMult = base.config.GetFloat('zero-pause-mult', 1.0)
+    PauseTimeMult = ConfigVariableDouble('zero-pause-mult', 1.0).getValue()
     PhaseInfo = {0: ('tt_a_ara_ttc_hydrant_firstMoveArmUp1', 40 * PauseTimeMult),
      1: ('tt_a_ara_ttc_hydrant_firstMoveStruggle', 20 * PauseTimeMult),
      2: ('tt_a_ara_ttc_hydrant_firstMoveArmUp2', 10 * PauseTimeMult),

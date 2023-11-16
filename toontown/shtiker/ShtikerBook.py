@@ -4,7 +4,6 @@ from toontown.toonbase import ToontownGlobals
 from direct.showbase import DirectObject
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 from toontown.effects import DistributedFireworkShow
 from toontown.parties import DistributedPartyFireworksActivity
@@ -52,7 +51,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.safeMode = setting
 
     def enter(self):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: SHTICKERBOOK: Open')
         if self.entered:
             return
@@ -114,7 +113,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.ignore(ToontownGlobals.OptionsPageHotkey)
         self.ignore('arrow_right')
         self.ignore('arrow_left')
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: SHTICKERBOOK: Close')
 
     def load(self):
@@ -193,7 +192,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             messenger.send('wakeup')
             base.playSfx(self.pageSound)
             self.setPage(page)
-            if base.config.GetBool('want-qa-regression', 0):
+            if ConfigVariableBool('want-qa-regression', 0).getValue():
                 self.notify.info('QA-REGRESSION: SHTICKERBOOK: Browse tabs %s' % page.pageName)
             localAvatar.newsButtonMgr.setGoingToNewsPageFromStickerBook(False)
             localAvatar.newsButtonMgr.showAppropriateButton()
@@ -429,7 +428,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         localAvatar.newsButtonMgr.setGoingToNewsPageFromStickerBook(True)
         localAvatar.newsButtonMgr.showAppropriateButton()
         self.setPage(page)
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: SHTICKERBOOK: Browse tabs %s' % page.pageName)
         self.ignore(ToontownGlobals.StickerBookHotkey)
         self.ignore(ToontownGlobals.OptionsPageHotkey)

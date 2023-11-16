@@ -1,4 +1,4 @@
-from panda3d.core import NodePath
+from panda3d.core import ConfigVariableBool, NodePath
 from panda3d.otp import NametagGlobals
 
 from direct.directnotify.DirectNotifyGlobal import directNotify
@@ -155,7 +155,7 @@ class Place(StateData, FriendsListManager):
         return 1
 
     def handleTeleportQuery(self, fromAvatar, toAvatar):
-        if base.config.GetBool('want-tptrack', False):
+        if ConfigVariableBool('want-tptrack', False).getValue():
             if toAvatar == base.localAvatar:
                 toAvatar.doTeleportResponse(fromAvatar, toAvatar, toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId(), fromAvatar.doId)
             else:

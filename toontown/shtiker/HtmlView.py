@@ -1,18 +1,9 @@
 import array, sys
+from panda3d.core import AwWebCore, AwWebView, CardMaker, ConfigVariableBool, NodePath, PNMImage, Point2, Point3, Texture, TextureStage, VBase4D, Vec3, Vec4, WindowProperties
 from direct.showbase.DirectObject import DirectObject
 from direct.task.Task import Task
 from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import Texture
-from panda3d.core import CardMaker
-from panda3d.core import NodePath
-from panda3d.core import Point3, Vec3, Vec4, VBase4D, Point2
-from panda3d.core import PNMImage
-from panda3d.core import TextureStage
-from panda3d.core import Texture
-from panda3d.core import WindowProperties
 from direct.interval.IntervalGlobal import *
-from panda3d.core import AwWebView
-from panda3d.core import AwWebCore
 WEB_WIDTH_PIXELS = 784
 WEB_HEIGHT_PIXELS = 451
 WEB_WIDTH = 1024
@@ -24,7 +15,7 @@ GlobalWebcore = None
 
 class HtmlView(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('HtmlView')
-    useHalfTexture = base.config.GetBool('news-half-texture', 0)
+    useHalfTexture = ConfigVariableBool('news-half-texture', 0).getValue()
 
     def __init__(self, parent = aspect2d):
         global GlobalWebcore
@@ -75,8 +66,8 @@ class HtmlView(DirectObject):
         self.accept('mouse3-up', self.mouseUp, [AwWebView.RIGHTMOUSEBTN])
 
     def getInGameNewsUrl(self):
-        result = base.config.GetString('fallback-news-url', 'http://cdn.toontown.disney.go.com/toontown/en/gamenews/')
-        override = base.config.GetString('in-game-news-url', '')
+        result = ConfigVariableString('fallback-news-url', 'http://cdn.toontown.disney.go.com/toontown/en/gamenews/').getValue()
+        override = ConfigVariableString('in-game-news-url', '').getValue()
         if override:
             self.notify.info('got an override url,  using %s for in a game news' % override)
             result = override

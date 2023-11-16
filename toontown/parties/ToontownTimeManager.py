@@ -1,6 +1,7 @@
 import time
 from datetime import datetime, timedelta
 import pytz
+from panda3d.core import ConfigVariableString
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import TTLocalizer
 
@@ -10,14 +11,7 @@ class ToontownTimeManager:
     formatStr = '%Y-%m-%d %H:%M:%S'
 
     def __init__(self, serverTimeUponLogin = 0, clientTimeUponLogin = 0, globalClockRealTimeUponLogin = 0):
-        try:
-            self.serverTimeZoneString = base.config.GetString('server-timezone', TTLocalizer.TimeZone)
-        except:
-            try:
-                self.serverTimeZoneString = simbase.config.GetString('server-timezone', TTLocalizer.TimeZone)
-            except:
-                notify.error('ToontownTimeManager does not have access to base or simbase.')
-
+        self.serverTimeZoneString = ConfigVariableString('server-timezone', TTLocalizer.TimeZone).getValue()
         self.serverTimeZone = pytz.timezone(self.serverTimeZoneString)
         self.updateLoginTimes(serverTimeUponLogin, clientTimeUponLogin, globalClockRealTimeUponLogin)
         self.debugSecondsAdded = 0

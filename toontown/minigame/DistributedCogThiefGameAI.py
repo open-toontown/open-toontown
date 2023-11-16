@@ -1,5 +1,5 @@
 import random
-from panda3d.core import Point3
+from panda3d.core import ConfigVariableBool, ConfigVariableInt, Point3
 from direct.fsm import ClassicFSM
 from direct.fsm import State
 from direct.distributed.ClockDelta import globalClockDelta
@@ -74,7 +74,7 @@ class DistributedCogThiefGameAI(DistributedMinigameAI.DistributedMinigameAI):
     def enterPlay(self):
         self.notify.debug('enterPlay')
         self.startSuitGoals()
-        if not config.GetBool('cog-thief-endless', 0):
+        if not ConfigVariableBool('cog-thief-endless', 0).getValue():
             taskMgr.doMethodLater(CTGG.GameTime, self.timerExpired, self.taskName('gameTimer'))
 
     def exitPlay(self):
@@ -391,8 +391,8 @@ class DistributedCogThiefGameAI(DistributedMinigameAI.DistributedMinigameAI):
                 numStolen += 1
 
         self.notify.debug('numStolen = %s' % numStolen)
-        if simbase.config.GetBool('cog-thief-check-barrels', 1):
-            if not simbase.config.GetBool('cog-thief-endless', 0):
+        if ConfigVariableBool('cog-thief-check-barrels', 1).getValue():
+            if not ConfigVariableBool('cog-thief-endless', 0).getValue():
                 if numStolen == len(self.barrelInfo):
                     self.gameOver()
 
@@ -402,7 +402,7 @@ class DistributedCogThiefGameAI(DistributedMinigameAI.DistributedMinigameAI):
         return Task.done
 
     def getNumCogs(self):
-        result = simbase.config.GetInt('cog-thief-num-cogs', 0)
+        result = ConfigVariableInt('cog-thief-num-cogs', 0).getValue()
         if not result:
             safezone = self.getSafezoneId()
             result = CTGG.calculateCogs(self.numPlayers, safezone)

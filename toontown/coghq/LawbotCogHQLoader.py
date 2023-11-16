@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 from . import CogHQLoader
@@ -60,7 +61,7 @@ class LawbotCogHQLoader(CogHQLoader.CogHQLoader):
             ug = self.geom.find('**/underground')
             ug.setBin('ground', -10)
         elif zoneId == ToontownGlobals.LawbotLobby:
-            if base.config.GetBool('want-qa-regression', 0):
+            if ConfigVariableBool('want-qa-regression', 0).getValue():
                 self.notify.info('QA-REGRESSION: COGHQ: Visit LawbotLobby')
             self.notify.debug('cogHQLobbyModelPath = %s' % self.cogHQLobbyModelPath)
             self.geom = loader.loadModel(self.cogHQLobbyModelPath)

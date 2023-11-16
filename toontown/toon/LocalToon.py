@@ -54,7 +54,7 @@ from . import Toon
 from . import LaffMeter
 from toontown.quest import QuestMap
 from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
-WantNewsPage = base.config.GetBool('want-news-page', ToontownGlobals.DefaultWantNewsPageSetting)
+WantNewsPage = ConfigVariableBool('want-news-page', ToontownGlobals.DefaultWantNewsPageSetting).getValue()
 from toontown.toontowngui import NewsPageButtonManager
 if WantNewsPage:
     from toontown.shtiker import NewsPage
@@ -65,8 +65,8 @@ if (__debug__):
 
 class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
     neverDisable = 1
-    piePowerSpeed = base.config.GetDouble('pie-power-speed', 0.2)
-    piePowerExponent = base.config.GetDouble('pie-power-exponent', 0.75)
+    piePowerSpeed = ConfigVariableDouble('pie-power-speed', 0.2).getValue()
+    piePowerExponent = ConfigVariableDouble('pie-power-exponent', 0.75).getValue()
 
     def __init__(self, cr):
         try:
@@ -122,9 +122,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.tossPieStart = None
             self.__presentingPie = 0
             self.__pieSequence = 0
-            self.wantBattles = base.config.GetBool('want-battles', 1)
-            self.seeGhosts = base.config.GetBool('see-ghosts', 0)
-            wantNameTagAvIds = base.config.GetBool('want-nametag-avids', 0)
+            self.wantBattles = ConfigVariableBool('want-battles', 1).getValue()
+            self.seeGhosts = ConfigVariableBool('see-ghosts', 0).getValue()
+            wantNameTagAvIds = ConfigVariableBool('want-nametag-avids', 0).getValue()
             if wantNameTagAvIds:
                 messenger.send('nameTagShowAvId', [])
                 base.idTags = 1
@@ -135,7 +135,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.ticker = 0
             self.glitchOkay = 1
             self.tempGreySpacing = 0
-            self.wantStatePrint = base.config.GetBool('want-statePrint', 0)
+            self.wantStatePrint = ConfigVariableBool('want-statePrint', 0).getValue()
             self.__gardeningGui = None
             self.__gardeningGuiFake = None
             self.__shovelButton = None
@@ -163,8 +163,8 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             if not hasattr(base.cr, 'lastLoggedIn'):
                 base.cr.lastLoggedIn = self.cr.toontownTimeManager.convertStrToToontownTime('')
             self.setLastTimeReadNews(base.cr.lastLoggedIn)
-            self.acceptingNewFriends = base.settings.getSetting('accepting-new-friends', True) and base.config.GetBool('accepting-new-friends-default', True)
-            self.acceptingNonFriendWhispers = base.settings.getSetting('accepting-non-friend-whispers', True) and base.config.GetBool('accepting-non-friend-whispers-default', True)
+            self.acceptingNewFriends = base.settings.getSetting('accepting-new-friends', True) and ConfigVariableBool('accepting-new-friends-default', True).getValue()
+            self.acceptingNonFriendWhispers = base.settings.getSetting('accepting-non-friend-whispers', True) and ConfigVariableBool('accepting-non-friend-whispers-default', True).getValue()
             self.physControls.event.addAgainPattern('again%in')
             self.oldPos = None
             self.questMap = None
@@ -346,7 +346,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.suitPage = SuitPage.SuitPage()
         self.suitPage.load()
         self.book.addPage(self.suitPage, pageName=TTLocalizer.SuitPageTitle)
-        if base.config.GetBool('want-photo-album', 0):
+        if ConfigVariableBool('want-photo-album', 0).getValue():
             self.photoAlbumPage = PhotoAlbumPage.PhotoAlbumPage()
             self.photoAlbumPage.load()
             self.book.addPage(self.photoAlbumPage, pageName=TTLocalizer.PhotoPageTitle)
@@ -474,11 +474,11 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.notify.debug('Setting GM State: %s in LocalToon' % state)
         DistributedToon.DistributedToon.setAsGM(self, state)
         if self.gmState:
-            if base.config.GetString('gm-nametag-string', '') != '':
-                self.gmNameTagString = base.config.GetString('gm-nametag-string')
-            if base.config.GetString('gm-nametag-color', '') != '':
-                self.gmNameTagColor = base.config.GetString('gm-nametag-color')
-            if base.config.GetInt('gm-nametag-enabled', 0):
+            if ConfigVariableString('gm-nametag-string', '').getValue() != '':
+                self.gmNameTagString = ConfigVariableString('gm-nametag-string').getValue()
+            if ConfigVariableString('gm-nametag-color', '').getValue() != '':
+                self.gmNameTagColor = ConfigVariableString('gm-nametag-color').getValue()
+            if ConfigVariableInt('gm-nametag-enabled', 0).getValue():
                 self.gmNameTagEnabled = 1
             self.d_updateGMNameTag()
 
@@ -1052,14 +1052,14 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         if self.__catalogNotifyDialog:
             self.__catalogNotifyDialog.cleanup()
             self.__catalogNotifyDialog = None
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: VISITESTATE: Visit estate')
         place.goHomeNow(self.lastHood)
         return
 
     def __startMoveFurniture(self):
         self.oldPos = self.getPos()
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: ESTATE:  Furniture Placement')
         if self.cr.furnitureManager != None:
             self.cr.furnitureManager.d_suggestDirector(self.doId)
@@ -1829,7 +1829,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def getAccountDays(self):
         days = 0
-        defaultDays = base.cr.config.GetInt('account-days', -1)
+        defaultDays = ConfigVariableInt('account-days', -1).getValue()
         if defaultDays >= 0:
             days = defaultDays
         elif hasattr(base.cr, 'accountDays'):
@@ -1884,7 +1884,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         return self.lastTimeReadNews
 
     def cheatCogdoMazeGame(self, kindOfCheat = 0):
-        if base.config.GetBool('allow-cogdo-maze-suit-hit-cheat'):
+        if ConfigVariableBool('allow-cogdo-maze-suit-hit-cheat').getValue():
             maze = base.cr.doFind('DistCogdoMazeGame')
             if maze:
                 if kindOfCheat == 0:
@@ -1914,7 +1914,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         localAvatar.d_teleportResponse(avId, available, shardId, hoodId, zoneId, sendToId)
 
     def d_teleportResponse(self, avId, available, shardId, hoodId, zoneId, sendToId = None):
-        if base.config.GetBool('want-tptrack', False):
+        if ConfigVariableBool('want-tptrack', False).getValue():
             if available == 1:
                 self.notify.debug('sending teleportResponseToAI')
                 self.sendUpdate('teleportResponseToAI', [avId,

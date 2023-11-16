@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableString
 from .BattleBase import *
 import random
 from direct.directnotify import DirectNotifyGlobal
@@ -72,7 +73,7 @@ def pickSuitAttack(attacks, suitLevel):
             break
         index = index + 1
 
-    configAttackName = simbase.config.GetString('attack-type', 'random')
+    configAttackName = ConfigVariableString('attack-type', 'random').getValue()
     if configAttackName == 'random':
         return attackNum
     elif configAttackName == 'sequence':

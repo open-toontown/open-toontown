@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from panda3d.otp import *
 from .PurchaseBase import *
 from direct.task.Task import Task
@@ -618,9 +619,9 @@ class Purchase(PurchaseBase):
             base.cr.loginFSM.request('periodTimeout')
             return
         if not self.tutorialMode:
-            if not config.GetBool('disable-purchase-timer', 0):
+            if not ConfigVariableBool('disable-purchase-timer', 0).getValue():
                 self.timer.countdown(self.remain, self.__timerExpired)
-            if config.GetBool('metagame-disable-playAgain', 0):
+            if ConfigVariableBool('metagame-disable-playAgain', 0).getValue():
                 if self.metagameRound > -1:
                     self.disablePlayAgain()
         else:

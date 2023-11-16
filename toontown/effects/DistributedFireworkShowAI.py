@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from otp.ai.AIBaseGlobal import *
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
@@ -30,7 +31,7 @@ class DistributedFireworkShowAI(DistributedObjectAI.DistributedObjectAI):
         self.timestamp = timestamp
         self.sendUpdate("startShow",
                         (self.eventId, self.style, self.timestamp))
-        if simbase.air.config.GetBool('want-old-fireworks', 0):
+        if ConfigVariableBool('want-old-fireworks', 0).getValue():
             duration = getShowDuration(self.eventId, self.style)
             taskMgr.doMethodLater(duration, self.fireworkShowDone, self.taskName("waitForShowDone"))
         else:

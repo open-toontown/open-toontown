@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from otp.level import LevelMgr
 from . import FactoryUtil
 from direct.showbase.PythonUtil import Functor
@@ -16,7 +17,7 @@ class FactoryLevelMgr(LevelMgr.LevelMgr):
 
     def __init__(self, level, entId):
         LevelMgr.LevelMgr.__init__(self, level, entId)
-        if base.config.GetBool('want-factory-lifter', 0):
+        if ConfigVariableBool('want-factory-lifter', 0).getValue():
             self.toonLifter = FactoryUtil.ToonLifter('f3')
         self.callSetters('farPlaneDistance')
         self.geom.reparentTo(render)

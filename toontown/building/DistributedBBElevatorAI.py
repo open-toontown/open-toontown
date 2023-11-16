@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from .ElevatorConstants import *
 from . import DistributedBossElevatorAI
 
@@ -10,7 +11,7 @@ class DistributedBBElevatorAI(DistributedBossElevatorAI.DistributedBossElevatorA
 
     def checkBoard(self, av):
         result = 0
-        if simbase.config.GetBool('allow-ceo-elevator', 1):
+        if ConfigVariableBool('allow-ceo-elevator', 1).getValue():
             result = DistributedBossElevatorAI.DistributedBossElevatorAI.checkBoard(self, av)
         else:
             result = REJECT_NOT_YET_AVAILABLE

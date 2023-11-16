@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from otp.distributed import OtpDoGlobals
@@ -53,7 +54,7 @@ class GuildManager(DistributedObjectGlobal):
         self.id2Rank = {}
         self.id2Online = {}
         self.pendingMsgs = []
-        self.whiteListEnabled = base.config.GetBool('whitelist-chat-enabled', 1)
+        self.whiteListEnabled = ConfigVariableBool('whitelist-chat-enabled', 1).getValue()
         self.emailNotification = 0
         self.emailNotificationAddress = None
         self.receivingNewList = False

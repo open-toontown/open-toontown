@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableDouble
 from otp.ai.AIBase import *
 from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
@@ -27,7 +28,7 @@ class DistributedPicnicBasketAI(DistributedObjectAI.DistributedObjectAI):
         self.seed = RandomNumGen.randHash(globalClock.getRealTime())
         self.accepting = 0
         self.numPlayersExiting = 0
-        self.trolleyCountdownTime = simbase.config.GetFloat('picnic-countdown-time', ToontownGlobals.PICNIC_COUNTDOWN_TIME)
+        self.trolleyCountdownTime = ConfigVariableDouble('picnic-countdown-time', ToontownGlobals.PICNIC_COUNTDOWN_TIME).getValue()
         self.fsm = ClassicFSM.ClassicFSM('DistributedPicnicBasketAI', [
          State.State('off', self.enterOff, self.exitOff, [
           'waitEmpty']),

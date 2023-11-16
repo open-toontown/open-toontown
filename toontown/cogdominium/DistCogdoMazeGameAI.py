@@ -1,4 +1,4 @@
-from panda3d.core import Vec3, NodePath
+from panda3d.core import ConfigVariableBool, ConfigVariableDouble, Vec3, NodePath
 from direct.distributed.ClockDelta import globalClockDelta
 from otp.avatar.SpeedMonitor import SpeedMonitor
 from toontown.cogdominium.CogdoMaze import CogdoMazeFactory
@@ -16,7 +16,7 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
     TimeoutTimerTaskName = 'CMG_timeoutTimerTask'
     CountdownTimerTaskName = 'CMG_countdownTimerTask'
     AnnounceGameDoneTimerTaskName = 'CMG_AnnounceGameDoneTimerTask'
-    SkipCogdoGames = simbase.config.GetBool('skip-cogdo-game', 0)
+    SkipCogdoGames = ConfigVariableBool('skip-cogdo-game', 0).getValue()
 
     def __init__(self, air, id):
         DistCogdoGameAI.__init__(self, air, id)
@@ -33,7 +33,7 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
         self.jokeLastRequestId = None
         self.jokeRequestStartTime = globalClock.getFrameTime()
         self.jokeRequestCount = None
-        if __debug__ and simbase.config.GetBool('schellgames-dev', True):
+        if __debug__ and ConfigVariableBool('schellgames-dev', True).getValue():
             self.accept('onCodeReload', self.__sgOnCodeReload)
 
     def setExteriorZone(self, exteriorZone):
@@ -125,7 +125,7 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
                 secondsPerGrab = elapsed / self.requestCount
                 if self.requestCount >= 3 and secondsPerGrab <= 0.4:
                     simbase.air.writeServerEvent('suspicious', avId, 'suitHit %s suits in %s seconds' % (self.requestCount, elapsed))
-                    if simbase.config.GetBool('want-ban-cogdo-maze-suit-hit', False):
+                    if ConfigVariableBool('want-ban-cogdo-maze-suit-hit', False).getValue():
                         toon.ban('suitHit %s suits in %s seconds' % (self.requestCount, elapsed))
 
                     result = False
@@ -372,7 +372,7 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
                 secondsPerGrab = elapsed / self.jokeRequestCount
                 if self.jokeRequestCount >= 4 and secondsPerGrab <= 0.03:
                     simbase.air.writeServerEvent('suspicious', senderId, 'requestPickup %s jokes in %s seconds' % (self.jokeRequestCount, elapsed))
-                    if simbase.config.GetBool('want-ban-cogdo-maze-request-pickup', False):
+                    if ConfigVariableBool('want-ban-cogdo-maze-request-pickup', False).getValue():
                         toon.ban('requestPickup %s jokes in %s seconds' % (self.jokeRequestCount, elapsed))
 
                     result = False
@@ -400,14 +400,14 @@ class DistCogdoMazeGameAI(DistCogdoGameAI, DistCogdoMazeGameBase):
             if toon:
                 token = self._speedMonitor.addNodepath(toon)
                 self._toonId2speedToken[toonId] = token
-                self._speedMonitor.setSpeedLimit(token, config.GetFloat('cogdo-maze-speed-limit', Globals.ToonRunSpeed * 1.1), Functor(self._toonOverSpeedLimit, toonId))
+                self._speedMonitor.setSpeedLimit(token, ConfigVariableDouble('cogdo-maze-speed-limit', Globals.ToonRunSpeed * 1.1).getValue(), Functor(self._toonOverSpeedLimit, toonId))
 
     def _toonOverSpeedLimit(self, toonId, speed):
-        self._bootPlayerForHacking(toonId, 'speeding in cogdo maze game (%.2f feet/sec)' % speed, config.GetBool('want-ban-cogdo-maze-speeding', 0))
+        self._bootPlayerForHacking(toonId, 'speeding in cogdo maze game (%.2f feet/sec)' % speed, ConfigVariableBool('want-ban-cogdo-maze-speeding', 0).getValue())
 
     def _toonHackingRequestGag(self, toonId):
         simbase.air.writeServerEvent('suspicious', toonId, 'CogdoMazeGame: toon caught hacking requestGag')
-        self._bootPlayerForHacking(toonId, 'hacking cogdo maze game requestGag', config.GetBool('want-ban-cogdo-maze-requestgag-hacking', 0))
+        self._bootPlayerForHacking(toonId, 'hacking cogdo maze game requestGag', ConfigVariableBool('want-ban-cogdo-maze-requestgag-hacking', 0).getValue())
 
     def _bootPlayerForHacking(self, toonId, reason, wantBan):
         toon = simbase.air.doId2do.get(toonId)
