@@ -1,11 +1,13 @@
+import random
 from math import *
-from .DistributedMinigameAI import *
+
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-import random
 from direct.task.Task import Task
+
 from . import RaceGameGlobals
+from .DistributedMinigameAI import *
+
 
 class DistributedRaceGameAI(DistributedMinigameAI):
 

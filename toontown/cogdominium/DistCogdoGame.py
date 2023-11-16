@@ -1,16 +1,19 @@
 from panda3d.core import VBase4
-from direct.gui.DirectGui import DirectLabel
+
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed.DistributedObject import DistributedObject
 from direct.fsm import ClassicFSM, State
-from direct.fsm.StatePush import StateVar, FunctionCall
+from direct.fsm.StatePush import FunctionCall, StateVar
+from direct.gui.DirectGui import DirectLabel
+
 from toontown.cogdominium import CogdoGameConsts
-from toontown.cogdominium.DistCogdoGameBase import DistCogdoGameBase
-from toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
 from toontown.cogdominium.CogdoGameRulesPanel import CogdoGameRulesPanel
+from toontown.cogdominium.DistCogdoGameBase import DistCogdoGameBase
 from toontown.minigame import MinigameGlobals
+from toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
 from toontown.toonbase import TTLocalizer as TTL
+
 SCHELLGAMES_DEV = __debug__ and base.config.GetBool('schellgames-dev', False)
 
 class DistCogdoGame(DistCogdoGameBase, DistributedObject):

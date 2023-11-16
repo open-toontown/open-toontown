@@ -1,5 +1,6 @@
-from toontown.uberdog.ScavengerHuntDataStore import *
 from toontown.uberdog.DataStore import *
+from toontown.uberdog.ScavengerHuntDataStore import *
+
 SH = 1
 GEN = 2
 TYPES = {SH: (ScavengerHuntDataStore,),

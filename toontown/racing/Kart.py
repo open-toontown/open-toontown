@@ -1,11 +1,15 @@
-from direct.directnotify import DirectNotifyGlobal
 from panda3d.core import *
 from panda3d.physics import *
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
+
 from otp.avatar import ShadowCaster
+
 from toontown.racing.KartDNA import *
 from toontown.toonbase import TTLocalizer
+
 
 class Kart(NodePath, ShadowCaster.ShadowCaster):
     notify = DirectNotifyGlobal.directNotify.newCategory('Kart')

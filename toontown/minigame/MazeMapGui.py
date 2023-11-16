@@ -1,8 +1,9 @@
-from direct.gui.DirectGui import DirectFrame, DGG
-from panda3d.core import Vec2, VBase4F
-from panda3d.core import CardMaker, NodePath
-from panda3d.core import Texture, PNMImage
 from enum import IntEnum
+
+from panda3d.core import CardMaker, NodePath, PNMImage, Texture, VBase4F, Vec2
+
+from direct.gui.DirectGui import DGG, DirectFrame
+
 DEFAULT_MASK_RESOLUTION = 32
 DEFAULT_RADIUS_RATIO = 0.05
 MAP_RESOLUTION = 320

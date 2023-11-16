@@ -1,19 +1,20 @@
 from panda3d.core import *
-from direct.task.Task import Task
-from toontown.toonbase.ToontownGlobals import *
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from direct.showbase import DirectObject
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
-from toontown.toon import ToonTeleportPanel
-from toontown.suit import Suit
-from toontown.pets import Pet
-from otp.otpbase import OTPLocalizer
-from otp.otpbase import OTPGlobals
+from direct.fsm import ClassicFSM, State
+from direct.gui.DirectGui import *
+from direct.showbase import DirectObject
+from direct.task.Task import Task
+
+from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.uberdog import RejectCode
+
+from toontown.pets import Pet
+from toontown.suit import Suit
+from toontown.toon import ToonTeleportPanel
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase.ToontownGlobals import *
+
 globalFriendInviter = None
 
 def showFriendInviter(avId, avName, avDisableName):

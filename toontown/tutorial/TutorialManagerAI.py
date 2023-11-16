@@ -1,15 +1,18 @@
-from otp.ai.AIBaseGlobal import *
 from panda3d.core import *
 from panda3d.toontown import *
-from direct.distributed import DistributedObjectAI
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.building import TutorialBuildingAI
-from toontown.building import TutorialHQBuildingAI
-from . import SuitPlannerTutorialAI
-from toontown.toonbase import ToontownBattleGlobals
+from direct.distributed import DistributedObjectAI
+
+from otp.ai.AIBaseGlobal import *
+
+from toontown.ai import BlackCatHolidayMgrAI, DistributedBlackCatMgrAI
+from toontown.building import TutorialBuildingAI, TutorialHQBuildingAI
 from toontown.toon import NPCToons
-from toontown.ai import BlackCatHolidayMgrAI
-from toontown.ai import DistributedBlackCatMgrAI
+from toontown.toonbase import ToontownBattleGlobals
+
+from . import SuitPlannerTutorialAI
+
 
 class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TutorialManagerAI")
@@ -27,7 +30,7 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
 
         # There are only two blocks in the tutorial. One for the gag shop
         # building, and one for the Toon HQ. If there aren't, something
-        # is wrong. 
+        # is wrong.
         self.dnaStore = DNAStorage()
 
         dnaFile = simbase.air.lookupDNAFileName("tutorial_street.dna")
@@ -44,13 +47,13 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
                 self.hqBlock = blockNumber
             else:
                 self.gagBlock = blockNumber
-                
+
         assert self.hqBlock and self.gagBlock
 
         # key is avId, value is real time when the request was made
         self.avIdsRequestingSkip = {}
         self.accept("avatarEntered", self.waitingToonEntered )
-                                                                  
+
         return None
 
     def requestTutorial(self):
@@ -124,7 +127,7 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
     def __createTutorial(self, avId):
         if self.playerDict.get(avId):
             self.notify.warning(str(avId) + " is already in the playerDict!")
-        
+
         branchZone = self.air.allocateZone()
         streetZone = self.air.allocateZone()
         shopZone = self.air.allocateZone()
@@ -143,7 +146,7 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
         def battleOverCallback(zoneId):
             hqBuilding.battleOverCallback()
             building.battleOverCallback()
-        
+
         # Create a suit planner
         suitPlanner = SuitPlannerTutorialAI.SuitPlannerTutorialAI(
             self.air,
@@ -161,7 +164,7 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
             blackCatMgr = DistributedBlackCatMgrAI.DistributedBlackCatMgrAI(
                 self.air, avId)
             blackCatMgr.generateWithRequired(streetZone)
-            
+
         zoneDict={"branchZone" : branchZone,
                   "streetZone" : streetZone,
                   "shopZone" : shopZone,
@@ -231,7 +234,7 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
             # Acknowlege that the player has seen a tutorial
             self.air.writeServerEvent('skippedTutorial', avId, '')
             av.b_setTutorialAck(1)
-            # these values were taken by running a real tutorial            
+            # these values were taken by running a real tutorial
             self.air.questManager.assignQuest(avId,
                                               20000,
                                               101,
@@ -239,7 +242,7 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
                                               1000,
                                               1
                                               )
-            
+
             self.air.questManager.completeAllQuestsMagically(av)
             av.removeQuest(101)
             self.air.questManager.assignQuest(avId,
@@ -270,7 +273,7 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
         avId = av.doId
         if avId in self.avIdsRequestingSkip:
             requestTime = self.avIdsRequestingSkip[avId]
-            
+
             curTime = globalClock.getFrameTime()
             if (curTime - requestTime) <= self.WaitTimeForSkipTutorial:
                 self.respondToSkipTutorial(avId, av)
@@ -279,7 +282,7 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
                 self.sendUpdateToAvatarId(avId, "skipTutorialResponse", [0])
             del self.avIdsRequestingSkip[avId]
             self.removeTask("skipTutorialToon-%d" % avId)
-                
+
 
     def waitForToonToEnter(self,avId):
         """Mark our toon as requesting to skip, and start a task to timeout for it."""
@@ -300,12 +303,12 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
         self.notify.debugStateCall(self)
         avId = self.air.getAvatarIdFromSender()
         # Make sure the avatar exists
-        av = self.air.doId2do.get(avId)        
+        av = self.air.doId2do.get(avId)
         if av:
             self.respondToSkipTutorial(avId,av)
         else:
             self.waitForToonToEnter(avId)
-    
+
     def d_enterTutorial(self, avId, branchZone, streetZone, shopZone, hqZone):
         self.sendUpdateToAvatarId(avId, "enterTutorial", [branchZone,
                                                           streetZone,
@@ -318,5 +321,3 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
                             " has exited unexpectedly")
         self.__destroyTutorial(avId)
         return
-    
-        

@@ -1,8 +1,11 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
+
 from otp.level.DistributedLevelAI import DistributedLevelAI
-from toontown.cogdominium.DistCogdoGameAI import DistCogdoGameAI
+
 from toontown.cogdominium.CogdoEntityCreatorAI import CogdoEntityCreatorAI
 from toontown.cogdominium.CogdoLevelGameBase import CogdoLevelGameBase
+from toontown.cogdominium.DistCogdoGameAI import DistCogdoGameAI
+
 
 class DistCogdoLevelGameAI(CogdoLevelGameBase, DistCogdoGameAI, DistributedLevelAI):
     notify = directNotify.newCategory('DistCogdoLevelGameAI')

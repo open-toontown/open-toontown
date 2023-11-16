@@ -1,6 +1,8 @@
-from direct.showbase.DirectObject import DirectObject
-from toontown.toonbase.ToontownGlobals import *
 from direct.directnotify import DirectNotifyGlobal
+from direct.showbase.DirectObject import DirectObject
+
+from toontown.toonbase.ToontownGlobals import *
+
 
 class MazeTreasure(DirectObject):
     RADIUS = 0.7

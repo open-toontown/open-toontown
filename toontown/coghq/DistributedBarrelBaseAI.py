@@ -1,7 +1,10 @@
 from direct.directnotify import DirectNotifyGlobal
-from otp.level import DistributedEntityAI
 from direct.task import Task
+
+from otp.level import DistributedEntityAI
+
 from toontown.coghq import BarrelBase
+
 
 class DistributedBarrelBaseAI(DistributedEntityAI.DistributedEntityAI, BarrelBase.BarrelBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBarrelBaseAI')

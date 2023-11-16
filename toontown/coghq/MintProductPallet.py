@@ -1,5 +1,6 @@
-from toontown.toonbase.ToontownGlobals import *
 from toontown.coghq import MintProduct
+from toontown.toonbase.ToontownGlobals import *
+
 
 class MintProductPallet(MintProduct.MintProduct):
     Models = {CashbotMintIntA: 'phase_10/models/cashbotHQ/DoubleCoinStack.bam',

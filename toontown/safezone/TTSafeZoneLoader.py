@@ -1,8 +1,11 @@
-from panda3d.core import *
-from . import SafeZoneLoader
-from . import TTPlayground
 import random
+
+from panda3d.core import *
+
 from toontown.launcher import DownloadForceAcknowledge
+
+from . import SafeZoneLoader, TTPlayground
+
 
 class TTSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
 

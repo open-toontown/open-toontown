@@ -1,13 +1,14 @@
-from .DistributedMinigameAI import *
-from direct.distributed.ClockDelta import *
-from direct.interval.IntervalGlobal import *
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from direct.actor import Actor
-from . import DivingGameGlobals
-import random
 import random
 import types
+
+from direct.actor import Actor
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+from direct.interval.IntervalGlobal import *
+
+from . import DivingGameGlobals
+from .DistributedMinigameAI import *
+
 
 class DistributedDivingGameAI(DistributedMinigameAI):
     fishProportions = []

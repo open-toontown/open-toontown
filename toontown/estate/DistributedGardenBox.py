@@ -1,13 +1,14 @@
-from . import DistributedLawnDecor
+from panda3d.core import NodePath, Vec3
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase.ShowBase import *
-from . import GardenGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.estate import PlantingGUI
-from toontown.estate import PlantTreeGUI
 from direct.distributed import DistributedNode
-from panda3d.core import NodePath
-from panda3d.core import Vec3
+from direct.showbase.ShowBase import *
+
+from toontown.estate import PlantingGUI, PlantTreeGUI
+from toontown.toonbase import TTLocalizer
+
+from . import DistributedLawnDecor, GardenGlobals
+
 
 class DistributedGardenBox(DistributedLawnDecor.DistributedLawnDecor):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGardenPlot')

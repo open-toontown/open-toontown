@@ -1,8 +1,10 @@
+import random
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from direct.showbase import DirectObject
-from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
-import random
+
 
 class TreasurePlannerAI(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TreasurePlannerAI')

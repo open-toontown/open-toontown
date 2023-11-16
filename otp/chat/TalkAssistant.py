@@ -1,16 +1,19 @@
 import sys
-from direct.showbase import DirectObject
-from otp.otpbase import OTPLocalizer
-from direct.directnotify import DirectNotifyGlobal
-from otp.otpbase import OTPGlobals
-from otp.speedchat import SCDecoders
-from panda3d.core import *
-from otp.chat.TalkMessage import TalkMessage
-from otp.chat.TalkHandle import TalkHandle
 import time
-from otp.chat.TalkGlobals import *
+
+from panda3d.core import *
+from panda3d.otp import CFSpeech, CFThought, CFTimeout
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.showbase import DirectObject
+
 from otp.chat.ChatGlobals import *
-from panda3d.otp import CFSpeech, CFTimeout, CFThought
+from otp.chat.TalkGlobals import *
+from otp.chat.TalkHandle import TalkHandle
+from otp.chat.TalkMessage import TalkMessage
+from otp.otpbase import OTPGlobals, OTPLocalizer
+from otp.speedchat import SCDecoders
+
 ThoughtPrefix = '.'
 
 class TalkAssistant(DirectObject.DirectObject):

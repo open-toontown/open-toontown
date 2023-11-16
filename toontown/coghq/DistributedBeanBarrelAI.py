@@ -1,6 +1,8 @@
-from . import DistributedBarrelBaseAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
+
+from . import DistributedBarrelBaseAI
+
 
 class DistributedBeanBarrelAI(DistributedBarrelBaseAI.DistributedBarrelBaseAI):
 

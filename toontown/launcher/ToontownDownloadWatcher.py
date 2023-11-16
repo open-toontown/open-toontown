@@ -1,6 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
+
 from otp.launcher.DownloadWatcher import DownloadWatcher
+
 from toontown.toonbase import TTLocalizer
+
 
 class ToontownDownloadWatcher(DownloadWatcher):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownDownloadWatcher')

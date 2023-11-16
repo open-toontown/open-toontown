@@ -1,19 +1,18 @@
-from direct.directnotify import DirectNotifyGlobal
-from . import HoodDataAI, ZoneUtil
-from toontown.toonbase import ToontownGlobals
-from toontown.safezone import OZTreasurePlannerAI
-from toontown.racing import DistributedStartingBlockAI
 from panda3d.core import *
 from panda3d.toontown import *
-from toontown.racing.RaceGlobals import *
-from toontown.classicchars import DistributedGoofySpeedwayAI
-from toontown.safezone import DistributedPicnicBasketAI
-from toontown.classicchars import DistributedChipAI
-from toontown.classicchars import DistributedDaleAI
+
+from direct.directnotify import DirectNotifyGlobal
+
+from toontown.classicchars import DistributedChipAI, DistributedDaleAI, DistributedGoofySpeedwayAI
 from toontown.distributed import DistributedTimerAI
-from toontown.safezone import DistributedPicnicTableAI
-from toontown.safezone import DistributedChineseCheckersAI
-from toontown.safezone import DistributedCheckersAI
+from toontown.racing import DistributedStartingBlockAI
+from toontown.racing.RaceGlobals import *
+from toontown.safezone import (DistributedCheckersAI, DistributedChineseCheckersAI, DistributedPicnicBasketAI,
+                               DistributedPicnicTableAI, OZTreasurePlannerAI)
+from toontown.toonbase import ToontownGlobals
+
+from . import HoodDataAI, ZoneUtil
+
 if __debug__:
     import pdb
 

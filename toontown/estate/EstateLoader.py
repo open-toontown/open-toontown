@@ -1,17 +1,19 @@
-from panda3d.core import *
-from toontown.toonbase.ToontownGlobals import *
-from direct.interval.IntervalGlobal import *
-from direct.fsm import ClassicFSM, State
-from toontown.safezone import SafeZoneLoader
-import random
-from toontown.launcher import DownloadForceAcknowledge
-from . import House
-from . import Estate
-from . import HouseGlobals
-import random
 import math
-from toontown.coghq import MovingPlatform
+import random
+
+from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM, State
+from direct.interval.IntervalGlobal import *
+
+from toontown.coghq import MovingPlatform
+from toontown.launcher import DownloadForceAcknowledge
+from toontown.safezone import SafeZoneLoader
+from toontown.toonbase.ToontownGlobals import *
+
+from . import Estate, House, HouseGlobals
+
 
 class EstateLoader(SafeZoneLoader.SafeZoneLoader):
     notify = DirectNotifyGlobal.directNotify.newCategory('EstateLoader')

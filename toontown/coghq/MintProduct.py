@@ -1,5 +1,7 @@
-from toontown.toonbase.ToontownGlobals import *
 from otp.level import BasicEntities
+
+from toontown.toonbase.ToontownGlobals import *
+
 
 class MintProduct(BasicEntities.NodePathEntity):
     Models = {CashbotMintIntA: 'phase_10/models/cashbotHQ/MoneyBag',

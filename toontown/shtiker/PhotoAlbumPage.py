@@ -1,10 +1,13 @@
-from panda3d.core import *
-from . import ShtikerPage
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from toontown.toonbase import TTLocalizer
 import os
-from toontown.toonbase import ToontownGlobals
+
+from panda3d.core import *
+
+from direct.gui.DirectGui import *
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import ShtikerPage
+
 
 class PhotoAlbumPage(ShtikerPage.ShtikerPage):
 

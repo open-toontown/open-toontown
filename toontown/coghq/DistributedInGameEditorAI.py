@@ -1,7 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObjectAI
 from direct.directutil import DistributedLargeBlobSenderAI
+from direct.distributed import DistributedObjectAI
+
 from .SpecImports import *
+
 
 class DistributedInGameEditorAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedInGameEditorAI')

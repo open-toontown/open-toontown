@@ -1,5 +1,7 @@
 import datetime
+
 from toontown.shtiker import HtmlView
+
 
 class InGameNewsFrame(HtmlView.HtmlView):
     TaskName = 'HtmlViewUpdateTask'

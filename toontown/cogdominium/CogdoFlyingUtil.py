@@ -1,5 +1,7 @@
 from otp.otpbase import OTPGlobals
+
 from .CogdoFlyingShadowPlacer import CogdoFlyingShadowPlacer
+
 
 def loadMockup(fileName, dmodelsAlt = 'coffin'):
     try:

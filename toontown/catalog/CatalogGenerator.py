@@ -1,31 +1,35 @@
-from direct.directnotify import DirectNotifyGlobal
-from . import CatalogItem
-from . import CatalogItemList
-from .CatalogFurnitureItem import CatalogFurnitureItem, nextAvailableCloset, getAllClosets, get50ItemCloset, getMaxClosets, get50ItemTrunk
-from .CatalogAnimatedFurnitureItem import CatalogAnimatedFurnitureItem
-from .CatalogClothingItem import CatalogClothingItem, getAllClothes
-from .CatalogChatItem import CatalogChatItem, getChatRange
-from .CatalogEmoteItem import CatalogEmoteItem
-from .CatalogWallpaperItem import CatalogWallpaperItem, getWallpapers
-from .CatalogFlooringItem import CatalogFlooringItem, getFloorings
-from .CatalogMouldingItem import CatalogMouldingItem, getAllMouldings
-from .CatalogWainscotingItem import CatalogWainscotingItem, getAllWainscotings
-from .CatalogWindowItem import CatalogWindowItem
-from .CatalogPoleItem import nextAvailablePole, getAllPoles
-from .CatalogPetTrickItem import CatalogPetTrickItem, getAllPetTricks
-from .CatalogGardenItem import CatalogGardenItem
-from .CatalogToonStatueItem import CatalogToonStatueItem
-from .CatalogRentalItem import CatalogRentalItem
-from .CatalogGardenStarterItem import CatalogGardenStarterItem
-from .CatalogNametagItem import CatalogNametagItem
-from .CatalogAccessoryItem import CatalogAccessoryItem
-from direct.actor import Actor
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-import types
 import random
 import time
+import types
+
 from panda3d.core import *
+
+from direct.actor import Actor
+from direct.directnotify import DirectNotifyGlobal
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CatalogItem, CatalogItemList
+from .CatalogAccessoryItem import CatalogAccessoryItem
+from .CatalogAnimatedFurnitureItem import CatalogAnimatedFurnitureItem
+from .CatalogChatItem import CatalogChatItem, getChatRange
+from .CatalogClothingItem import CatalogClothingItem, getAllClothes
+from .CatalogEmoteItem import CatalogEmoteItem
+from .CatalogFlooringItem import CatalogFlooringItem, getFloorings
+from .CatalogFurnitureItem import (CatalogFurnitureItem, get50ItemCloset, get50ItemTrunk, getAllClosets, getMaxClosets,
+                                   nextAvailableCloset)
+from .CatalogGardenItem import CatalogGardenItem
+from .CatalogGardenStarterItem import CatalogGardenStarterItem
+from .CatalogMouldingItem import CatalogMouldingItem, getAllMouldings
+from .CatalogNametagItem import CatalogNametagItem
+from .CatalogPetTrickItem import CatalogPetTrickItem, getAllPetTricks
+from .CatalogPoleItem import getAllPoles, nextAvailablePole
+from .CatalogRentalItem import CatalogRentalItem
+from .CatalogToonStatueItem import CatalogToonStatueItem
+from .CatalogWainscotingItem import CatalogWainscotingItem, getAllWainscotings
+from .CatalogWallpaperItem import CatalogWallpaperItem, getWallpapers
+from .CatalogWindowItem import CatalogWindowItem
+
 MetaItems = {100: getAllClothes(101, 102, 103, 104, 105, 106, 107, 108, 109, 109, 111, 115, 201, 202, 203, 204, 205, 206, 207, 208, 209, 209, 211, 215),
  300: getAllClothes(301, 302, 303, 304, 305, 308, 401, 403, 404, 405, 407, 451, 452, 453),
  2000: getChatRange(0, 1999),

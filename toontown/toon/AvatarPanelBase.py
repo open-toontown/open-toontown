@@ -1,10 +1,14 @@
 from panda3d.core import *
+
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
+
 from otp.avatar import AvatarPanel
+from otp.distributed import CentralLogger
+
 from toontown.toonbase import TTLocalizer
 from toontown.toontowngui import TTDialog
-from otp.distributed import CentralLogger
+
 IGNORE_SCALE = 0.06
 STOP_IGNORE_SCALE = 0.04
 

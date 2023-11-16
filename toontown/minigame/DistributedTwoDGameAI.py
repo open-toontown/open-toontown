@@ -1,9 +1,13 @@
-from .DistributedMinigameAI import *
-from toontown.ai.ToonBarrier import *
-from direct.fsm import ClassicFSM, State
-from direct.directnotify import DirectNotifyGlobal
-from toontown.minigame import ToonBlitzGlobals
 from math import sqrt
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM, State
+
+from toontown.ai.ToonBarrier import *
+from toontown.minigame import ToonBlitzGlobals
+
+from .DistributedMinigameAI import *
+
 
 class DistributedTwoDGameAI(DistributedMinigameAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTwoDGameAI')

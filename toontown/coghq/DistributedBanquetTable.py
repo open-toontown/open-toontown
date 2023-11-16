@@ -1,21 +1,24 @@
 import math
 import random
-from panda3d.core import NodePath, Point3, VBase4, TextNode, Vec3, deg2Rad, CollisionSegment, CollisionHandlerQueue, CollisionNode, BitMask32
+
+from panda3d.core import (BitMask32, CollisionHandlerQueue, CollisionNode, CollisionSegment, NodePath, Point3, TextNode,
+                          VBase4, Vec3, deg2Rad)
 from panda3d.direct import SmoothMover
-from direct.fsm import FSM
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from direct.distributed.ClockDelta import globalClockDelta
-from direct.directnotify import DirectNotifyGlobal
-from direct.interval.IntervalGlobal import Sequence, ProjectileInterval, Parallel, LerpHprInterval, ActorInterval, Func, Wait, SoundInterval, LerpPosHprInterval, LerpScaleInterval
+from direct.fsm import FSM
 from direct.gui.DirectGui import DGG, DirectButton, DirectLabel, DirectWaitBar
+from direct.interval.IntervalGlobal import (ActorInterval, Func, LerpHprInterval, LerpPosHprInterval, LerpScaleInterval,
+                                            Parallel, ProjectileInterval, Sequence, SoundInterval, Wait)
 from direct.task import Task
-from toontown.suit import Suit
-from toontown.suit import SuitDNA
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.coghq import BanquetTableBase
-from toontown.coghq import DinerStatusIndicator
+
 from toontown.battle import MovieUtil
+from toontown.coghq import BanquetTableBase, DinerStatusIndicator
+from toontown.suit import Suit, SuitDNA
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class DistributedBanquetTable(DistributedObject.DistributedObject, FSM.FSM, BanquetTableBase.BanquetTableBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBanquetTable')

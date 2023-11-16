@@ -1,21 +1,23 @@
 from panda3d.core import *
-from direct.distributed.ClockDelta import *
-from direct.task.Task import Task
-from direct.interval.IntervalGlobal import *
-from .TrolleyConstants import *
-from direct.gui.DirectGui import *
-from toontown.toonbase import TTLocalizer
+
 from direct.distributed import DistributedNode
-from direct.distributed.ClockDelta import globalClockDelta
-from .ChineseCheckersBoard import ChineseCheckersBoard
-from direct.fsm import ClassicFSM, State
-from direct.fsm import StateData
-from toontown.distributed import DelayDelete
-from toontown.toonbase.ToontownTimer import ToontownTimer
-from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
-from otp.otpbase import OTPGlobals
+from direct.distributed.ClockDelta import globalClockDelta
+from direct.fsm import ClassicFSM, State, StateData
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
 from direct.showbase import PythonUtil
+from direct.task.Task import Task
+
+from otp.otpbase import OTPGlobals
+
+from toontown.distributed import DelayDelete
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToontownTimer import ToontownTimer
+
+from .ChineseCheckersBoard import ChineseCheckersBoard
+from .TrolleyConstants import *
+
 
 class DistributedChineseCheckers(DistributedNode.DistributedNode):
 

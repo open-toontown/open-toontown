@@ -1,5 +1,6 @@
 from panda3d.core import *
 from panda3d.otp import *
+
 QuietZone = 1
 UberZone = 2
 WallBitmask = BitMask32(1)

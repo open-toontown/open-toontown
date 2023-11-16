@@ -1,28 +1,29 @@
+import math
+import random
+
 from panda3d.core import *
 from panda3d.otp import *
-from direct.distributed.ClockDelta import *
-from direct.interval.IntervalGlobal import *
-from direct.gui.DirectGui import *
-from panda3d.core import *
 from panda3d.physics import *
-from direct.fsm import FSM
+
 from direct.distributed import DistributedSmoothNode
+from direct.distributed.ClockDelta import *
+from direct.fsm import FSM
+from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
-from direct.showbase.PythonUtil import clampScalar
-from otp.otpbase import OTPGlobals
+from direct.interval.ProjectileInterval import *
+from direct.showbase.PythonUtil import clampScalar, randFloat
+from direct.task.Task import Task
+
 from otp.avatar import ShadowCaster
-from toontown.racing import Kart
-from toontown.racing.KartDNA import *
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPGlobals
+
+from toontown.battle.BattleProps import *
 from toontown.effects.Drift import Drift
 from toontown.effects.Sparks import Sparks
-from direct.interval.ProjectileInterval import *
-from toontown.battle.BattleProps import *
-import random
-from direct.showbase.PythonUtil import randFloat
-from direct.task.Task import Task
-import math
+from toontown.racing import Kart
+from toontown.racing.KartDNA import *
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 iceTurnFactor = 0.25
 iceAccelFactor = 0.4
 

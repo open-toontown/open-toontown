@@ -1,8 +1,11 @@
 from panda3d.core import *
-from . import ToonHood
-from toontown.town import BRTownLoader
+
 from toontown.safezone import BRSafeZoneLoader
 from toontown.toonbase.ToontownGlobals import *
+from toontown.town import BRTownLoader
+
+from . import ToonHood
+
 
 class BRHood(ToonHood.ToonHood):
 

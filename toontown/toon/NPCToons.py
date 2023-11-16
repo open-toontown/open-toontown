@@ -1,11 +1,13 @@
+import os
+
 from panda3d.core import *
 from panda3d.otp import *
-from toontown.toonbase import ToontownGlobals
+
 from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
+
 from . import ToonDNA
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
-import os
+
 QUEST_MOVIE_CLEAR = 0
 QUEST_MOVIE_REJECT = 1
 QUEST_MOVIE_COMPLETE = 2
@@ -70,17 +72,10 @@ def getRandomDNA(seed, gender):
 
 
 def createNPC(air, npcId, desc, zoneId, posIndex = 0, questCallback = None):
-    from . import DistributedNPCToonAI
-    from . import DistributedNPCClerkAI
-    from . import DistributedNPCTailorAI
-    from . import DistributedNPCBlockerAI
-    from . import DistributedNPCFishermanAI
-    from . import DistributedNPCPetclerkAI
-    from . import DistributedNPCKartClerkAI
-    from . import DistributedNPCPartyPersonAI
-    from . import DistributedNPCSpecialQuestGiverAI
-    from . import DistributedNPCFlippyInToonHallAI
-    from . import DistributedNPCScientistAI
+    from . import (DistributedNPCBlockerAI, DistributedNPCClerkAI, DistributedNPCFishermanAI,
+                   DistributedNPCFlippyInToonHallAI, DistributedNPCKartClerkAI, DistributedNPCPartyPersonAI,
+                   DistributedNPCPetclerkAI, DistributedNPCScientistAI, DistributedNPCSpecialQuestGiverAI,
+                   DistributedNPCTailorAI, DistributedNPCToonAI)
     canonicalZoneId, name, dnaType, gender, protected, type = desc
     if type == NPC_REGULAR:
         npc = DistributedNPCToonAI.DistributedNPCToonAI(air, npcId, questCallback=questCallback)

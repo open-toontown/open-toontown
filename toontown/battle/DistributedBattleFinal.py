@@ -1,18 +1,20 @@
+import random
+
 from panda3d.core import *
 from panda3d.otp import *
-from direct.interval.IntervalGlobal import *
-from .BattleBase import *
+
 from direct.actor import Actor
-from toontown.distributed import DelayDelete
 from direct.directnotify import DirectNotifyGlobal
-from . import DistributedBattleBase
-from . import MovieUtil
-from toontown.suit import Suit
-from . import SuitBattleGlobals
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
 from direct.fsm import State
-import random
+from direct.interval.IntervalGlobal import *
+
+from toontown.distributed import DelayDelete
+from toontown.suit import Suit
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
+
+from . import DistributedBattleBase, MovieUtil, SuitBattleGlobals
+from .BattleBase import *
+
 
 class DistributedBattleFinal(DistributedBattleBase.DistributedBattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleFinal')

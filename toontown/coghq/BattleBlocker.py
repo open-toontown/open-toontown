@@ -1,9 +1,12 @@
 from panda3d.core import *
-from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from otp.level import BasicEntities
-from toontown.toonbase import ToontownGlobals
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
+
+from otp.level import BasicEntities
+
+from toontown.toonbase import ToontownGlobals
+
 
 class BattleBlocker(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('BattleBlocker')

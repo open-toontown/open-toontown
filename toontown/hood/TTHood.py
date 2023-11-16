@@ -1,11 +1,14 @@
 from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-from . import ToonHood
-from toontown.town import TTTownLoader
+
 from toontown.safezone import TTSafeZoneLoader
 from toontown.toonbase.ToontownGlobals import *
-from . import SkyUtil
-from direct.directnotify import DirectNotifyGlobal
+from toontown.town import TTTownLoader
+
+from . import SkyUtil, ToonHood
+
 
 class TTHood(ToonHood.ToonHood):
     notify = DirectNotifyGlobal.directNotify.newCategory('TTHood')

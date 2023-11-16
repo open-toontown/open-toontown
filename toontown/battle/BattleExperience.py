@@ -1,5 +1,6 @@
 from toontown.toonbase import ToontownBattleGlobals
 
+
 def genRewardDicts(entries):
     toonRewardDicts = []
     for toonId, origExp, earnedExp, origQuests, items, missedItems, origMerits, merits, parts in entries:

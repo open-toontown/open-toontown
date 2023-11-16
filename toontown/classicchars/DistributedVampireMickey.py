@@ -1,13 +1,13 @@
 from panda3d.core import *
-from . import DistributedCCharBase
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
+
 from toontown.classicchars import DistributedMickey
-from . import CharStateDatas
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from . import DistributedCCharBase
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CharStateDatas, DistributedCCharBase
+
 
 class DistributedVampireMickey(DistributedMickey.DistributedMickey):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedVampireMickey')

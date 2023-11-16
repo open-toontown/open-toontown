@@ -1,10 +1,12 @@
+from panda3d.otp import CFSpeech, CFTimeout
+
 from direct.distributed.DistributedObject import DistributedObject
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
-from panda3d.otp import CFSpeech, CFTimeout
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toon import ToonDNA
+
 from toontown.parties import PartyGlobals
+from toontown.toon import ToonDNA
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class DistributedPartyManager(DistributedObject):
     neverDisable = 1

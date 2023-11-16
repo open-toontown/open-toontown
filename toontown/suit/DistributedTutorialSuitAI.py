@@ -1,7 +1,9 @@
+from direct.directnotify import DirectNotifyGlobal
+
 from otp.ai.AIBaseGlobal import *
 
-from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import SuitBattleGlobals
+
 from . import DistributedSuitBaseAI
 
 
@@ -12,7 +14,7 @@ class DistributedTutorialSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
 
     def __init__(self, air, suitPlanner):
         """__init__(air, suitPlanner)"""
-        DistributedSuitBaseAI.DistributedSuitBaseAI.__init__(self, air, 
+        DistributedSuitBaseAI.DistributedSuitBaseAI.__init__(self, air,
                                                              suitPlanner)
 
     def delete(self):

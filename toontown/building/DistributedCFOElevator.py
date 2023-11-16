@@ -1,8 +1,10 @@
-from . import DistributedElevator
-from . import DistributedBossElevator
-from .ElevatorConstants import *
 from direct.directnotify import DirectNotifyGlobal
+
 from toontown.toonbase import TTLocalizer
+
+from . import DistributedBossElevator, DistributedElevator
+from .ElevatorConstants import *
+
 
 class DistributedCFOElevator(DistributedBossElevator.DistributedBossElevator):
 

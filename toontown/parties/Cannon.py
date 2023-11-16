@@ -1,14 +1,17 @@
 import math
+
 from panda3d.core import *
-from direct.interval.MetaInterval import Sequence, Parallel
+
 from direct.interval.FunctionInterval import Func
-from direct.interval.LerpInterval import LerpScaleInterval, LerpColorScaleInterval
-from direct.showbase.PythonUtil import bound
-from toontown.toon import ToonHead
+from direct.interval.LerpInterval import LerpColorScaleInterval, LerpScaleInterval
+from direct.interval.MetaInterval import Parallel, Sequence
+from direct.showbase.PythonUtil import StackTrace, bound
+
 from toontown.minigame.CannonGameGlobals import *
+from toontown.parties.PartyUtils import calcVelocity, toRadians
+from toontown.toon import ToonHead
 from toontown.toonbase import ToontownGlobals
-from toontown.parties.PartyUtils import toRadians, calcVelocity
-from direct.showbase.PythonUtil import StackTrace
+
 CANNON_ROTATION_MIN = -70
 CANNON_ROTATION_MAX = 70
 INITIAL_VELOCITY = 80.0

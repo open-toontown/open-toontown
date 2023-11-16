@@ -1,14 +1,18 @@
+import random
+
+from panda3d.core import TextNode
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from panda3d.core import TextNode
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
-from otp.otpgui.OTPDialog import *
-from direct.interval.LerpInterval import LerpPosInterval, LerpScaleInterval, LerpFunc
-from direct.interval.IntervalGlobal import Sequence, Parallel, Func, Wait
+from direct.interval.IntervalGlobal import Func, Parallel, Sequence, Wait
+from direct.interval.LerpInterval import LerpFunc, LerpPosInterval, LerpScaleInterval
 from direct.task import Task
-import random
+
+from otp.otpgui.OTPDialog import *
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toontowngui import TTDialog
+
 
 class ToontownLoadingBlocker(TTDialog.TTDialog):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownLoadingBlocker')

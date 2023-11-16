@@ -1,27 +1,26 @@
-from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from direct.gui.DirectScrolledList import *
-from direct.distributed.ClockDelta import *
-from toontown.toontowngui import TTDialog
 import math
-from direct.task.Task import Task
-from toontown.toonbase import ToontownGlobals
-from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from toontown.toon import Toon
-from direct.showbase import RandomNumGen
-from toontown.toonbase import TTLocalizer
-import random
-import random
 import pickle
-from direct.showbase import PythonUtil
-from . import GameSprite
+import random
 from math import pi
-from . import GardenProgressMeter
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+from direct.gui.DirectGui import *
+from direct.gui.DirectScrolledList import *
+from direct.showbase import PythonUtil, RandomNumGen
+from direct.task.Task import Task
+
+from toontown.toon import Toon
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toontowngui import TTDialog
+
+from . import GameSprite, GardenProgressMeter
+
 
 class GardenDropGame(DirectObject.DirectObject):
 

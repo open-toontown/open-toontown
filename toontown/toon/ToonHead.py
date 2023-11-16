@@ -1,12 +1,16 @@
-from direct.actor import Actor
-from direct.task import Task
-from toontown.toonbase import ToontownGlobals
 import random
+
 from panda3d.core import *
-from direct.interval.IntervalGlobal import *
+
+from direct.actor import Actor
+from direct.directnotify import DirectNotifyGlobal
 from direct.fsm.ClassicFSM import ClassicFSM
 from direct.fsm.State import State
-from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
+from direct.task import Task
+
+from toontown.toonbase import ToontownGlobals
+
 if not ConfigVariableBool('want-new-anims', 1).value:
     HeadDict = {'dls': '/models/char/dogMM_Shorts-head-',
      'dss': '/models/char/dogMM_Skirt-head-',

@@ -1,8 +1,11 @@
-from otp.ai.AIBase import *
-from toontown.toonbase.ToontownGlobals import *
-from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObjectAI
+from direct.distributed.ClockDelta import *
 from direct.task import Task
+
+from otp.ai.AIBase import *
+
+from toontown.toonbase.ToontownGlobals import *
+
 HEIGHT_DELTA = 0.5
 MAX_HEIGHT = 10.0
 MIN_HEIGHT = 2.0

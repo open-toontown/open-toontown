@@ -1,28 +1,24 @@
-from direct.interval.IntervalGlobal import LerpPosInterval, LerpHprInterval, LerpPosHprInterval
-from direct.interval.IntervalGlobal import SoundInterval, LerpScaleInterval, LerpFunctionInterval
-from direct.interval.IntervalGlobal import Wait, Func
-from direct.interval.MetaInterval import Sequence, Parallel
-from direct.gui.DirectGui import DirectWaitBar, DGG
-from direct.showbase import PythonUtil
-from direct.fsm import ClassicFSM, State
-from direct.showbase import RandomNumGen
-from direct.task.Task import Task
-from direct.distributed.ClockDelta import globalClockDelta
+import functools
+
 from panda3d.core import Point3, Vec3
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownTimer
+
+from direct.distributed.ClockDelta import globalClockDelta
+from direct.fsm import ClassicFSM, State
+from direct.gui.DirectGui import DGG, DirectWaitBar
+from direct.interval.IntervalGlobal import (Func, LerpFunctionInterval, LerpHprInterval, LerpPosHprInterval,
+                                            LerpPosInterval, LerpScaleInterval, SoundInterval, Wait)
+from direct.interval.MetaInterval import Parallel, Sequence
+from direct.showbase import PythonUtil, RandomNumGen
+from direct.task.Task import Task
+
+from toontown.toonbase import ToontownTimer, TTLocalizer
+
+from . import Maze, MazeData, MazeGameGlobals, MazeTreasure, MinigameAvatarScorePanel, MinigameGlobals, Trajectory
 from .DistributedMinigame import DistributedMinigame
 from .MazeSuit import MazeSuit
-from .OrthoWalk import OrthoWalk
 from .OrthoDrive import OrthoDrive
-from . import MazeGameGlobals
-from . import MazeData
-from . import MazeTreasure
-from . import Trajectory
-from . import Maze
-from . import MinigameAvatarScorePanel
-from . import MinigameGlobals
-import functools
+from .OrthoWalk import OrthoWalk
+
 
 class DistributedMazeGame(DistributedMinigame):
     notify = directNotify.newCategory('DistributedMazeGame')

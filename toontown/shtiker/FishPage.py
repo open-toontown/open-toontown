@@ -1,12 +1,13 @@
-from toontown.toonbase import ToontownGlobals
-from . import ShtikerPage
+from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from panda3d.core import *
-from toontown.toonbase import TTLocalizer
-from toontown.fishing import FishPicker
-from toontown.fishing import FishBrowser
-from toontown.fishing import FishGlobals
+
+from toontown.fishing import FishBrowser, FishGlobals, FishPicker
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import ShtikerPage
+
 FishPage_Tank = 0
 FishPage_Collection = 1
 FishPage_Trophy = 2

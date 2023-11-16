@@ -1,13 +1,15 @@
-from direct.showbase.PythonUtil import contains, lerp, clampScalar
-from direct.distributed import DistributedObjectAI
-from direct.directnotify import DirectNotifyGlobal
-from toontown.pets import PetTraits, PetTricks
-from toontown.pets import PetMood
-from toontown.toonbase import ToontownGlobals
-import random
-import time
-import string
 import copy
+import random
+import string
+import time
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObjectAI
+from direct.showbase.PythonUtil import clampScalar, contains, lerp
+
+from toontown.pets import PetMood, PetTraits, PetTricks
+from toontown.toonbase import ToontownGlobals
+
 BATTLE_TRICK_HP_MULTIPLIER = 10.0
 
 class DistributedPetProxyAI(DistributedObjectAI.DistributedObjectAI):

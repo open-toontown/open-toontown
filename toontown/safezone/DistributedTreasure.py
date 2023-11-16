@@ -1,9 +1,12 @@
 from panda3d.core import *
-from panda3d.direct import ShowInterval, HideInterval
-from direct.interval.IntervalGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-from direct.distributed import DistributedObject
+from panda3d.direct import HideInterval, ShowInterval
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+from direct.interval.IntervalGlobal import *
+
+from toontown.toonbase.ToontownGlobals import *
+
 
 class DistributedTreasure(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTreasure')

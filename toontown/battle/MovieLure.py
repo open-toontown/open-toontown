@@ -1,16 +1,15 @@
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-from .BattleBase import *
-from .BattleProps import *
+
 from toontown.suit.SuitBase import *
 from toontown.toon.ToonDNA import *
-from .BattleSounds import *
-from . import MovieCamera
-from direct.directnotify import DirectNotifyGlobal
-from . import MovieUtil
 from toontown.toonbase import ToontownBattleGlobals
-from . import BattleParticles
-from . import BattleProps
-from . import MovieNPCSOS
+
+from . import BattleParticles, BattleProps, MovieCamera, MovieNPCSOS, MovieUtil
+from .BattleBase import *
+from .BattleProps import *
+from .BattleSounds import *
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieLures')
 
 def safeWrtReparentTo(nodePath, parent):

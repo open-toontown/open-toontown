@@ -1,7 +1,10 @@
-from .ElevatorConstants import *
-from . import DistributedBossElevatorAI
 from direct.directnotify import DirectNotifyGlobal
+
 from toontown.toonbase import ToontownGlobals
+
+from . import DistributedBossElevatorAI
+from .ElevatorConstants import *
+
 
 class DistributedVPElevatorAI(DistributedBossElevatorAI.DistributedBossElevatorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedVPElevatorAI')

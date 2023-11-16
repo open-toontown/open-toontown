@@ -1,13 +1,16 @@
 from panda3d.core import *
-from .DistributedNPCToonBase import *
+
 from direct.gui.DirectGui import *
-from panda3d.core import *
-from . import NPCToons
 from direct.task.Task import Task
-from toontown.toonbase import TTLocalizer
-from toontown.pets import PetshopGUI
+
 from toontown.hood import ZoneUtil
+from toontown.pets import PetshopGUI
+from toontown.toonbase import TTLocalizer
 from toontown.toontowngui import TeaserPanel
+
+from . import NPCToons
+from .DistributedNPCToonBase import *
+
 
 class DistributedNPCPetclerk(DistributedNPCToonBase):
 

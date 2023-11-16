@@ -1,9 +1,13 @@
-from panda3d.core import *
-from direct.fsm import StateData
-from . import Suit
-from . import SuitDNA
-from toontown.toonbase import ToontownGlobals
 import random
+
+from panda3d.core import *
+
+from direct.fsm import StateData
+
+from toontown.toonbase import ToontownGlobals
+
+from . import Suit, SuitDNA
+
 
 class RoguesGallery(StateData.StateData):
 

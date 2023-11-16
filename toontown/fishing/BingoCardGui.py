@@ -1,17 +1,16 @@
+import random
+
+from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from panda3d.core import *
-from direct.task import Task
-import random
-from toontown.fishing import BingoCardCell
-from toontown.fishing import BingoGlobals
-from toontown.fishing import FishBase
-from toontown.fishing import FishGlobals
 from direct.showbase import RandomNumGen
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownTimer
-from toontown.toonbase import TTLocalizer
+from direct.task import Task
+
+from toontown.fishing import BingoCardCell, BingoGlobals, FishBase, FishGlobals
+from toontown.toonbase import ToontownGlobals, ToontownTimer, TTLocalizer
 from toontown.toontowngui import TTDialog
+
 BG = BingoGlobals
 
 class BingoCardGui(DirectFrame):

@@ -1,9 +1,11 @@
 from panda3d.core import *
 from panda3d.toontown import *
-from direct.showbase.PythonUtil import reduceAngle, randFloat, normalDistrib
+
 from direct.showbase import DirectObject
-from toontown.pets import PetChase
-from toontown.pets import PetConstants
+from direct.showbase.PythonUtil import normalDistrib, randFloat, reduceAngle
+
+from toontown.pets import PetChase, PetConstants
+
 
 class PetWander(CPetChase, DirectObject.DirectObject):
 

@@ -1,5 +1,6 @@
 from direct.showbase import RandomNumGen
 
+
 def getMazeName(gameDoId, numPlayers, mazeNames):
     try:
         return forcedMaze

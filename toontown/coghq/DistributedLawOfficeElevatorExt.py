@@ -1,15 +1,14 @@
 from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+from direct.gui import DirectGui
 from direct.interval.IntervalGlobal import *
+
+from toontown.building import DistributedElevator, DistributedElevatorExt
 from toontown.building.ElevatorConstants import *
 from toontown.building.ElevatorUtils import *
-from toontown.building import DistributedElevatorExt
-from toontown.building import DistributedElevator
-from toontown.toonbase import ToontownGlobals
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from direct.gui import DirectGui
 from toontown.hood import ZoneUtil
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class DistributedLawOfficeElevatorExt(DistributedElevatorExt.DistributedElevatorExt):
 

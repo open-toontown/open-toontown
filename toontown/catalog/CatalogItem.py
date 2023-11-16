@@ -1,11 +1,14 @@
-from direct.directnotify import DirectNotifyGlobal
+import sys
+
 from panda3d.core import *
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from direct.interval.IntervalGlobal import *
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
-import sys
+from direct.interval.IntervalGlobal import *
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 CatalogReverseType = None
 CatalogItemVersion = 8
 CatalogBackorderMarkup = 1.2

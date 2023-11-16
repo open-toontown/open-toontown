@@ -1,8 +1,12 @@
-from otp.ai.AIBaseGlobal import *
 from panda3d.core import *
-from .DistributedNPCToonBaseAI import *
-from . import NPCToons
+
 from direct.task.Task import Task
+
+from otp.ai.AIBaseGlobal import *
+
+from . import NPCToons
+from .DistributedNPCToonBaseAI import *
+
 
 class DistributedNPCBlockerAI(DistributedNPCToonBaseAI):
 

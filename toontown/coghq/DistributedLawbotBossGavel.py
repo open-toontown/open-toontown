@@ -1,15 +1,19 @@
-from direct.gui.DirectGui import *
 from panda3d.core import *
-from direct.interval.IntervalGlobal import *
+
+from direct.actor import Actor
+from direct.distributed import DistributedObject
 from direct.distributed.ClockDelta import *
 from direct.fsm import FSM
-from direct.distributed import DistributedObject
-from direct.showutil import Rope
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
 from direct.showbase import PythonUtil
+from direct.showutil import Rope
 from direct.task import Task
-from toontown.toonbase import ToontownGlobals
+
 from otp.otpbase import OTPGlobals
-from direct.actor import Actor
+
+from toontown.toonbase import ToontownGlobals
+
 
 class DistributedLawbotBossGavel(DistributedObject.DistributedObject, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotBossGavel')

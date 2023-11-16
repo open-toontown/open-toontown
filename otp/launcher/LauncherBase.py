@@ -1,12 +1,15 @@
-import sys
-import os
-import time
 import builtins
+import os
+import sys
+import time
+
 from panda3d.core import *
+
+from direct.directnotify.DirectNotifyGlobal import *
 from direct.showbase import DConfig
 from direct.showbase.DirectObject import DirectObject
 from direct.task.MiniTask import MiniTaskManager
-from direct.directnotify.DirectNotifyGlobal import *
+
 
 class LogAndOutput:
 

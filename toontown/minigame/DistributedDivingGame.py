@@ -1,30 +1,24 @@
-from direct.showbase.ShowBaseGlobal import *
-from toontown.toonbase.ToonBaseGlobal import *
-from direct.interval.IntervalGlobal import *
-from toontown.toonbase import ToontownTimer
-from .DistributedMinigame import *
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from direct.task import Task
-from direct.actor import Actor
-from toontown.toon import LaffMeter
-from direct.distributed import DistributedSmoothNode
-from . import ArrowKeys
-from . import Ring
-from . import RingTrack
-from . import DivingGameGlobals
-from . import RingGroup
-from . import RingTrackGroups
-import random
-from . import DivingGameToonSD
-from . import DivingFishSpawn
-from . import DivingTreasure
 import math
-from . import TreasureScorePanel
+import random
+
+from direct.actor import Actor
+from direct.distributed import DistributedSmoothNode
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+from direct.interval.IntervalGlobal import *
+from direct.showbase.ShowBaseGlobal import *
+from direct.task import Task
+
 from otp.distributed.TelemetryLimiter import TelemetryLimiter, TLGatherAllAvs
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+
+from toontown.toon import LaffMeter
+from toontown.toonbase import ToontownGlobals, ToontownTimer, TTLocalizer
+from toontown.toonbase.ToonBaseGlobal import *
+
+from . import (ArrowKeys, DivingFishSpawn, DivingGameGlobals, DivingGameToonSD, DivingTreasure, Ring, RingGroup,
+               RingTrack, RingTrackGroups, TreasureScorePanel)
+from .DistributedMinigame import *
+
 
 class DivingGameRotationLimiter(TelemetryLimiter):
 

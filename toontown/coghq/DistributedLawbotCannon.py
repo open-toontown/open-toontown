@@ -1,20 +1,20 @@
-from direct.interval.IntervalGlobal import *
-from direct.distributed.ClockDelta import *
-from direct.task.Task import Task
-from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import CollisionSphere, CollisionNode
-from toontown.toonbase import ToontownGlobals
-from toontown.estate import DistributedCannon
-from toontown.estate import CannonGlobals
-from direct.gui.DirectGui import *
 from panda3d.core import *
+from panda3d.core import CollisionNode, CollisionSphere
 from panda3d.otp import *
-from toontown.toon import NPCToons
-from toontown.toon import ToonHead
-from toontown.toonbase import TTLocalizer
-from toontown.minigame import Trajectory
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+from direct.distributed.ClockDelta import *
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
+from direct.task.Task import Task
+
 from toontown.effects import DustCloud
+from toontown.estate import CannonGlobals, DistributedCannon
+from toontown.minigame import Trajectory
+from toontown.toon import NPCToons, ToonHead
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 GROUND_PLANE_MIN = -15
 CANNON_ROTATION_MIN = -55
 CANNON_ROTATION_MAX = 50

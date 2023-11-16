@@ -1,8 +1,11 @@
-from panda3d.core import *
-from direct.directnotify.DirectNotifyGlobal import *
 import random
+
+from panda3d.core import *
+
+from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
+
 notify = directNotify.newCategory('AvatarDNA')
 
 class AvatarDNA:

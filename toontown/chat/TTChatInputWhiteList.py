@@ -1,13 +1,17 @@
-from otp.chat.ChatInputWhiteListFrame import ChatInputWhiteListFrame
-from toontown.chat.TTWhiteList import TTWhiteList
-from direct.showbase import DirectObject
-from otp.otpbase import OTPGlobals
 import sys
-from direct.gui.DirectGui import *
+
 from panda3d.core import *
-from otp.otpbase import OTPLocalizer
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.gui.DirectGui import *
+from direct.showbase import DirectObject
+
+from otp.chat.ChatInputWhiteListFrame import ChatInputWhiteListFrame
+from otp.otpbase import OTPGlobals, OTPLocalizer
+
+from toontown.chat.TTWhiteList import TTWhiteList
 from toontown.toonbase import ToontownGlobals
+
 
 class TTChatInputWhiteList(ChatInputWhiteListFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('TTChatInputWhiteList')

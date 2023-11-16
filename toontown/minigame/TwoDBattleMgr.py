@@ -1,16 +1,10 @@
+from math import sin
+
 from panda3d.core import CollisionHandlerEvent, CollisionNode, CollisionSphere, Point3, Point4, VBase3, Vec3
 
 from direct.directnotify.DirectNotifyGlobal import directNotify
-from direct.interval.IntervalGlobal import (
-    ActorInterval,
-    Func,
-    LerpPosInterval,
-    LerpScaleInterval,
-    Parallel,
-    Sequence,
-    Wait
-)
-
+from direct.interval.IntervalGlobal import (ActorInterval, Func, LerpPosInterval, LerpScaleInterval, Parallel, Sequence,
+                                            Wait)
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.MessengerGlobal import messenger
 
@@ -18,8 +12,6 @@ from toontown.battle import MovieUtil
 from toontown.battle.BattleProps import globalPropPool
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase.ToonBaseGlobal import base
-
-from math import sin
 
 
 class TwoDBattleMgr(DirectObject):

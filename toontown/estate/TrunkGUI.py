@@ -1,16 +1,19 @@
-from direct.showbase.PythonUtil import Functor
-from direct.gui.DirectGui import *
 from panda3d.core import *
+
 from direct.distributed import ClockDelta
 from direct.fsm import StateData
+from direct.gui.DirectGui import *
+from direct.showbase.PythonUtil import Functor
 from direct.task.Task import Task
-from . import ClosetGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.toontowngui import TTDialog
-from toontown.toon import ToonDNA
-from toontown.makeatoon.MakeAToonGlobals import *
+
 from toontown.makeatoon import ShuffleButton
+from toontown.makeatoon.MakeAToonGlobals import *
+from toontown.toon import ToonDNA
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toontowngui import TTDialog
+
+from . import ClosetGlobals
+
 
 class TrunkGUI(StateData.StateData):
     notify = directNotify.newCategory('TrunkGUI')

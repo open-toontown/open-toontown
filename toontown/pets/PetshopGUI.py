@@ -1,24 +1,21 @@
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from direct.directnotify import DirectNotifyGlobal
-from direct.showbase.DirectObject import DirectObject
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownTimer
-from direct.task import Task
-from otp.namepanel import NameTumbler
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
-from toontown.fishing import FishSellGUI
-from toontown.pets import Pet, PetConstants
-from toontown.pets import PetDNA
-from toontown.pets import PetUtil
-from toontown.pets import PetDetail
-from toontown.pets import PetTraits
-from toontown.pets import PetNameGenerator
-from toontown.hood import ZoneUtil
-import string
 import random
+import string
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.gui.DirectGui import *
+from direct.showbase.DirectObject import DirectObject
+from direct.task import Task
+
+from otp.namepanel import NameTumbler
+from otp.otpbase import OTPGlobals, OTPLocalizer
+
+from toontown.fishing import FishSellGUI
+from toontown.hood import ZoneUtil
+from toontown.pets import Pet, PetConstants, PetDetail, PetDNA, PetNameGenerator, PetTraits, PetUtil
+from toontown.toonbase import ToontownGlobals, ToontownTimer, TTLocalizer
+
 Dialog_MainMenu = 0
 Dialog_AdoptPet = 1
 Dialog_ChoosePet = 2

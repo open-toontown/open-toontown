@@ -1,8 +1,10 @@
 from panda3d.core import NodePath
+
 from direct.directnotify import DirectNotifyGlobal
+
+from toontown.estate import DistributedStatuary, GardenGlobals
 from toontown.toonbase import ToontownGlobals
-from toontown.estate import DistributedStatuary
-from toontown.estate import GardenGlobals
+
 
 class DistributedChangingStatuary(DistributedStatuary.DistributedStatuary):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedChangingStatuary')

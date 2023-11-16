@@ -1,5 +1,6 @@
-from toontown.parties.DistributedPartyJukeboxActivityBase import DistributedPartyJukeboxActivityBase
 from toontown.parties import PartyGlobals
+from toontown.parties.DistributedPartyJukeboxActivityBase import DistributedPartyJukeboxActivityBase
+
 
 class DistributedPartyJukeboxActivity(DistributedPartyJukeboxActivityBase):
     notify = directNotify.newCategory('DistributedPartyJukeboxActivity')

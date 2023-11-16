@@ -1,6 +1,9 @@
-from panda3d.core import *
-from direct.motiontrail.MotionTrail import *
 import random
+
+from panda3d.core import *
+
+from direct.motiontrail.MotionTrail import *
+
 
 class PolyTrail(NodePath):
 

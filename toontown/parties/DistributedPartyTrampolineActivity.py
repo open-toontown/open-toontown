@@ -1,36 +1,28 @@
 import math
-import time
 import random
-from direct.task import Task
-from direct.directnotify import DirectNotifyGlobal
+import time
+
+from panda3d.core import (BitMask32, CardMaker, CollisionNode, CollisionSphere, CollisionTube, NodePath, Point3,
+                          TextNode, VBase3, VBase4, Vec3)
+
 from direct.actor.Actor import Actor
+from direct.directnotify import DirectNotifyGlobal
 from direct.fsm.FSM import FSM
 from direct.gui.DirectGui import DirectButton
 from direct.gui.OnscreenText import OnscreenText
-from direct.interval.FunctionInterval import Func
-from direct.interval.FunctionInterval import Wait
+from direct.interval.FunctionInterval import Func, Wait
 from direct.interval.LerpInterval import LerpFunc
-from direct.interval.MetaInterval import Parallel
-from direct.interval.MetaInterval import Sequence
-from panda3d.core import CardMaker
-from panda3d.core import NodePath
-from panda3d.core import TextNode
-from panda3d.core import Point3
-from panda3d.core import Vec3
-from panda3d.core import VBase3
-from panda3d.core import VBase4
-from panda3d.core import CollisionSphere
-from panda3d.core import CollisionTube
-from panda3d.core import CollisionNode
-from panda3d.core import BitMask32
+from direct.interval.MetaInterval import Parallel, Sequence
+from direct.task import Task
+
 from otp.otpbase import OTPGlobals
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
-from toontown.parties import PartyGlobals
-from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
+
+from toontown.parties import PartyGlobals, PartyUtils
 from toontown.parties.activityFSMs import TrampolineActivityFSM
-from toontown.parties import PartyUtils
+from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toontowngui import TTDialog
+
 
 class DistributedPartyTrampolineActivity(DistributedPartyActivity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyTrampolineActivity')

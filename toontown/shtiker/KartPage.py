@@ -1,15 +1,20 @@
+from enum import IntEnum
+
+from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from direct.task import Task
+
 from toontown.fishing.FishPhoto import DirectRegion
-from toontown.racing.KartDNA import *
-from toontown.racing.Kart import Kart
 from toontown.racing import RaceGlobals
+from toontown.racing.Kart import Kart
+from toontown.racing.KartDNA import *
 from toontown.shtiker.ShtikerPage import ShtikerPage
 from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 from .FishPage import FishingTrophy
-from enum import IntEnum
+
 if (__debug__):
     import pdb
 PageMode = IntEnum('PageMode', ('Customize', 'Records', 'Trophy'), start=0)

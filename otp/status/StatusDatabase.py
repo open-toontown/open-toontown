@@ -1,8 +1,11 @@
 import datetime
 import time
-from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
+
 from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
+
 from otp.otpbase import OTPLocalizer
+
 
 class StatusDatabase(DistributedObjectGlobal):
     notify = directNotify.newCategory('StatusDatabase')

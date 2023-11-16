@@ -1,23 +1,9 @@
-from . import CatalogFurnitureItem
-from . import CatalogChatItem
-from . import CatalogClothingItem
-from . import CatalogEmoteItem
-from . import CatalogWallpaperItem
-from . import CatalogFlooringItem
-from . import CatalogWainscotingItem
-from . import CatalogMouldingItem
-from . import CatalogWindowItem
-from . import CatalogPoleItem
-from . import CatalogPetTrickItem
-from . import CatalogBeanItem
-from . import CatalogGardenItem
-from . import CatalogInvalidItem
-from . import CatalogRentalItem
-from . import CatalogGardenStarterItem
-from . import CatalogNametagItem
-from . import CatalogToonStatueItem
-from . import CatalogAnimatedFurnitureItem
-from . import CatalogAccessoryItem
+from . import (CatalogAccessoryItem, CatalogAnimatedFurnitureItem, CatalogBeanItem, CatalogChatItem,
+               CatalogClothingItem, CatalogEmoteItem, CatalogFlooringItem, CatalogFurnitureItem, CatalogGardenItem,
+               CatalogGardenStarterItem, CatalogInvalidItem, CatalogMouldingItem, CatalogNametagItem,
+               CatalogPetTrickItem, CatalogPoleItem, CatalogRentalItem, CatalogToonStatueItem, CatalogWainscotingItem,
+               CatalogWallpaperItem, CatalogWindowItem)
+
 INVALID_ITEM = 0
 FURNITURE_ITEM = 1
 CHAT_ITEM = 2

@@ -1,10 +1,13 @@
-from panda3d.core import *
-from direct.showbase import DirectObject
 import random
-from direct.task import Task
-from direct.gui.DirectGui import *
 import string
+
+from panda3d.core import *
+
 from direct.gui import OnscreenText
+from direct.gui.DirectGui import *
+from direct.showbase import DirectObject
+from direct.task import Task
+
 
 class NameTumbler(DirectFrame):
 

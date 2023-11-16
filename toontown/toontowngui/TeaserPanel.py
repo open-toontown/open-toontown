@@ -1,13 +1,17 @@
 from panda3d.core import *
-from direct.gui.DirectGui import *
-from direct.gui import DirectGuiGlobals
-from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
-from . import TTDialog
-from toontown.toonbase import TTLocalizer
+from direct.gui import DirectGuiGlobals
+from direct.gui.DirectGui import *
 from direct.showbase import PythonUtil
 from direct.showbase.DirectObject import DirectObject
+
 from otp.login import LeaveToPayDialog
+
+from toontown.toonbase import TTLocalizer
+
+from . import TTDialog
+
 Pages = {'otherHoods': (TTLocalizer.TeaserOtherHoods,),
  'typeAName': (TTLocalizer.TeaserTypeAName,),
  'sixToons': (TTLocalizer.TeaserSixToons,),

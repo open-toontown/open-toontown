@@ -1,5 +1,7 @@
-from toontown.battle import DistributedBattle
 from direct.directnotify import DirectNotifyGlobal
+
+from toontown.battle import DistributedBattle
+
 
 class DistributedBattleTutorial(DistributedBattle.DistributedBattle):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleTutorial')

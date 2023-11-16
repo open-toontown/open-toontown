@@ -1,10 +1,12 @@
-from . import AnimatedProp
 from direct.actor import Actor
-from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
+
+from toontown.hood import HoodUtil, ZoneUtil
 from toontown.toonbase import ToontownGlobals
-from toontown.hood import ZoneUtil
-from toontown.hood import HoodUtil
+
+from . import AnimatedProp
+
 
 class GenericAnimatedProp(AnimatedProp.AnimatedProp):
     notify = DirectNotifyGlobal.directNotify.newCategory('GenericAnimatedProp')

@@ -1,10 +1,12 @@
-from direct.gui.DirectGui import *
-from direct.fsm import FSM
-from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
 from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import FSM
+from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class ChineseTutorial(DirectFrame, FSM.FSM):
 

@@ -1,5 +1,6 @@
 from otp.level import LevelMgrAI
 
+
 class FactoryLevelMgrAI(LevelMgrAI.LevelMgrAI):
 
     def __init__(self, level, entId):

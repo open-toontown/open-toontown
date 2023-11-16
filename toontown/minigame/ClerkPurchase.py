@@ -1,5 +1,7 @@
-from .PurchaseBase import *
 from toontown.toonbase import ToontownTimer
+
+from .PurchaseBase import *
+
 COUNT_UP_RATE = 0.15
 DELAY_BEFORE_COUNT_UP = 1.25
 DELAY_AFTER_COUNT_UP = 1.75

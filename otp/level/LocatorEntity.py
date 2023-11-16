@@ -1,6 +1,9 @@
-from . import Entity, BasicEntities
 from panda3d.core import NodePath
+
 from direct.directnotify import DirectNotifyGlobal
+
+from . import BasicEntities, Entity
+
 
 class LocatorEntity(Entity.Entity, NodePath):
     notify = DirectNotifyGlobal.directNotify.newCategory('LocatorEntity')

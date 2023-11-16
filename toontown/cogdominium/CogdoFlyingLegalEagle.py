@@ -1,19 +1,25 @@
 import math
-from direct.showbase.DirectObject import DirectObject
+
+from panda3d.core import CollisionNode, CollisionPolygon, CollisionSphere, CollisionTube, Point3, Vec3
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm.FSM import FSM
-from direct.task.Task import Task
-from direct.interval.IntervalGlobal import Sequence, Parallel, LerpScaleInterval, LerpFunctionInterval, Func, Wait, LerpFunc, SoundInterval, ParallelEndTogether, LerpPosInterval, ActorInterval, LerpPosHprInterval, LerpHprInterval
 from direct.directutil import Mopath
+from direct.fsm.FSM import FSM
+from direct.interval.IntervalGlobal import (ActorInterval, Func, LerpFunc, LerpFunctionInterval, LerpHprInterval,
+                                            LerpPosHprInterval, LerpPosInterval, LerpScaleInterval, Parallel,
+                                            ParallelEndTogether, Sequence, SoundInterval, Wait)
+from direct.showbase.DirectObject import DirectObject
 from direct.showbase.PythonUtil import bound as clamp
-from panda3d.core import CollisionSphere, CollisionNode, CollisionTube, CollisionPolygon, Vec3, Point3
-from toontown.suit import Suit
-from toontown.suit import SuitDNA
-from toontown.toonbase import ToontownGlobals
+from direct.task.Task import Task
+
 from toontown.battle import BattleProps
-from .CogdoFlyingUtil import swapAvatarShadowPlacer
-from . import CogdoUtil
+from toontown.suit import Suit, SuitDNA
+from toontown.toonbase import ToontownGlobals
+
 from . import CogdoFlyingGameGlobals as Globals
+from . import CogdoUtil
+from .CogdoFlyingUtil import swapAvatarShadowPlacer
+
 
 class CogdoFlyingLegalEagle(FSM, DirectObject):
     CollSphereName = 'CogdoFlyingLegalEagleSphere'

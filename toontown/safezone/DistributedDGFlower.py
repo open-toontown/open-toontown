@@ -1,8 +1,11 @@
 from panda3d.core import *
-from direct.distributed.ClockDelta import *
+
 from direct.distributed import DistributedObject
-from toontown.toonbase import ToontownGlobals
+from direct.distributed.ClockDelta import *
 from direct.task import Task
+
+from toontown.toonbase import ToontownGlobals
+
 SPIN_RATE = 1.25
 
 class DistributedDGFlower(DistributedObject.DistributedObject):

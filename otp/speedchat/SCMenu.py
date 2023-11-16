@@ -1,10 +1,13 @@
 from panda3d.core import *
+
 from direct.gui.DirectGui import *
-from direct.task import Task
-from .SCConstants import *
 from direct.interval.IntervalGlobal import *
-from .SCObject import SCObject
 from direct.showbase.PythonUtil import makeTuple
+from direct.task import Task
+
+from .SCConstants import *
+from .SCObject import SCObject
+
 
 class SCMenu(SCObject, NodePath):
     SpeedChatRolloverTolerance = ConfigVariableDouble('speedchat-rollover-tolerance', 0.08).value
@@ -92,8 +95,9 @@ class SCMenu(SCObject, NodePath):
         self.appendFromStructure(structure)
 
     def appendFromStructure(self, structure):
-        from .SpeedChatTypes import SCMenuHolder, SCStaticTextTerminal, SCGMTextTerminal
         from otp.otpbase import OTPLocalizer
+
+        from .SpeedChatTypes import SCGMTextTerminal, SCMenuHolder, SCStaticTextTerminal
 
         def addChildren(menu, childList):
             for child in childList:

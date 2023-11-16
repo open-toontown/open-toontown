@@ -1,14 +1,17 @@
 import math
-from panda3d.core import CollisionSphere, CollisionNode, Point3, CollisionTube, Vec3, rad2Deg
-from direct.showbase.DirectObject import DirectObject
+
+from panda3d.core import CollisionNode, CollisionSphere, CollisionTube, Point3, Vec3, rad2Deg
+
 from direct.distributed.ClockDelta import globalClockDelta
-from direct.interval.IntervalGlobal import Parallel, SoundInterval, Sequence, Func, LerpScaleInterval
-from toontown.suit import Suit
-from toontown.suit import SuitDNA
-from toontown.toonbase import ToontownGlobals
-from toontown.minigame import CogThiefGameGlobals
+from direct.interval.IntervalGlobal import Func, LerpScaleInterval, Parallel, Sequence, SoundInterval
+from direct.showbase.DirectObject import DirectObject
+
 from toontown.battle.BattleProps import globalPropPool
 from toontown.battle.BattleSounds import globalBattleSoundCache
+from toontown.minigame import CogThiefGameGlobals
+from toontown.suit import Suit, SuitDNA
+from toontown.toonbase import ToontownGlobals
+
 CTGG = CogThiefGameGlobals
 
 class CogThief(DirectObject):

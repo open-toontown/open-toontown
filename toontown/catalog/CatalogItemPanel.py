@@ -1,19 +1,21 @@
-from direct.gui.DirectGui import *
 from panda3d.core import *
-from toontown.toonbase import ToontownGlobals
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.gui.DirectGui import *
+
+from otp.otpbase import OTPGlobals
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toontowngui import TTDialog
-from toontown.toonbase import TTLocalizer
-from . import CatalogItemTypes
-from . import CatalogItem
-from .CatalogWallpaperItem import getAllWallpapers
+from toontown.toontowngui.TeaserPanel import TeaserPanel
+
+from . import CatalogItem, CatalogItemTypes
 from .CatalogFlooringItem import getAllFloorings
+from .CatalogFurnitureItem import FLTrunk, getAllFurnitures
 from .CatalogMouldingItem import getAllMouldings
 from .CatalogWainscotingItem import getAllWainscotings
-from .CatalogFurnitureItem import getAllFurnitures
-from .CatalogFurnitureItem import FLTrunk
-from toontown.toontowngui.TeaserPanel import TeaserPanel
-from otp.otpbase import OTPGlobals
-from direct.directnotify import DirectNotifyGlobal
+from .CatalogWallpaperItem import getAllWallpapers
+
 CATALOG_PANEL_WORDWRAP = 10
 CATALOG_PANEL_CHAT_WORDWRAP = 9
 CATALOG_PANEL_ACCESSORY_WORDWRAP = 11

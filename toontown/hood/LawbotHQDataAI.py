@@ -1,16 +1,13 @@
 from direct.directnotify import DirectNotifyGlobal
-from . import HoodDataAI
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import DistributedLawOfficeElevatorExtAI
-from toontown.coghq import DistributedCogHQDoorAI
-from toontown.building import DistributedDoorAI
-from toontown.building import DoorTypes
-from toontown.coghq import LobbyManagerAI
-from toontown.building import DistributedBossElevatorAI
+
+from toontown.building import (DistributedBoardingPartyAI, DistributedBossElevatorAI, DistributedCJElevatorAI,
+                               DistributedDoorAI, DoorTypes, FADoorCodes)
+from toontown.coghq import DistributedCogHQDoorAI, DistributedLawOfficeElevatorExtAI, LobbyManagerAI
 from toontown.suit import DistributedLawbotBossAI
-from toontown.building import DistributedCJElevatorAI
-from toontown.building import FADoorCodes
-from toontown.building import DistributedBoardingPartyAI
+from toontown.toonbase import ToontownGlobals
+
+from . import HoodDataAI
+
 
 class LawbotHQDataAI(HoodDataAI.HoodDataAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('LawbotHQDataAI')

@@ -1,17 +1,18 @@
+import functools
+import random
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
+
+from toontown.suit.SuitDNA import *
+from toontown.toon.ToonDNA import *
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
+
+from . import BattleParticles, MovieCamera, MovieUtil
 from .BattleBase import *
 from .BattleProps import *
 from .BattleSounds import *
-from toontown.toon.ToonDNA import *
-from toontown.suit.SuitDNA import *
-from . import MovieUtil
-from . import MovieCamera
-from direct.directnotify import DirectNotifyGlobal
-from . import BattleParticles
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
-import random
-import functools
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieSquirt')
 hitSoundFiles = ('AA_squirt_flowersquirt.ogg', 'AA_squirt_glasswater.ogg', 'AA_squirt_neonwatergun.ogg', 'AA_squirt_seltzer.ogg', 'firehose_spray.ogg', 'AA_throw_stormcloud.ogg', 'AA_squirt_Geyser.ogg')
 missSoundFiles = ('AA_squirt_flowersquirt_miss.ogg', 'AA_squirt_glasswater_miss.ogg', 'AA_squirt_neonwatergun_miss.ogg', 'AA_squirt_seltzer_miss.ogg', 'firehose_spray.ogg', 'AA_throw_stormcloud_miss.ogg', 'AA_squirt_Geyser.ogg')
@@ -27,7 +28,7 @@ WaterSprayColor = Point4(0.75, 0.75, 1.0, 0.8)
 def doSquirts(squirts):
     if len(squirts) == 0:
         return (None, None)
-    
+
     suitSquirtsDict = {}
     doneUber = 0
     skip = 0
@@ -51,7 +52,7 @@ def doSquirts(squirts):
                 suitSquirtsDict[suitId] = [squirt]
 
     suitSquirts = list(suitSquirtsDict.values())
-    
+
     def compFunc(a, b):
         if len(a) > len(b):
             return 1

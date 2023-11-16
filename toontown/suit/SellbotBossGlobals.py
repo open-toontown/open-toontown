@@ -1,6 +1,7 @@
 from panda3d.core import *
-from toontown.coghq import DistributedHealBarrelAI
-from toontown.coghq import DistributedGagBarrelAI
+
+from toontown.coghq import DistributedGagBarrelAI, DistributedHealBarrelAI
+
 PieToonup = 1
 PieToonupNerfed = 2
 PieDamageMult = 1.0

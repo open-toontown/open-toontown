@@ -1,15 +1,18 @@
-from panda3d.core import *
-from . import ShtikerPage
-from toontown.toontowngui import TTDialog
-from direct.gui.DirectGui import *
-from toontown.toonbase import TTLocalizer
-from . import DisplaySettingsDialog
-from direct.task import Task
-from otp.speedchat import SpeedChat
-from otp.speedchat import SCColorScheme
-from otp.speedchat import SCStaticTextTerminal
-from direct.directnotify import DirectNotifyGlobal
 from enum import IntEnum
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.gui.DirectGui import *
+from direct.task import Task
+
+from otp.speedchat import SCColorScheme, SCStaticTextTerminal, SpeedChat
+
+from toontown.toonbase import TTLocalizer
+from toontown.toontowngui import TTDialog
+
+from . import DisplaySettingsDialog, ShtikerPage
+
 speedChatStyles = ((2000,
   (200 / 255.0, 60 / 255.0, 229 / 255.0),
   (200 / 255.0, 135 / 255.0, 255 / 255.0),

@@ -1,24 +1,25 @@
-import sys
-import os
-import tokenize
 import copy
-from direct.interval.IntervalGlobal import *
-from direct.directnotify import DirectNotifyGlobal
+import os
+import sys
+import tokenize
+
 from panda3d.core import *
 from panda3d.otp import *
-from direct.showbase import DirectObject
-from . import BlinkingArrows
-from toontown.toon import ToonHeadFrame
-from toontown.char import CharDNA
-from toontown.suit import SuitDNA
-from toontown.char import Char
-from toontown.suit import Suit
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
-from otp.speedchat import SpeedChatGlobals
-from toontown.ai import DistributedBlackCatMgr
-from direct.showbase import PythonUtil
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
+from direct.showbase import DirectObject, PythonUtil
+
+from otp.speedchat import SpeedChatGlobals
+
+from toontown.ai import DistributedBlackCatMgr
+from toontown.char import Char, CharDNA
+from toontown.suit import Suit, SuitDNA
+from toontown.toon import ToonHeadFrame
+from toontown.toonbase import ToontownBattleGlobals, TTLocalizer
+
+from . import BlinkingArrows
+
 notify = DirectNotifyGlobal.directNotify.newCategory('QuestParser')
 lineDict = {}
 globalVarDict = {}

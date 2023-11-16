@@ -1,33 +1,33 @@
+from math import fmod, sqrt
+
 from panda3d.core import *
+from panda3d.core import CardMaker, LineSegs, OrthographicLens
 from panda3d.toontown import *
-from direct.distributed.ClockDelta import *
-from direct.distributed import DistributedObject
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.gui.DirectLabel import *
-from direct.gui.DirectButton import *
-from direct.showbase import BulletinBoardWatcher
-from direct.interval.IntervalGlobal import *
-from otp.otpbase import OTPGlobals
-from direct.interval.IntervalGlobal import *
-from .RaceGag import RaceGag
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.toon import ToonHeadFrame
-from toontown.racing.KartDNA import InvalidEntry, getAccessory, getDefaultColor
-from panda3d.core import CardMaker, OrthographicLens, LineSegs
-from direct.distributed import DistributedSmoothNode
-from math import fmod
-from math import sqrt
-from .RaceGUI import RaceGUI
-from . import RaceGlobals
-from direct.task.Task import Task
-from toontown.hood import SkyUtil
+from direct.distributed import DistributedObject, DistributedSmoothNode
+from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
+from direct.gui.DirectButton import *
+from direct.gui.DirectLabel import *
+from direct.interval.IntervalGlobal import *
+from direct.showbase import BulletinBoardWatcher
+from direct.task.Task import Task
+
+from otp.otpbase import OTPGlobals
+
 from toontown.battle.BattleProps import *
+from toontown.hood import SkyUtil
 from toontown.minigame import MinigameRulesPanel
-from toontown.racing import Piejectile
-from toontown.racing import EffectManager
-from toontown.racing import PiejectileManager
+from toontown.racing import EffectManager, Piejectile, PiejectileManager
+from toontown.racing.KartDNA import InvalidEntry, getAccessory, getDefaultColor
+from toontown.toon import ToonHeadFrame
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import RaceGlobals
+from .RaceGag import RaceGag
+from .RaceGUI import RaceGUI
+
 
 class DistributedRace(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRace')

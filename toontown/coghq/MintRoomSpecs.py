@@ -1,21 +1,15 @@
 from direct.showbase.PythonUtil import invertDict
+
+from toontown.coghq import (CashbotMintBoilerRoom_Battle00_Cogs, CashbotMintBoilerRoom_Battle01_Cogs,
+                            CashbotMintControlRoom_Battle00_Cogs, CashbotMintDuctRoom_Battle00_Cogs,
+                            CashbotMintDuctRoom_Battle01_Cogs, CashbotMintGearRoom_Battle00_Cogs,
+                            CashbotMintGearRoom_Battle01_Cogs, CashbotMintLavaRoomFoyer_Battle00_Cogs,
+                            CashbotMintLavaRoomFoyer_Battle01_Cogs, CashbotMintLobby_Battle00_Cogs,
+                            CashbotMintLobby_Battle01_Cogs, CashbotMintOilRoom_Battle00_Cogs,
+                            CashbotMintPaintMixerReward_Battle00_Cogs, CashbotMintPipeRoom_Battle00_Cogs,
+                            CashbotMintPipeRoom_Battle01_Cogs, NullCogs)
 from toontown.toonbase import ToontownGlobals
-from toontown.coghq import NullCogs
-from toontown.coghq import CashbotMintBoilerRoom_Battle00_Cogs
-from toontown.coghq import CashbotMintBoilerRoom_Battle01_Cogs
-from toontown.coghq import CashbotMintControlRoom_Battle00_Cogs
-from toontown.coghq import CashbotMintDuctRoom_Battle00_Cogs
-from toontown.coghq import CashbotMintDuctRoom_Battle01_Cogs
-from toontown.coghq import CashbotMintGearRoom_Battle00_Cogs
-from toontown.coghq import CashbotMintGearRoom_Battle01_Cogs
-from toontown.coghq import CashbotMintLavaRoomFoyer_Battle00_Cogs
-from toontown.coghq import CashbotMintLavaRoomFoyer_Battle01_Cogs
-from toontown.coghq import CashbotMintLobby_Battle00_Cogs
-from toontown.coghq import CashbotMintLobby_Battle01_Cogs
-from toontown.coghq import CashbotMintOilRoom_Battle00_Cogs
-from toontown.coghq import CashbotMintPaintMixerReward_Battle00_Cogs
-from toontown.coghq import CashbotMintPipeRoom_Battle00_Cogs
-from toontown.coghq import CashbotMintPipeRoom_Battle01_Cogs
+
 
 def getMintRoomSpecModule(roomId):
     return CashbotMintSpecModules[roomId]

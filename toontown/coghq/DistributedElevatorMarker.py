@@ -1,15 +1,20 @@
-from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from .StomperGlobals import *
-from direct.distributed import ClockDelta
-from direct.showbase.PythonUtil import lerp
 import math
-from otp.level import DistributedEntity
-from direct.directnotify import DirectNotifyGlobal
+
+from panda3d.core import *
 from panda3d.core import NodePath
-from otp.level import BasicEntities
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import ClockDelta
+from direct.interval.IntervalGlobal import *
+from direct.showbase.PythonUtil import lerp
 from direct.task import Task
+
+from otp.level import BasicEntities, DistributedEntity
+
 from toontown.toonbase import ToontownGlobals
+
+from .StomperGlobals import *
+
 
 class DistributedElevatorMarker(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedElevatorMarker')

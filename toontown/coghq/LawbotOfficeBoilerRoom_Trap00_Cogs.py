@@ -1,5 +1,7 @@
-from .SpecImports import *
 from toontown.toonbase import ToontownGlobals
+
+from .SpecImports import *
+
 CogParent = 100001
 BattleCellId = 0
 BattleCells = {BattleCellId: {'parentEntId': CogParent,

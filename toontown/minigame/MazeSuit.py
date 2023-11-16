@@ -1,15 +1,18 @@
-from direct.showbase.DirectObject import DirectObject
-from direct.interval.MetaInterval import Parallel
-from direct.interval.LerpInterval import LerpPosInterval, LerpHprInterval
-from direct.showbase.RandomNumGen import RandomNumGen
-from panda3d.core import Point3
-from panda3d.core import CollisionSphere, CollisionNode
-from panda3d.direct import WaitInterval
-from toontown.suit import Suit
-from toontown.suit import SuitDNA
-from toontown.toonbase import ToontownGlobals
-from . import MazeGameGlobals
 import functools
+
+from panda3d.core import CollisionNode, CollisionSphere, Point3
+from panda3d.direct import WaitInterval
+
+from direct.interval.LerpInterval import LerpHprInterval, LerpPosInterval
+from direct.interval.MetaInterval import Parallel
+from direct.showbase.DirectObject import DirectObject
+from direct.showbase.RandomNumGen import RandomNumGen
+
+from toontown.suit import Suit, SuitDNA
+from toontown.toonbase import ToontownGlobals
+
+from . import MazeGameGlobals
+
 
 class MazeSuit(DirectObject):
     COLL_SPHERE_NAME = 'MazeSuitSphere'

@@ -1,19 +1,23 @@
 from panda3d.core import *
 from panda3d.otp import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM, State
+from direct.gui.DirectGui import cleanupDialog
+from direct.interval.IntervalGlobal import *
+from direct.task import Task
+
+from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+
+from toontown.battle import BattlePlace
 from toontown.battle.BattleProps import *
 from toontown.battle.BattleSounds import *
-from toontown.distributed.ToontownMsgTypes import *
-from direct.gui.DirectGui import cleanupDialog
-from direct.directnotify import DirectNotifyGlobal
-from toontown.battle import BattlePlace
-from direct.fsm import ClassicFSM, State
-from direct.task import Task
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from toontown.building import Elevator
+from toontown.distributed.ToontownMsgTypes import *
 from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals
 from toontown.toon.Toon import teleportDebug
-from direct.interval.IntervalGlobal import *
+from toontown.toonbase import ToontownGlobals
+
 visualizeZones = ConfigVariableBool('visualize-zones', 0).value
 
 class Street(BattlePlace.BattlePlace):

@@ -1,7 +1,11 @@
-from direct.interval.IntervalGlobal import *
-from otp.level import BasicEntities
-from . import MovingPlatform
 from panda3d.core import Vec3
+
+from direct.interval.IntervalGlobal import *
+
+from otp.level import BasicEntities
+
+from . import MovingPlatform
+
 
 class GearEntity(BasicEntities.NodePathEntity):
     ModelPaths = {'factory': 'phase_9/models/cogHQ/FactoryGearB',

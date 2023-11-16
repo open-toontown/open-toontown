@@ -1,14 +1,15 @@
+import functools
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
+from direct.showutil import Effects
+
+from . import MovieCamera, MovieNPCSOS, MovieUtil
 from .BattleBase import *
 from .BattleProps import *
 from .BattleSounds import *
-from . import MovieCamera
-from direct.directnotify import DirectNotifyGlobal
-from . import MovieUtil
-from . import MovieNPCSOS
 from .MovieUtil import calcAvgSuitPos
-from direct.showutil import Effects
-import functools
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieDrop')
 hitSoundFiles = ('AA_drop_flowerpot.ogg', 'AA_drop_sandbag.ogg', 'AA_drop_anvil.ogg', 'AA_drop_bigweight.ogg', 'AA_drop_safe.ogg', 'AA_drop_piano.ogg', 'AA_drop_boat.ogg')
 missSoundFiles = ('AA_drop_flowerpot_miss.ogg', 'AA_drop_sandbag_miss.ogg', 'AA_drop_anvil_miss.ogg', 'AA_drop_bigweight_miss.ogg', 'AA_drop_safe_miss.ogg', 'AA_drop_piano_miss.ogg', 'AA_drop_boat_miss.ogg')

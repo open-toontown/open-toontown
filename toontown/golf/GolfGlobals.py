@@ -1,5 +1,7 @@
-from direct.directnotify import DirectNotifyGlobal
 import random
+
+from direct.directnotify import DirectNotifyGlobal
+
 MAX_PLAYERS_PER_HOLE = 4
 GOLF_BALL_RADIUS = 0.25
 GOLF_BALL_VOLUME = 4.0 / 3.0 * 3.14159 * GOLF_BALL_RADIUS ** 3

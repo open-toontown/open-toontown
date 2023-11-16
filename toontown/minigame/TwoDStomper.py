@@ -1,8 +1,10 @@
-from direct.showbase.DirectObject import DirectObject
-from toontown.toonbase.ToontownGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
+from direct.showbase.DirectObject import DirectObject
+
 from toontown.minigame import ToonBlitzGlobals
+from toontown.toonbase.ToontownGlobals import *
+
 GOING_UP = 1
 GOING_DOWN = 2
 STUCK_DOWN = 3

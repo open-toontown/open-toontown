@@ -1,8 +1,11 @@
 from direct.showbase import PythonUtil
+
+from otp.otpbase import OTPLocalizer
 from otp.speedchat.SCMenu import SCMenu
 from otp.speedchat.SCMenuHolder import SCMenuHolder
+
 from .TTSCSingingTerminal import TTSCSingingTerminal
-from otp.otpbase import OTPLocalizer
+
 SingingMenuGuide = [(OTPLocalizer.SingingMenuSections[0], [{9000: 25},
    {9001: 26},
    {9002: 27},

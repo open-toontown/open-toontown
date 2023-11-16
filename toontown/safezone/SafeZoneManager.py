@@ -1,6 +1,8 @@
 from panda3d.core import *
-from direct.distributed import DistributedObject
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+
 
 class SafeZoneManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('SafeZoneManager')

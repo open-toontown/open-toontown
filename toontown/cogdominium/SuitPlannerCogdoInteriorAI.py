@@ -1,5 +1,6 @@
 from toontown.building.SuitPlannerInteriorAI import SuitPlannerInteriorAI
 
+
 class SuitPlannerCogdoInteriorAI(SuitPlannerInteriorAI):
 
     def __init__(self, cogdoLayout, bldgLevel, bldgTrack, zone):

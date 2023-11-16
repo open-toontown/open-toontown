@@ -9,21 +9,21 @@
 # Email: belloqzafarian@gmail.com
 ##################################################
 
+import json
+import random
+import string
+
+from panda3d.otp import WhisperPopup
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 
-from panda3d.otp import WhisperPopup
 from otp.otpbase.OTPGlobals import *
 
 from toontown.friends import FriendHandle
 from toontown.spellbook.MagicWordConfig import *
 from toontown.spellbook.MagicWordIndex import *
 from toontown.toon import Toon
-
-import json
-import random
-import string
-
 
 MagicWordIndex = magicWordIndex.copy()
 
@@ -259,7 +259,7 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
         else:
             self.generateResponse(responseType="SuccessNoResp", magicWord=word, args=args, affectRange=affectRange,
                                   affectType=affectType, affectExtra=affectExtra, lastClickedAvId=lastClickedAvId)
-    
+
     def teleportResponse(self, loaderId, whereId, how, hoodId, zoneId, avId):
         # The AI tells the avatar to go somewhere.  This is probably in
         # response to a magic word requesting transfer to a zone.
@@ -280,8 +280,8 @@ class ToontownMagicWordManager(DistributedObject.DistributedObject):
                                     [{"loader": loaderId,
                                         "where": whereId,
                                         "how": how,
-                                        "hoodId": hoodId, 
-                                        "zoneId": zoneId, 
+                                        "hoodId": hoodId,
+                                        "zoneId": zoneId,
                                         "shardId": None,
                                         "avId": avId}])
         except Exception: # Most likely cause is the place the avatar is in has no teleportOut state, for example, boss lobbies.

@@ -1,11 +1,11 @@
-from direct.showbase.ShowBaseGlobal import *
-from . import DistributedCCharBase
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from . import CharStateDatas
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from direct.fsm import ClassicFSM, State
+from direct.showbase.ShowBaseGlobal import *
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CharStateDatas, DistributedCCharBase
+
 
 class DistributedDale(DistributedCCharBase.DistributedCCharBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedDale')

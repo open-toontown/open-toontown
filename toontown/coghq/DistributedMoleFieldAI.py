@@ -1,7 +1,10 @@
-from otp.level import DistributedEntityAI
-from toontown.coghq import MoleFieldBase
-from direct.distributed.ClockDelta import globalClockDelta
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import globalClockDelta
+
+from otp.level import DistributedEntityAI
+
+from toontown.coghq import MoleFieldBase
+
 
 class DistributedMoleFieldAI(DistributedEntityAI.DistributedEntityAI, MoleFieldBase.MoleFieldBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMoleFieldAI')

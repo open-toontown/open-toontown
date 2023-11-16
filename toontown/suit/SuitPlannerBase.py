@@ -1,13 +1,15 @@
-from panda3d.core import *
-from panda3d.toontown import *
 import random
 import string
+
+from panda3d.core import *
+from panda3d.toontown import *
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.hood import HoodUtil
+
 from toontown.building import SuitBuildingGlobals
+from toontown.hood import HoodUtil, ZoneUtil
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
+
 
 class SuitPlannerBase:
     notify = DirectNotifyGlobal.directNotify.newCategory('SuitPlannerBase')

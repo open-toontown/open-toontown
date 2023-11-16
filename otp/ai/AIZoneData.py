@@ -1,10 +1,14 @@
-from panda3d.core import *
-from direct.distributed import ParentMgr
-from direct.directnotify.DirectNotifyGlobal import directNotify
-from direct.task import Task
-from direct.showbase import LeakDetectors
-from otp.otpbase import OTPGlobals
 import random
+
+from panda3d.core import *
+
+from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.distributed import ParentMgr
+from direct.showbase import LeakDetectors
+from direct.task import Task
+
+from otp.otpbase import OTPGlobals
+
 
 class AIZoneData:
     notify = directNotify.newCategory('AIZoneData')

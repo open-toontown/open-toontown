@@ -4,9 +4,9 @@ from direct.directnotify import DirectNotifyGlobal
 
 from otp.distributed.DistributedDirectoryAI import DistributedDirectoryAI
 from otp.distributed.OtpDoGlobals import *
+
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
 from toontown.parties.ToontownTimeManager import ToontownTimeManager
-
 
 # TODO: Remove Astron dependence.
 

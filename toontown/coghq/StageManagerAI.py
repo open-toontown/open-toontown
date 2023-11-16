@@ -1,9 +1,13 @@
-from direct.directnotify import DirectNotifyGlobal
-from . import DistributedStageAI
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import StageLayout
-from direct.showbase import DirectObject
 import random
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.showbase import DirectObject
+
+from toontown.coghq import StageLayout
+from toontown.toonbase import ToontownGlobals
+
+from . import DistributedStageAI
+
 
 class StageManagerAI(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('StageManagerAI')

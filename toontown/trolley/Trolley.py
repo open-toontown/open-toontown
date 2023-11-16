@@ -1,15 +1,14 @@
 from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from direct.fsm import StateData
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM, State, StateData
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toontowngui import TTDialog
+
 
 class Trolley(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('Trolley')

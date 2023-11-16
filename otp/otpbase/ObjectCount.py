@@ -1,5 +1,7 @@
-from direct.showbase.Job import Job
 import gc
+
+from direct.showbase.Job import Job
+
 
 class ObjectCount(Job):
     """ logs a count of the number of each type of object found in gc.get_objects() """

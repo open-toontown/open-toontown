@@ -1,12 +1,12 @@
-from direct.gui.DirectGui import *
-from direct.directnotify import DirectNotifyGlobal
 from panda3d.core import *
-from . import NPCToons
-from . import ToonHead
-from . import ToonDNA
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.gui.DirectGui import *
+
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
+
+from . import NPCToons, ToonDNA, ToonHead
+
 
 class NPCFriendPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('NPCFriendPanel')

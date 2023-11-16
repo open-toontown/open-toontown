@@ -2,18 +2,20 @@ import json
 import os
 import time
 from datetime import datetime
+
 from panda3d.core import *
-from direct.distributed.MsgTypes import *
-from direct.gui.DirectGui import *
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM
-from direct.fsm import State
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.MsgTypes import *
+from direct.fsm import ClassicFSM, State, StateData
+from direct.gui.DirectGui import *
+
+from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.otpgui import OTPDialog
-from otp.otpbase import OTPLocalizer
-from otp.otpbase import OTPGlobals
 from otp.uberdog.AccountDetailRecord import AccountDetailRecord, SubDetailRecord
+
 from . import GuiScreen
+
 
 class LoginScreen(StateData.StateData, GuiScreen.GuiScreen):
     AutoLoginName = ConfigVariableString('%s-auto-login%s' % (game.name, os.getenv('otp_client', '')), '').value

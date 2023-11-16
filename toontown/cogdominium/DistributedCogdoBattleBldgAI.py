@@ -1,5 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
+
 from toontown.battle import DistributedBattleBldgAI
+
 
 class DistributedCogdoBattleBldgAI(DistributedBattleBldgAI.DistributedBattleBldgAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogdoBattleBldgAI')

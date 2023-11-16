@@ -1,9 +1,10 @@
 from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
-from direct.interval.IntervalGlobal import Sequence, Func
-from toontown.hood import InteractiveAnimatedProp
-from toontown.hood import GenericAnimatedProp
-from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals, TTLocalizer
+from direct.interval.IntervalGlobal import Func, Sequence
+
+from toontown.hood import GenericAnimatedProp, InteractiveAnimatedProp
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
+
 
 class MailboxInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
     notify = DirectNotifyGlobal.directNotify.newCategory('MailboxInteractiveProp')

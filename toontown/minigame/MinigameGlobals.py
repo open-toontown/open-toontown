@@ -1,6 +1,8 @@
 from direct.showbase import PythonUtil
-from toontown.toonbase import ToontownGlobals
+
 from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownGlobals
+
 latencyTolerance = 10.0
 MaxLoadTime = 40.0
 rulesDuration = 16

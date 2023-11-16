@@ -1,22 +1,22 @@
-from direct.interval.MetaInterval import Sequence, Parallel, Track
-from direct.interval.FunctionInterval import Func, Wait
-from direct.interval.SoundInterval import SoundInterval
-from direct.interval.ActorInterval import ActorInterval
-from direct.interval.ProjectileInterval import ProjectileInterval
+from panda3d.core import CollisionHandlerEvent, CollisionNode, CollisionSphere, NodePath, Point3, TextNode
+
 from direct.distributed.ClockDelta import globalClockDelta
-from direct.showbase.PythonUtil import bound, lerp
+from direct.interval.ActorInterval import ActorInterval
+from direct.interval.FunctionInterval import Func, Wait
+from direct.interval.MetaInterval import Parallel, Sequence, Track
+from direct.interval.ProjectileInterval import ProjectileInterval
+from direct.interval.SoundInterval import SoundInterval
 from direct.showbase.DirectObject import DirectObject
-from panda3d.core import NodePath, Point3, TextNode
-from panda3d.core import CollisionSphere, CollisionNode, CollisionHandlerEvent
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from direct.showbase.PythonUtil import bound, lerp
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toonbase.ToontownTimer import ToontownTimer
-from . import PartyGlobals
-from . import PartyCogUtils
+
+from . import PartyCogUtils, PartyGlobals
 from .PartyCog import PartyCogManager
-from .PartyCogActivityPlayer import PartyCogActivityPlayer
-from .PartyCogActivityPlayer import PartyCogActivityLocalPlayer
+from .PartyCogActivityPlayer import PartyCogActivityLocalPlayer, PartyCogActivityPlayer
 from .StretchingArrow import StretchingArrow
+
 
 class PartyCogActivity(DirectObject):
     notify = directNotify.newCategory('PartyCogActivity')
@@ -500,8 +500,8 @@ class PartyCogActivity(DirectObject):
         return
 
     def getTossPieInterval(self, toon, x, y, z, h, p, r, power, beginFlyIval = Sequence()):
-        from toontown.toonbase import ToontownBattleGlobals
         from toontown.battle import BattleProps
+        from toontown.toonbase import ToontownBattleGlobals
         pie = toon.getPieModel()
         pie.setScale(0.5)
         flyPie = pie.copyTo(NodePath('a'))

@@ -1,16 +1,18 @@
-from direct.directnotify import DirectNotifyGlobal
-from otp.avatar import DistributedAvatarAI
-from toontown.battle import BattleExperienceAI
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toon import InventoryBase
-from toontown.battle import DistributedBattleFinalAI
-from toontown.building import SuitPlannerInteriorAI
-from toontown.battle import BattleBase
-from toontown.coghq import CogDisguiseGlobals
-from panda3d.core import *
-from toontown.suit import SuitDNA
 import random
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+
+from otp.avatar import DistributedAvatarAI
+
+from toontown.battle import BattleBase, BattleExperienceAI, DistributedBattleFinalAI
+from toontown.building import SuitPlannerInteriorAI
+from toontown.coghq import CogDisguiseGlobals
+from toontown.suit import SuitDNA
+from toontown.toon import InventoryBase
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
+
 AllBossCogs = []
 
 class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
@@ -689,6 +691,6 @@ class DistributedBossCogAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def doNextAttack(self, task):
         self.b_setAttackCode(ToontownGlobals.BossCogNoAttack)
-    
+
     def getNextState(self):
         raise NotImplementedError

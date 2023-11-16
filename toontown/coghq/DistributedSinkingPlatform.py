@@ -1,13 +1,15 @@
 from panda3d.core import *
-from direct.distributed.ClockDelta import *
-from direct.interval.IntervalGlobal import *
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from otp.level import BasicEntities
-from . import MovingPlatform
-from direct.distributed import DistributedObject
-from . import SinkingPlatformGlobals
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+from direct.interval.IntervalGlobal import *
+
+from otp.level import BasicEntities
+
+from . import MovingPlatform, SinkingPlatformGlobals
+
 
 class DistributedSinkingPlatform(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSinkingPlatform')

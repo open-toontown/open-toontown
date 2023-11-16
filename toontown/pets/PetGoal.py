@@ -1,9 +1,11 @@
-from direct.task import Task
-from direct.fsm import FSM, ClassicFSM, State
-from direct.showbase.PythonUtil import randFloat, Functor
 from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import FSM, ClassicFSM, State
+from direct.showbase.PythonUtil import Functor, randFloat
+from direct.task import Task
+
 from toontown.pets import PetConstants
 from toontown.toon import DistributedToonAI
+
 
 class PetGoal(FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('PetGoal')

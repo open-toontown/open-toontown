@@ -1,13 +1,15 @@
-from otp.ai.AIBase import *
-from toontown.toonbase import ToontownGlobals
-from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedObjectAI
-from toontown.building.ElevatorConstants import *
-from toontown.building import DistributedElevatorExtAI
-from direct.fsm import ClassicFSM
-from direct.fsm import State
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
 from direct.showbase.DirectObject import DirectObject
+
+from otp.ai.AIBase import *
+
+from toontown.building import DistributedElevatorExtAI
+from toontown.building.ElevatorConstants import *
 from toontown.racing.KartShopGlobals import KartGlobals
+from toontown.toonbase import ToontownGlobals
+
 if __debug__:
     import pdb
 

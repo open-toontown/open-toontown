@@ -1,7 +1,9 @@
-from panda3d.core import Point3
-from panda3d.core import Vec3
 import copy
+
+from panda3d.core import Point3, Vec3
+
 from toontown.toonbase import TTLocalizer
+
 __mickeyPaths = {'a': (Point3(17, -17, 4.025), ('b', 'e')),
  'b': (Point3(17.5, 7.6, 4.025), ('c', 'e')),
  'c': (Point3(85, 11.5, 4.025), ('d',)),

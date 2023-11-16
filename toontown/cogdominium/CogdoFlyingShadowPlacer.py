@@ -1,9 +1,11 @@
+from panda3d.core import *
+
 from direct.controls.ControlManager import CollisionHandlerRayStart
 from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import *
-from direct.task.Task import Task
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.ShadowPlacer import ShadowPlacer
+from direct.task.Task import Task
+
 
 class CogdoFlyingShadowPlacer(ShadowPlacer):
 

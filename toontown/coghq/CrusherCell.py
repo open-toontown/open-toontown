@@ -1,5 +1,7 @@
-from . import ActiveCell
 from direct.directnotify import DirectNotifyGlobal
+
+from . import ActiveCell
+
 
 class CrusherCell(ActiveCell.ActiveCell):
     notify = DirectNotifyGlobal.directNotify.newCategory('CrusherCell')

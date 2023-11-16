@@ -1,12 +1,16 @@
 import math
-from panda3d.core import NodePath, Vec3
-from panda3d.core import CollisionTraverser, CollisionHandlerQueue
-from panda3d.core import CollisionRay, CollisionNode
-from math import pi, sin, cos
+from math import cos, pi, sin
+
+from panda3d.core import CollisionHandlerQueue, CollisionNode, CollisionRay, CollisionTraverser, NodePath, Vec3
+
 from direct.showbase.PythonUtil import bound as clamp
+
 from otp.otpbase import OTPGlobals
+
 from toontown.toonbase import ToontownGlobals
+
 from . import CogdoFlyingGameGlobals as Globals
+
 INVERSE_E = 1.0 / math.e
 
 def smooth(old, new):

@@ -1,14 +1,15 @@
-from direct.gui.DirectGui import *
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import ToontownGlobals
-from toontown.suit import SuitDNA
-from toontown.suit import Suit
+from direct.gui.DirectGui import *
+
 from toontown.battle import SuitBattleGlobals
+from toontown.suit import Suit, SuitDNA
 from toontown.toon import NPCToons
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toontowngui import TTDialog
+
 TTL = TTLocalizer
 
 class SummonCogDialog(DirectFrame, StateData.StateData):
