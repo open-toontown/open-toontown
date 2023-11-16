@@ -1,11 +1,13 @@
-from .DistributedMinigameAI import *
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-import random
-from direct.task.Task import Task
 import copy
-from . import TugOfWarGameGlobals
 import math
+import random
+
+from direct.fsm import ClassicFSM, State
+from direct.task.Task import Task
+
+from . import TugOfWarGameGlobals
+from .DistributedMinigameAI import *
+
 
 class DistributedTugOfWarGameAI(DistributedMinigameAI):
 

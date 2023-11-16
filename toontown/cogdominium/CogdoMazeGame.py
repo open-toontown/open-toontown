@@ -1,21 +1,26 @@
-from panda3d.core import Point3, CollisionSphere, CollisionNode
+import math
+import random
+
+from panda3d.core import CollisionNode, CollisionSphere, Point3
+
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.PythonUtil import Functor
 from direct.showbase.RandomNumGen import RandomNumGen
 from direct.task.Task import Task
+
 from toontown.minigame.MazeSuit import MazeSuit
-from .CogdoGameGatherable import CogdoMemo
-from .CogdoMazePlayer import CogdoMazePlayer
-from .CogdoMazeLocalPlayer import CogdoMazeLocalPlayer
-from .CogdoMazeGuiManager import CogdoMazeGuiManager
-from .CogdoGameAudioManager import CogdoGameAudioManager
-from .CogdoMazeGameObjects import CogdoMazeExit, CogdoMazeDrop
-from .CogdoMazeSuits import CogdoMazeSuit, CogdoMazeSlowMinionSuit, CogdoMazeFastMinionSuit, CogdoMazeBossSuit
-from .CogdoMazeGameMovies import CogdoMazeGameIntro, CogdoMazeGameFinish
+
 from . import CogdoMazeGameGlobals as Globals
 from . import CogdoUtil
-import math
-import random
+from .CogdoGameAudioManager import CogdoGameAudioManager
+from .CogdoGameGatherable import CogdoMemo
+from .CogdoMazeGameMovies import CogdoMazeGameFinish, CogdoMazeGameIntro
+from .CogdoMazeGameObjects import CogdoMazeDrop, CogdoMazeExit
+from .CogdoMazeGuiManager import CogdoMazeGuiManager
+from .CogdoMazeLocalPlayer import CogdoMazeLocalPlayer
+from .CogdoMazePlayer import CogdoMazePlayer
+from .CogdoMazeSuits import CogdoMazeBossSuit, CogdoMazeFastMinionSuit, CogdoMazeSlowMinionSuit, CogdoMazeSuit
+
 
 class CogdoMazeGame(DirectObject):
     notify = directNotify.newCategory('CogdoMazeGame')

@@ -1,20 +1,23 @@
+import random
+
 from panda3d.core import *
-from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from direct.showbase.PythonUtil import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNode
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed.MsgTypes import *
+from direct.interval.IntervalGlobal import *
+from direct.showbase.PythonUtil import *
 from direct.task import Task
+
 from otp.otpbase import OTPGlobals
-from toontown.pets import Pet, PetBase, PetTraits, PetConstants, PetManager, PetAvatarPanel
-from toontown.pets import PetMood, PetTricks
-from toontown.hood import ZoneUtil
-from toontown.toonbase import TTLocalizer
+
 from toontown.distributed import DelayDelete
 from toontown.distributed.DelayDeletable import DelayDeletable
-import random
+from toontown.hood import ZoneUtil
+from toontown.pets import Pet, PetAvatarPanel, PetBase, PetConstants, PetManager, PetMood, PetTraits, PetTricks
+from toontown.toonbase import TTLocalizer
+
 if __dev__:
     import pdb
 BeanColors = (VBase4(1.0, 0.2, 0.2, 1.0),

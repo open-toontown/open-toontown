@@ -1,28 +1,26 @@
-from panda3d.core import *
-from direct.showbase.PythonUtil import weightedChoice, randFloat, lerp
-from direct.showbase.PythonUtil import contains, list2dict, clampScalar
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedSmoothNodeAI
-from direct.distributed import DistributedSmoothNodeBase
-from direct.distributed import ClockDelta
-from direct.fsm import ClassicFSM, State
-from direct.interval.IntervalGlobal import *
-from toontown.toonbase import ToontownGlobals
-from direct.task import Task
-from otp.movement import Mover
-from toontown.pets import PetChase, PetFlee, PetWander, PetLeash
-from toontown.pets import PetCollider, PetSphere, PetLookerAI
-from toontown.pets import PetConstants, PetDNA, PetTraits
-from toontown.pets import PetObserve, PetBrain, PetMood
-from toontown.pets import PetActionFSM, PetBase, PetGoal, PetTricks
-from direct.fsm import FSM
-from toontown.toon import DistributedToonAI
-from toontown.ai import ServerEventBuffer
-import random
-import time
-import string
 import copy
-from direct.showbase.PythonUtil import StackTrace
+import random
+import string
+import time
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import ClockDelta, DistributedSmoothNodeAI, DistributedSmoothNodeBase
+from direct.fsm import FSM, ClassicFSM, State
+from direct.interval.IntervalGlobal import *
+from direct.showbase.PythonUtil import StackTrace, clampScalar, contains, lerp, list2dict, randFloat, weightedChoice
+from direct.task import Task
+
+from otp.movement import Mover
+
+from toontown.ai import ServerEventBuffer
+from toontown.pets import (PetActionFSM, PetBase, PetBrain, PetChase, PetCollider, PetConstants, PetDNA, PetFlee,
+                           PetGoal, PetLeash, PetLookerAI, PetMood, PetObserve, PetSphere, PetTraits, PetTricks,
+                           PetWander)
+from toontown.toon import DistributedToonAI
+from toontown.toonbase import ToontownGlobals
+
 
 class DistributedPetAI(DistributedSmoothNodeAI.DistributedSmoothNodeAI, PetLookerAI.PetLookerAI, PetBase.PetBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPetAI')

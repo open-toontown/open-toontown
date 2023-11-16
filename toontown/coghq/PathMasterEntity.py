@@ -1,8 +1,11 @@
-from toontown.toonbase.ToontownGlobals import *
-from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
-from toontown.suit import GoonPathData
+from direct.interval.IntervalGlobal import *
+
 from otp.level import PathEntity
+
+from toontown.suit import GoonPathData
+from toontown.toonbase.ToontownGlobals import *
+
 
 class PathMasterEntity(PathEntity.PathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('PathMasterEntity')

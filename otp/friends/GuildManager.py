@@ -1,15 +1,17 @@
-from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from direct.directnotify.DirectNotifyGlobal import directNotify
-from otp.distributed import OtpDoGlobals
-from otp.otpbase import OTPLocalizer
-from otp.otpbase import OTPGlobals
-from otp.avatar.AvatarHandle import AvatarHandle
+from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
+
 from otp.ai import AIInterestHandles
+from otp.avatar.AvatarHandle import AvatarHandle
+from otp.distributed import OtpDoGlobals
+from otp.otpbase import OTPGlobals, OTPLocalizer
+
 GUILDRANK_VETERAN = 4
 GUILDRANK_GM = 3
 GUILDRANK_OFFICER = 2
 GUILDRANK_MEMBER = 1
 import queue
+
 
 class GuildMemberInfo(AvatarHandle):
 

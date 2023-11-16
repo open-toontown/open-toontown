@@ -1,18 +1,18 @@
+import random
+
 from panda3d.core import *
 from panda3d.otp import *
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from toontown.toonbase import ToontownGlobals
-from . import DistributedToon
-from direct.distributed import DistributedObject
-from . import NPCToons
-from toontown.quest import Quests
-from direct.distributed import ClockDelta
-from toontown.quest import QuestParser
-from toontown.quest import QuestChoiceGui
+from direct.distributed import ClockDelta, DistributedObject
+from direct.fsm import ClassicFSM, State
 from direct.interval.IntervalGlobal import *
-import random
+
+from toontown.quest import QuestChoiceGui, QuestParser, Quests
+from toontown.toonbase import ToontownGlobals
+
+from . import DistributedToon, NPCToons
+
 
 class DistributedNPCToonBase(DistributedToon.DistributedToon):
 

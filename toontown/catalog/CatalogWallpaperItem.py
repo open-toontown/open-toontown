@@ -1,4 +1,5 @@
 from .CatalogSurfaceItem import *
+
 WTTextureName = 0
 WTColor = 1
 WTBorderList = 2

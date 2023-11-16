@@ -1,5 +1,7 @@
-from toontown.minigame.MinigameGlobals import getSafezoneId, DifficultyOverrideMult, QuantizeDifficultyOverride, NoDifficultyOverride, getDifficulty
+from toontown.minigame.MinigameGlobals import DifficultyOverrideMult, NoDifficultyOverride
 from toontown.minigame.MinigameGlobals import NoTrolleyZoneOverride as NoExteriorZoneOverride
+from toontown.minigame.MinigameGlobals import QuantizeDifficultyOverride, getDifficulty, getSafezoneId
+
 MaxPlayers = 4
 MessageLabelBlinkTime = 0.25
 MessageLabelFadeTime = 0.25

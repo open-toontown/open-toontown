@@ -1,13 +1,14 @@
-from direct.distributed.ClockDelta import *
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase import DirectObject
-from . import DistributedDoorEntityBase
 from direct.distributed import DistributedObjectAI
-from otp.level import DistributedEntityAI
-from direct.fsm import FourStateAI
-from direct.fsm import ClassicFSM
-from direct.fsm import State
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, FourStateAI, State
+from direct.showbase import DirectObject
 from direct.task import Task
+
+from otp.level import DistributedEntityAI
+
+from . import DistributedDoorEntityBase
+
 
 class Lock(DistributedDoorEntityBase.LockBase, DirectObject.DirectObject, FourStateAI.FourStateAI):
 

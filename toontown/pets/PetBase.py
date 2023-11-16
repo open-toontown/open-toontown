@@ -1,6 +1,8 @@
-from toontown.pets.PetConstants import AnimMoods
-from toontown.pets import PetMood
 import string
+
+from toontown.pets import PetMood
+from toontown.pets.PetConstants import AnimMoods
+
 
 class PetBase:
 

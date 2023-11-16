@@ -1,6 +1,8 @@
 from direct.fsm.StatePush import FunctionCall
+
 from otp.level.EntityStateVarSet import EntityStateVarSet
 from otp.level.LevelSpec import LevelSpec
+
 
 class CogdoLevelGameBase:
 
@@ -32,7 +34,8 @@ class CogdoLevelGameBase:
             return
 
         def getEntityTypeReg(self):
-            from . import CogdoEntityTypes
             from otp.level import EntityTypeRegistry
+
+            from . import CogdoEntityTypes
             typeReg = EntityTypeRegistry.EntityTypeRegistry(CogdoEntityTypes)
             return typeReg

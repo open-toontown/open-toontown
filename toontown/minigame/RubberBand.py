@@ -1,14 +1,17 @@
+import math
+import random
+from math import *
+
 from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
-from direct.interval.IntervalGlobal import *
+
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
+from direct.interval.IntervalGlobal import *
 from direct.task import Task
+
 from toontown.toonbase import ToontownGlobals
-import math
-from math import *
-import random
+from toontown.toonbase.ToonBaseGlobal import *
+
 
 class RubberBand:
     SomeCounter = 0

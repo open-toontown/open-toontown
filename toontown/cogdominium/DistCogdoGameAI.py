@@ -2,9 +2,12 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.fsm import ClassicFSM, State
+
+from otp.ai.Barrier import Barrier
+
 from toontown.cogdominium import CogdoGameConsts
 from toontown.cogdominium.DistCogdoGameBase import DistCogdoGameBase
-from otp.ai.Barrier import Barrier
+
 
 class SadCallbackToken:
     pass

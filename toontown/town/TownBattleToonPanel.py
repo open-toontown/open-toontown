@@ -1,13 +1,15 @@
-from panda3d.core import *
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase.ToontownBattleGlobals import *
-from direct.directnotify import DirectNotifyGlobal
 import string
-from toontown.toon import LaffMeter
-from toontown.battle import BattleBase
-from direct.gui.DirectGui import *
+
 from panda3d.core import *
-from toontown.toonbase import TTLocalizer
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.gui.DirectGui import *
+
+from toontown.battle import BattleBase
+from toontown.toon import LaffMeter
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToontownBattleGlobals import *
+
 
 class TownBattleToonPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('TownBattleToonPanel')

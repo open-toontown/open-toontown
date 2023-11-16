@@ -1,7 +1,10 @@
 import datetime
+
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
+
 
 class StreetSign(DistributedObject.DistributedObject):
     RedownloadTaskName = 'RedownloadStreetSign'

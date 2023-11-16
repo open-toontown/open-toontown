@@ -1,35 +1,34 @@
+import math
+import pickle
+import random
+import time
+from math import pi
+
 from panda3d.core import *
+from panda3d.core import NodePath
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import ClockDelta
+from direct.distributed.ClockDelta import *
+from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
 from direct.particles import ParticleEffect
-from .StomperGlobals import *
-from direct.distributed import ClockDelta
-from direct.showbase.PythonUtil import lerp
-import math
-from otp.level import DistributedEntity
-from direct.directnotify import DirectNotifyGlobal
-from panda3d.core import NodePath
-from otp.level import BasicEntities
-from direct.task import Task
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import BattleBlocker
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
-from direct.distributed.ClockDelta import *
-from toontown.golf import BuildGeometry
-from direct.gui.DirectGui import *
-import random
 from direct.showbase import RandomNumGen
-from . import GameSprite3D
-from math import pi
-import math
-import random
-import pickle
+from direct.showbase.PythonUtil import lerp
+from direct.task import Task
+
+from otp.level import BasicEntities, DistributedEntity
+
+from toontown.battle import BattleParticles, MovieUtil
+from toontown.coghq import BattleBlocker
 from toontown.distributed import DelayDelete
+from toontown.golf import BuildGeometry
 from toontown.toon import ToonHeadFrame
-from toontown.battle import BattleParticles
-from toontown.battle import MovieUtil
-import time
-from toontown.toonbase import ToontownTimer
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, ToontownTimer, TTLocalizer
+
+from . import GameSprite3D
+from .StomperGlobals import *
+
 
 class DistributedGolfGreenGame(BattleBlocker.BattleBlocker):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGolfGreenGame')

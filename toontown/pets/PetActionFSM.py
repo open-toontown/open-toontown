@@ -1,11 +1,13 @@
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import globalClockDelta
 from direct.fsm import FSM
 from direct.interval.IntervalGlobal import *
-from direct.task import Task
-from direct.distributed.ClockDelta import globalClockDelta
 from direct.showbase.PythonUtil import lerp
+from direct.task import Task
+
 from toontown.pets import PetTricks
 from toontown.toon import DistributedToonAI
+
 
 class PetActionFSM(FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('PetActionFSM')

@@ -1,36 +1,23 @@
-from toontown.toonbase.ToontownBattleGlobals import *
-from .BattleBase import *
-from direct.interval.IntervalGlobal import *
-from direct.showbase import DirectObject
-from . import MovieFire
-from . import MovieSOS
-from . import MovieNPCSOS
-from . import MoviePetSOS
-from . import MovieHeal
-from . import MovieTrap
-from . import MovieLure
-from . import MovieSound
-from . import MovieThrow
-from . import MovieSquirt
-from . import MovieDrop
-from . import MovieSuitAttacks
-from . import MovieToonVictory
-from . import PlayByPlayText
-from . import BattleParticles
-from toontown.distributed import DelayDelete
-from . import BattleExperience
-from .SuitBattleGlobals import *
-from direct.directnotify import DirectNotifyGlobal
-from . import RewardPanel
-import random
-from . import MovieUtil
-from toontown.toon import Toon
-from toontown.toonbase import ToontownGlobals
-from toontown.toontowngui import TTDialog
 import copy
 import functools
-from toontown.toonbase import TTLocalizer
-from toontown.toon import NPCToons
+import random
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
+from direct.showbase import DirectObject
+
+from toontown.distributed import DelayDelete
+from toontown.toon import NPCToons, Toon
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToontownBattleGlobals import *
+from toontown.toontowngui import TTDialog
+
+from . import (BattleExperience, BattleParticles, MovieDrop, MovieFire, MovieHeal, MovieLure, MovieNPCSOS, MoviePetSOS,
+               MovieSOS, MovieSound, MovieSquirt, MovieSuitAttacks, MovieThrow, MovieToonVictory, MovieTrap, MovieUtil,
+               PlayByPlayText, RewardPanel)
+from .BattleBase import *
+from .SuitBattleGlobals import *
+
 camPos = Point3(14, 0, 10)
 camHpr = Vec3(89, -30, 0)
 randomBattleTimestamp = base.config.GetBool('random-battle-timestamp', 0)
@@ -336,8 +323,7 @@ class Movie(DirectObject.DirectObject):
 
     def playTutorialReward_3(self, value):
         self.tutRewardDialog_2.cleanup()
-        from toontown.toon import Toon
-        from toontown.toon import ToonDNA
+        from toontown.toon import Toon, ToonDNA
 
         def doneChat1(page, elapsed = 0):
             self.track2.start()

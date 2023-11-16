@@ -1,15 +1,18 @@
-from panda3d.core import Point3, CollisionNode, CollisionSphere, CollisionHandlerEvent
+from panda3d.core import CollisionHandlerEvent, CollisionNode, CollisionSphere, Point3
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import Func, Sequence, Wait
 from direct.showbase.PythonUtil import bound as clamp
-from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
+
 from toontown.minigame.OrthoDrive import OrthoDrive
 from toontown.minigame.OrthoWalk import OrthoWalk
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 from . import CogdoGameConsts
 from . import CogdoMazeGameGlobals as Globals
-from .CogdoMazePlayer import CogdoMazePlayer
 from .CogdoMazeCameraManager import CogdoMazeCameraManager
+from .CogdoMazePlayer import CogdoMazePlayer
+
 
 class CogdoMazeLocalPlayer(CogdoMazePlayer):
     notify = directNotify.newCategory('CogdoMazeLocalPlayer')

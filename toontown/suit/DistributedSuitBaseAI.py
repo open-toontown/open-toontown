@@ -1,8 +1,12 @@
+from direct.directnotify import DirectNotifyGlobal
+
 from otp.ai.AIBaseGlobal import *
 from otp.avatar import DistributedAvatarAI
-from . import SuitPlannerBase, SuitBase, SuitDNA
-from direct.directnotify import DirectNotifyGlobal
+
 from toontown.battle import SuitBattleGlobals
+
+from . import SuitBase, SuitDNA, SuitPlannerBase
+
 
 class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.SuitBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSuitBaseAI')

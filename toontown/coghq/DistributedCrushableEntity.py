@@ -1,7 +1,9 @@
-from otp.level import DistributedEntity
-from direct.directnotify import DirectNotifyGlobal
 from panda3d.core import NodePath
-from otp.level import BasicEntities
+
+from direct.directnotify import DirectNotifyGlobal
+
+from otp.level import BasicEntities, DistributedEntity
+
 
 class DistributedCrushableEntity(DistributedEntity.DistributedEntity, NodePath, BasicEntities.NodePathAttribs):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCrushableEntity')

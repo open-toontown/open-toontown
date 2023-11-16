@@ -1,26 +1,15 @@
 import copy
 import random
 import time
+
 from toontown.toonbase import ToontownGlobals
-from . import DistributedMinigameTemplateAI
-from . import DistributedRaceGameAI
-from . import DistributedCannonGameAI
-from . import DistributedTagGameAI
-from . import DistributedPatternGameAI
-from . import DistributedRingGameAI
-from . import DistributedMazeGameAI
-from . import DistributedTugOfWarGameAI
-from . import DistributedCatchGameAI
-from . import DistributedDivingGameAI
-from . import DistributedTargetGameAI
-from . import DistributedPairingGameAI
-from . import DistributedPhotoGameAI
-from . import DistributedVineGameAI
-from . import DistributedIceGameAI
-from . import DistributedCogThiefGameAI
-from . import DistributedTwoDGameAI
-from . import DistributedTravelGameAI
-from . import TravelGameGlobals
+
+from . import (DistributedCannonGameAI, DistributedCatchGameAI, DistributedCogThiefGameAI, DistributedDivingGameAI,
+               DistributedIceGameAI, DistributedMazeGameAI, DistributedMinigameTemplateAI, DistributedPairingGameAI,
+               DistributedPatternGameAI, DistributedPhotoGameAI, DistributedRaceGameAI, DistributedRingGameAI,
+               DistributedTagGameAI, DistributedTargetGameAI, DistributedTravelGameAI, DistributedTugOfWarGameAI,
+               DistributedTwoDGameAI, DistributedVineGameAI, TravelGameGlobals)
+
 ALLOW_TEMP_MINIGAMES = simbase.config.GetBool('allow-temp-minigames', False)
 if ALLOW_TEMP_MINIGAMES:
     from toontown.minigame.TempMinigameAI import *

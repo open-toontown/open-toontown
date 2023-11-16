@@ -1,8 +1,11 @@
-from otp.ai.AIBase import *
-from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
-from . import DistributedCrusherEntityAI, StomperGlobals
 from direct.distributed import ClockDelta
+from direct.interval.IntervalGlobal import *
+
+from otp.ai.AIBase import *
+
+from . import DistributedCrusherEntityAI, StomperGlobals
+
 
 class DistributedStomperAI(DistributedCrusherEntityAI.DistributedCrusherEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStomperAI')

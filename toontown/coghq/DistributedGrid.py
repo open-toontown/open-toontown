@@ -1,9 +1,14 @@
 from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-from .CrateGlobals import *
-from otp.level import BasicEntities
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
+
+from otp.level import BasicEntities
+
+from toontown.toonbase.ToontownGlobals import *
+
+from .CrateGlobals import *
+
 
 class DistributedGrid(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGrid')

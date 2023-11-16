@@ -1,4 +1,5 @@
 from . import MinigameGlobals
+
 INITIAL_ROUND_LENGTH = 2
 ROUND_LENGTH_INCREMENT = 2
 NUM_ROUNDS = 4

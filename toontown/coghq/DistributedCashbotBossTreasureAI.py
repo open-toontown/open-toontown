@@ -1,5 +1,6 @@
 from toontown.safezone import DistributedSZTreasureAI
 
+
 class DistributedCashbotBossTreasureAI(DistributedSZTreasureAI.DistributedSZTreasureAI):
 
     def __init__(self, air, boss, goon, style, fx, fy, fz):

@@ -1,5 +1,6 @@
 from toontown.parties.DistributedPartyTrampolineActivity import DistributedPartyTrampolineActivity
 
+
 class DistributedPartyValentineTrampolineActivity(DistributedPartyTrampolineActivity):
 
     def __init__(self, cr, doJellyBeans = True, doTricks = False, texture = None):

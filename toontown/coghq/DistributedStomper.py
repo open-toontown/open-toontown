@@ -1,14 +1,18 @@
-from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from .StomperGlobals import *
-from direct.distributed import ClockDelta
-from direct.showbase.PythonUtil import lerp
 import math
-from . import DistributedCrusherEntity
-from . import MovingPlatform
+
+from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import ClockDelta
+from direct.interval.IntervalGlobal import *
+from direct.showbase.PythonUtil import lerp
 from direct.task import Task
+
 from toontown.toonbase import ToontownGlobals
+
+from . import DistributedCrusherEntity, MovingPlatform
+from .StomperGlobals import *
+
 
 class DistributedStomper(DistributedCrusherEntity.DistributedCrusherEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStomper')

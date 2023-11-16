@@ -1,12 +1,11 @@
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.DirectObject import DirectObject
-from toontown.minigame import ToonBlitzGlobals
-from toontown.minigame import TwoDBlock
-from toontown.minigame import TwoDEnemyMgr
-from toontown.minigame import TwoDTreasureMgr
-from toontown.minigame import TwoDSpawnPointMgr
-from toontown.minigame import TwoDStomperMgr
+
+from toontown.minigame import (ToonBlitzGlobals, TwoDBlock, TwoDEnemyMgr, TwoDSpawnPointMgr, TwoDStomperMgr,
+                               TwoDTreasureMgr)
+
 
 class TwoDSection(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDSection')

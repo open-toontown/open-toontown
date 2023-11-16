@@ -1,11 +1,15 @@
-from . import CatalogItem
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toon import ToonDNA
 import random
-from direct.showbase import PythonUtil
-from direct.gui.DirectGui import *
+
 from panda3d.core import *
+
+from direct.gui.DirectGui import *
+from direct.showbase import PythonUtil
+
+from toontown.toon import ToonDNA
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CatalogItem
+
 CTArticle = 0
 CTString = 1
 CTBasePrice = 2

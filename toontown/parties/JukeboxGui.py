@@ -1,10 +1,12 @@
 from panda3d.core import *
-from direct.showbase.DirectObject import DirectObject
-from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel
-from direct.gui.DirectGui import DirectScrolledListItem, DirectScrolledList
+
 from direct.gui import DirectGuiGlobals
-from toontown.toonbase import TTLocalizer
+from direct.gui.DirectGui import DirectButton, DirectFrame, DirectLabel, DirectScrolledList, DirectScrolledListItem
+from direct.showbase.DirectObject import DirectObject
+
 from toontown.parties import PartyUtils
+from toontown.toonbase import TTLocalizer
+
 
 class JukeboxGui(DirectObject):
     notify = directNotify.newCategory('JukeboxGui')

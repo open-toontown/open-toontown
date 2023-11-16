@@ -1,15 +1,17 @@
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.task.Task import Task
 from direct.distributed.ClockDelta import *
 from direct.fsm.FSM import FSM
 from direct.interval.IntervalGlobal import *
-from toontown.racing.DistributedKartPad import DistributedKartPad
+from direct.task.Task import Task
+
 from toontown.racing import RaceGlobals
-from toontown.toonbase.ToontownTimer import ToontownTimer
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from toontown.racing.DistributedKartPad import DistributedKartPad
 from toontown.racing.KartShopGlobals import KartGlobals
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToontownTimer import ToontownTimer
+
 
 class DistributedRacePad(DistributedKartPad, FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRacePad')

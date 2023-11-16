@@ -1,5 +1,7 @@
-from . import ClothesGUI
 from toontown.toon import ToonDNA
+
+from . import ClothesGUI
+
 
 class MakeClothesGUI(ClothesGUI.ClothesGUI):
     notify = directNotify.newCategory('MakeClothesGUI')

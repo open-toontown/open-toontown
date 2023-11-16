@@ -1,15 +1,15 @@
-from toontown.estate import DistributedStatuary
-from toontown.estate import DistributedLawnDecor
+from panda3d.core import *
+from panda3d.core import NodePath, Point3
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.ShowBase import *
-from panda3d.core import *
-from toontown.toon import Toon
-from toontown.toon import ToonDNA
+
+from toontown.estate import DistributedLawnDecor, DistributedStatuary
+from toontown.toon import Toon, ToonDNA
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 from . import GardenGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from panda3d.core import NodePath
-from panda3d.core import Point3
+
 
 def dnaCodeFromToonDNA(dna):
 

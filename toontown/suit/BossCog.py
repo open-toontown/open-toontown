@@ -1,20 +1,22 @@
+import string
+
 from panda3d.core import *
 from panda3d.otp import *
-from direct.interval.IntervalGlobal import *
+
 from direct.actor import Actor
-from otp.avatar import Avatar
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from direct.fsm import FSM
-from direct.fsm import State
-from toontown.toonbase import TTLocalizer
-from toontown.battle import BattleParticles
-from . import Suit
-from direct.task.Task import Task
-from . import SuitDNA
-from toontown.battle import BattleProps
+from direct.fsm import FSM, State
+from direct.interval.IntervalGlobal import *
 from direct.showbase.PythonUtil import Functor
-import string
+from direct.task.Task import Task
+
+from otp.avatar import Avatar
+
+from toontown.battle import BattleParticles, BattleProps
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import Suit, SuitDNA
+
 GenericModel = 'phase_9/models/char/bossCog'
 ModelDict = {'s': 'phase_9/models/char/sellbotBoss',
  'm': 'phase_10/models/char/cashbotBoss',

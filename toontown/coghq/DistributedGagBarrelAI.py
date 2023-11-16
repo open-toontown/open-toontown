@@ -1,7 +1,10 @@
-from toontown.toonbase.ToontownBattleGlobals import *
-from . import DistributedBarrelBaseAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
+
+from toontown.toonbase.ToontownBattleGlobals import *
+
+from . import DistributedBarrelBaseAI
+
 
 class DistributedGagBarrelAI(DistributedBarrelBaseAI.DistributedBarrelBaseAI):
 

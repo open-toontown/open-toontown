@@ -1,8 +1,9 @@
 from panda3d.core import NodePath
-from toontown.toonbase import TTLocalizer
+
+from toontown.parties import PartyGlobals, WinterPartyCatchActivityToonSD
 from toontown.parties.DistributedPartyCatchActivity import DistributedPartyCatchActivity
-from toontown.parties import PartyGlobals
-from toontown.parties import WinterPartyCatchActivityToonSD
+from toontown.toonbase import TTLocalizer
+
 
 class DistributedPartyWinterCatchActivity(DistributedPartyCatchActivity):
 

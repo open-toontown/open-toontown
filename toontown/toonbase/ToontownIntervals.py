@@ -1,5 +1,6 @@
+from direct.interval.FunctionInterval import Func, Wait
 from direct.interval.MetaInterval import Sequence
-from direct.interval.FunctionInterval import Wait, Func
+
 PULSE_GUI_DURATION = 0.2
 PULSE_GUI_CHANGE = 0.333
 

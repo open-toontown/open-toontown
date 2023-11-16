@@ -1,14 +1,19 @@
-from otp.ai.AIBaseGlobal import *
-from panda3d.core import *
-from direct.distributed.ClockDelta import *
-from .PurchaseManagerConstants import *
 import copy
-from direct.task.Task import Task
-from direct.distributed import DistributedObjectAI
+
+from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.minigame import TravelGameGlobals
+from direct.distributed import DistributedObjectAI
+from direct.distributed.ClockDelta import *
+from direct.task.Task import Task
+
+from otp.ai.AIBaseGlobal import *
+
+from toontown.minigame import MinigameGlobals, TravelGameGlobals
 from toontown.toonbase import ToontownGlobals
-from toontown.minigame import MinigameGlobals
+
+from .PurchaseManagerConstants import *
+
 
 class PurchaseManagerAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('PurchaseManagerAI')

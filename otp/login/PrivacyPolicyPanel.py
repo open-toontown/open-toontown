@@ -1,10 +1,14 @@
 from panda3d.core import *
-from otp.otpbase.OTPGlobals import *
-from direct.gui.DirectGui import *
-from .MultiPageTextFrame import *
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.gui.DirectGui import *
+
 from otp.otpbase import OTPLocalizer
+from otp.otpbase.OTPGlobals import *
 from otp.otpgui import OTPDialog
+
+from .MultiPageTextFrame import *
+
 
 class PrivacyPolicyTextPanel(getGlobalDialogClass()):
     notify = DirectNotifyGlobal.directNotify.newCategory('PrivacyPolicyTextPanel')

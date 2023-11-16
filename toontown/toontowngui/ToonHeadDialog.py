@@ -1,8 +1,12 @@
 from panda3d.core import *
-from toontown.toonbase.ToontownGlobals import *
+
 from direct.directnotify import DirectNotifyGlobal
-from . import TTDialog
+
 from toontown.toon import ToonHead
+from toontown.toonbase.ToontownGlobals import *
+
+from . import TTDialog
+
 
 class ToonHeadDialog(TTDialog.TTDialog):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonHeadDialog')

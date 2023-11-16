@@ -1,8 +1,12 @@
-from direct.gui.DirectGui import *
 from panda3d.core import *
+
+from direct.gui.DirectGui import *
 from direct.task import Task
+
 from toontown.toonbase import TTLocalizer
+
 from . import PlayingCardGlobals
+
 
 class PlayingCardBase:
 

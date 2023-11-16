@@ -1,4 +1,5 @@
 import string
+
 NORMAL_CHAT = 1
 WHISPER_CHAT = 2
 GUILD_CHAT = 3

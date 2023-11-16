@@ -1,11 +1,13 @@
-from otp.ai.AIBase import *
-from toontown.toonbase import ToontownGlobals
-from direct.distributed.ClockDelta import *
-from toontown.building import ElevatorConstants
-from toontown.building import DistributedElevatorFSMAI
-from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import *
 from direct.fsm.FSM import FSM
+from direct.task import Task
+
+from otp.ai.AIBase import *
+
+from toontown.building import DistributedElevatorFSMAI, ElevatorConstants
+from toontown.toonbase import ToontownGlobals
+
 
 class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedElevatorFloorAI')

@@ -1,15 +1,20 @@
+import math
+import random
+
 from panda3d.core import *
-from direct.task.TaskManagerGlobal import *
+
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from toontown.suit import GoonGlobals
-from direct.task.Task import Task
-from toontown.toonbase import ToontownGlobals
-from otp.otpbase import OTPGlobals
-from toontown.coghq import DistributedCashbotBossObjectAI
 from direct.showbase import PythonUtil
-from toontown.suit import DistributedGoonAI
-import math, random
+from direct.task.Task import Task
+from direct.task.TaskManagerGlobal import *
+
+from otp.otpbase import OTPGlobals
+
+from toontown.coghq import DistributedCashbotBossObjectAI
+from toontown.suit import DistributedGoonAI, GoonGlobals
+from toontown.toonbase import ToontownGlobals
+
 
 class DistributedCashbotBossGoonAI(DistributedGoonAI.DistributedGoonAI, DistributedCashbotBossObjectAI.DistributedCashbotBossObjectAI):
     legLength = 10

@@ -1,29 +1,30 @@
 import copy
 import random
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
 from direct.task import Timer
-from toontown.toon import NPCToons
+
 from otp.ai.AIBaseGlobal import *
+
 from toontown.ai import ToonBarrier
 from toontown.battle import BattleBase
-from toontown.cogdominium import DistributedCogdoBattleBldgAI
 from toontown.building.ElevatorConstants import *
-from toontown.suit.SuitDNA import SuitDNA
-from toontown.toonbase.ToontownBattleGlobals import *
+from toontown.cogdominium import CogdoBarrelRoomAI, CogdoBarrelRoomConsts, CogdoGameConsts, DistributedCogdoBattleBldgAI
+from toontown.cogdominium.DistCogdoCraneGameAI import DistCogdoCraneGameAI
+from toontown.cogdominium.DistCogdoFlyingGameAI import DistCogdoFlyingGameAI
+from toontown.cogdominium.DistCogdoMazeGameAI import DistCogdoMazeGameAI
 from toontown.hood import ZoneUtil
 from toontown.minigame.MinigameGlobals import SafeZones
+from toontown.suit.SuitDNA import SuitDNA
 from toontown.toon import NPCToons
-from .DistributedCogdoElevatorIntAI import DistributedCogdoElevatorIntAI
-from toontown.cogdominium import CogdoBarrelRoomConsts
-from toontown.cogdominium import CogdoBarrelRoomAI
+from toontown.toonbase.ToontownBattleGlobals import *
+
 from .DistCogdoBoardroomGameAI import DistCogdoBoardroomGameAI
-from toontown.cogdominium.DistCogdoCraneGameAI import DistCogdoCraneGameAI
-from toontown.cogdominium.DistCogdoMazeGameAI import DistCogdoMazeGameAI
-from toontown.cogdominium.DistCogdoFlyingGameAI import DistCogdoFlyingGameAI
-from toontown.cogdominium import CogdoGameConsts
+from .DistributedCogdoElevatorIntAI import DistributedCogdoElevatorIntAI
+
 CogdoGames = {
     'boardroom': DistCogdoBoardroomGameAI,
     'crane': DistCogdoCraneGameAI,

@@ -1,6 +1,7 @@
 from otp.speedchat.SCMenu import SCMenu
 from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
 
+
 class TTSCCogMenu(SCMenu):
 
     def __init__(self, indices):

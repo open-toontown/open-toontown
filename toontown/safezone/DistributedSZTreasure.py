@@ -1,7 +1,11 @@
-from . import DistributedTreasure
 from panda3d.core import VBase3, VBase4
-from direct.interval.IntervalGlobal import Sequence, Wait, Func, LerpColorScaleInterval, LerpScaleInterval
+
+from direct.interval.IntervalGlobal import Func, LerpColorScaleInterval, LerpScaleInterval, Sequence, Wait
+
 from toontown.toonbase import ToontownGlobals
+
+from . import DistributedTreasure
+
 
 class DistributedSZTreasure(DistributedTreasure.DistributedTreasure):
 

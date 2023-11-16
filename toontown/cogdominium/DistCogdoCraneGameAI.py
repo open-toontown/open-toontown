@@ -1,15 +1,19 @@
+import random
+
 from panda3d.core import *
 from panda3d.physics import *
+
 from direct.directnotify.DirectNotifyGlobal import directNotify
-from toontown.cogdominium.DistCogdoLevelGameAI import DistCogdoLevelGameAI
-from toontown.cogdominium.DistCogdoCraneAI import DistCogdoCraneAI
+
 from toontown.cogdominium import CogdoCraneGameConsts as GameConsts
-from toontown.cogdominium.CogdoCraneGameBase import CogdoCraneGameBase
 from toontown.cogdominium import CogdoGameConsts
-from toontown.cogdominium.DistCogdoCraneMoneyBagAI import DistCogdoCraneMoneyBagAI
+from toontown.cogdominium.CogdoCraneGameBase import CogdoCraneGameBase
+from toontown.cogdominium.DistCogdoCraneAI import DistCogdoCraneAI
 from toontown.cogdominium.DistCogdoCraneCogAI import DistCogdoCraneCogAI
+from toontown.cogdominium.DistCogdoCraneMoneyBagAI import DistCogdoCraneMoneyBagAI
+from toontown.cogdominium.DistCogdoLevelGameAI import DistCogdoLevelGameAI
 from toontown.suit.SuitDNA import SuitDNA
-import random
+
 
 class DistCogdoCraneGameAI(CogdoCraneGameBase, DistCogdoLevelGameAI, NodePath):
     notify = directNotify.newCategory('DistCogdoCraneGameAI')

@@ -1,15 +1,15 @@
 from panda3d.core import *
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from direct.fsm import StateData
-from otp.otpgui import OTPDialog
-from direct.fsm import ClassicFSM
-from direct.fsm import State
+
 from direct.directnotify import DirectNotifyGlobal
-from otp.otpbase import OTPLocalizer
-from . import GuiScreen
-from otp.otpbase import OTPGlobals
 from direct.distributed.MsgTypes import *
+from direct.fsm import ClassicFSM, State, StateData
+from direct.gui.DirectGui import *
+
+from otp.otpbase import OTPGlobals, OTPLocalizer
+from otp.otpgui import OTPDialog
+
+from . import GuiScreen
+
 
 class CreateAccountScreen(StateData.StateData, GuiScreen.GuiScreen):
     notify = DirectNotifyGlobal.directNotify.newCategory('CreateAccountScreen')

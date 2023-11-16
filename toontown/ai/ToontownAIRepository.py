@@ -1,10 +1,14 @@
-from direct.directnotify import DirectNotifyGlobal
+import os
+
 from panda3d.core import *
 from panda3d.toontown import *
+
+from direct.directnotify import DirectNotifyGlobal
 
 from otp.ai.AIZoneData import AIZoneDataStore
 from otp.ai.TimeManagerAI import TimeManagerAI
 from otp.distributed.OtpDoGlobals import *
+
 from toontown.ai.HolidayManagerAI import HolidayManagerAI
 from toontown.ai.NewsManagerAI import NewsManagerAI
 from toontown.ai.WelcomeValleyManagerAI import WelcomeValleyManagerAI
@@ -19,11 +23,12 @@ from toontown.coghq.PromotionManagerAI import PromotionManagerAI
 from toontown.distributed.ToontownDistrictAI import ToontownDistrictAI
 from toontown.distributed.ToontownDistrictStatsAI import ToontownDistrictStatsAI
 from toontown.distributed.ToontownInternalRepository import ToontownInternalRepository
+from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
 from toontown.hood import ZoneUtil
-from toontown.hood.BRHoodDataAI import BRHoodDataAI
 from toontown.hood.BossbotHQDataAI import BossbotHQDataAI
-from toontown.hood.CSHoodDataAI import CSHoodDataAI
+from toontown.hood.BRHoodDataAI import BRHoodDataAI
 from toontown.hood.CashbotHQDataAI import CashbotHQDataAI
+from toontown.hood.CSHoodDataAI import CSHoodDataAI
 from toontown.hood.DDHoodDataAI import DDHoodDataAI
 from toontown.hood.DGHoodDataAI import DGHoodDataAI
 from toontown.hood.DLHoodDataAI import DLHoodDataAI
@@ -36,14 +41,11 @@ from toontown.hood.TTHoodDataAI import TTHoodDataAI
 from toontown.pets.PetManagerAI import PetManagerAI
 from toontown.quest.QuestManagerAI import QuestManagerAI
 from toontown.racing import RaceGlobals
-from toontown.fishing.DistributedFishingPondAI import DistributedFishingPondAI
 from toontown.racing.DistributedLeaderBoardAI import DistributedLeaderBoardAI
 from toontown.racing.DistributedRacePadAI import DistributedRacePadAI
-from toontown.racing.DistributedStartingBlockAI import DistributedStartingBlockAI
-from toontown.racing.DistributedStartingBlockAI import DistributedViewingBlockAI
+from toontown.racing.DistributedStartingBlockAI import DistributedStartingBlockAI, DistributedViewingBlockAI
 from toontown.racing.DistributedViewPadAI import DistributedViewPadAI
 from toontown.racing.RaceManagerAI import RaceManagerAI
-from toontown.uberdog.DistributedPartyManagerAI import DistributedPartyManagerAI
 from toontown.safezone.SafeZoneManagerAI import SafeZoneManagerAI
 from toontown.shtiker.CogPageManagerAI import CogPageManagerAI
 from toontown.spellbook.ToontownMagicWordManagerAI import ToontownMagicWordManagerAI
@@ -52,7 +54,7 @@ from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
 from toontown.tutorial.TutorialManagerAI import TutorialManagerAI
 from toontown.uberdog.DistributedInGameNewsMgrAI import DistributedInGameNewsMgrAI
-import os
+from toontown.uberdog.DistributedPartyManagerAI import DistributedPartyManagerAI
 
 
 class ToontownAIRepository(ToontownInternalRepository):

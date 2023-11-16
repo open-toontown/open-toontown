@@ -1,14 +1,14 @@
-from toontown.toonbase.ToontownGlobals import *
-from direct.interval.IntervalGlobal import *
+from direct.distributed import DistributedObject, DistributedSmoothNode
 from direct.distributed.ClockDelta import *
-from toontown.catalog import CatalogItem
-from toontown.toonbase import ToontownGlobals
-from direct.distributed import DistributedObject
-from toontown.toonbase import TTLocalizer
-from . import DistributedHouseItem
-from direct.distributed import DistributedSmoothNode
+from direct.interval.IntervalGlobal import *
 from direct.task import Task
-from . import HouseGlobals
+
+from toontown.catalog import CatalogItem
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToontownGlobals import *
+
+from . import DistributedHouseItem, HouseGlobals
+
 
 class DistributedFurnitureItem(DistributedHouseItem.DistributedHouseItem, DistributedSmoothNode.DistributedSmoothNode):
     notify = directNotify.newCategory('DistributedFurnitureItem')

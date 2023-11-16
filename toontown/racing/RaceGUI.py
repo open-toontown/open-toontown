@@ -1,28 +1,31 @@
-from panda3d.core import *
-from direct.showbase.PythonUtil import clampScalar
-from direct.distributed.ClockDelta import *
-from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from direct.gui.DirectLabel import *
-from direct.gui.DirectButton import *
-from direct.showbase import BulletinBoardWatcher
-from direct.interval.IntervalGlobal import *
-from otp.otpbase import OTPGlobals
-from direct.interval.IntervalGlobal import *
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.racing.KartDNA import InvalidEntry, getAccessory, getDefaultColor
-from toontown.racing.RaceHeadFrame import RaceHeadFrame
-from toontown.racing.RaceGag import RaceGag
-from toontown.racing.RaceEndPanels import RaceEndPanel
-from toontown.racing import RaceGlobals
-from panda3d.core import CardMaker, OrthographicLens, LineSegs
-from direct.particles.ParticleEffect import *
-from math import fmod
-from math import sqrt
-import time
 import operator
-from direct.gui.DirectGui import DirectFrame
 import random
+import time
+from math import fmod, sqrt
+
+from panda3d.core import *
+from panda3d.core import CardMaker, LineSegs, OrthographicLens
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+from direct.distributed.ClockDelta import *
+from direct.gui.DirectButton import *
+from direct.gui.DirectGui import DirectFrame
+from direct.gui.DirectLabel import *
+from direct.interval.IntervalGlobal import *
+from direct.particles.ParticleEffect import *
+from direct.showbase import BulletinBoardWatcher
+from direct.showbase.PythonUtil import clampScalar
+
+from otp.otpbase import OTPGlobals
+
+from toontown.racing import RaceGlobals
+from toontown.racing.KartDNA import InvalidEntry, getAccessory, getDefaultColor
+from toontown.racing.RaceEndPanels import RaceEndPanel
+from toontown.racing.RaceGag import RaceGag
+from toontown.racing.RaceHeadFrame import RaceHeadFrame
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class RaceGUI:
     GagPie = 0

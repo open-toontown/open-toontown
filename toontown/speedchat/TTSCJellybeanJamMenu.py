@@ -1,8 +1,10 @@
+from enum import IntEnum
+
+from otp.otpbase import OTPLocalizer
 from otp.speedchat.SCMenu import SCMenu
 from otp.speedchat.SCMenuHolder import SCMenuHolder
 from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
-from otp.otpbase import OTPLocalizer
-from enum import IntEnum
+
 JellybeanJamMenu = [(OTPLocalizer.JellybeanJamMenuSections[0], [30180,
    30181,
    30182,

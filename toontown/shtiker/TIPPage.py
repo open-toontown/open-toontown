@@ -1,11 +1,13 @@
 from panda3d.core import *
-from . import ShtikerPage
+
 from direct.gui.DirectGui import *
-from panda3d.core import *
-from toontown.toon import NPCToons
+
 from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toon import NPCToons
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import ShtikerPage
+
 
 class TIPPage(ShtikerPage.ShtikerPage):
 

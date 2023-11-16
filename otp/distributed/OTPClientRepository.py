@@ -1,45 +1,41 @@
-import sys
-import time
-import random
 import gc
 import os
+import random
+import sys
+import time
+from enum import IntEnum
+
 from panda3d.core import *
-from direct.gui.DirectGui import *
-from otp.distributed.OtpDoGlobals import *
-from direct.interval.IntervalGlobal import ivalMgr
+
 from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.distributed import DistributedSmoothNode
 from direct.distributed.ClientRepositoryBase import ClientRepositoryBase
+from direct.distributed.PyDatagram import PyDatagram
 from direct.fsm.ClassicFSM import ClassicFSM
 from direct.fsm.State import State
-from direct.task import Task
-from direct.distributed import DistributedSmoothNode
-from direct.showbase import PythonUtil, GarbageReport
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import ivalMgr
+from direct.showbase import GarbageReport, LeakDetectors, MessengerLeakDetector, PythonUtil
 from direct.showbase.ContainerLeakDetector import ContainerLeakDetector
-from direct.showbase import MessengerLeakDetector
 from direct.showbase.GarbageReportScheduler import GarbageReportScheduler
-from direct.showbase import LeakDetectors
-from direct.distributed.PyDatagram import PyDatagram
-from otp.avatar.DistributedPlayer import DistributedPlayer
-from otp.login import LoginTTSpecificDevAccount
-from otp.login.CreateAccountScreen import CreateAccountScreen
-from otp.login import LoginScreen
-from otp.otpgui import OTPDialog
-from otp.otpbase import OTPLocalizer
-from otp.login import LoginGSAccount
-from otp.login import LoginGoAccount
-from otp.login.LoginWebPlayTokenAccount import LoginWebPlayTokenAccount
-from otp.login.LoginDISLTokenAccount import LoginDISLTokenAccount
-from otp.login import LoginTTAccount
-from otp.login import LoginAstronAccount
-from otp.login import HTTPUtil
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLauncherGlobals
-from otp.uberdog import OtpAvatarManager
-from otp.distributed import OtpDoGlobals
-from otp.distributed.TelemetryLimiter import TelemetryLimiter
+from direct.task import Task
+
 from otp.ai.GarbageLeakServerEventAggregator import GarbageLeakServerEventAggregator
+from otp.avatar.DistributedPlayer import DistributedPlayer
+from otp.distributed import OtpDoGlobals
+from otp.distributed.OtpDoGlobals import *
+from otp.distributed.TelemetryLimiter import TelemetryLimiter
+from otp.login import (HTTPUtil, LoginAstronAccount, LoginGoAccount, LoginGSAccount, LoginScreen, LoginTTAccount,
+                       LoginTTSpecificDevAccount)
+from otp.login.CreateAccountScreen import CreateAccountScreen
+from otp.login.LoginDISLTokenAccount import LoginDISLTokenAccount
+from otp.login.LoginWebPlayTokenAccount import LoginWebPlayTokenAccount
+from otp.otpbase import OTPGlobals, OTPLauncherGlobals, OTPLocalizer
+from otp.otpgui import OTPDialog
+from otp.uberdog import OtpAvatarManager
+
 from .PotentialAvatar import PotentialAvatar
-from enum import IntEnum
+
 
 class OTPClientRepository(ClientRepositoryBase):
     notify = directNotify.newCategory('OTPClientRepository')

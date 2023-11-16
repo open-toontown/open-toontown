@@ -1,5 +1,6 @@
 from . import PurchaseManagerAI
 
+
 class NewbiePurchaseManagerAI(PurchaseManagerAI.PurchaseManagerAI):
 
     def __init__(self, air, newbieId, playerArray, mpArray, previousMinigameId, trolleyZone):

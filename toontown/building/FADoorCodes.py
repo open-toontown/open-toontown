@@ -1,4 +1,5 @@
 from toontown.toonbase import TTLocalizer
+
 UNLOCKED = 0
 TALK_TO_TOM = 1
 DEFEAT_FLUNKY_HQ = 2

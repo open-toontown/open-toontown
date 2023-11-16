@@ -1,12 +1,13 @@
-from direct.showbase.ShowBaseGlobal import *
-from toontown.toonbase.ToonBaseGlobal import *
-from direct.interval.IntervalGlobal import *
-from toontown.toonbase.ToontownGlobals import *
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM
-from direct.fsm import State
+from direct.fsm import ClassicFSM, State, StateData
+from direct.interval.IntervalGlobal import *
+from direct.showbase.ShowBaseGlobal import *
+
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToontownGlobals import *
+
 from . import CatchGameGlobals
+
 
 class DivingGameToonSD(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('DivingGameToonSD')

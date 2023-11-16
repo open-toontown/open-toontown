@@ -1,7 +1,12 @@
-import urllib.request, urllib.parse, urllib.error
 import os
+import urllib.error
+import urllib.parse
+import urllib.request
+
 from panda3d.core import HTTPClient, Ramfile
+
 from direct.directnotify import DirectNotifyGlobal
+
 
 class BanManagerAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('BanManagerAI')

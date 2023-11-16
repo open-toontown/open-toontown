@@ -1,11 +1,14 @@
-from direct.task import Task
-from direct.fsm import StateData
-from toontown.toonbase.ToontownGlobals import *
-from direct.gui.DirectGui import *
 from panda3d.core import *
-from toontown.toonbase import ToontownTimer
-from toontown.toonbase import TTLocalizer
+
+from direct.fsm import StateData
+from direct.gui.DirectGui import *
+from direct.task import Task
+
+from toontown.toonbase import ToontownTimer, TTLocalizer
+from toontown.toonbase.ToontownGlobals import *
+
 from . import MinigameGlobals
+
 
 class MinigameRulesPanel(StateData.StateData):
 

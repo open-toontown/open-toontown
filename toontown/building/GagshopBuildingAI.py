@@ -1,8 +1,12 @@
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
-from . import DistributedDoorAI, DistributedGagshopInteriorAI, FADoorCodes, DoorTypes
-from toontown.toon import NPCToons
+
 from toontown.quest import Quests
+from toontown.toon import NPCToons
+
+from . import DistributedDoorAI, DistributedGagshopInteriorAI, DoorTypes, FADoorCodes
+
 
 class GagshopBuildingAI:
 

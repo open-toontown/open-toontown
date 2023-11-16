@@ -1,10 +1,12 @@
+import random
+
+from direct.fsm import ClassicFSM, State
+from direct.task import Task
+
+from . import TagGameGlobals
 from .DistributedMinigameAI import *
 from .TagTreasurePlannerAI import *
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from direct.task import Task
-import random
-from . import TagGameGlobals
+
 
 class DistributedTagGameAI(DistributedMinigameAI):
     DURATION = TagGameGlobals.DURATION

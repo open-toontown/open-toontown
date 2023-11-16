@@ -1,9 +1,11 @@
-from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel
-from direct.gui.DirectGui import DirectScrolledList, DirectCheckButton
-from direct.gui.DirectCheckBox import DirectCheckBox
+from panda3d.core import NodePath, Plane, PlaneNode, Point3, TextNode, VBase4, Vec3, Vec4
+
 from direct.gui import DirectGuiGlobals
+from direct.gui.DirectCheckBox import DirectCheckBox
+from direct.gui.DirectGui import DirectButton, DirectCheckButton, DirectFrame, DirectLabel, DirectScrolledList
+
 from toontown.toonbase import ToontownGlobals
-from panda3d.core import Vec3, Vec4, PlaneNode, Plane, Point3, TextNode, VBase4, NodePath
+
 
 class ScrolledFriendList(DirectScrolledList):
 

@@ -1,12 +1,14 @@
 from panda3d.core import *
-from toontown.toonbase.ToontownGlobals import *
-from direct.showbase import DirectObject
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toontowngui import TTDialog
-from otp.otpbase import OTPLocalizer
-from toontown.toontowngui import ToonHeadDialog
 from direct.gui.DirectGui import DGG
-from otp.otpbase import OTPGlobals
+from direct.showbase import DirectObject
+
+from otp.otpbase import OTPGlobals, OTPLocalizer
+
+from toontown.toonbase.ToontownGlobals import *
+from toontown.toontowngui import ToonHeadDialog, TTDialog
+
 
 class FriendNotifier(ToonHeadDialog.ToonHeadDialog):
     notify = DirectNotifyGlobal.directNotify.newCategory('FriendNotifier')

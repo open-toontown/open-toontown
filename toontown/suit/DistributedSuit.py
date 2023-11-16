@@ -1,28 +1,27 @@
+import copy
+import math
+import random
+
 from panda3d.core import *
 from panda3d.otp import *
 from panda3d.toontown import *
-from direct.interval.IntervalGlobal import *
-from direct.distributed.ClockDelta import *
-from direct.directtools.DirectGeometry import CLAMP
-from direct.task import Task
-from otp.avatar import DistributedAvatar
-from . import Suit
-from toontown.toonbase import ToontownGlobals
-from toontown.battle import DistributedBattle
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from . import SuitTimings
-from . import SuitBase
-from . import DistributedSuitPlanner
+
 from direct.directnotify import DirectNotifyGlobal
-from . import SuitDialog
-from toontown.battle import BattleProps
-from toontown.distributed.DelayDeletable import DelayDeletable
-import math
-import copy
-from . import DistributedSuitBase
+from direct.directtools.DirectGeometry import CLAMP
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+from direct.interval.IntervalGlobal import *
+from direct.task import Task
+
+from otp.avatar import DistributedAvatar
 from otp.otpbase import OTPLocalizer
-import random
+
+from toontown.battle import BattleProps, DistributedBattle
+from toontown.distributed.DelayDeletable import DelayDeletable
+from toontown.toonbase import ToontownGlobals
+
+from . import DistributedSuitBase, DistributedSuitPlanner, Suit, SuitBase, SuitDialog, SuitTimings
+
 STAND_OUTSIDE_DOOR = 2.5
 BATTLE_IGNORE_TIME = 6
 BATTLE_WAIT_TIME = 3

@@ -1,11 +1,14 @@
 from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
+
 from direct.directnotify import DirectNotifyGlobal
-from . import DistributedSuitBase
-from toontown.toonbase import ToontownGlobals
+from direct.fsm import ClassicFSM, State
+from direct.interval.IntervalGlobal import *
+
 from toontown.battle import MovieUtil
+from toontown.toonbase import ToontownGlobals
+
+from . import DistributedSuitBase
+
 
 class DistributedLawbotBossSuit(DistributedSuitBase.DistributedSuitBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotBossSuit')

@@ -1,9 +1,9 @@
-from toontown.estate import DistributedPlantBase
 from direct.directnotify import DirectNotifyGlobal
-from toontown.estate import FlowerBase
-from toontown.estate import GardenGlobals
-from toontown.toontowngui import TTDialog
+
+from toontown.estate import DistributedPlantBase, FlowerBase, GardenGlobals
 from toontown.toonbase import TTLocalizer
+from toontown.toontowngui import TTDialog
+
 DIRT_AS_WATER_INDICATOR = True
 DIRT_MOUND_HEIGHT = 0.3
 

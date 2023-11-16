@@ -1,6 +1,9 @@
-from panda3d.core import VBase4, Vec3, Point3
-from .CogdoUtil import VariableContainer, DevVariableContainer
 from enum import IntEnum
+
+from panda3d.core import Point3, VBase4, Vec3
+
+from .CogdoUtil import DevVariableContainer, VariableContainer
+
 AI = VariableContainer()
 AI.GameActions = IntEnum('GameActions', ('LandOnWinPlatform', 'WinStateFinished', 'GotoWinState', 'HitWhirlwind', 'HitLegalEagle', 'HitMinion', 'DebuffInvul', 'RequestEnterEagleInterest', 'RequestExitEagleInterest', 'RanOutOfTimePenalty', 'Died', 'Spawn', 'SetBlades', 'BladeLost'), start=0)
 AI.BroadcastPeriod = 0.3

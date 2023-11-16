@@ -1,8 +1,12 @@
 from direct.showbase import PythonUtil
+
 from otp.speedchat.SCMenu import SCMenu
 from otp.speedchat.SCMenuHolder import SCMenuHolder
+
 from toontown.chat import ResistanceChat
+
 from .TTSCResistanceTerminal import TTSCResistanceTerminal
+
 
 class TTSCResistanceMenu(SCMenu):
 

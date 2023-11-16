@@ -1,5 +1,7 @@
-from panda3d.core import CollisionSphere, CollisionNode, BitMask32, CollisionHandlerEvent, CollisionRay
+from panda3d.core import BitMask32, CollisionHandlerEvent, CollisionNode, CollisionRay, CollisionSphere
+
 from toontown.minigame import ArrowKeys
+
 
 class CogdoFlyingInputManager:
 

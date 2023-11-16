@@ -1,3 +1,5 @@
+import math
+
 from panda3d.core import RopeNode, VBase3
 from panda3d.otp import NametagGlobals
 
@@ -5,17 +7,8 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.fsm.ClassicFSM import ClassicFSM
 from direct.fsm.State import State
 from direct.gui.DirectGui import DGG, DirectLabel
-from direct.interval.IntervalGlobal import (
-    ActorInterval,
-    Func,
-    LerpHprInterval,
-    LerpPosInterval,
-    LerpPosHprInterval,
-    Parallel,
-    Sequence,
-    Wait
-)
-
+from direct.interval.IntervalGlobal import (ActorInterval, Func, LerpHprInterval, LerpPosHprInterval, LerpPosInterval,
+                                            Parallel, Sequence, Wait)
 from direct.showutil.Rope import Rope
 from direct.task.TaskManagerGlobal import taskMgr
 
@@ -27,12 +20,9 @@ from toontown.minigame.DistributedMinigame import DistributedMinigame
 from toontown.minigame.MinigamePowerMeter import MinigamePowerMeter
 from toontown.suit.Suit import Suit
 from toontown.suit.SuitDNA import SuitDNA
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import base
 from toontown.toonbase.ToontownTimer import ToontownTimer
-
-import math
 
 
 class DistributedTugOfWarGame(DistributedMinigame):

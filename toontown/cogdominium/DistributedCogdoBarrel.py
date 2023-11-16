@@ -1,8 +1,11 @@
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
-from toontown.toonbase import ToontownGlobals, ToontownIntervals
+
 from toontown.cogdominium import CogdoBarrelRoomConsts
+from toontown.toonbase import ToontownGlobals, ToontownIntervals
+
 
 class DistributedCogdoBarrel(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogdoBarrel')

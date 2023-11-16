@@ -1,4 +1,5 @@
-from panda3d.core import VBase3, BitMask32
+from panda3d.core import BitMask32, VBase3
+
 GameTime = 60
 NumBarrels = 4
 BarrelStartingPositions = (VBase3(4.3, 4, 0),

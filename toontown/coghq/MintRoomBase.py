@@ -1,5 +1,6 @@
 from toontown.toonbase import ToontownGlobals
 
+
 class MintRoomBase:
 
     def __init__(self):
@@ -18,7 +19,8 @@ class MintRoomBase:
     if __dev__:
 
         def getEntityTypeReg(self):
-            from . import FactoryEntityTypes
             from otp.level import EntityTypeRegistry
+
+            from . import FactoryEntityTypes
             typeReg = EntityTypeRegistry.EntityTypeRegistry(FactoryEntityTypes)
             return typeReg

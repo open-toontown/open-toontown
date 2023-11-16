@@ -1,15 +1,17 @@
+from panda3d.core import CardMaker, NodePath, Point3, TextNode
+
+from direct.gui.DirectGui import DGG, DirectFrame
 from direct.gui.DirectLabel import DirectLabel
-from direct.gui.DirectGui import DirectFrame, DGG
+from direct.interval.FunctionInterval import Func, Wait
+from direct.interval.MetaInterval import Parallel, Sequence
 from direct.task.Task import Task
-from direct.interval.MetaInterval import Sequence, Parallel
-from direct.interval.FunctionInterval import Wait, Func
-from panda3d.core import TextNode, NodePath, Point3, CardMaker
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownIntervals
+
 from toontown.minigame.MazeMapGui import MazeMapGui
+from toontown.toonbase import ToontownGlobals, ToontownIntervals, TTLocalizer
+
 from . import CogdoMazeGameGlobals as Globals
 from . import CogdoUtil
+
 
 class CogdoMazeMapGui(MazeMapGui):
 

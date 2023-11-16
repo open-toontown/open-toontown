@@ -1,5 +1,7 @@
-from . import DistributedBattleAI
 from direct.directnotify import DirectNotifyGlobal
+
+from . import DistributedBattleAI
+
 
 class BattleManagerAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('BattleManagerAI')

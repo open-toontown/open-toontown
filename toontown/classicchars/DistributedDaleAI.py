@@ -1,13 +1,15 @@
-from otp.ai.AIBaseGlobal import *
-from . import DistributedCCharBaseAI
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from direct.task import Task
 import random
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from . import CharStateDatasAI
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM, State
+from direct.task import Task
+
+from otp.ai.AIBaseGlobal import *
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CharStateDatasAI, DistributedCCharBaseAI
+
 
 class DistributedDaleAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedDaleAI')

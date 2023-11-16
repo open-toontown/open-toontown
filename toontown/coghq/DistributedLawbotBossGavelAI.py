@@ -1,9 +1,13 @@
-from direct.directnotify import DirectNotifyGlobal
 from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
-from toontown.toonbase import ToontownGlobals
-from otp.otpbase import OTPGlobals
 from direct.fsm import FSM
+
+from otp.otpbase import OTPGlobals
+
+from toontown.toonbase import ToontownGlobals
+
 
 class DistributedLawbotBossGavelAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotBossGavelAI')

@@ -1,6 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
+
 from otp.launcher.DummyLauncherBase import DummyLauncherBase
+
 from toontown.launcher.ToontownLauncher import ToontownLauncher
+
 
 class ToontownDummyLauncher(DummyLauncherBase, ToontownLauncher):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownDummyLauncher')

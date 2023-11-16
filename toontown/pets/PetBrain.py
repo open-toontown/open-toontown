@@ -1,16 +1,19 @@
+import random
+import types
+
 from panda3d.core import *
 from panda3d.toontown import *
-from direct.showbase.PythonUtil import weightedChoice, randFloat, Functor
-from direct.showbase.PythonUtil import list2dict
-from direct.showbase import DirectObject
-from direct.distributed import DistributedObjectAI
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.task import Task
+from direct.distributed import DistributedObjectAI
 from direct.fsm import FSM
+from direct.showbase import DirectObject
+from direct.showbase.PythonUtil import Functor, list2dict, randFloat, weightedChoice
+from direct.task import Task
+
+from toontown.pets import PetConstants, PetGoal, PetGoalMgr, PetLookerAI, PetObserve, PetTricks
 from toontown.toon import DistributedToonAI
-from toontown.pets import PetConstants, PetObserve, PetGoal, PetGoalMgr
-from toontown.pets import PetTricks, PetLookerAI
-import random, types
+
 
 class PetBrain(DirectObject.DirectObject, CPetBrain):
     notify = DirectNotifyGlobal.directNotify.newCategory('PetBrain')

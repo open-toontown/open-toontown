@@ -1,7 +1,7 @@
 import builtins
-import sys
 import math
 import random
+import sys
 import time
 
 __all__ = ['enumerate', 'nonRepeatingRandomList', 'describeException', 'pdir', 'choice', 'cmp', 'lerp', 'triglerp']

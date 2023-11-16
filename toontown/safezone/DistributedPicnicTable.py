@@ -1,23 +1,26 @@
 from panda3d.core import *
 from panda3d.otp import WhisperPopup
-from direct.distributed.ClockDelta import *
-from direct.task.Task import Task
-from direct.interval.IntervalGlobal import *
-from .TrolleyConstants import *
-from direct.gui.DirectGui import *
-from toontown.toonbase import TTLocalizer
+
 from direct.distributed import DistributedNode
+from direct.distributed.ClockDelta import *
 from direct.distributed.ClockDelta import globalClockDelta
-from .ChineseCheckersBoard import ChineseCheckersBoard
-from .GameTutorials import *
-from .GameMenu import GameMenu
-from direct.fsm import ClassicFSM, State
-from direct.fsm import StateData
-from toontown.distributed import DelayDelete
-from toontown.toonbase.ToontownTimer import ToontownTimer
-from toontown.toonbase import ToontownGlobals
+from direct.fsm import ClassicFSM, State, StateData
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
 from direct.showbase import PythonUtil
+from direct.task.Task import Task
+
 from otp.otpbase import OTPGlobals
+
+from toontown.distributed import DelayDelete
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToontownTimer import ToontownTimer
+
+from .ChineseCheckersBoard import ChineseCheckersBoard
+from .GameMenu import GameMenu
+from .GameTutorials import *
+from .TrolleyConstants import *
+
 
 class DistributedPicnicTable(DistributedNode.DistributedNode):
 

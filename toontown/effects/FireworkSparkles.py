@@ -1,10 +1,14 @@
+import random
+
 from panda3d.core import *
 from panda3d.physics import *
+
 from direct.interval.IntervalGlobal import *
-from direct.particles import ParticleEffect, Particles, ForceGroup
+from direct.particles import ForceGroup, ParticleEffect, Particles
+
 from .EffectController import EffectController
 from .PooledEffect import PooledEffect
-import random
+
 
 class FireworkSparkles(PooledEffect, EffectController):
 

@@ -36,10 +36,13 @@ if 1:
     print('sys.path = ', sys.path)
     print('sys.argv = ', sys.argv)
 
+from panda3d.core import *
+
 from otp.launcher.LauncherBase import LauncherBase
 from otp.otpbase import OTPLauncherGlobals
-from panda3d.core import *
+
 from toontown.toonbase import TTLocalizer
+
 
 class ToontownLauncher(LauncherBase):
     GameName = 'Toontown'

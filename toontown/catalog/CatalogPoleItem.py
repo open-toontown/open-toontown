@@ -1,9 +1,11 @@
-from . import CatalogItem
-from toontown.toonbase import ToontownGlobals
-from toontown.fishing import FishGlobals
 from direct.actor import Actor
-from toontown.toonbase import TTLocalizer
 from direct.interval.IntervalGlobal import *
+
+from toontown.fishing import FishGlobals
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CatalogItem
+
 
 class CatalogPoleItem(CatalogItem.CatalogItem):
     sequenceNumber = 0

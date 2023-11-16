@@ -1,14 +1,18 @@
-from direct.gui.DirectGui import *
+import math
+
 from panda3d.core import *
 from panda3d.physics import *
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.interval.IntervalGlobal import *
 from direct.distributed import DistributedObject
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
 from direct.showutil import Rope
-import math
+
 from toontown.toonbase import ToontownGlobals
-from . import VineGameGlobals
-from . import VineSpider
+
+from . import VineGameGlobals, VineSpider
+
 
 class SwingVine(NodePath):
     notify = DirectNotifyGlobal.directNotify.newCategory('SwingVine')

@@ -1,9 +1,11 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
-from toontown.cogdominium.DistCogdoLevelGame import DistCogdoLevelGame
-from toontown.cogdominium.CogdoBoardroomGameBase import CogdoBoardroomGameBase
+
 from toontown.cogdominium import CogdoBoardroomGameConsts as Consts
+from toontown.cogdominium.CogdoBoardroomGameBase import CogdoBoardroomGameBase
+from toontown.cogdominium.DistCogdoLevelGame import DistCogdoLevelGame
 from toontown.toonbase import ToontownTimer
 from toontown.toonbase import TTLocalizer as TTL
+
 
 class DistCogdoBoardroomGame(CogdoBoardroomGameBase, DistCogdoLevelGame):
     notify = directNotify.newCategory('DistCogdoBoardroomGame')

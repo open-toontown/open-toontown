@@ -1,31 +1,19 @@
 from panda3d.core import *
 from panda3d.toontown import *
-from toontown.toonbase.ToonBaseGlobal import *
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from direct.task.Task import Task
-from .ToontownMsgTypes import *
-from toontown.toonbase import ToontownGlobals
-from toontown.hood import TTHood
-from toontown.hood import DDHood
-from toontown.hood import MMHood
-from toontown.hood import BRHood
-from toontown.hood import DGHood
-from toontown.hood import DLHood
-from toontown.hood import GSHood
-from toontown.hood import OZHood
-from toontown.hood import GZHood
-from toontown.hood import SellbotHQ, CashbotHQ, LawbotHQ, BossbotHQ
-from toontown.hood import TutorialHood
+from direct.fsm import ClassicFSM, State, StateData
 from direct.task import TaskManagerGlobal
-from toontown.hood import QuietZoneState
-from toontown.hood import ZoneUtil
-from toontown.hood import EstateHood
-from toontown.hood import PartyHood
-from toontown.toonbase import TTLocalizer
+from direct.task.Task import Task
+
+from toontown.hood import (BossbotHQ, BRHood, CashbotHQ, DDHood, DGHood, DLHood, EstateHood, GSHood, GZHood, LawbotHQ,
+                           MMHood, OZHood, PartyHood, QuietZoneState, SellbotHQ, TTHood, TutorialHood, ZoneUtil)
 from toontown.parties.PartyGlobals import GoToPartyStatus
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToonBaseGlobal import *
+
+from .ToontownMsgTypes import *
+
 
 class PlayGame(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('PlayGame')

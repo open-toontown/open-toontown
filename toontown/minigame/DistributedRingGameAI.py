@@ -1,10 +1,12 @@
-from .DistributedMinigameAI import *
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from . import RingGameGlobals
 import random
 import types
+
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+
+from . import RingGameGlobals
+from .DistributedMinigameAI import *
+
 
 class DistributedRingGameAI(DistributedMinigameAI):
 

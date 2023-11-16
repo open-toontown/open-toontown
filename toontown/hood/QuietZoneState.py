@@ -1,15 +1,18 @@
 from panda3d.core import *
 from panda3d.toontown import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM, State, StateData
 from direct.showbase.PythonUtil import Functor, PriorityCallbacks
 from direct.task import Task
+
+from otp.otpbase import OTPGlobals
+
 from toontown.distributed.ToontownMsgTypes import *
 from toontown.toonbase import ToontownGlobals
-from otp.otpbase import OTPGlobals
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
+
 from . import ZoneUtil
+
 
 class QuietZoneState(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('QuietZoneState')
@@ -307,7 +310,7 @@ class QuietZoneState(StateData.StateData):
                 base.cr.sendSetZoneMsg(zoneId)
             self.waitForDatabase('WaitForSetZoneResponse')
             self.fsm.request('waitForSetZoneComplete')
-    
+
     if __astron__:
         def getStreetViszones(self, zoneId):
             visZones = [ZoneUtil.getBranchZone(zoneId)]
@@ -316,14 +319,14 @@ class QuietZoneState(StateData.StateData):
             visZones += [loader.node2zone[x] for x in loader.nodeDict[zoneId]]
             self.notify.debug(f'getStreetViszones(zoneId={zoneId}): returning visZones: {visZones}')
             return visZones
-        
+
         def getCogHQViszones(self, zoneId):
             loader = base.cr.playGame.hood.loader
 
             if zoneId in (ToontownGlobals.LawbotOfficeExt, ToontownGlobals.BossbotHQ):
                 # There are no viszones for these zones, just return an empty list.
                 return []
-            
+
             # First, we need to load the DNA file for this Cog HQ.
             dnaStore = DNAStorage()
             dnaFileName = loader.genDNAFileName(zoneId)
@@ -342,7 +345,7 @@ class QuietZoneState(StateData.StateData):
 
                 # Now we'll store it in the loader since we need them when we enter a Cog battle.
                 loader.zoneVisDict[visZoneId] = visibles
-            
+
             # Finally, we want interest in all visgroups due to this being a Cog HQ.
             visZones = list(loader.zoneVisDict.values())[0]
             self.notify.debug(f'getCogHQViszones(zoneId={zoneId}): returning visZones: {visZones}')

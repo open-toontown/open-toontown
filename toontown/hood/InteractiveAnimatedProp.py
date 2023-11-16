@@ -1,13 +1,18 @@
 import math
 import random
-from . import GenericAnimatedProp
-from direct.actor import Actor
-from direct.interval.IntervalGlobal import Sequence, ActorInterval, Wait, Func, SoundInterval, Parallel
-from direct.fsm import FSM
-from direct.showbase.PythonUtil import weightedChoice
+
 from panda3d.core import TextNode, Vec3
-from toontown.toonbase import ToontownGlobals
+
+from direct.actor import Actor
+from direct.fsm import FSM
+from direct.interval.IntervalGlobal import ActorInterval, Func, Parallel, Sequence, SoundInterval, Wait
+from direct.showbase.PythonUtil import weightedChoice
+
 from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownGlobals
+
+from . import GenericAnimatedProp
+
 
 def clearPythonIvals(ival):
     if hasattr(ival, 'function'):

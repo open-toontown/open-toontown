@@ -1,12 +1,14 @@
 from panda3d.core import *
-from direct.distributed.ClockDelta import *
-from direct.interval.IntervalGlobal import *
-from otp.level import BasicEntities
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from . import LiftConstants
-from . import MovingPlatform
+from direct.interval.IntervalGlobal import *
+
+from otp.level import BasicEntities
+
+from . import LiftConstants, MovingPlatform
+
 
 class DistributedLift(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLift')

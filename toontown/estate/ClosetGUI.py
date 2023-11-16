@@ -1,12 +1,14 @@
-from direct.showbase.PythonUtil import Functor
-from direct.gui.DirectGui import *
 from panda3d.core import *
+
+from direct.gui.DirectGui import *
+from direct.showbase.PythonUtil import Functor
+
 from toontown.makeatoon import ClothesGUI
-from . import ClosetGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toontowngui import TTDialog
-from toontown.toonbase import TTLocalizer
+
+from . import ClosetGlobals
+
 
 class ClosetGUI(ClothesGUI.ClothesGUI):
     notify = directNotify.newCategory('ClosetGUI')

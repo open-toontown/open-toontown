@@ -1,9 +1,14 @@
-from direct.showbase.ShowBase import ShowBase
-from panda3d.core import Camera, TPLow, VBase4, ColorWriteAttrib, Filename, getModelPath, NodePath, ConfigVariableBool, ConfigVariableDouble
-from . import OTPRender
-import time
 import math
 import re
+import time
+
+from panda3d.core import (Camera, ColorWriteAttrib, ConfigVariableBool, ConfigVariableDouble, Filename, NodePath, TPLow,
+                          VBase4, getModelPath)
+
+from direct.showbase.ShowBase import ShowBase
+
+from . import OTPRender
+
 
 class OTPBase(ShowBase):
 

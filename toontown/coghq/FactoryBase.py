@@ -1,6 +1,9 @@
-from . import FactorySpecs
 from otp.level import LevelSpec
+
 from toontown.toonbase import ToontownGlobals
+
+from . import FactorySpecs
+
 
 class FactoryBase:
 
@@ -21,7 +24,8 @@ class FactoryBase:
     if __dev__:
 
         def getEntityTypeReg(self):
-            from . import FactoryEntityTypes
             from otp.level import EntityTypeRegistry
+
+            from . import FactoryEntityTypes
             typeReg = EntityTypeRegistry.EntityTypeRegistry(FactoryEntityTypes)
             return typeReg

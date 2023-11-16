@@ -1,11 +1,14 @@
-from .DistributedMinigameAI import *
+import random
+
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
 from direct.task import Task
-from . import PhotoGameGlobals
+
 from toontown.minigame import PhotoGameBase
-import random
+
+from . import PhotoGameGlobals
+from .DistributedMinigameAI import *
+
 
 class DistributedPhotoGameAI(DistributedMinigameAI, PhotoGameBase.PhotoGameBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPhotoGameAI')

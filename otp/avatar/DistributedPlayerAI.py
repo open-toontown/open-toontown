@@ -1,9 +1,10 @@
 from direct.showbase import GarbageReport
+
 from otp.ai.AIBaseGlobal import *
-from otp.avatar import DistributedAvatarAI
-from otp.avatar import PlayerBase
+from otp.avatar import DistributedAvatarAI, PlayerBase
 from otp.distributed.ClsendTracker import ClsendTracker
 from otp.otpbase import OTPGlobals
+
 
 class DistributedPlayerAI(DistributedAvatarAI.DistributedAvatarAI, PlayerBase.PlayerBase, ClsendTracker):
 

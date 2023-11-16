@@ -1,7 +1,10 @@
-from direct.gui.DirectGui import *
 from panda3d.core import *
-from toontown.toonbase import ToontownGlobals
+
+from direct.gui.DirectGui import *
+
 from toontown.toon import ToonHead
+from toontown.toonbase import ToontownGlobals
+
 
 class VineHeadFrame(DirectFrame):
 

@@ -1,12 +1,14 @@
+import functools
+
 from panda3d.core import Point3
+
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.fsm import ClassicFSM, State
 from direct.task import Task
-from toontown.minigame import DistributedMinigameAI
-from toontown.minigame import MinigameGlobals
-from toontown.minigame import IceGameGlobals
+
 from toontown.ai.ToonBarrier import ToonBarrier
-import functools
+from toontown.minigame import DistributedMinigameAI, IceGameGlobals, MinigameGlobals
+
 
 class DistributedIceGameAI(DistributedMinigameAI.DistributedMinigameAI):
     notify = directNotify.newCategory('DistributedIceGameAI')

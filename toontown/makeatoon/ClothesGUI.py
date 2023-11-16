@@ -1,13 +1,17 @@
+import random
+
 from panda3d.core import *
-from toontown.toon import ToonDNA
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from panda3d.core import *
-from .MakeAToonGlobals import *
+
+from toontown.toon import ToonDNA
 from toontown.toonbase import TTLocalizer
-from direct.directnotify import DirectNotifyGlobal
+
 from . import ShuffleButton
-import random
+from .MakeAToonGlobals import *
+
 CLOTHES_MAKETOON = 0
 CLOTHES_TAILOR = 1
 CLOTHES_CLOSET = 2

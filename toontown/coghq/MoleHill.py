@@ -1,10 +1,13 @@
-from panda3d.core import NodePath, Point3, CollisionSphere, CollisionNode, Vec4
-from direct.interval.IntervalGlobal import Sequence, LerpPosInterval, Parallel, LerpScaleInterval, Track, ParticleInterval, Wait, Func
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import MoleFieldBase
+from panda3d.core import CollisionNode, CollisionSphere, NodePath, Point3, Vec4
+
+from direct.interval.IntervalGlobal import (Func, LerpPosInterval, LerpScaleInterval, Parallel, ParticleInterval,
+                                            Sequence, Track, Wait)
 from direct.particles import ParticleEffect
-from toontown.battle import BattleParticles
-from toontown.battle import BattleProps
+
+from toontown.battle import BattleParticles, BattleProps
+from toontown.coghq import MoleFieldBase
+from toontown.toonbase import ToontownGlobals
+
 
 class MoleHill(NodePath):
 

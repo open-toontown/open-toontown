@@ -1,9 +1,13 @@
-from direct.directnotify import DirectNotifyGlobal
-from . import DistributedMintAI
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import MintLayout
-from direct.showbase import DirectObject
 import random
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.showbase import DirectObject
+
+from toontown.coghq import MintLayout
+from toontown.toonbase import ToontownGlobals
+
+from . import DistributedMintAI
+
 
 class MintManagerAI(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('MintManagerAI')

@@ -1,7 +1,11 @@
-from panda3d.core import *
-from . import Playground
 import random
+
+from panda3d.core import *
+
 from direct.task import Task
+
+from . import Playground
+
 
 class DGPlayground(Playground.Playground):
 

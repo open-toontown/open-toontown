@@ -1,10 +1,14 @@
+import math
+
 from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from direct.task.Task import Task
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
+from direct.interval.IntervalGlobal import *
+from direct.task.Task import Task
+
 from toontown.minigame import ToonBlitzGlobals
-import math
+
 
 class TwoDCamera(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDCamera')

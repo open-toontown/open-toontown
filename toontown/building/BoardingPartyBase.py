@@ -1,6 +1,9 @@
-from otp.otpbase import OTPGlobals
-from toontown.toonbase import ToontownGlobals
 import copy
+
+from otp.otpbase import OTPGlobals
+
+from toontown.toonbase import ToontownGlobals
+
 BOARDCODE_OKAY = 1
 BOARDCODE_MISSING = 0
 BOARDCODE_MINLAFF = -1

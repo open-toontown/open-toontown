@@ -1,15 +1,16 @@
-from direct.gui.DirectGui import DirectWaitBar, DGG
+from panda3d.core import Point3, TextNode, VBase4
+
+from direct.gui.DirectGui import DGG, DirectWaitBar
 from direct.gui.OnscreenText import OnscreenText
-from direct.showbase.DirectObject import DirectObject
+from direct.interval.FunctionInterval import Func, Wait
 from direct.interval.LerpInterval import LerpScaleInterval
 from direct.interval.MetaInterval import Sequence
-from direct.interval.FunctionInterval import Wait, Func
-from panda3d.core import Point3, VBase4
-from panda3d.core import TextNode
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownIntervals
-from toontown.toonbase import TTLocalizer
+from direct.showbase.DirectObject import DirectObject
+
+from toontown.toonbase import ToontownGlobals, ToontownIntervals, TTLocalizer
+
 from . import PartyGlobals
+
 
 class PartyCogTrackerGui:
 

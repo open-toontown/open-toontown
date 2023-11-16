@@ -1,5 +1,7 @@
-from direct.showbase.DirectObject import DirectObject
 from panda3d.core import ModifierButtons
+
+from direct.showbase.DirectObject import DirectObject
+
 ROTATE_LEFT_KEY = 'arrow_left'
 ROTATE_RIGHT_KEY = 'arrow_right'
 FORWARD_KEY = 'arrow_up'

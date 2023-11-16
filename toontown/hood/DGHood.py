@@ -1,9 +1,11 @@
 from panda3d.core import *
-from . import ToonHood
-from toontown.town import DGTownLoader
+
 from toontown.safezone import DGSafeZoneLoader
 from toontown.toonbase.ToontownGlobals import *
-from . import SkyUtil
+from toontown.town import DGTownLoader
+
+from . import SkyUtil, ToonHood
+
 
 class DGHood(ToonHood.ToonHood):
 

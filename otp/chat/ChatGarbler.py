@@ -1,6 +1,8 @@
-import string
 import random
+import string
+
 from otp.otpbase import OTPLocalizer
+
 
 class ChatGarbler:
 

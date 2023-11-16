@@ -1,13 +1,16 @@
-from direct.directnotify import DirectNotifyGlobal
-from toontown.battle import BattlePlace
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from toontown.toonbase import ToontownGlobals
-from toontown.hood import ZoneUtil
 from panda3d.core import *
 from panda3d.otp import *
 from panda3d.toontown import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM, State
+
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+
+from toontown.battle import BattlePlace
+from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownGlobals
+
 
 class CogHQExterior(BattlePlace.BattlePlace):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogHQExterior')

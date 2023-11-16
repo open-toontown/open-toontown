@@ -1,29 +1,25 @@
-from panda3d.core import *
-from toontown.distributed.ToontownMsgTypes import *
-from toontown.char import Char
-from otp.avatar import Avatar
-from toontown.toon import Toon
-from toontown.toon import LocalToon
-from toontown.toon import ToonDNA
-from toontown.char import CharDNA
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from direct.fsm import StateData
-from toontown.toonbase import ToontownGlobals
-from direct.actor.Actor import Actor
-from direct.task import Task
-from direct.gui.DirectGui import *
-from toontown.toonbase import TTLocalizer
-from .MakeAToonGlobals import *
-from direct.interval.IntervalGlobal import *
-from direct.directnotify import DirectNotifyGlobal
-from toontown.toontowngui import TTDialog
-from . import GenderShop
-from . import BodyShop
-from . import ColorShop
-from . import MakeClothesGUI
-from . import NameShop
 import random
+
+from panda3d.core import *
+
+from direct.actor.Actor import Actor
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM, State, StateData
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
+from direct.task import Task
+
+from otp.avatar import Avatar
+
+from toontown.char import Char, CharDNA
+from toontown.distributed.ToontownMsgTypes import *
+from toontown.toon import LocalToon, Toon, ToonDNA
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toontowngui import TTDialog
+
+from . import BodyShop, ColorShop, GenderShop, MakeClothesGUI, NameShop
+from .MakeAToonGlobals import *
+
 
 class MakeAToon(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('MakeAToon')
