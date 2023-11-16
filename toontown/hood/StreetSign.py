@@ -5,9 +5,9 @@ from direct.distributed import DistributedObject
 
 class StreetSign(DistributedObject.DistributedObject):
     RedownloadTaskName = 'RedownloadStreetSign'
-    StreetSignFileName = config.GetString('street-sign-filename', 'texture.png')
-    StreetSignBaseDir = config.GetString('street-sign-base-dir', 'sign')
-    StreetSignUrl = base.config.GetString('street-sign-url', 'http://cdn.toontown.disney.go.com/toontown/en/street-signs/img/')
+    StreetSignFileName = ConfigVariableString('street-sign-filename', 'texture.png').getValue()
+    StreetSignBaseDir = ConfigVariableString('street-sign-base-dir', 'sign').getValue()
+    StreetSignUrl = ConfigVariableString('street-sign-url', 'http://cdn.toontown.disney.go.com/toontown/en/street-signs/img/').getValue()
     notify = DirectNotifyGlobal.directNotify.newCategory('StreetSign')
 
     def __init__(self):

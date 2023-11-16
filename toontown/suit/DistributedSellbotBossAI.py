@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableInt
 from otp.ai.AIBaseGlobal import *
 from direct.distributed.ClockDelta import *
 from toontown.suit import DistributedBossCogAI
@@ -374,7 +375,7 @@ class DistributedSellbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         for toonId in self.involvedToons:
             toon = self.air.doId2do.get(toonId)
             if toon:
-                configMax = simbase.config.GetInt('max-sos-cards', 16)
+                configMax = ConfigVariableInt('max-sos-cards', 16).getValue()
                 if configMax == 8:
                     maxNumCalls = 1
                 else:

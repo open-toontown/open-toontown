@@ -3,6 +3,8 @@ import time
 import os
 from datetime import datetime
 
+from panda3d.core import ConfigVariableString
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
 from direct.distributed.PyDatagram import PyDatagram
@@ -45,7 +47,7 @@ class DeveloperAccountDB(AccountDB):
         AccountDB.__init__(self, loginManager)
 
         # Setup the accountToId dictionary
-        self.accountDbFilePath = config.GetString('accountdb-local-file', 'astron/databases/accounts.json')
+        self.accountDbFilePath = ConfigVariableString('accountdb-local-file', 'astron/databases/accounts.json').getValue()
         # Load the JSON file if it exists.
         if os.path.exists(self.accountDbFilePath):
             with open(self.accountDbFilePath, 'r') as file:
@@ -61,7 +63,7 @@ class DeveloperAccountDB(AccountDB):
         if playToken not in self.accountToId:
             # It is not, so we'll associate them with a brand new account object.
             # Get the default access level from config.
-            accessLevel = config.GetString('default-access-level', "SYSTEM_ADMIN")
+            accessLevel = ConfigVariableString('default-access-level', "SYSTEM_ADMIN").getValue()
             if accessLevel not in OTPGlobals.AccessLevelName2Int:
                 self.loginManager.notify.warning(f'Access Level "{accessLevel}" isn\'t defined.  Reverting back to SYSTEM_ADMIN')
                 accessLevel = "SYSTEM_ADMIN"

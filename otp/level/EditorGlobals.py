@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableString
 from direct.showbase.PythonUtil import uniqueElements
 EditTargetPostName = 'inGameEditTarget'
 EntIdRange = 10000
@@ -14,7 +15,7 @@ username2entIdBase = {'darren': 1 * EntIdRange,
  'rurbino': 11 * EntIdRange}
 usernameConfigVar = 'level-edit-username'
 undefinedUsername = 'UNDEFINED_USERNAME'
-editUsername = config.GetString(usernameConfigVar, undefinedUsername)
+editUsername = ConfigVariableString(usernameConfigVar, undefinedUsername).getValue()
 
 def checkNotReadyToEdit():
     if editUsername == undefinedUsername:

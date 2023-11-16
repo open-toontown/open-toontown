@@ -1,4 +1,4 @@
-from panda3d.core import Point3, CollisionSphere, CollisionNode, CollisionHandlerEvent, NodePath, TextNode
+from panda3d.core import Point3, CollisionSphere, CollisionNode, CollisionHandlerEvent, ConfigVariableBool, ConfigVariableDouble, ConfigVariableInt, NodePath, TextNode
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.interval.IntervalGlobal import Wait, LerpFunctionInterval, LerpHprInterval, Sequence, Parallel, Func, SoundInterval, ActorInterval, ProjectileInterval, Track, LerpScaleInterval, WaitInterval, LerpPosHprInterval
 from direct.gui.DirectGui import DirectLabel
@@ -40,7 +40,7 @@ class DistributedCogThiefGame(DistributedMinigame):
         self.cogInfo = {}
         self.lastTimeControlPressed = 0
         self.stolenBarrels = []
-        self.useOrthoWalk = base.config.GetBool('cog-thief-ortho', 1)
+        self.useOrthoWalk = ConfigVariableBool('cog-thief-ortho', 1).getValue()
         self.resultIval = None
         self.gameIsEnding = False
         self.__textGen = TextNode('cogThiefGame')
@@ -248,7 +248,7 @@ class DistributedCogThiefGame(DistributedMinigame):
             return
         self.notify.debug('setGameStart')
         DistributedMinigame.setGameStart(self, timestamp)
-        if not base.config.GetBool('cog-thief-endless', 0):
+        if not ConfigVariableBool('cog-thief-endless', 0).getValue():
             self.timer.show()
             self.timer.countdown(CTGG.GameTime, self.__gameTimerExpired)
         self.clockStopTime = None
@@ -319,7 +319,7 @@ class DistributedCogThiefGame(DistributedMinigame):
         camera.reparentTo(render)
         p = self.cameraTopView
         camera.setPosHpr(p[0], p[1], p[2], p[3], p[4], p[5])
-        camera.setZ(camera.getZ() + base.config.GetFloat('cog-thief-z-camera-adjust', 0.0))
+        camera.setZ(camera.getZ() + ConfigVariableDouble('cog-thief-z-camera-adjust', 0.0).getValue())
 
     def destroyGameWalk(self):
         self.notify.debug('destroyOrthoWalk')
@@ -764,8 +764,8 @@ class DistributedCogThiefGame(DistributedMinigame):
             self.stolenBarrels.append(barrelIndex)
             barrel = self.barrels[barrelIndex]
             barrel.hide()
-        if base.config.GetBool('cog-thief-check-barrels', 1):
-            if not base.config.GetBool('cog-thief-endless', 0):
+        if ConfigVariableBool('cog-thief-check-barrels', 1).getValue():
+            if not ConfigVariableBool('cog-thief-endless', 0).getValue():
                 if len(self.stolenBarrels) == len(self.barrels):
                     localStamp = globalClockDelta.networkToLocalTime(timestamp, bits=32)
                     gameTime = self.local2GameTime(localStamp)
@@ -836,7 +836,7 @@ class DistributedCogThiefGame(DistributedMinigame):
         return False
 
     def getNumCogs(self):
-        result = base.config.GetInt('cog-thief-num-cogs', 0)
+        result = ConfigVariableInt('cog-thief-num-cogs', 0).getValue()
         if not result:
             safezone = self.getSafezoneId()
             result = CTGG.calculateCogs(self.numPlayers, safezone)

@@ -407,7 +407,7 @@ class CatalogItemPanel(DirectFrame):
         self.accept('verifyDone', self.__handleVerifyPurchase)
 
     def __handleVerifyPurchase(self):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: CATALOG: Order item')
         status = self.verify.doneStatus
         self.ignore('verifyDone')
@@ -439,7 +439,7 @@ class CatalogItemPanel(DirectFrame):
         self.accept('verifyGiftDone', self.__handleVerifyGift)
 
     def __handleVerifyGift(self):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: CATALOG: Gift item')
         status = self.verify.doneStatus
         self.ignore('verifyGiftDone')

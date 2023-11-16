@@ -149,7 +149,7 @@ class DistributedLevelAI(DistributedObjectAI.DistributedObjectAI, Level.Level):
             self.modified = 1
             self.scheduleAutosave()
 
-        AutosavePeriod = simbase.config.GetFloat('level-autosave-period-minutes', 5)
+        AutosavePeriod = ConfigVariableDouble('level-autosave-period-minutes', 5).getValue()
 
         def scheduleAutosave(self):
             if hasattr(self, 'autosaveTask'):

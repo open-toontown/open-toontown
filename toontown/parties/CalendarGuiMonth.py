@@ -1,6 +1,6 @@
 import calendar
 from datetime import timedelta, datetime
-from panda3d.core import Vec4, TextNode
+from panda3d.core import ConfigVariableBool, Vec4, TextNode
 from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton, DirectScrolledList, DGG
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase import ToontownGlobals
@@ -18,7 +18,7 @@ class CalendarGuiMonth(DirectFrame):
         if self.onlyFutureDaysClickable:
             self.onlyFutureMonthsClickable = True
         DirectFrame.__init__(self, parent=parent, scale=scale, pos=pos)
-        self.showMarkers = base.config.GetBool('show-calendar-markers', 0)
+        self.showMarkers = ConfigVariableBool('show-calendar-markers', 0).getValue()
         self.load()
         self.createGuiObjects()
         self.lastSelectedDate = None

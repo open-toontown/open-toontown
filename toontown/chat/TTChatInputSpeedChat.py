@@ -344,7 +344,7 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
         self.insidePartiesMenu = None
         self.createSpeedChat()
         self.whiteList = None
-        self.allowWhiteListSpeedChat = base.config.GetBool('white-list-speed-chat', 0)
+        self.allowWhiteListSpeedChat = ConfigVariableBool('white-list-speed-chat', 0).getValue()
         if self.allowWhiteListSpeedChat:
             self.addWhiteList()
         self.factoryMenu = None
@@ -437,7 +437,7 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
             self.chatMgr.fsm.request('mainMenu')
 
         self.terminalSelectedEvent = self.speedChat.getEventName(SpeedChatGlobals.SCTerminalSelectedEvent)
-        if base.config.GetBool('want-sc-auto-hide', 1):
+        if ConfigVariableBool('want-sc-auto-hide', 1).getValue():
             self.accept(self.terminalSelectedEvent, selectionMade)
         self.speedChat.reparentTo(aspect2dp, DGG.FOREGROUND_SORT_INDEX)
         scZ = 0.96

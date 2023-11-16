@@ -1,4 +1,4 @@
-from panda3d.core import NodePath, VBase4
+from panda3d.core import ConfigVariableBool, NodePath, VBase4
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.RandomNumGen import RandomNumGen
 from toontown.minigame.MazeBase import MazeBase
@@ -18,7 +18,7 @@ class CogdoMaze(MazeBase, DirectObject):
         self._clearColor = VBase4(base.win.getClearColor())
         self._clearColor.setW(1.0)
         base.win.setClearColor(VBase4(0.0, 0.0, 0.0, 1.0))
-        if __debug__ and base.config.GetBool('cogdomaze-dev', False):
+        if __debug__ and ConfigVariableBool('cogdomaze-dev', False).getValue():
             self._initCollisionVisuals()
 
     def _initWaterCoolers(self):

@@ -56,7 +56,7 @@ class AvatarChooser(StateData.StateData):
         if base.cr.loginInterface.supportsRelogin():
             self.logoutButton.show()
         self.pickAToonBG.reparentTo(base.camera)
-        choice = base.config.GetInt('auto-avatar-choice', -1)
+        choice = ConfigVariableInt('auto-avatar-choice', -1).getValue()
         for panel in self.panelList:
             panel.show()
             self.accept(panel.doneEvent, self.__handlePanelDone)

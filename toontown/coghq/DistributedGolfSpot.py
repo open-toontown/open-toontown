@@ -1,5 +1,5 @@
 import math
-from panda3d.core import Point3, CollisionSphere, CollisionNode, CollisionHandlerEvent, TextNode, VBase4, NodePath, BitMask32
+from panda3d.core import Point3, CollisionSphere, CollisionNode, CollisionHandlerEvent, TextNode, VBase4, NodePath, BitMask32, ConfigVariableDouble
 from panda3d.direct import SmoothMover
 from direct.fsm import FSM
 from direct.distributed import DistributedObject
@@ -22,8 +22,8 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
     toonGolfOffsetPos = Point3(-2, 0, -GolfGlobals.GOLF_BALL_RADIUS)
     toonGolfOffsetHpr = Point3(-90, 0, 0)
     rotateSpeed = 20
-    golfPowerSpeed = base.config.GetDouble('golf-power-speed', 3)
-    golfPowerExponent = base.config.GetDouble('golf-power-exponent', 0.75)
+    golfPowerSpeed = ConfigVariableDouble('golf-power-speed', 3).getValue()
+    golfPowerExponent = ConfigVariableDouble('golf-power-exponent', 0.75).getValue()
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)

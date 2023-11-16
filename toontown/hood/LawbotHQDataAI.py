@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.directnotify import DirectNotifyGlobal
 from . import HoodDataAI
 from toontown.toonbase import ToontownGlobals
@@ -44,7 +45,7 @@ class LawbotHQDataAI(HoodDataAI.HoodDataAI):
         self.lobbyElevator = DistributedCJElevatorAI.DistributedCJElevatorAI(self.air, self.lobbyMgr, ToontownGlobals.LawbotLobby, antiShuffle=1)
         self.lobbyElevator.generateWithRequired(ToontownGlobals.LawbotLobby)
         self.addDistObj(self.lobbyElevator)
-        if simbase.config.GetBool('want-boarding-groups', 1):
+        if ConfigVariableBool('want-boarding-groups', 1).getValue():
             self.boardingParty = DistributedBoardingPartyAI.DistributedBoardingPartyAI(self.air, [self.lobbyElevator.doId], 8)
             self.boardingParty.generateWithRequired(ToontownGlobals.LawbotLobby)
 
@@ -65,6 +66,6 @@ class LawbotHQDataAI(HoodDataAI.HoodDataAI):
         makeDoor(ToontownGlobals.LawbotOfficeExt, 0, 0)
         officeIdList = [
          officeId0, officeId1, officeId2, officeId3]
-        if simbase.config.GetBool('want-boarding-parties', 1):
+        if ConfigVariableBool('want-boarding-parties', 1).getValue():
             self.officeBoardingParty = DistributedBoardingPartyAI.DistributedBoardingPartyAI(self.air, officeIdList, 4)
             self.officeBoardingParty.generateWithRequired(ToontownGlobals.LawbotOfficeExt)

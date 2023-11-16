@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from otp.ai.AIBaseGlobal import *
 from direct.distributed.ClockDelta import *
 import types
@@ -412,7 +413,7 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
     def enterToon(self):
         self.d_setState('toon')
         exteriorZoneId, interiorZoneId = self.getExteriorAndInteriorZoneId()
-        if simbase.config.GetBool('want-new-toonhall', 1) and ZoneUtil.getCanonicalZoneId(interiorZoneId) == ToonHall:
+        if ConfigVariableBool('want-new-toonhall', 1).getValue() and ZoneUtil.getCanonicalZoneId(interiorZoneId) == ToonHall:
             self.interior = DistributedToonHallInteriorAI.DistributedToonHallInteriorAI(self.block, self.air, interiorZoneId, self)
         else:
             self.interior = DistributedToonInteriorAI.DistributedToonInteriorAI(self.block, self.air, interiorZoneId, self)

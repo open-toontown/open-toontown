@@ -1,7 +1,7 @@
 import math
 import random
 import time
-from panda3d.core import TextNode, BitMask32, Point3, Vec3, Vec4, deg2Rad, Mat3, NodePath, VBase4, CollisionTraverser, CollisionSegment, CollisionNode, CollisionHandlerQueue
+from panda3d.core import TextNode, BitMask32, Point3, Vec3, Vec4, deg2Rad, Mat3, NodePath, VBase4, CollisionTraverser, CollisionSegment, CollisionNode, CollisionHandlerQueue, ConfigVariableBool, ConfigVariableDouble
 from panda3d.ode import OdeRayGeom
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
@@ -57,10 +57,10 @@ class DistributedGolfHole(DistributedPhysicsWorld.DistributedPhysicsWorld, FSM, 
      'Cleanup': ['Off']}
     id = 0
     notify = directNotify.newCategory('DistributedGolfHole')
-    unlimitedAimTime = base.config.GetBool('unlimited-aim-time', 0)
-    unlimitedTeeTime = base.config.GetBool('unlimited-tee-time', 0)
-    golfPowerSpeed = base.config.GetDouble('golf-power-speed', 3)
-    golfPowerExponent = base.config.GetDouble('golf-power-exponent', 0.75)
+    unlimitedAimTime = ConfigVariableBool('unlimited-aim-time', 0).getValue()
+    unlimitedTeeTime = ConfigVariableBool('unlimited-tee-time', 0).getValue()
+    golfPowerSpeed = ConfigVariableDouble('golf-power-speed', 3).getValue()
+    golfPowerExponent = ConfigVariableDouble('golf-power-exponent', 0.75).getValue()
     DefaultCamP = -16
     MaxCamP = -90
 
@@ -289,7 +289,7 @@ class DistributedGolfHole(DistributedPhysicsWorld.DistributedPhysicsWorld, FSM, 
             curNodePath = self.hardSurfaceNodePath.find('**/locator%d' % locatorNum)
 
     def loadBlockers(self):
-        loadAll = base.config.GetBool('golf-all-blockers', 0)
+        loadAll = ConfigVariableBool('golf-all-blockers', 0).getValue()
         self.createLocatorDict()
         self.blockerNums = self.holeInfo['blockers']
         for locatorNum in self.locDict:

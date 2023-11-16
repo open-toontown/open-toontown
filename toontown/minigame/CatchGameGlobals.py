@@ -1,4 +1,6 @@
-EndlessGame = config.GetBool('endless-catch-game', 0)
+from panda3d.core import ConfigVariableBool
+
+EndlessGame = ConfigVariableBool('endless-catch-game', 0).getValue()
 GameDuration = 55.0
 
 class DropObject:

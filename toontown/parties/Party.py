@@ -99,7 +99,7 @@ class Party(Place.Place):
     def enter(self, requestStatus):
         hoodId = requestStatus['hoodId']
         zoneId = requestStatus['zoneId']
-        if config.GetBool('want-party-telemetry-limiter', 1):
+        if ConfigVariableBool('want-party-telemetry-limiter', 1).getValue():
             limiter = TLGatherAllAvs('Party', RotationLimitToH)
         else:
             limiter = TLNull()
@@ -275,7 +275,7 @@ class Party(Place.Place):
         if self.isPartyEnding:
             teleportNotify.debug('party ending, sending teleportResponse')
             fromAvatar.d_teleportResponse(toAvatar.doId, 0, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId())
-        elif base.config.GetBool('want-tptrack', False):
+        elif ConfigVariableBool('want-tptrack', False).getValue():
             if toAvatar == localAvatar:
                 localAvatar.doTeleportResponse(fromAvatar, toAvatar, toAvatar.doId, 1, toAvatar.defaultShard, base.cr.playGame.getPlaceId(), self.getZoneId(), fromAvatar.doId)
             else:

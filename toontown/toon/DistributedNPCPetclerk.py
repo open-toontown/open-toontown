@@ -1,7 +1,6 @@
 from panda3d.core import *
 from .DistributedNPCToonBase import *
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from . import NPCToons
 from direct.task.Task import Task
 from toontown.toonbase import TTLocalizer
@@ -173,7 +172,7 @@ class DistributedNPCPetclerk(DistributedNPCToonBase):
         return
 
     def __handlePetAdopted(self, whichPet, nameIndex):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: ADOPTADOOLE: Adopt a doodle.')
         base.cr.removePetFromFriendsMap()
         self.ignore(self.eventDict['petAdopted'])

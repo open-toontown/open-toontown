@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from otp.ai.AIBaseGlobal import *
 from direct.task.Task import Task
 from direct.distributed.ClockDelta import *
@@ -102,7 +103,7 @@ class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
         self.lockedDoor = locked
 
     def isLockedDoor(self):
-        if simbase.config.GetBool('no-locked-doors', 0):
+        if ConfigVariableBool('no-locked-doors', 0).getValue():
             return 0
         else:
             return self.lockedDoor

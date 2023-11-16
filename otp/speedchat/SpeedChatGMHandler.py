@@ -14,15 +14,15 @@ class SpeedChatGMHandler(DirectObject.DirectObject):
     def generateSCStructure(self):
         SpeedChatGMHandler.scStructure = [OTPLocalizer.PSCMenuGM]
         phraseCount = 0
-        numGMCategories = base.config.GetInt('num-gm-categories', 0)
+        numGMCategories = ConfigVariableInt('num-gm-categories', 0).getValue()
         for i in range(0, numGMCategories):
-            categoryName = base.config.GetString('gm-category-%d' % i, '')
+            categoryName = ConfigVariableString('gm-category-%d' % i, '').getValue()
             if categoryName == '':
                 continue
             categoryStructure = [categoryName]
-            numCategoryPhrases = base.config.GetInt('gm-category-%d-phrases' % i, 0)
+            numCategoryPhrases = ConfigVariableInt('gm-category-%d-phrases' % i, 0).getValue()
             for j in range(0, numCategoryPhrases):
-                phrase = base.config.GetString('gm-category-%d-phrase-%d' % (i, j), '')
+                phrase = ConfigVariableString('gm-category-%d-phrase-%d' % (i, j).getValue(), '')
                 if phrase != '':
                     idx = 'gm%d' % phraseCount
                     SpeedChatGMHandler.scList[idx] = phrase
@@ -31,9 +31,9 @@ class SpeedChatGMHandler(DirectObject.DirectObject):
 
             SpeedChatGMHandler.scStructure.append(categoryStructure)
 
-        numGMPhrases = base.config.GetInt('num-gm-phrases', 0)
+        numGMPhrases = ConfigVariableInt('num-gm-phrases', 0).getValue()
         for i in range(0, numGMPhrases):
-            phrase = base.config.GetString('gm-phrase-%d' % i, '')
+            phrase = ConfigVariableString('gm-phrase-%d' % i, '').getValue()
             if phrase != '':
                 idx = 'gm%d' % phraseCount
                 SpeedChatGMHandler.scList[idx] = phrase

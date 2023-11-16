@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
 from direct.directnotify.DirectNotifyGlobal import directNotify
 import random
@@ -20,8 +21,8 @@ class NonRepeatableRandomSourceUD(DistributedObjectGlobalUD):
         self._requests = []
         self._fakeIt = 0
         if __dev__:
-            NonRepeatableRandomSourceUD.RandomNumberCacheSize = config.GetInt('random-source-cache-size', 5000)
-            self._fakeIt = config.GetBool('fake-non-repeatable-random-source', self._fakeIt)
+            NonRepeatableRandomSourceUD.RandomNumberCacheSize = ConfigVariableInt('random-source-cache-size', 5000).getValue()
+            self._fakeIt = ConfigVariableBool('fake-non-repeatable-random-source', self._fakeIt).getValue()
 
     def randomSample(self, nrrsDoId, random):
         self._randoms = [random] + self._randoms

@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from .DistributedMinigameAI import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
@@ -55,7 +56,7 @@ class DistributedPhotoGameAI(DistributedMinigameAI, PhotoGameBase.PhotoGameBase)
 
     def enterPlay(self):
         self.notify.debug('enterPlay')
-        if not config.GetBool('endless-photo-game', 0):
+        if not ConfigVariableBool('endless-photo-game', 0).getValue():
             taskMgr.doMethodLater(self.data['TIME'], self.timerExpired, self.taskName('gameTimer'))
 
     def timerExpired(self, task = None):

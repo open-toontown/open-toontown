@@ -14,7 +14,7 @@ class LevelSuitPlannerAI(DirectObject.DirectObject):
         self.level = level
         self.cogCtor = cogCtor
         self.cogSpecs = cogSpecs
-        if simbase.config.GetBool('level-reserve-suits', 0):
+        if ConfigVariableBool('level-reserve-suits', 0).getValue():
             self.reserveCogSpecs = reserveCogSpecs
         else:
             self.reserveCogSpecs = []

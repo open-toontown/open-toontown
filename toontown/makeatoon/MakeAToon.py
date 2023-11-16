@@ -91,7 +91,7 @@ class MakeAToon(StateData.StateData):
 
     def enter(self):
         self.notify.debug('Starting Make A Toon.')
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: MAKEATOON: Starting Make A Toon')
         base.cr.centralLogger.writeClientEvent('MAT - startingMakeAToon')
         base.camLens.setFov(ToontownGlobals.MakeAToonCameraFov)
@@ -252,8 +252,8 @@ class MakeAToon(StateData.StateData):
         self.cls.load()
         self.ns.load()
         self.music = base.loader.loadMusic('phase_3/audio/bgm/create_a_toon.ogg')
-        self.musicVolume = base.config.GetFloat('makeatoon-music-volume', 1)
-        self.sfxVolume = base.config.GetFloat('makeatoon-sfx-volume', 1)
+        self.musicVolume = ConfigVariableDouble('makeatoon-music-volume', 1).getValue()
+        self.sfxVolume = ConfigVariableDouble('makeatoon-sfx-volume', 1).getValue()
         self.soundBack = base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_back.ogg')
         self.crashSounds = []
         self.crashSounds.append(base.loader.loadSfx('phase_3/audio/sfx/tt_s_ara_mat_crash_boing.ogg'))
@@ -598,7 +598,7 @@ class MakeAToon(StateData.StateData):
         self.ns.rejectName(TTLocalizer.RejectNameText)
 
     def __handleNameShopDone(self):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: MAKEATOON: Creating A Toon')
         self.guiLastButton.hide()
         self.guiCheckButton.hide()

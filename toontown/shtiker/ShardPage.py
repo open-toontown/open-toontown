@@ -2,7 +2,6 @@ from panda3d.core import *
 from . import ShtikerPage
 from direct.task.Task import Task
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
 from toontown.hood import ZoneUtil
@@ -10,6 +9,7 @@ from toontown.toonbase import ToontownGlobals
 from toontown.distributed import ToontownDistrictStats
 from toontown.toontowngui import TTDialog
 import functools
+
 POP_COLORS_NTT = (Vec4(0.0, 1.0, 0.0, 1.0), Vec4(1.0, 1.0, 0.0, 1.0), Vec4(1.0, 0.0, 0.0, 1.0))
 POP_COLORS = (Vec4(0.4, 0.4, 1.0, 1.0), Vec4(0.4, 1.0, 0.4, 1.0), Vec4(1.0, 0.4, 0.4, 1.0))
 
@@ -26,8 +26,8 @@ class ShardPage(ShtikerPage.ShtikerPage):
         self.textDisabledColor = Vec4(0.4, 0.8, 0.4, 1)
         self.ShardInfoUpdateInterval = 5.0
         self.lowPop, self.midPop, self.highPop = base.getShardPopLimits()
-        self.showPop = config.GetBool('show-total-population', 0)
-        self.noTeleport = config.GetBool('shard-page-disable', 0)
+        self.showPop = ConfigVariableBool('show-total-population', 0).getValue()
+        self.noTeleport = ConfigVariableBool('shard-page-disable', 0).getValue()
         return
 
     def load(self):

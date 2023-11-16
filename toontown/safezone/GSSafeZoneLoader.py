@@ -99,7 +99,7 @@ class GSSafeZoneLoader(SafeZoneLoader):
         return
 
     def startSmokeEffect(self):
-        if base.config.GetBool('want-crashedLeaderBoard-Smoke', 1):
+        if ConfigVariableBool('want-crashedLeaderBoard-Smoke', 1).getValue():
             leaderBoard = self.geom.find('**/*crashed*')
             locator = leaderBoard.find('**/*locator_smoke*')
             if locator != None:
@@ -108,7 +108,7 @@ class GSSafeZoneLoader(SafeZoneLoader):
         return
 
     def stopSmokeEffect(self):
-        if base.config.GetBool('want-crashedLeaderBoard-Smoke', 1):
+        if ConfigVariableBool('want-crashedLeaderBoard-Smoke', 1).getValue():
             if self.smoke != None:
                 self.smoke.stop()
                 self.smoke.destroy()

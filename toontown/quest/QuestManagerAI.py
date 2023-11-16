@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from otp.ai.AIBaseGlobal import *
 from direct.task import Task
 from direct.directnotify import DirectNotifyGlobal
@@ -48,7 +49,7 @@ class QuestManagerAI:
     notify = DirectNotifyGlobal.directNotify.newCategory("QuestManagerAI")
 
     # Immediately complete all quests and all visits are to ToonHQ
-    QuestCheat = simbase.config.GetBool("quest-cheat", 0)
+    QuestCheat = ConfigVariableBool("quest-cheat", 0).getValue()
 
     # table of requests for quests from specific avatars
     NextQuestDict = {}

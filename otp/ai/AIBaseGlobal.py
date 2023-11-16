@@ -7,7 +7,6 @@ __builtins__['jobMgr'] = simbase.jobMgr
 __builtins__['eventMgr'] = simbase.eventMgr
 __builtins__['messenger'] = simbase.messenger
 __builtins__['bboard'] = simbase.bboard
-__builtins__['config'] = simbase.config
 __builtins__['directNotify'] = directNotify
 from direct.showbase import Loader
 simbase.loader = Loader.Loader(simbase)

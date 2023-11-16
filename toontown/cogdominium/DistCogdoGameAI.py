@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
@@ -12,7 +13,7 @@ class SadCallbackToken:
 
 class DistCogdoGameAI(DistCogdoGameBase, DistributedObjectAI):
     notify = directNotify.newCategory('DistCogdoGameAI')
-    EndlessCogdoGames = simbase.config.GetBool('endless-cogdo-games', 0)
+    EndlessCogdoGames = ConfigVariableBool('endless-cogdo-games', 0).getValue()
 
     def __init__(self, air, interior):
         DistributedObjectAI.__init__(self, air)

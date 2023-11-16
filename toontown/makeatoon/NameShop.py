@@ -1,8 +1,8 @@
 from panda3d.core import *
+from panda3d.core import ConfigVariableBool, TextEncoder
 from toontown.toonbase.ToontownGlobals import *
 from direct.task.TaskManagerGlobal import *
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from toontown.distributed.ToontownMsgTypes import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui import OnscreenText
@@ -24,7 +24,6 @@ from direct.showbase import PythonUtil
 from toontown.toon import NPCToons
 from direct.task import Task
 from toontown.makeatoon.TTPickANamePattern import TTPickANamePattern
-from panda3d.core import TextEncoder
 MAX_NAME_WIDTH = TTLocalizer.NSmaxNameWidth
 ServerDialogTimeout = 3.0
 
@@ -1176,12 +1175,12 @@ class NameShop(StateData.StateData):
     def __openTutorialDialog(self, choice = 0):
         if choice == 1:
             self.notify.debug('enterTutorial')
-            if base.config.GetBool('want-qa-regression', 0):
+            if ConfigVariableBool('want-qa-regression', 0).getValue():
                 self.notify.info('QA-REGRESSION: ENTERTUTORIAL: Enter Tutorial')
             self.__createAvatar()
         else:
             self.notify.debug('skipTutorial')
-            if base.config.GetBool('want-qa-regression', 0):
+            if ConfigVariableBool('want-qa-regression', 0).getValue():
                 self.notify.info('QA-REGRESSION: SKIPTUTORIAL: Skip Tutorial')
             self.__handleSkipTutorial()
         self.promptTutorialDialog.destroy()

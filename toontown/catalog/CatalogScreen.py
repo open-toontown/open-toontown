@@ -1,6 +1,5 @@
 from panda3d.core import *
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from direct.gui.DirectScrolledList import *
 from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
@@ -173,7 +172,7 @@ class CatalogScreen(DirectFrame):
         self.emblemCatalogButton['state'] = DGG.DISABLED
 
     def showNewItems(self, index = None):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: CATALOG: New item')
         taskMgr.remove('clarabelleHelpText1')
         messenger.send('wakeup')
@@ -190,7 +189,7 @@ class CatalogScreen(DirectFrame):
         return
 
     def showBackorderItems(self, index = None):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: CATALOG: Backorder item')
         taskMgr.remove('clarabelleHelpText1')
         messenger.send('wakeup')
@@ -207,7 +206,7 @@ class CatalogScreen(DirectFrame):
         return
 
     def showLoyaltyItems(self, index = None):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: CATALOG: Special item')
         taskMgr.remove('clarabelleHelpText1')
         messenger.send('wakeup')
@@ -224,7 +223,7 @@ class CatalogScreen(DirectFrame):
         return
 
     def showEmblemItems(self, index = None):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: CATALOG: Emblem item')
         taskMgr.remove('clarabelleHelpText1')
         messenger.send('wakeup')

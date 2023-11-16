@@ -3,7 +3,6 @@ import os
 import time
 import builtins
 from panda3d.core import *
-from direct.showbase import DConfig
 from direct.showbase.DirectObject import DirectObject
 from direct.task.MiniTask import MiniTaskManager
 from direct.directnotify.DirectNotifyGlobal import *

@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from toontown.building.ElevatorConstants import *
@@ -489,7 +490,7 @@ class DistributedStartingBlock(DistributedObject.DistributedObject, FSM):
 
     def enterEnterMovie(self):
         self.notify.debug('%d enterEnterMovie: Entering the Enter Movie State.' % self.doId)
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             raceName = TTLocalizer.KartRace_RaceNames[self.kartPad.trackType]
             self.notify.info('QA-REGRESSION: KARTING: %s' % raceName)
         toonTrack = self.generateToonMoveTrack()
@@ -670,7 +671,7 @@ class DistributedViewingBlock(DistributedStartingBlock):
 
     def enterEnterMovie(self):
         self.notify.debug('%d enterEnterMovie: Entering the Enter Movie State.' % self.doId)
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             raceName = TTLocalizer.KartRace_RaceNames[self.kartPad.trackType]
             self.notify.info('QA-REGRESSION: KARTING: %s' % raceName)
         pos = self.nodePath.getPos(render)

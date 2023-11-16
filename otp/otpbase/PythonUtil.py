@@ -4,6 +4,8 @@ import math
 import random
 import time
 
+from panda3d.core import ConfigVariableBool
+
 __all__ = ['enumerate', 'nonRepeatingRandomList', 'describeException', 'pdir', 'choice', 'cmp', 'lerp', 'triglerp']
 
 if not hasattr(builtins, 'enumerate'):
@@ -59,10 +61,8 @@ def recordCreationStack(cls):
 # __dev__ is not defined at import time, call this after it's defined
 def recordFunctorCreationStacks():
     global Functor
-    from direct.showbase import DConfig
-    config = DConfig
     # off by default, very slow
-    if __dev__ and config.GetBool('record-functor-creation-stacks', 0):
+    if __dev__ and ConfigVariableBool('record-functor-creation-stacks', 0).getValue():
         if not hasattr(Functor, '_functorCreationStacksRecorded'):
             Functor = recordCreationStackStr(Functor)
             Functor._functorCreationStacksRecorded = True

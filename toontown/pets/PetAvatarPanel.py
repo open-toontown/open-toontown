@@ -1,7 +1,6 @@
 from panda3d.core import *
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from direct.showbase import DirectObject
 from direct.showbase.PythonUtil import Functor
 from direct.task.Task import Task
@@ -217,7 +216,7 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
         return
 
     def __handleCall(self):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: PET: Call')
         self.notify.debug('__handleCall(): doId=%s' % self.avatar.doId)
         base.localAvatar.b_setPetMovie(self.avId, PetConstants.PET_MOVIE_CALL)
@@ -229,7 +228,7 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
         return
 
     def __handleFeed(self):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: PET: Feed')
         self.notify.debug('__handleFeed(): doId=%s' % self.avatar.doId)
         base.localAvatar.b_setPetMovie(self.avId, PetConstants.PET_MOVIE_FEED)
@@ -241,7 +240,7 @@ class PetAvatarPanel(AvatarPanel.AvatarPanel):
         return
 
     def __handleScratch(self):
-        if base.config.GetBool('want-qa-regression', 1):
+        if ConfigVariableBool('want-qa-regression', 1).getValue():
             self.notify.info('QA-REGRESSION: PET: Scratch')
         self.notify.debug('__handleScratch(): doId=%s' % self.avatar.doId)
         base.localAvatar.b_setPetMovie(self.avId, PetConstants.PET_MOVIE_SCRATCH)

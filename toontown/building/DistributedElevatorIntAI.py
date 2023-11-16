@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableDouble
 from otp.ai.AIBase import *
 from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
@@ -14,7 +15,7 @@ class DistributedElevatorIntAI(DistributedElevatorAI.DistributedElevatorAI):
 
     def __init__(self, air, bldg, avIds):
         DistributedElevatorAI.DistributedElevatorAI.__init__(self, air, bldg)
-        self.countdownTime = simbase.config.GetFloat('int-elevator-timeout', INTERIOR_ELEVATOR_COUNTDOWN_TIME)
+        self.countdownTime = ConfigVariableDouble('int-elevator-timeout', INTERIOR_ELEVATOR_COUNTDOWN_TIME).getValue()
         self.avIds = copy.copy(avIds)
         for avId in avIds:
             self.acceptOnce(self.air.getAvatarExitEvent(avId), self.__handleAllAvsUnexpectedExit, extraArgs=[avId])
