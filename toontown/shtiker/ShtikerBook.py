@@ -4,6 +4,7 @@ from toontown.toonbase import ToontownGlobals
 from direct.showbase import DirectObject
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
+from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 from toontown.effects import DistributedFireworkShow
 from toontown.parties import DistributedPartyFireworksActivity
@@ -45,6 +46,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
          TTLocalizer.GolfPageTitle,
          TTLocalizer.EventsPageName,
          TTLocalizer.NewsPageName]
+        return
 
     def setSafeMode(self, setting):
         self.safeMode = setting
@@ -121,22 +123,8 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self['image'] = bookModel.find('**/big_book')
         self['image_scale'] = (2, 1, 1.5)
         self.resetFrameSize()
-        self.bookOpenButton = DirectButton(
-                image = (bookModel.find('**/BookIcon_CLSD'), bookModel.find('**/BookIcon_OPEN'), bookModel.find('**/BookIcon_RLVR')),
-                relief = None,
-                parent = base.a2dBottomRight,
-                pos = (-0.158, 0, 0.17),
-                scale = 0.305,
-                command = self.__open
-        )
-        self.bookCloseButton = DirectButton(
-                image = (bookModel.find('**/BookIcon_OPEN'), bookModel.find('**/BookIcon_CLSD'), bookModel.find('**/BookIcon_RLVR2')),
-                relief = None,
-                parent = base.a2dBottomRight,
-                pos = (-0.158, 0, 0.17),
-                scale = 0.305,
-                command = self.__close
-        )
+        self.bookOpenButton = DirectButton(image=(bookModel.find('**/BookIcon_CLSD'), bookModel.find('**/BookIcon_OPEN'), bookModel.find('**/BookIcon_RLVR')), relief=None, pos=(1.175, 0, -0.83), scale=0.305, command=self.__open)
+        self.bookCloseButton = DirectButton(image=(bookModel.find('**/BookIcon_OPEN'), bookModel.find('**/BookIcon_CLSD'), bookModel.find('**/BookIcon_RLVR2')), relief=None, pos=(1.175, 0, -0.83), scale=0.305, command=self.__close)
         self.bookOpenButton.hide()
         self.bookCloseButton.hide()
         self.nextArrow = DirectButton(parent=self, relief=None, image=(bookModel.find('**/arrow_button'), bookModel.find('**/arrow_down'), bookModel.find('**/arrow_rollover')), scale=(0.1, 0.1, 0.1), pos=(0.838, 0, -0.661), command=self.__pageChange, extraArgs=[1])
@@ -145,6 +133,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.openSound = base.loader.loadSfx('phase_3.5/audio/sfx/GUI_stickerbook_open.ogg')
         self.closeSound = base.loader.loadSfx('phase_3.5/audio/sfx/GUI_stickerbook_delete.ogg')
         self.pageSound = base.loader.loadSfx('phase_3.5/audio/sfx/GUI_stickerbook_turn.ogg')
+        return
 
     def unload(self):
         loader.unloadModel('phase_3.5/models/gui/stickerbook_gui')
@@ -294,6 +283,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
          pageName,
          ''), text_align=TextNode.ALeft, text_pos=(1, -0.2), text_scale=TTLocalizer.SBpageTab, text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1), image=iconImage, image_scale=iconScale, geom=iconGeom, geom_scale=iconScale, geom_color=iconColor, pos=(0, 0, -yOffset), scale=0.06, command=buttonPressedCommand, extraArgs=extraArgs)
         self.pageTabs.insert(pageIndex, pageTab)
+        return
 
     def setPage(self, page, enterPage = True):
         if self.currPageIndex is not None:
@@ -306,6 +296,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         from toontown.shtiker import NewsPage
         if not isinstance(page, NewsPage.NewsPage):
             self.pageBeforeNews = page
+        return
 
     def setPageBeforeNews(self, enterPage = True):
         self.setPage(self.pageBeforeNews, enterPage)
@@ -317,6 +308,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             self.pageTabs[self.currPageTabIndex]['relief'] = DGG.RAISED
         self.currPageTabIndex = pageTabIndex
         self.pageTabs[self.currPageTabIndex]['relief'] = DGG.SUNKEN
+        return
 
     def isOnPage(self, page):
         result = False
@@ -446,6 +438,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
     def disableBookCloseButton(self):
         if self.bookCloseButton:
             self.bookCloseButton['command'] = None
+        return
 
     def enableBookCloseButton(self):
         if self.bookCloseButton:

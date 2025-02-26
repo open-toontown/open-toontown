@@ -792,10 +792,12 @@ class KartShopGuiMgr(DirectObject.DirectObject, object):
         self.kartID = -1
         self.accID = -1
         self.timer = ToontownTimer.ToontownTimer()
+        self.timer.reparentTo(aspect2d)
         self.timer.posInTopRightCorner()
         self.timer.accept('RESET_KARTSHOP_TIMER', self.__resetTimer)
         self.timer.countdown(KartShopGlobals.KARTCLERK_TIMER, self.__timerExpired)
         self.__doDialog(MENUS.MainMenu)
+        return
 
     def __resetTimer(self):
         if hasattr(self, 'timer') and self.timer:

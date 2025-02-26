@@ -41,7 +41,6 @@ class ToontownLoadingScreen:
             self.waitBar.reparentTo(self.gui)
             self.title.reparentTo(self.gui)
             self.gui.reparentTo(aspect2dp, DGG.NO_FADE_SORT_INDEX)
-            self.gui.find('**/bg').setScale(base.aspect2dp, VBase3(base.getAspectRatio(), 1, 1))
         else:
             self.waitBar.reparentTo(aspect2dp, DGG.NO_FADE_SORT_INDEX)
             self.title.reparentTo(aspect2dp, DGG.NO_FADE_SORT_INDEX)

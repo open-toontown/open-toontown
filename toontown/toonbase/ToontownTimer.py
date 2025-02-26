@@ -13,7 +13,3 @@ class ToontownTimer(OTPTimer):
             ToontownTimer.ClockImage = model.find('**/alarm_clock')
             model.removeNode()
         return ToontownTimer.ClockImage
-
-    def posInTopRightCorner(self):
-        self.reparentTo(base.a2dTopRight)
-        self.setPos(-.15, 0.0, -.16)

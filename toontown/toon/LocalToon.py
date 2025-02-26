@@ -92,20 +92,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             newScale = oldScale = 0.8
             if WantNewsPage:
                 newScale = oldScale * ToontownGlobals.NewsPageScaleAdjust
-            self.bFriendsList = DirectButton(
-                    image = (friendsButtonNormal, friendsButtonPressed, friendsButtonRollover),
-                    relief = None,
-                    parent = base.a2dTopRight,
-                    pos = (-0.141, 0, -0.125),
-                    scale = newScale,
-                    text = ('', TTLocalizer.FriendsListLabel, TTLocalizer.FriendsListLabel),
-                    text_scale = 0.09,
-                    text_fg = Vec4(1, 1, 1, 1),
-                    text_shadow = Vec4(0, 0, 0, 1),
-                    text_pos = (0, -0.18),
-                    text_font = ToontownGlobals.getInterfaceFont(),
-                    command = self.sendFriendsListEvent
-            )
+            self.bFriendsList = DirectButton(image=(friendsButtonNormal, friendsButtonPressed, friendsButtonRollover), relief=None, pos=(1.192, 0, 0.875), scale=newScale, text=('', TTLocalizer.FriendsListLabel, TTLocalizer.FriendsListLabel), text_scale=0.09, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), text_pos=(0, -0.18), text_font=ToontownGlobals.getInterfaceFont(), command=self.sendFriendsListEvent)
             self.bFriendsList.hide()
             self.friendsListButtonActive = 0
             self.friendsListButtonObscured = 0
@@ -383,11 +370,10 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.laffMeter = LaffMeter.LaffMeter(self.style, self.hp, self.maxHp)
         self.laffMeter.setAvatar(self)
         self.laffMeter.setScale(0.075)
-        self.laffMeter.reparentTo(base.a2dBottomLeft)
         if self.style.getAnimal() == 'monkey':
-            self.laffMeter.setPos(0.153, 0.0, 0.13)
+            self.laffMeter.setPos(-1.18, 0.0, -0.87)
         else:
-            self.laffMeter.setPos(0.133, 0.0, 0.13)
+            self.laffMeter.setPos(-1.2, 0.0, -0.87)
         self.laffMeter.stop()
         self.questMap = QuestMap.QuestMap(self)
         self.questMap.stop()

@@ -57,22 +57,8 @@ class QuestMap(DirectFrame):
         self.marker['image'] = iconNP
         self.marker.setScale(0.05)
         iconNP.removeNode()
-        self.mapOpenButton = DirectButton(
-                image=(gui.find('**/tt_t_gui_qst_mapClose'), gui.find('**/tt_t_gui_qst_mapClose'), gui.find('**/tt_t_gui_qst_mapTryToOpen')),
-                relief=None,
-                parent = base.a2dBottomRight,
-                pos=(-0.08, 0, 0.37),
-                scale=0.205,
-                command=self.show
-        )
-        self.mapCloseButton = DirectButton(
-                image = (gui.find('**/tt_t_gui_qst_mapOpen'), gui.find('**/tt_t_gui_qst_mapOpen'), gui.find('**/tt_t_gui_qst_mapTryToClose')),
-                relief = None,
-                parent = base.a2dBottomRight,
-                pos = (-0.08, 0, 0.37),
-                scale = 0.205,
-                command = self.hide
-        )
+        self.mapOpenButton = DirectButton(image=(gui.find('**/tt_t_gui_qst_mapClose'), gui.find('**/tt_t_gui_qst_mapClose'), gui.find('**/tt_t_gui_qst_mapTryToOpen')), relief=None, pos=(1.25, 0, -0.63), scale=0.205, command=self.show)
+        self.mapCloseButton = DirectButton(image=(gui.find('**/tt_t_gui_qst_mapOpen'), gui.find('**/tt_t_gui_qst_mapOpen'), gui.find('**/tt_t_gui_qst_mapTryToClose')), relief=None, pos=(1.25, 0, -0.63), scale=0.205, command=self.hide)
         self.mapOpenButton.hide()
         self.mapCloseButton.hide()
         gui.removeNode()
