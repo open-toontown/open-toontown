@@ -55,7 +55,7 @@ class ToonBase(OTPBase.OTPBase):
         self.wantDynamicShadows = 0
         self.exitErrorCode = 0
         camera.setPosHpr(0, 0, 0, 0, 0, 0)
-        self.camLens.setMinFov(ToontownGlobals.DefaultCameraFov / base.getAspectRatio())
+        self.camLens.setMinFov(ToontownGlobals.DefaultCameraFov / (4. / 3.))
         self.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, ToontownGlobals.DefaultCameraFar)
         self.musicManager.setVolume(0.65)
         self.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
@@ -146,7 +146,7 @@ class ToonBase(OTPBase.OTPBase):
         self.walking = 0
         self.oldX = max(1, base.win.getXSize())
         self.oldY = max(1, base.win.getYSize())
-        self.aspectRatio = base.getAspectRatio()
+        self.aspectRatio = float(self.oldX) / self.oldY
         return
 
     def windowEvent(self, win):
