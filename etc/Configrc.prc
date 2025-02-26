@@ -1,5 +1,5 @@
 # Window Settings
-window-title B.Rock's TT Fixes
+window-title Toontown
 icon-filename phase_3/models/gui/toontown.ico
 cursor-filename phase_3/models/gui/toonmono.cur
 
@@ -12,9 +12,7 @@ aux-display tinydisplay
 depth-bits 24
 audio-sfx-active #t
 audio-music-active #t
-#aspect-ratio 1.333333
-framebuffer-hardware #t
-multisamples 4
+aspect-ratio 1.333333
 
 # Models/Resources
 model-path resources

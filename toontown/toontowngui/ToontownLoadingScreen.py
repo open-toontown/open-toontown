@@ -52,7 +52,6 @@ class ToontownLoadingScreen:
         self.waitBar.reparentTo(self.gui)
         self.title.reparentTo(self.gui)
         self.gui.reparentTo(hidden)
-        self.gui.find('**/bg').setScale(aspect2dp, VBase3(base.getAspectRatio(), 1, 1))
         return (self.__expectedCount, self.__count)
 
     def abort(self):
