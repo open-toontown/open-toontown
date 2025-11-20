@@ -83,7 +83,7 @@ class QuietZoneState(StateData.StateData):
         return
 
     def _start(self, requestStatus):
-        base.transitions.fadeScreen(1.0)
+        base.transitions.fadeScreen(0.3)
         self.fsm.request('waitForQuietZoneResponse')
 
     def getRequestStatus(self):

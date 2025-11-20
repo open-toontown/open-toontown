@@ -159,8 +159,15 @@ class PlayGame(StateData.StateData):
             self.dnaStore.resetNodes()
             self.dnaStore.resetTextures()
             del self.dnaStore
-            ModelPool.garbageCollect()
-            TexturePool.garbageCollect()
+            # Defer garbage collection to improve loading performance
+            def deferredModelGC(task):
+                ModelPool.garbageCollect()
+                return task.done
+            def deferredTextureGC(task):
+                TexturePool.garbageCollect()
+                return task.done
+            taskMgr.doMethodLater(1.0, deferredModelGC, 'deferredGC-model-playgame')
+            taskMgr.doMethodLater(1.0, deferredTextureGC, 'deferredGC-texture-playgame')
 
     def unload(self):
         self.unloadDnaStore()

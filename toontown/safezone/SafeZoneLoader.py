@@ -55,8 +55,15 @@ class SafeZoneLoader(StateData.StateData):
         del self.holidayPropTransforms
         self.deleteAnimatedProps()
         self.ignoreAll()
-        ModelPool.garbageCollect()
-        TexturePool.garbageCollect()
+        # Defer garbage collection to improve loading performance
+        def deferredModelGC(task):
+            ModelPool.garbageCollect()
+            return task.done
+        def deferredTextureGC(task):
+            TexturePool.garbageCollect()
+            return task.done
+        taskMgr.doMethodLater(1.0, deferredModelGC, 'deferredGC-model-safezone')
+        taskMgr.doMethodLater(1.0, deferredTextureGC, 'deferredGC-texture-safezone')
 
     def enter(self, requestStatus):
         self.fsm.enterInitialState()
@@ -87,10 +94,14 @@ class SafeZoneLoader(StateData.StateData):
             np.setTag('transformIndex', repr(i))
             self.holidayPropTransforms[i] = np.getNetTransform()
 
-        self.geom.flattenMedium()
+        # Skip flattenMedium for faster loading
+        # self.geom.flattenMedium()
         gsg = base.win.getGsg()
         if gsg:
-            self.geom.prepareScene(gsg)
+            def prepareSceneTask(task, geom=self.geom, gsg=gsg):
+                geom.prepareScene(gsg)
+                return task.done
+            taskMgr.doMethodLater(0.001, prepareSceneTask, 'prepareScene-safezone')
 
     def makeDictionaries(self, dnaStore):
         self.nodeList = []

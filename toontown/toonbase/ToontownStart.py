@@ -33,7 +33,7 @@ except:
     builtins.launcher = launcher
 
 launcher.setRegistry('EXIT_PAGE', 'normal')
-pollingDelay = 0.5
+pollingDelay = 0.01
 print('ToontownStart: Polling for game2 to finish...')
 while not launcher.getGame2Done():
     time.sleep(pollingDelay)
@@ -59,8 +59,15 @@ if base.win == None:
 
 launcher.setPandaErrorCode(0)
 launcher.setPandaWindowOpen()
-ConfigVariableDouble('decompressor-step-time').setValue(0.01)
-ConfigVariableDouble('extractor-step-time').setValue(0.01)
+ConfigVariableDouble('decompressor-step-time').setValue(0.001)
+ConfigVariableDouble('extractor-step-time').setValue(0.001)
+ConfigVariableBool('preload-textures').setValue(1)
+ConfigVariableBool('preload-simple-textures').setValue(1)
+ConfigVariableBool('compressed-textures').setValue(1)
+# Additional performance optimizations
+ConfigVariableBool('garbage-collect-states').setValue(0)
+ConfigVariableBool('support-threads').setValue(1)
+# Texture and Model pools are managed automatically by Panda3D
 backgroundNodePath = aspect2d.attachNewNode(backgroundNode, 0)
 backgroundNodePath.setPos(0.0, 0.0, 0.0)
 backgroundNodePath.setScale(render2d, VBase3(1))

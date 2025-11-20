@@ -9,6 +9,8 @@ class ToontownLoadingScreen:
     def __init__(self):
         self.__expectedCount = 0
         self.__count = 0
+        self.__updateSkip = 5
+        self.__updateCounter = 0
         self.gui = loader.loadModel('phase_3/models/gui/progress-background')
         self.banner = loader.loadModel('phase_3/models/gui/toon_council').find('**/scroll')
         self.banner.reparentTo(self.gui)
@@ -59,4 +61,7 @@ class ToontownLoadingScreen:
 
     def tick(self):
         self.__count = self.__count + 1
-        self.waitBar.update(self.__count)
+        self.__updateCounter += 1
+        if self.__updateCounter >= self.__updateSkip:
+            self.__updateCounter = 0
+            self.waitBar.update(self.__count)

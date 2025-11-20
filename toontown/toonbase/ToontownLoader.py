@@ -5,13 +5,15 @@ from direct.showbase import Loader
 from toontown.toontowngui import ToontownLoadingScreen
 
 class ToontownLoader(Loader.Loader):
-    TickPeriod = 0.2
+    TickPeriod = 0.01
 
     def __init__(self, base):
         Loader.Loader.__init__(self, base)
         self.inBulkBlock = None
         self.blockName = None
         self.loadingScreen = ToontownLoadingScreen.ToontownLoadingScreen()
+        self._tickCounter = 0
+        self._tickSkip = 10
         return
 
     def destroy(self):
@@ -56,14 +58,17 @@ class ToontownLoader(Loader.Loader):
 
     def tick(self):
         if self.inBulkBlock:
-            now = globalClock.getRealTime()
-            if now - self._lastTickT > self.TickPeriod:
-                self._lastTickT += self.TickPeriod
-                self.loadingScreen.tick()
-                try:
-                    base.cr.considerHeartbeat()
-                except:
-                    pass
+            self._tickCounter += 1
+            if self._tickCounter >= self._tickSkip:
+                self._tickCounter = 0
+                now = globalClock.getRealTime()
+                if now - self._lastTickT > self.TickPeriod:
+                    self._lastTickT += self.TickPeriod
+                    self.loadingScreen.tick()
+                    try:
+                        base.cr.considerHeartbeat()
+                    except:
+                        pass
 
     def loadModel(self, *args, **kw):
         ret = Loader.Loader.loadModel(self, *args, **kw)

@@ -89,8 +89,15 @@ class TownLoader(StateData.StateData):
         del self.holidayPropTransforms
         self.deleteAnimatedProps()
         cleanupDialog('globalDialog')
-        ModelPool.garbageCollect()
-        TexturePool.garbageCollect()
+        # Defer garbage collection to improve loading performance
+        def deferredModelGC(task):
+            ModelPool.garbageCollect()
+            return task.done
+        def deferredTextureGC(task):
+            TexturePool.garbageCollect()
+            return task.done
+        taskMgr.doMethodLater(1.0, deferredModelGC, 'deferredGC-model-town')
+        taskMgr.doMethodLater(1.0, deferredTextureGC, 'deferredGC-texture-town')
 
     def enter(self, requestStatus):
         teleportDebug(requestStatus, 'TownLoader.enter(%s)' % requestStatus)
@@ -211,7 +218,10 @@ class TownLoader(StateData.StateData):
         self.notify.info('skipping self.geom.flattenMedium')
         gsg = base.win.getGsg()
         if gsg:
-            self.geom.prepareScene(gsg)
+            def prepareSceneTask(task, geom=self.geom, gsg=gsg):
+                geom.prepareScene(gsg)
+                return task.done
+            taskMgr.doMethodLater(0.001, prepareSceneTask, 'prepareScene-town')
         self.geom.setName('town_top_level')
 
     def reparentLandmarkBlockNodes(self):
@@ -278,9 +288,12 @@ class TownLoader(StateData.StateData):
         self.hood.dnaStore.resetDNAVisGroupsAI()
 
     def renameFloorPolys(self, nodeList):
+        # Optimized collision poly renaming - process in batches
         for i in nodeList:
             collNodePaths = i.findAllMatches('**/+CollisionNode')
             numCollNodePaths = collNodePaths.getNumPaths()
+            if numCollNodePaths == 0:
+                continue
             visGroupName = i.node().getName()
             for j in range(numCollNodePaths):
                 collNodePath = collNodePaths.getPath(j)

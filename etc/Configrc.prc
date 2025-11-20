@@ -69,13 +69,50 @@ dx-use-rangebased-fog #t
 # Set this true to have all CollisionTraversers in the world respect the previous frame's transform (position) for a given object when determining motion for collision tests.
 respect-prev-transform 1
 # Specifies the maximum amount of time that should be consumed by a single call to Decompressor::run().
-decompressor-step-time 0.5
+decompressor-step-time 0.001
 # Specifies the maximum amount of time that should be consumed by a single call to Extractor::step().
-extractor-step-time 0.5
+extractor-step-time 0.001
 # Fix for Panda3D 1.0.0
 temp-hpr-fix 1
 # Set this true to allow the use of vertex buffers (or buffer objects, as OpenGL dubs them) for rendering vertex data.
-vertex-buffers 0
+vertex-buffers 1
+
+# Loading Optimizations
+model-cache-dir
+model-cache-textures #t
+cache-check-timestamps #f
+preload-textures #t
+preload-simple-textures #t
+compressed-textures #t
+texture-compression dxt1
+allow-incomplete-render #t
+gl-compile-and-execute #t
+gl-use-display-lists #t
+sync-video #f
+yield-timeslice #f
+auto-flip #t
+gl-finish #f
+basic-shaders-only #f
+
+# Performance Optimizations
+support-threads #t
+pstats-gpu-timing 0
+gl-check-errors 0
+gl-force-no-error #t
+gl-debug 0
+notify-level-glgsg error
+notify-level-gobj error
+notify-level-loader error
+audio-preload-threshold 100000
+garbage-collect-states 0
+uniquify-transforms 0
+uniquify-states 0
+uniquify-attribs 0
+retransform-sprites 0
+lock-to-one-cpu 0
+
+# Threading & Async Loading
+threading-model /Draw
 
 # GUI Settings
 direct-wtext 0

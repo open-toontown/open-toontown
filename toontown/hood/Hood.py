@@ -66,7 +66,7 @@ class Hood(StateData):
         self.titleText.setColor(Vec4(*self.titleColor))
         self.titleText.clearColorScale()
         self.titleText.setFg(self.titleColor)
-        self.titleTextSeq = Sequence(Wait(0.1), Wait(6.0), self.titleText.colorScaleInterval(0.5, Vec4(1.0, 1.0, 1.0, 0.0)), Func(self.hideTitleText))
+        self.titleTextSeq = Sequence(Wait(0.01), Wait(3.0), self.titleText.colorScaleInterval(0.3, Vec4(1.0, 1.0, 1.0, 0.0)), Func(self.hideTitleText))
         self.titleTextSeq.start()
 
     def hideTitleText(self):
@@ -100,15 +100,19 @@ class Hood(StateData):
                 self.sky.setTag('sky', 'Regular')
                 self.sky.setScale(1.0)
                 self.sky.setFogOff()
+                # Flatten sky for better performance
+                self.sky.flattenLight()
             else:
                 self.sky = base.loader.loadModel(self.spookySkyFile)
                 self.sky.setTag('sky', 'Halloween')
+                self.sky.flattenLight()
 
         if not newsManager:
             self.sky = base.loader.loadModel(self.skyFile)
             self.sky.setTag('sky', 'Regular')
             self.sky.setScale(1.0)
             self.sky.setFogOff()
+            self.sky.flattenLight()
 
     def unload(self):
         if hasattr(self, 'loader'):
@@ -124,8 +128,15 @@ class Hood(StateData):
         self.sky.removeNode()
         del self.sky
         self.ignoreAll()
-        ModelPool.garbageCollect()
-        TexturePool.garbageCollect()
+        # Defer garbage collection to reduce loading times
+        def deferredModelGC(task):
+            ModelPool.garbageCollect()
+            return task.done
+        def deferredTextureGC(task):
+            TexturePool.garbageCollect()
+            return task.done
+        taskMgr.doMethodLater(1.0, deferredModelGC, 'deferredGC-model-hood')
+        taskMgr.doMethodLater(1.0, deferredTextureGC, 'deferredGC-texture-hood')
 
     def enterStart(self):
         pass
