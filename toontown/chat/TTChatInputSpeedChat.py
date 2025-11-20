@@ -441,7 +441,10 @@ class TTChatInputSpeedChat(DirectObject.DirectObject):
             self.accept(self.terminalSelectedEvent, selectionMade)
         self.speedChat.reparentTo(aspect2dp, DGG.FOREGROUND_SORT_INDEX)
         scZ = 0.96
-        self.speedChat.setPos(-1.05, 0, scZ)
+        # Widescreen support - maintain distance from left edge
+        baseSCXPos = -1.05
+        scXPos = base.getWidescreenXOffset(baseSCXPos, 'left') if hasattr(base, 'getWidescreenXOffset') else baseSCXPos
+        self.speedChat.setPos(scXPos, 0, scZ)
         self.speedChat.setWhisperMode(self.whisperAvatarId != None)
         self.speedChat.enter()
         return

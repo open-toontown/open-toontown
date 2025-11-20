@@ -82,6 +82,20 @@ class DistributedBattleBase(DistributedNode, BattleBase):
         self.needAdjustTownBattle = 0
         self.streetBattle = 1
         self.levelBattle = 0
+    
+    def _adjustFovForWidescreen(self, baseFov):
+        """Adjust FOV for widescreen to prevent stretching."""
+        aspectRatio = base.camLens.getAspectRatio()
+        baseAspectRatio = 4.0 / 3.0
+        
+        if aspectRatio > baseAspectRatio:
+            # Widescreen - increase FOV proportionally
+            fovMultiplier = aspectRatio / baseAspectRatio
+            adjustedFov = baseFov * fovMultiplier
+            # Cap maximum FOV to prevent fish-eye effect
+            return min(adjustedFov, 90.0)
+        else:
+            return baseFov
         self.localToonFsm = ClassicFSM('LocalToon', [State('HasLocalToon', self.enterHasLocalToon, self.exitHasLocalToon, ['NoLocalToon', 'WaitForServer']), State('NoLocalToon', self.enterNoLocalToon, self.exitNoLocalToon, ['HasLocalToon', 'WaitForServer']), State('WaitForServer', self.enterWaitForServer, self.exitWaitForServer, ['HasLocalToon', 'NoLocalToon'])], 'WaitForServer', 'WaitForServer')
         self.localToonFsm.enterInitialState()
         self.fsm = ClassicFSM('DistributedBattle', [State('Off', self.enterOff, self.exitOff, ['FaceOff',
@@ -170,7 +184,11 @@ class DistributedBattleBase(DistributedNode, BattleBase):
         self.fsm.requestFinalState()
         if self.hasLocalToon():
             self.removeLocalToon()
-            base.camLens.setFov(ToontownGlobals.DefaultCameraFov)
+            # Restore to widescreen-adjusted default FOV
+            if hasattr(base, 'updateFovForAspectRatio'):
+                base.updateFovForAspectRatio()
+            else:
+                base.camLens.setFov(ToontownGlobals.DefaultCameraFov)
 
         self.localToonFsm.request('WaitForServer')
         self.ignoreAll()
@@ -855,7 +873,7 @@ class DistributedBattleBase(DistributedNode, BattleBase):
             camTrack = Sequence()
 
             def setCamFov(fov):
-                base.camLens.setFov(fov)
+                base.camLens.setFov(self._adjustFovForWidescreen(fov))
 
             camTrack.append(Func(setCamFov, self.camFov))
             camTrack.append(Func(base.camera.wrtReparentTo, self))
@@ -1086,7 +1104,7 @@ class DistributedBattleBase(DistributedNode, BattleBase):
     def __enterLocalToonWaitForInput(self):
         self.notify.debug('enterLocalToonWaitForInput()')
         base.camera.setPosHpr(self.camPos, self.camHpr)
-        base.camLens.setFov(self.camMenuFov)
+        base.camLens.setFov(self._adjustFovForWidescreen(self.camMenuFov))
         NametagGlobals.setMasterArrowsOn(0)
         self.townBattle.setState('Attack')
         self.accept(self.localToonBattleEvent, self.__handleLocalToonBattleEvent)
@@ -1133,7 +1151,7 @@ class DistributedBattleBase(DistributedNode, BattleBase):
         self.notify.debug('exitWaitForInput()')
         if self.localToonActive():
             self.townBattle.setState('Off')
-            base.camLens.setFov(self.camFov)
+            base.camLens.setFov(self._adjustFovForWidescreen(self.camFov))
             self.ignore(self.localToonBattleEvent)
             self.__stopTimer()
 
@@ -1318,7 +1336,7 @@ class DistributedBattleBase(DistributedNode, BattleBase):
                 base.localAvatar.inventory.setInteractivePropTrackBonus(self.interactivePropTrackBonus)
 
         base.camera.wrtReparentTo(self)
-        base.camLens.setFov(self.camFov)
+        base.camLens.setFov(self._adjustFovForWidescreen(self.camFov))
 
     def exitHasLocalToon(self):
         self.ignore(self.localToonBattleEvent)
@@ -1339,7 +1357,11 @@ class DistributedBattleBase(DistributedNode, BattleBase):
             base.camera.wrtReparentTo(base.localAvatar)
             messenger.send('localToonLeftBattle')
 
-        base.camLens.setFov(ToontownGlobals.DefaultCameraFov)
+        # Restore to widescreen-adjusted default FOV
+        if hasattr(base, 'updateFovForAspectRatio'):
+            base.updateFovForAspectRatio()
+        else:
+            base.camLens.setFov(ToontownGlobals.DefaultCameraFov)
 
     def enterNoLocalToon(self):
         self.notify.debug('enterNoLocalToon()')

@@ -16,7 +16,8 @@ class SuitAvatarPanel(AvatarPanel.AvatarPanel):
         AvatarPanel.AvatarPanel.__init__(self, avatar, FriendsListPanel=FriendsListPanel)
         self.avName = avatar.getName()
         gui = loader.loadModel('phase_3.5/models/gui/suit_detail_panel')
-        self.frame = DirectFrame(geom=gui.find('**/avatar_panel'), geom_scale=0.21, geom_pos=(0, 0, 0.02), relief=None, pos=(1.1, 100, 0.525))
+        from toontown.toonbase.ToonBaseGlobal import base
+        self.frame = DirectFrame(geom=gui.find('**/avatar_panel'), geom_scale=0.21, geom_pos=(0, 0, 0.02), relief=None, pos=(base.a2dRight - 0.3, 100, 0.525))
         disabledImageColor = Vec4(1, 1, 1, 0.4)
         text0Color = Vec4(1, 1, 1, 1)
         text1Color = Vec4(0.5, 1, 0.5, 1)

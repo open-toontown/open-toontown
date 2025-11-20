@@ -51,10 +51,11 @@ class ToonAvatarPanel(AvatarPanelBase.AvatarPanelBase):
         base.localAvatar.obscureFriendsListButton(1)
 
         gui = loader.loadModel('phase_3.5/models/gui/avatar_panel_gui')
+        from toontown.toonbase.ToonBaseGlobal import base
         self.frame = DirectFrame(
                                  image=gui.find('**/avatar_panel'),
                                  relief=None,
-                                 pos=(1.1, 100, 0.525))
+                                 pos=(base.a2dRight - 0.3, 100, 0.525))
 
         self.disabledImageColor = Vec4(1, 1, 1, 0.4)
         self.text0Color = Vec4(1, 1, 1, 1)

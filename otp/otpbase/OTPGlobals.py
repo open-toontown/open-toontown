@@ -14,6 +14,8 @@ OriginalCameraFov = 52.0
 DefaultCameraFov = 52.0
 DefaultCameraFar = 400.0
 DefaultCameraNear = 1.0
+# Widescreen support - FOV is now dynamically adjusted in ToonBase
+# Base FOV is for 4:3 (1.333), widescreen 16:9 (1.777) gets proportional increase
 AICollisionPriority = 10
 AICollMovePriority = 8
 MaxFriends = 50

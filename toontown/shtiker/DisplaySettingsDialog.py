@@ -37,11 +37,20 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         self.isLoaded = 1
         self.anyChanged = 0
         self.apiChanged = 0
-        screenSizes = [(640, 480),
-         (800, 600),
-         (1024, 768),
-         (1280, 1024),
-         (1600, 1200)]
+        # Standard resolutions including widescreen (16:9 and 16:10)
+        screenSizes = [(640, 480),    # 4:3
+         (800, 600),                  # 4:3
+         (1024, 768),                 # 4:3
+         (1280, 720),                 # 16:9 HD
+         (1280, 800),                 # 16:10
+         (1280, 1024),                # 5:4
+         (1366, 768),                 # 16:9
+         (1600, 900),                 # 16:9
+         (1600, 1200),                # 4:3
+         (1920, 1080),                # 16:9 Full HD
+         (1920, 1200),                # 16:10
+         (2560, 1440),                # 16:9 QHD
+         (3840, 2160)]                # 16:9 4K
         displayInfo = base.pipe.getDisplayInformation()
         for i in range(displayInfo.getTotalDisplayModes()):
             width = displayInfo.getDisplayModeWidth(i)

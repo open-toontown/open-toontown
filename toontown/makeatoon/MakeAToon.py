@@ -47,6 +47,20 @@ class MakeAToon(StateData.StateData):
         self.slide = 0
         self.nameList = []
         self.warp = 0
+    
+    def _adjustFovForWidescreen(self, baseFov):
+        """Adjust FOV for widescreen to prevent stretching."""
+        aspectRatio = base.camLens.getAspectRatio()
+        baseAspectRatio = 4.0 / 3.0
+        
+        if aspectRatio > baseAspectRatio:
+            # Widescreen - increase FOV proportionally
+            fovMultiplier = aspectRatio / baseAspectRatio
+            adjustedFov = baseFov * fovMultiplier
+            # Cap maximum FOV to prevent fish-eye effect
+            return min(adjustedFov, 90.0)
+        else:
+            return baseFov
         for av in avList:
             if av.position == index:
                 self.warp = 1
@@ -94,7 +108,8 @@ class MakeAToon(StateData.StateData):
         if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: MAKEATOON: Starting Make A Toon')
         base.cr.centralLogger.writeClientEvent('MAT - startingMakeAToon')
-        base.camLens.setFov(ToontownGlobals.MakeAToonCameraFov)
+        # Apply widescreen FOV adjustment
+        base.camLens.setFov(self._adjustFovForWidescreen(ToontownGlobals.MakeAToonCameraFov))
         base.playMusic(self.music, looping=1, volume=self.musicVolume)
         camera.setPosHpr(-5.7, -12.3501, 2.15, -24.8499, 2.73, 0)
         if self.warp:
@@ -116,7 +131,11 @@ class MakeAToon(StateData.StateData):
             self.fsm.request('GenderShop')
 
     def exit(self):
-        base.camLens.setFov(ToontownGlobals.DefaultCameraFov)
+        # Restore to widescreen-adjusted default FOV
+        if hasattr(base, 'updateFovForAspectRatio'):
+            base.updateFovForAspectRatio()
+        else:
+            base.camLens.setFov(ToontownGlobals.DefaultCameraFov)
         self.guiTopBar.hide()
         self.guiBottomBar.hide()
         self.music.stop()
@@ -143,17 +162,17 @@ class MakeAToon(StateData.StateData):
         self.guiCheckButton = DirectButton(parent=self.guiBottomBar, relief=None, image=(guiAcceptUp,
          guiAcceptDown,
          guiAcceptUp,
-         guiAcceptDown), image_scale=halfButtonScale, image1_scale=halfButtonHoverScale, image2_scale=halfButtonHoverScale, pos=(1.165, 0, -0.018), command=self.__handleNext, text=('', TTLocalizer.MakeAToonDone, TTLocalizer.MakeAToonDone), text_font=ToontownGlobals.getInterfaceFont(), text_scale=0.08, text_align=TextNode.ARight, text_pos=(0.13, 0.13), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
+         guiAcceptDown), image_scale=halfButtonScale, image1_scale=halfButtonHoverScale, image2_scale=halfButtonHoverScale, pos=(base.a2dRight - 0.235, 0, -0.018), command=self.__handleNext, text=('', TTLocalizer.MakeAToonDone, TTLocalizer.MakeAToonDone), text_font=ToontownGlobals.getInterfaceFont(), text_scale=0.08, text_align=TextNode.ARight, text_pos=(0.13, 0.13), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
         self.guiCheckButton.hide()
         self.guiCancelButton = DirectButton(parent=self.guiBottomBar, relief=None, image=(guiCancelUp,
          guiCancelDown,
          guiCancelUp,
-         guiCancelDown), image_scale=halfButtonScale, image1_scale=halfButtonHoverScale, image2_scale=halfButtonHoverScale, pos=(-1.179, 0, -0.011), command=self.__handleCancel, text=('', TTLocalizer.MakeAToonCancel, TTLocalizer.MakeAToonCancel), text_font=ToontownGlobals.getInterfaceFont(), text_scale=TTLocalizer.MATguiCancelButton, text_pos=(0, 0.115), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
+         guiCancelDown), image_scale=halfButtonScale, image1_scale=halfButtonHoverScale, image2_scale=halfButtonHoverScale, pos=(base.a2dLeft + 0.221, 0, -0.011), command=self.__handleCancel, text=('', TTLocalizer.MakeAToonCancel, TTLocalizer.MakeAToonCancel), text_font=ToontownGlobals.getInterfaceFont(), text_scale=TTLocalizer.MATguiCancelButton, text_pos=(0, 0.115), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))
         self.guiCancelButton.hide()
         self.guiNextButton = DirectButton(parent=self.guiBottomBar, relief=None, image=(guiNextUp,
          guiNextDown,
          guiNextUp,
-         guiNextDisabled), image_scale=(0.3, 0.3, 0.3), image1_scale=(0.35, 0.35, 0.35), image2_scale=(0.35, 0.35, 0.35), pos=(1.165, 0, -0.018), command=self.__handleNext, text=('',
+         guiNextDisabled), image_scale=(0.3, 0.3, 0.3), image1_scale=(0.35, 0.35, 0.35), image2_scale=(0.35, 0.35, 0.35), pos=(base.a2dRight - 0.235, 0, -0.018), command=self.__handleNext, text=('',
          TTLocalizer.MakeAToonNext,
          TTLocalizer.MakeAToonNext,
          ''), text_font=ToontownGlobals.getInterfaceFont(), text_scale=TTLocalizer.MATguiNextButton, text_pos=(0, 0.115), text_fg=(1, 1, 1, 1), text_shadow=(0, 0, 0, 1))

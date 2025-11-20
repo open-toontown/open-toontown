@@ -32,13 +32,25 @@ class ToontownChatManager(ChatManager.ChatManager):
 
     def __init__(self, cr, localAvatar):
         gui = loader.loadModel('phase_3.5/models/gui/chat_input_gui')
-        self.normalButton = DirectButton(image=(gui.find('**/ChtBx_ChtBtn_UP'), gui.find('**/ChtBx_ChtBtn_DN'), gui.find('**/ChtBx_ChtBtn_RLVR')), pos=(-1.2647, 0, 0.928), scale=1.179, relief=None, image_color=Vec4(1, 1, 1, 1), text=('', OTPLocalizer.ChatManagerChat, OTPLocalizer.ChatManagerChat), text_align=TextNode.ALeft, text_scale=TTLocalizer.TCMnormalButton, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), text_pos=(-0.0525, -0.09), textMayChange=0, sortOrder=DGG.FOREGROUND_SORT_INDEX, command=self.__normalButtonPressed)
+        # Widescreen support - maintain distance from left edge
+        baseNormalButtonXPos = -1.2647
+        normalButtonXPos = base.getWidescreenXOffset(baseNormalButtonXPos, 'left') if hasattr(base, 'getWidescreenXOffset') else baseNormalButtonXPos
+        self.normalButton = DirectButton(image=(gui.find('**/ChtBx_ChtBtn_UP'), gui.find('**/ChtBx_ChtBtn_DN'), gui.find('**/ChtBx_ChtBtn_RLVR')), pos=(normalButtonXPos, 0, 0.928), scale=1.179, relief=None, image_color=Vec4(1, 1, 1, 1), text=('', OTPLocalizer.ChatManagerChat, OTPLocalizer.ChatManagerChat), text_align=TextNode.ALeft, text_scale=TTLocalizer.TCMnormalButton, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), text_pos=(-0.0525, -0.09), textMayChange=0, sortOrder=DGG.FOREGROUND_SORT_INDEX, command=self.__normalButtonPressed)
         self.normalButton.hide()
         self.openScSfx = loader.loadSfx('phase_3.5/audio/sfx/GUI_quicktalker.ogg')
         self.openScSfx.setVolume(0.6)
-        self.scButton = DirectButton(image=(gui.find('**/ChtBx_ChtBtn_UP'), gui.find('**/ChtBx_ChtBtn_DN'), gui.find('**/ChtBx_ChtBtn_RLVR')), pos=TTLocalizer.TCMscButtonPos, scale=1.179, relief=None, image_color=Vec4(0.75, 1, 0.6, 1), text=('', OTPLocalizer.GlobalSpeedChatName, OTPLocalizer.GlobalSpeedChatName), text_scale=TTLocalizer.TCMscButton, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), text_pos=(0, -0.09), textMayChange=0, sortOrder=DGG.FOREGROUND_SORT_INDEX, command=self.__scButtonPressed, clickSound=self.openScSfx)
+        # Speedchat button - maintain distance from left edge
+        scButtonPos = TTLocalizer.TCMscButtonPos
+        if isinstance(scButtonPos, tuple) and len(scButtonPos) == 3:
+            baseSCXPos = scButtonPos[0]
+            adjustedSCXPos = base.getWidescreenXOffset(baseSCXPos, 'left') if hasattr(base, 'getWidescreenXOffset') else baseSCXPos
+            scButtonPos = (adjustedSCXPos, scButtonPos[1], scButtonPos[2])
+        self.scButton = DirectButton(image=(gui.find('**/ChtBx_ChtBtn_UP'), gui.find('**/ChtBx_ChtBtn_DN'), gui.find('**/ChtBx_ChtBtn_RLVR')), pos=scButtonPos, scale=1.179, relief=None, image_color=Vec4(0.75, 1, 0.6, 1), text=('', OTPLocalizer.GlobalSpeedChatName, OTPLocalizer.GlobalSpeedChatName), text_scale=TTLocalizer.TCMscButton, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), text_pos=(0, -0.09), textMayChange=0, sortOrder=DGG.FOREGROUND_SORT_INDEX, command=self.__scButtonPressed, clickSound=self.openScSfx)
         self.scButton.hide()
-        self.whisperFrame = DirectFrame(parent=aspect2dp, relief=None, image=DGG.getDefaultDialogGeom(), image_scale=(0.45, 0.45, 0.45), image_color=OTPGlobals.GlobalDialogColor, pos=(-0.4, 0, 0.754), text=OTPLocalizer.ChatManagerWhisperTo, text_wordwrap=7.0, text_scale=TTLocalizer.TCMwhisperFrame, text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0.14), textMayChange=1, sortOrder=DGG.FOREGROUND_SORT_INDEX)
+        # Whisper frame - maintain distance from left edge
+        baseWhisperFrameXPos = -0.4
+        whisperFrameXPos = base.getWidescreenXOffset(baseWhisperFrameXPos, 'left') if hasattr(base, 'getWidescreenXOffset') else baseWhisperFrameXPos
+        self.whisperFrame = DirectFrame(parent=aspect2dp, relief=None, image=DGG.getDefaultDialogGeom(), image_scale=(0.45, 0.45, 0.45), image_color=OTPGlobals.GlobalDialogColor, pos=(whisperFrameXPos, 0, 0.754), text=OTPLocalizer.ChatManagerWhisperTo, text_wordwrap=7.0, text_scale=TTLocalizer.TCMwhisperFrame, text_fg=Vec4(0, 0, 0, 1), text_pos=(0, 0.14), textMayChange=1, sortOrder=DGG.FOREGROUND_SORT_INDEX)
         self.whisperFrame.hide()
         self.whisperButton = DirectButton(parent=self.whisperFrame, image=(gui.find('**/ChtBx_ChtBtn_UP'), gui.find('**/ChtBx_ChtBtn_DN'), gui.find('**/ChtBx_ChtBtn_RLVR')), pos=(-0.125, 0, -0.1), scale=1.179, relief=None, image_color=Vec4(1, 1, 1, 1), text=('',
          OTPLocalizer.ChatManagerChat,
@@ -53,9 +65,14 @@ class ToontownChatManager(ChatManager.ChatManager):
         ChatManager.ChatManager.__init__(self, cr, localAvatar)
         self.defaultToWhiteList = base.config.GetBool('white-list-is-default', 1)
         self.chatInputSpeedChat = TTChatInputSpeedChat(self)
-        self.normalPos = Vec3(-1.083, 0, 0.804)
+        # Chat frame positions - maintain distance from left edge
+        baseNormalPosX = -1.083
+        normalPosX = base.getWidescreenXOffset(baseNormalPosX, 'left') if hasattr(base, 'getWidescreenXOffset') else baseNormalPosX
+        self.normalPos = Vec3(normalPosX, 0, 0.804)
         self.whisperPos = Vec3(0.0, 0, 0.71)
-        self.speedChatPlusPos = Vec3(-0.35, 0, 0.71)
+        baseSCPlusPosX = -0.35
+        scPlusPosX = base.getWidescreenXOffset(baseSCPlusPosX, 'left') if hasattr(base, 'getWidescreenXOffset') else baseSCPlusPosX
+        self.speedChatPlusPos = Vec3(scPlusPosX, 0, 0.71)
         self.chatInputWhiteList = TTChatInputWhiteList()
         if self.defaultToWhiteList:
             self.chatInputNormal = self.chatInputWhiteList

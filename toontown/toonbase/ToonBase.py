@@ -56,7 +56,9 @@ class ToonBase(OTPBase.OTPBase):
         self.wantDynamicShadows = 0
         self.exitErrorCode = 0
         camera.setPosHpr(0, 0, 0, 0, 0, 0)
-        self.camLens.setFov(ToontownGlobals.DefaultCameraFov)
+        # Set up widescreen support with dynamic FOV based on aspect ratio
+        self.baseFov = ToontownGlobals.DefaultCameraFov
+        self.updateFovForAspectRatio()
         self.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, ToontownGlobals.DefaultCameraFar)
         self.musicManager.setVolume(0.65)
         self.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
@@ -151,9 +153,76 @@ class ToonBase(OTPBase.OTPBase):
         self.oldY = max(1, base.win.getYSize())
         self.aspectRatio = float(self.oldX) / self.oldY
         return
+    
+    def updateFovForAspectRatio(self):
+        """Update FOV dynamically based on aspect ratio for proper widescreen support."""
+        aspectRatio = base.camLens.getAspectRatio()
+        
+        # Base FOV is for 4:3 aspect ratio (1.333...)
+        # For widescreen, we increase horizontal FOV to prevent stretching
+        baseAspectRatio = 4.0 / 3.0
+        
+        if aspectRatio > baseAspectRatio:
+            # Widescreen - increase FOV proportionally
+            # Calculate the horizontal FOV adjustment
+            fovMultiplier = aspectRatio / baseAspectRatio
+            newFov = self.baseFov * fovMultiplier
+            # Cap maximum FOV to prevent fish-eye effect
+            newFov = min(newFov, 90.0)
+        else:
+            # Standard or narrower aspect ratio
+            newFov = self.baseFov
+        
+        self.camLens.setFov(newFov)
+    
+    def getWidescreenGUIXScale(self):
+        """Get the X scaling factor for GUI elements in widescreen.
+        
+        DEPRECATED: Use getWidescreenXOffset() for proper positioning instead.
+        Returns a multiplier to adjust horizontal GUI positions from 4:3 to current aspect.
+        """
+        currentAspect = base.camLens.getAspectRatio()
+        baseAspect = 4.0 / 3.0  # 1.333...
+        return currentAspect / baseAspect
+    
+    def getWidescreenXOffset(self, baseX, alignment='left'):
+        """Calculate proper X position for GUI elements in widescreen.
+        
+        Args:
+            baseX: The original X position designed for 4:3 (1.333 aspect)
+            alignment: 'left', 'right', or 'center' - which edge the element aligns to
+        
+        Returns:
+            Adjusted X position that maintains distance from screen edge
+        """
+        # Base aspect2d boundaries for 4:3 reference
+        base4x3Left = -4.0 / 3.0  # -1.333...
+        base4x3Right = 4.0 / 3.0   # 1.333...
+        
+        # Current aspect2d boundaries (automatically adjusted by Panda3D)
+        currentLeft = base.a2dLeft
+        currentRight = base.a2dRight
+        
+        if alignment == 'left':
+            # Calculate offset from left edge in 4:3
+            offsetFrom4x3Left = baseX - base4x3Left
+            # Apply same offset from current left edge
+            return currentLeft + offsetFrom4x3Left
+        elif alignment == 'right':
+            # Calculate offset from right edge in 4:3
+            offsetFrom4x3Right = baseX - base4x3Right
+            # Apply same offset from current right edge
+            return currentRight + offsetFrom4x3Right
+        else:  # center
+            # For centered elements, no adjustment needed (aspect2d handles it)
+            return baseX
 
     def windowEvent(self, win):
         OTPBase.OTPBase.windowEvent(self, win)
+        
+        # Update FOV when window is resized for widescreen support
+        self.updateFovForAspectRatio()
+        
         if not ConfigVariableInt('keep-aspect-ratio', 0).value:
             return
         x = max(1, win.getXSize())

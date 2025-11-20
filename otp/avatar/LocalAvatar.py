@@ -838,18 +838,36 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
     def lerpCameraFov(self, fov, time):
         taskMgr.remove('cam-fov-lerp-play')
         oldFov = base.camLens.getHfov()
-        if abs(fov - oldFov) > 0.1:
+        # Apply widescreen FOV adjustment
+        adjustedFov = self._adjustFovForWidescreen(fov)
+        if abs(adjustedFov - oldFov) > 0.1:
 
             def setCamFov(fov):
                 base.camLens.setFov(fov)
 
-            self.camLerpInterval = LerpFunctionInterval(setCamFov, fromData=oldFov, toData=fov, duration=time, name='cam-fov-lerp')
+            self.camLerpInterval = LerpFunctionInterval(setCamFov, fromData=oldFov, toData=adjustedFov, duration=time, name='cam-fov-lerp')
             self.camLerpInterval.start()
 
     def setCameraFov(self, fov):
         self.fov = fov
         if not (self.isPageDown or self.isPageUp):
-            base.camLens.setFov(self.fov)
+            # Apply widescreen FOV adjustment
+            adjustedFov = self._adjustFovForWidescreen(self.fov)
+            base.camLens.setFov(adjustedFov)
+    
+    def _adjustFovForWidescreen(self, baseFov):
+        """Adjust FOV for widescreen to prevent stretching."""
+        aspectRatio = base.camLens.getAspectRatio()
+        baseAspectRatio = 4.0 / 3.0
+        
+        if aspectRatio > baseAspectRatio:
+            # Widescreen - increase FOV proportionally
+            fovMultiplier = aspectRatio / baseAspectRatio
+            adjustedFov = baseFov * fovMultiplier
+            # Cap maximum FOV to prevent fish-eye effect
+            return min(adjustedFov, 90.0)
+        else:
+            return baseFov
 
     def gotoNode(self, node, eyeHeight = 3):
         possiblePoints = (Point3(3, 6, 0),
