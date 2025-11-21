@@ -1,3 +1,5 @@
+This is a part of the JIF Lore!
+
 THIS IS THE BEST EVER TOONTOWN, NEVER ANY OTHER WIN
 
 # Open Toontown
