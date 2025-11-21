@@ -27,10 +27,41 @@ class InventoryPage(ShtikerPage.ShtikerPage):
         jarGui = loader.loadModel('phase_3.5/models/gui/jar_gui')
         self.moneyDisplay = DirectLabel(parent=self, relief=None, pos=(0.55, 0, -0.5), scale=0.8, text=str(base.localAvatar.getMoney()), text_scale=0.18, text_fg=(0.95, 0.95, 0, 1), text_shadow=(0, 0, 0, 1), text_pos=(0, -0.1, 0), image=jarGui.find('**/Jar'), text_font=ToontownGlobals.getSignFont())
         jarGui.removeNode()
+        
+        # Add instant restock button
+        self.restockButton = DirectButton(
+            parent=self,
+            relief=DGG.RAISED,
+            text='Restock All',
+            text_scale=0.06,
+            text_pos=(0, -0.02),
+            frameSize=(-0.8, 0.8, -0.1, 0.1),
+            pos=(-0.4, 0, 0.5),
+            scale=0.8,
+            command=self.__handleRestockAll
+        )
+        
+        self.restockStatusLabel = DirectLabel(
+            parent=self,
+            relief=None,
+            text='',
+            text_scale=0.055,
+            text_fg=(0, 0.6, 0, 1),
+            text_shadow=(0, 0, 0, 1),
+            pos=(0, 0, 0.4),
+            textMayChange=1
+        )
+        
         return
 
     def unload(self):
         del self.title
+        if hasattr(self, 'restockButton'):
+            self.restockButton.destroy()
+            del self.restockButton
+        if hasattr(self, 'restockStatusLabel'):
+            self.restockStatusLabel.destroy()
+            del self.restockStatusLabel
         ShtikerPage.ShtikerPage.unload(self)
 
     def __moneyChange(self, money):
@@ -116,6 +147,72 @@ class InventoryPage(ShtikerPage.ShtikerPage):
             self.trackProgress.hide()
             self.currentTrackInfo = None
         return
+    
+    def __handleRestockAll(self):
+        """Instantly restock all gags for jellybeans"""
+        toon = base.localAvatar
+        inventory = toon.inventory
+        
+        # Calculate cost and gags needed
+        totalCost = 0
+        restockList = []
+        
+        for trackIndex in range(7):
+            if not toon.hasTrackAccess(trackIndex):
+                continue
+            
+            maxLevel = ToontownBattleGlobals.UBER_GAG_LEVEL_INDEX if toon.getUberGagFlag() else ToontownBattleGlobals.MAX_LEVEL_INDEX
+            
+            for levelIndex in range(maxLevel + 1):
+                # Check if toon has enough EXP for this level
+                expRequired = ToontownBattleGlobals.Levels[trackIndex][levelIndex]
+                if expRequired > toon.experience.getExp(trackIndex):
+                    continue
+                
+                # Calculate how many gags are needed
+                currentCount = inventory.inventory[trackIndex][levelIndex]
+                maxCount = ToontownBattleGlobals.MaxProps[trackIndex][levelIndex]
+                neededCount = maxCount - currentCount
+                
+                if neededCount > 0:
+                    totalCost += neededCount
+                    restockList.append((trackIndex, levelIndex, neededCount))
+        
+        # Check if toon has enough money
+        if totalCost == 0:
+            self.restockStatusLabel['text'] = 'Already fully stocked!'
+            self.restockStatusLabel['text_fg'] = (1, 0.5, 0, 1)
+            taskMgr.remove('resetRestockStatus')
+            taskMgr.doMethodLater(2.0, self.__resetRestockStatus, 'resetRestockStatus')
+            return
+        
+        if toon.getMoney() < totalCost:
+            self.restockStatusLabel['text'] = 'Not enough jellybeans! Need %d' % totalCost
+            self.restockStatusLabel['text_fg'] = (1, 0, 0, 1)
+            taskMgr.remove('resetRestockStatus')
+            taskMgr.doMethodLater(2.0, self.__resetRestockStatus, 'resetRestockStatus')
+            return
+        
+        # Restock all gags
+        for trackIndex, levelIndex, count in restockList:
+            for _ in range(count):
+                inventory.addItem(trackIndex, levelIndex)
+        
+        # Deduct jellybeans
+        toon.setMoney(toon.getMoney() - totalCost)
+        
+        # Update inventory display
+        inventory.updateGUI()
+        
+        # Show success message
+        self.restockStatusLabel['text'] = 'Restocked for %d jellybeans!' % totalCost
+        self.restockStatusLabel['text_fg'] = (0, 0.8, 0, 1)
+        taskMgr.remove('resetRestockStatus')
+        taskMgr.doMethodLater(2.0, self.__resetRestockStatus, 'resetRestockStatus')
+    
+    def __resetRestockStatus(self, task=None):
+        self.restockStatusLabel['text'] = ''
+        return Task.done if task else None
 
     def acceptOnscreenHooks(self):
         self.accept(ToontownGlobals.InventoryHotkeyOn, self.showInventoryOnscreen)

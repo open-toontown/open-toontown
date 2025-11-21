@@ -51,6 +51,9 @@ class ToonBase(OTPBase.OTPBase):
         self.disableShowbaseMouse()
         base.debugRunningMultiplier /= OTPGlobals.ToonSpeedFactor
         self.toonChatSounds = ConfigVariableBool('toon-chat-sounds', 1).value
+        
+        # Setup WASD controls alongside arrow keys
+        self.setupWASDControls()
         self.placeBeforeObjects = ConfigVariableBool('place-before-objects', 0).value
         self.endlessQuietZone = False
         self.wantDynamicShadows = 0
@@ -60,7 +63,12 @@ class ToonBase(OTPBase.OTPBase):
         self.baseFov = ToontownGlobals.DefaultCameraFov
         self.updateFovForAspectRatio()
         self.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, ToontownGlobals.DefaultCameraFar)
-        self.musicManager.setVolume(0.65)
+        # Apply saved volume settings
+        musicVolume = self.settings.getSetting('musicVolume', 100) / 100.0
+        sfxVolume = self.settings.getSetting('sfxVolume', 100) / 100.0
+        self.musicManager.setVolume(musicVolume)
+        for sfxManager in self.sfxManagerList:
+            sfxManager.setVolume(sfxVolume)
         self.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
         tpm = TextPropertiesManager.getGlobalPtr()
         candidateActive = TextProperties()
@@ -270,6 +278,26 @@ class ToonBase(OTPBase.OTPBase):
 
     def __walking(self, pressed):
         self.walking = pressed
+    
+    def setupWASDControls(self):
+        """Add WASD key bindings as alternative to arrow keys"""
+        from direct.showbase.InputStateGlobal import inputState
+        
+        # Map WASD to same states as arrow keys
+        inputState.watchWithModifiers('forward', 'w')
+        inputState.watchWithModifiers('reverse', 's')
+        inputState.watchWithModifiers('turnLeft', 'a')
+        inputState.watchWithModifiers('turnRight', 'd')
+        inputState.watchWithModifiers('jump', 'space')
+        
+        # Keep arrow keys working too
+        inputState.watchWithModifiers('forward', 'arrow_up')
+        inputState.watchWithModifiers('reverse', 'arrow_down')
+        inputState.watchWithModifiers('turnLeft', 'arrow_left')
+        inputState.watchWithModifiers('turnRight', 'arrow_right')
+        inputState.watchWithModifiers('jump', 'control')
+        
+        self.notify.info('WASD controls enabled alongside arrow keys')
 
     def takeScreenShot(self):
         if not os.path.exists('screenshots/'):

@@ -331,7 +331,17 @@ def __healSprinkle(heal, hasInteractivePropHealBonus):
         toon.headsUp(render, targetPoint)
 
     delay = 2.5
-    mtrack = Parallel(__getPartTrack(sprayEffect, 1.5, 0.5, [sprayEffect, toon, 0]), __getPartTrack(dropEffect, 1.9, 2.0, [dropEffect, target, 0]), __getPartTrack(explodeEffect, 2.7, 1.0, [explodeEffect, toon, 0]), __getPartTrack(poofEffect, 3.4, 1.0, [poofEffect, target, 0]), __getPartTrack(wallEffect, 4.05, 1.2, [wallEffect, toon, 0]), __getSoundTrack(level, 2, duration=4.1, node=toon), Sequence(Func(face90), ActorInterval(toon, 'sprinkle-dust')), Sequence(Wait(delay), Func(__healToon, target, hp, ineffective, hasInteractivePropHealBonus)))
+    # HOT visual indicator - sparkle effect to show heal-over-time is active
+    hotSparkleEffect = BattleParticles.createParticleEffect(file='pixieSpray')
+    hotTrack = Sequence()
+    if hotSparkleEffect:
+        # Green-tinted sparkles to indicate HOT
+        try:
+            hotSparkleEffect.setColor(Vec4(0.5, 1.0, 0.5, 1.0))
+        except:
+            pass
+        hotTrack = __getPartTrack(hotSparkleEffect, delay + 0.5, 3.0, [hotSparkleEffect, target, 0])
+    mtrack = Parallel(__getPartTrack(sprayEffect, 1.5, 0.5, [sprayEffect, toon, 0]), __getPartTrack(dropEffect, 1.9, 2.0, [dropEffect, target, 0]), __getPartTrack(explodeEffect, 2.7, 1.0, [explodeEffect, toon, 0]), __getPartTrack(poofEffect, 3.4, 1.0, [poofEffect, target, 0]), __getPartTrack(wallEffect, 4.05, 1.2, [wallEffect, toon, 0]), hotTrack, __getSoundTrack(level, 2, duration=4.1, node=toon), Sequence(Func(face90), ActorInterval(toon, 'sprinkle-dust')), Sequence(Wait(delay), Func(__healToon, target, hp, ineffective, hasInteractivePropHealBonus)))
     track.append(mtrack)
     track.append(__returnToBase(heal))
     track.append(Func(target.clearChat))

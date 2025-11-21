@@ -75,6 +75,8 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
         self.numNPCAttacks = 0
         self.npcAttacks = {}
         self.pets = {}
+        # Heal-over-time tracking: toonId -> {'rounds': int, 'healPerRound': int}
+        self.toonHealOverTime = {}
         self.fsm = ClassicFSM.ClassicFSM('DistributedBattleAI', [
          State.State('FaceOff', self.enterFaceOff, self.exitFaceOff, [
           'WaitForInput', 'Resume']),
@@ -126,6 +128,8 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
 
     def delete(self):
         self.notify.debug('deleting battle')
+        # Clear HOT effects
+        self.toonHealOverTime = {}
         self.fsm.request('Off')
         self.ignoreAll()
         self.__removeAllTasks()
@@ -1385,10 +1389,15 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                                 toon.d_setInventory(toon.inventory.makeNetString())
 
                     elif track == HEAL:
+                        # Heal-over-time system: heals over multiple rounds instead of instant
+                        # Rounds and heal per round based on gag level
+                        hotRounds = [2, 2, 3, 3, 4, 4, 5]  # Rounds of healing per level
+                        
                         if levelAffectsGroup(HEAL, level):
                             for i in range(len(self.activeToons)):
                                 at = self.activeToons[i]
-                                if at != toonId or attack[TOON_TRACK_COL] == NPCSOS:
+                                # Singleplayer: Allow self-healing when solo
+                                if at != toonId or attack[TOON_TRACK_COL] == NPCSOS or len(self.activeToons) == 1:
                                     toon = self.getToon(at)
                                     if toon != None:
                                         if i < len(hps):
@@ -1396,8 +1405,27 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                                         else:
                                             self.notify.warning('Invalid targetIndex %s in hps %s.' % (i, hps))
                                             hp = 0
-                                        toonHpDict[toon.doId][0] += hp
-                                        self.notify.debug('HEAL: toon: %d healed for hp: %d' % (toon.doId, hp))
+                                        
+                                        # Apply HOT effect
+                                        rounds = hotRounds[min(level, len(hotRounds) - 1)]
+                                        healPerRound = int(hp / rounds)
+                                        
+                                        # Store or update HOT effect
+                                        if toon.doId in self.toonHealOverTime:
+                                            # Add to existing HOT
+                                            self.toonHealOverTime[toon.doId]['rounds'] = max(
+                                                self.toonHealOverTime[toon.doId]['rounds'], rounds)
+                                            self.toonHealOverTime[toon.doId]['healPerRound'] += healPerRound
+                                        else:
+                                            self.toonHealOverTime[toon.doId] = {
+                                                'rounds': rounds,
+                                                'healPerRound': healPerRound
+                                            }
+                                        
+                                        # Apply first tick immediately
+                                        toonHpDict[toon.doId][0] += healPerRound
+                                        self.notify.debug('HEAL HOT: toon: %d will heal %d per round for %d rounds' % 
+                                                         (toon.doId, healPerRound, rounds))
 
                         else:
                             targetId = attack[TOON_TGT_COL]
@@ -1409,7 +1437,25 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                                 else:
                                     self.notify.warning('Invalid targetIndex %s in hps %s.' % (targetIndex, hps))
                                     hp = 0
-                                toonHpDict[toon.doId][0] += hp
+                                
+                                # Apply HOT effect for single target
+                                rounds = hotRounds[min(level, len(hotRounds) - 1)]
+                                healPerRound = int(hp / rounds)
+                                
+                                if toon.doId in self.toonHealOverTime:
+                                    self.toonHealOverTime[toon.doId]['rounds'] = max(
+                                        self.toonHealOverTime[toon.doId]['rounds'], rounds)
+                                    self.toonHealOverTime[toon.doId]['healPerRound'] += healPerRound
+                                else:
+                                    self.toonHealOverTime[toon.doId] = {
+                                        'rounds': rounds,
+                                        'healPerRound': healPerRound
+                                    }
+                                
+                                # Apply first tick immediately
+                                toonHpDict[toon.doId][0] += healPerRound
+                                self.notify.debug('HEAL HOT: toon: %d will heal %d per round for %d rounds' % 
+                                                 (toon.doId, healPerRound, rounds))
                     elif attackAffectsGroup(track, level, attack[TOON_TRACK_COL]):
                         for suit in self.activeSuits:
                             targetIndex = self.activeSuits.index(suit)
@@ -1610,6 +1656,24 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                                 toonHpDict[toon.doId][2] = 1
                             toonHpDict[toon.doId][1] += hp
 
+        # Process heal-over-time effects
+        for toonId in list(self.toonHealOverTime.keys()):
+            if toonId in self.activeToons:
+                hot = self.toonHealOverTime[toonId]
+                if hot['rounds'] > 1:
+                    # Apply HOT healing
+                    hot['rounds'] -= 1
+                    toonHpDict[toonId][0] += hot['healPerRound']
+                    self.notify.debug('HOT tick: toon %d healed %d, %d rounds remain' % 
+                                     (toonId, hot['healPerRound'], hot['rounds']))
+                else:
+                    # HOT expired
+                    del self.toonHealOverTime[toonId]
+                    self.notify.debug('HOT expired for toon %d' % toonId)
+            else:
+                # Toon no longer in battle, remove HOT
+                del self.toonHealOverTime[toonId]
+        
         deadToons = []
         for activeToon in self.activeToons:
             hp = toonHpDict[activeToon]
@@ -1642,6 +1706,10 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
         return
 
     def enterResume(self):
+        # Clear all HOT effects when battle ends
+        self.toonHealOverTime = {}
+        self.notify.debug('Cleared all heal-over-time effects')
+        
         for suit in self.suits:
             self.notify.info('battle done, resuming suit: %d' % suit.doId)
             if suit.isDeleted():

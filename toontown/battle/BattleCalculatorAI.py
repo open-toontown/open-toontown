@@ -262,8 +262,9 @@ class BattleCalculatorAI:
                 if attack[TOON_TRACK_COL] == NPCSOS or atkTrack == PETSOS:
                     targetList = self.battle.activeToons
                 else:
+                    # Singleplayer: Include self in group heals when solo
                     for currToon in self.battle.activeToons:
-                        if attack[TOON_ID_COL] != currToon:
+                        if attack[TOON_ID_COL] != currToon or len(self.battle.activeToons) == 1:
                             targetList.append(currToon)
 
             else:

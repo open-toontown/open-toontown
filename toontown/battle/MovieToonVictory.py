@@ -79,7 +79,8 @@ def doToonVictory(localToonActive, toons, rewardToonIds, rewardDicts, deathList,
         track.append(Func(NametagGlobals.setOnscreenChatForced, 1))
     camTrack = Sequence()
     endTrack = Sequence()
-    danceSound = globalBattleSoundCache.getSound('ENC_Win.ogg')
+    # Skip victory dance - no sound for faster battles
+    # danceSound = globalBattleSoundCache.getSound('ENC_Win.ogg')
     toonList = []
     countToons = 0
     uberListNew = []
@@ -102,6 +103,7 @@ def doToonVictory(localToonActive, toons, rewardToonIds, rewardDicts, deathList,
     skipper = ToonVictorySkipper(len(toonList), noSkip)
     lastListenIndex = 0
     track.append(skipper.getSetupFunc(lastListenIndex))
+    # Skip toon-by-toon animations - just show all rewards at once
     for tIndex in range(len(toonList)):
         t = toonList[tIndex]
         rdict = __findToonReward(rewardDicts, t)
@@ -113,9 +115,9 @@ def doToonVictory(localToonActive, toons, rewardToonIds, rewardDicts, deathList,
                 lastListenIndex = tIndex
                 track.append(skipper.getSetupFunc(lastListenIndex))
                 track.append(expTrack)
+                # Skip camera animations for speed
                 camDuration = expTrack.getDuration()
-                camExpTrack = MovieCamera.chooseRewardShot(t, camDuration)
-                camTrack.append(MovieCamera.chooseRewardShot(t, camDuration, allowGroupShot=allowGroupShot))
+                camTrack.append(Wait(camDuration))  # Just wait instead of camera movement
 
     track.append(skipper.getTeardownFunc(lastListenIndex))
     track.append(Func(skipper.destroy))
@@ -123,8 +125,7 @@ def doToonVictory(localToonActive, toons, rewardToonIds, rewardDicts, deathList,
         track.append(Func(rpanel.hide))
         track.append(Func(NametagGlobals.setOnscreenChatForced, 0))
     track.append(endTrack)
-    trackdur = track.getDuration()
-    soundTrack = SoundInterval(danceSound, duration=trackdur, loop=1)
-    mtrack = Parallel(track, soundTrack)
+    # No victory dance sound for faster singleplayer experience
+    mtrack = track  # Just the track, no parallel sound
     skipper.setIvals((mtrack, camTrack))
     return (mtrack, camTrack, skipper)

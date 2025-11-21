@@ -132,7 +132,9 @@ class TownBattle(StateData.StateData):
         self.timer = ToontownTimer.ToontownTimer()
         self.timer.setPos(base.a2dRight - 0.218, 0, 0.842)
         self.timer.setScale(0.4)
+        # Timer permanently hidden for singleplayer - no time limit
         self.timer.hide()
+        self.timer.stash()
         return
 
     def cleanup(self):
@@ -342,6 +344,12 @@ class TownBattle(StateData.StateData):
     def __handleAttackPanelDone(self, doneStatus):
         self.notify.debug('doneStatus: %s' % doneStatus)
         mode = doneStatus['mode']
+        if mode == 'Back':
+            # Back button pressed - clear selection and stay in Attack state
+            self.track = -1
+            self.level = -1
+            self.target = 0
+            return
         if mode == 'Inventory':
             self.track = doneStatus['track']
             self.level = doneStatus['level']
@@ -548,7 +556,43 @@ class TownBattle(StateData.StateData):
             self.notify.warning('unknown mode: %s' % mode)
 
     def enterRun(self):
+        # Paper Mario style run requirements check
+        if not self.__canRun():
+            return
         self.runPanel.show()
+
+    def __canRun(self):
+        """Check if player meets requirements to run from battle"""
+        toon = base.localAvatar
+        minLaff = 20
+        minGags = 5
+        
+        # Check laff requirement
+        if toon.getHp() < minLaff:
+            # Count total gags
+            totalGags = 0
+            if hasattr(toon, 'inventory'):
+                for track in range(7):
+                    for level in range(7):
+                        totalGags += toon.inventory.inventory[track][level]
+            
+            # If low on both laff AND gags, can't run
+            if totalGags < minGags:
+                self.__showRunWarning()
+                return False
+        
+        return True
+    
+    def __showRunWarning(self):
+        """Show warning when player can't run"""
+        from toontown.toontowngui import TTDialog
+        warning = TTDialog.TTDialog(
+            dialogName='RunWarning',
+            text='You need at least 20 laff or 5 gags to run!',
+            style=TTDialog.Acknowledge,
+            command=lambda: None
+        )
+        warning.show()
 
     def exitRun(self):
         self.runPanel.hide()

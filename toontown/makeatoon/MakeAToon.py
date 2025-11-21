@@ -47,20 +47,7 @@ class MakeAToon(StateData.StateData):
         self.slide = 0
         self.nameList = []
         self.warp = 0
-    
-    def _adjustFovForWidescreen(self, baseFov):
-        """Adjust FOV for widescreen to prevent stretching."""
-        aspectRatio = base.camLens.getAspectRatio()
-        baseAspectRatio = 4.0 / 3.0
         
-        if aspectRatio > baseAspectRatio:
-            # Widescreen - increase FOV proportionally
-            fovMultiplier = aspectRatio / baseAspectRatio
-            adjustedFov = baseFov * fovMultiplier
-            # Cap maximum FOV to prevent fish-eye effect
-            return min(adjustedFov, 90.0)
-        else:
-            return baseFov
         for av in avList:
             if av.position == index:
                 self.warp = 1
@@ -99,6 +86,20 @@ class MakeAToon(StateData.StateData):
         self.focusInIval = None
         self.toon = None
         return
+    
+    def _adjustFovForWidescreen(self, baseFov):
+        """Adjust FOV for widescreen to prevent stretching."""
+        aspectRatio = base.camLens.getAspectRatio()
+        baseAspectRatio = 4.0 / 3.0
+        
+        if aspectRatio > baseAspectRatio:
+            # Widescreen - increase FOV proportionally
+            fovMultiplier = aspectRatio / baseAspectRatio
+            adjustedFov = baseFov * fovMultiplier
+            # Cap maximum FOV to prevent fish-eye effect
+            return min(adjustedFov, 90.0)
+        else:
+            return baseFov
 
     def getToon(self):
         return self.toon

@@ -248,6 +248,8 @@ class Movie(DirectObject.DirectObject):
         self.track = Sequence(ptrack, name='movie-track-%d' % self.battle.doId)
         if self.battle.localToonPendingOrActive():
             self.track = Parallel(self.track, Sequence(camtrack), name='movie-track-with-cam-%d' % self.battle.doId)
+        # Apply 2x speed to battle animations
+        self.track.setPlayRate(2.0)
         if randomBattleTimestamp == 1:
             randNum = random.randint(0, 99)
             dur = self.track.getDuration()
@@ -663,7 +665,8 @@ class Movie(DirectObject.DirectObject):
                     if levelAffectsGroup(HEAL, level):
                         targets = []
                         for t in toons:
-                            if t != toonId and t != -1:
+                            # Singleplayer: Include self when solo
+                            if (t != toonId or len(toons) == 1) and t != -1:
                                 target = self.battle.findToon(t)
                                 if target == None:
                                     continue

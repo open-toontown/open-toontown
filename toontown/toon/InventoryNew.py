@@ -274,6 +274,10 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
     def __handlePass(self):
         messenger.send('inventory-pass')
 
+    def __handleBack(self):
+        """Back button handler - clears gag selection and returns to main battle menu"""
+        messenger.send('inventory-back')
+
     def __handleBackToPlayground(self):
         messenger.send('inventory-back-to-playground')
 
@@ -1195,6 +1199,8 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.sosButton = DirectButton(parent=self.battleFrame, relief=None, pos=(0.96, 0, -0.398), text=TTLocalizer.InventorySOS, text_scale=0.05, text_pos=(0, -0.02), text_fg=Vec4(1, 1, 1, 1), textMayChange=0, image=(self.upButton, self.downButton, self.rolloverButton), image_scale=1.05, image_color=(0, 0.6, 1, 1), command=self.__handleSOS)
         self.passButton = DirectButton(parent=self.battleFrame, relief=None, pos=(0.96, 0, -0.242), text=TTLocalizer.InventoryPass, text_scale=TTLocalizer.INpassButton, text_pos=(0, -0.02), text_fg=Vec4(1, 1, 1, 1), textMayChange=1, image=(self.upButton, self.downButton, self.rolloverButton), image_scale=1.05, image_color=(0, 0.6, 1, 1), command=self.__handlePass)
         self.fireButton = DirectButton(parent=self.battleFrame, relief=None, pos=(0.73, 0, -0.242), text=TTLocalizer.InventoryFire, text_scale=TTLocalizer.INfireButton, text_pos=(0, -0.02), text_fg=Vec4(1, 1, 1, 1), textMayChange=0, image=(self.upButton, self.downButton, self.rolloverButton), image_scale=1.05, image_color=(0, 0.6, 1, 1), command=self.__handleFire)
+        # Back button for gag selection - returns to main battle menu
+        self.backButton = DirectButton(parent=self.battleFrame, relief=None, pos=(-0.73, 0, -0.398), text='Back', text_scale=0.05, text_pos=(0, -0.02), text_fg=Vec4(1, 1, 1, 1), textMayChange=0, image=(self.upButton, self.downButton, self.rolloverButton), image_scale=1.05, image_color=(0.8, 0.2, 0.2, 1), command=self.__handleBack)
         self.tutText = DirectFrame(parent=self.battleFrame, relief=None, pos=(0.05, 0, -0.1133), scale=0.143, image=DGG.getDefaultDialogGeom(), image_scale=5.125, image_pos=(0, 0, -0.65), image_color=ToontownGlobals.GlobalDialogColor, text_scale=TTLocalizer.INclickToAttack, text=TTLocalizer.InventoryClickToAttack, textMayChange=0)
         self.tutText.hide()
         self.tutArrows = BlinkingArrows.BlinkingArrows(parent=self.battleFrame)

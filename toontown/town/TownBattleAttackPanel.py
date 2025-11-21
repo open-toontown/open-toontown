@@ -34,6 +34,7 @@ class TownBattleAttackPanel(StateData.StateData):
         self.accept('inventory-sos', self.__handleSOS)
         self.accept('inventory-pass', self.__handlePass)
         self.accept('inventory-fire', self.__handleFire)
+        self.accept('inventory-back', self.__handleBack)
         self.accept('hide-attack-panel', self.__handleHide)
         return
 
@@ -44,6 +45,7 @@ class TownBattleAttackPanel(StateData.StateData):
         self.ignore('inventory-sos')
         self.ignore('inventory-pass')
         self.ignore('inventory-fire')
+        self.ignore('inventory-back')
         self.ignore('hide-attack-panel')
         base.localAvatar.inventory.hide()
         if self._teaserPanel:
@@ -64,6 +66,11 @@ class TownBattleAttackPanel(StateData.StateData):
 
     def __handleFire(self):
         doneStatus = {'mode': 'Fire'}
+        messenger.send(self.doneEvent, [doneStatus])
+
+    def __handleBack(self):
+        """Handle back button - cancel gag selection and return to main menu"""
+        doneStatus = {'mode': 'Back'}
         messenger.send(self.doneEvent, [doneStatus])
 
     def __handleInventory(self, track, level):

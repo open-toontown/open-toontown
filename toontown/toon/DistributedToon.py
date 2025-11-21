@@ -1217,6 +1217,11 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
 
     def hasTrackAccess(self, track):
         return self.trackArray[track]
+    
+    def getUberGagFlag(self):
+        """Returns whether uber gags (level 6) are accessible.
+        In singleplayer mode, uber gags are available to all players."""
+        return True
 
     def setTrackProgress(self, trackId, progress):
         self.trackProgressId = trackId

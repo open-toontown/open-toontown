@@ -39,7 +39,11 @@ class BattleSounds:
                 self.notify.warning('%s not found on:' % name)
                 print(self.sfxSearchPath)
             else:
-                return self.mgr.getSound(filename.getFullpath())
+                sound = self.mgr.getSound(filename.getFullpath())
+                # Apply 1.2x pitch for faster battle audio
+                if sound:
+                    sound.setPlayRate(1.2)
+                return sound
         return self.mgr.getNullSound()
 
 

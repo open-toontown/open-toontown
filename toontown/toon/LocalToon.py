@@ -172,9 +172,37 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.oldPos = None
             self.questMap = None
             self.lerpFurnitureButton = None
+            # Sprint system - Shift key to double movement speed
+            self.isSprinting = False
+            self.accept('shift', self.startSprint)
+            self.accept('shift-up', self.stopSprint)
 
     def wantLegacyLifter(self):
         return True
+
+    def startSprint(self):
+        """Enable sprint mode when Shift key is pressed"""
+        if not self.isSprinting and hasattr(self, 'controlManager'):
+            self.isSprinting = True
+            # Double all movement speeds
+            self.controlManager.setSpeeds(
+                OTPGlobals.ToonForwardSpeed * 2,
+                OTPGlobals.ToonJumpForce,
+                OTPGlobals.ToonReverseSpeed * 2,
+                OTPGlobals.ToonRotateSpeed * 1.5
+            )
+
+    def stopSprint(self):
+        """Disable sprint mode when Shift key is released"""
+        if self.isSprinting and hasattr(self, 'controlManager'):
+            self.isSprinting = False
+            # Restore normal movement speeds
+            self.controlManager.setSpeeds(
+                OTPGlobals.ToonForwardSpeed,
+                OTPGlobals.ToonJumpForce,
+                OTPGlobals.ToonReverseSpeed,
+                OTPGlobals.ToonRotateSpeed
+            )
 
     def startGlitchKiller(self):
         if localAvatar.getZoneId() not in GlitchKillerZones:

@@ -14,11 +14,13 @@ from toontown.char import Char
 from toontown.suit import SuitDNA
 from toontown.suit import Suit
 from toontown.quest import QuestParser
+from toontown.tutorial.TutorialGuide import TutorialGuide
 
 class DistributedTutorialInterior(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
+        self.tutorialGuide = None
 
     def generate(self):
         DistributedObject.DistributedObject.generate(self)
@@ -28,6 +30,10 @@ class DistributedTutorialInterior(DistributedObject.DistributedObject):
         self.setup()
 
     def disable(self):
+        if self.tutorialGuide:
+            self.tutorialGuide.stop()
+            self.tutorialGuide.cleanup()
+            self.tutorialGuide = None
         self.interior.removeNode()
         del self.interior
         self.street.removeNode()
@@ -142,7 +148,28 @@ class DistributedTutorialInterior(DistributedObject.DistributedObject):
 
     def playMovie(self):
         self.notify.info('Tutorial movie: Play.')
+        # Store original finishMovie method
+        originalFinishMovie = self.mickeyMovie.finishMovie
+        # Wrap finishMovie to detect completion
+        def wrappedFinishMovie():
+            originalFinishMovie()
+            self.onMovieComplete()
+        self.mickeyMovie.finishMovie = wrappedFinishMovie
         self.mickeyMovie.play()
+        
+    def onMovieComplete(self):
+        """Called when tutorial movie completes"""
+        self.notify.info('Tutorial movie completed, starting guide.')
+        # Start tutorial guide after a short delay
+        from direct.task.TaskManagerGlobal import taskMgr
+        taskMgr.doMethodLater(1.0, self.startTutorialGuide, 'start-tutorial-guide')
+        
+    def startTutorialGuide(self, task=None):
+        """Start the comprehensive tutorial guide"""
+        if not self.tutorialGuide:
+            self.tutorialGuide = TutorialGuide()
+        self.tutorialGuide.start()
+        return task.done if task else None
 
     def createSuit(self):
         self.suit = Suit.Suit()

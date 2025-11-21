@@ -82,20 +82,6 @@ class DistributedBattleBase(DistributedNode, BattleBase):
         self.needAdjustTownBattle = 0
         self.streetBattle = 1
         self.levelBattle = 0
-    
-    def _adjustFovForWidescreen(self, baseFov):
-        """Adjust FOV for widescreen to prevent stretching."""
-        aspectRatio = base.camLens.getAspectRatio()
-        baseAspectRatio = 4.0 / 3.0
-        
-        if aspectRatio > baseAspectRatio:
-            # Widescreen - increase FOV proportionally
-            fovMultiplier = aspectRatio / baseAspectRatio
-            adjustedFov = baseFov * fovMultiplier
-            # Cap maximum FOV to prevent fish-eye effect
-            return min(adjustedFov, 90.0)
-        else:
-            return baseFov
         self.localToonFsm = ClassicFSM('LocalToon', [State('HasLocalToon', self.enterHasLocalToon, self.exitHasLocalToon, ['NoLocalToon', 'WaitForServer']), State('NoLocalToon', self.enterNoLocalToon, self.exitNoLocalToon, ['HasLocalToon', 'WaitForServer']), State('WaitForServer', self.enterWaitForServer, self.exitWaitForServer, ['HasLocalToon', 'NoLocalToon'])], 'WaitForServer', 'WaitForServer')
         self.localToonFsm.enterInitialState()
         self.fsm = ClassicFSM('DistributedBattle', [State('Off', self.enterOff, self.exitOff, ['FaceOff',
@@ -119,6 +105,20 @@ class DistributedBattleBase(DistributedNode, BattleBase):
         self.adjustFsm = ClassicFSM('Adjust', [State('Adjusting', self.enterAdjusting, self.exitAdjusting, ['NotAdjusting']), State('NotAdjusting', self.enterNotAdjusting, self.exitNotAdjusting, ['Adjusting'])], 'NotAdjusting', 'NotAdjusting')
         self.adjustFsm.enterInitialState()
         self.interactiveProp = None
+    
+    def _adjustFovForWidescreen(self, baseFov):
+        """Adjust FOV for widescreen to prevent stretching."""
+        aspectRatio = base.camLens.getAspectRatio()
+        baseAspectRatio = 4.0 / 3.0
+        
+        if aspectRatio > baseAspectRatio:
+            # Widescreen - increase FOV proportionally
+            fovMultiplier = aspectRatio / baseAspectRatio
+            adjustedFov = baseFov * fovMultiplier
+            # Cap maximum FOV to prevent fish-eye effect
+            return min(adjustedFov, 90.0)
+        else:
+            return baseFov
 
     def uniqueBattleName(self, name):
         DistributedBattleBase.id += 1
@@ -1013,7 +1013,8 @@ class DistributedBattleBase(DistributedNode, BattleBase):
             self.notify.debug('makeAvsActive() - local toon just joined')
             self.__enterLocalToonWaitForInput()
             self.localToonJustJoined = 0
-            self.startTimer()
+            # Timer removed for singleplayer - no time limit
+            # self.startTimer()
 
     def __makeToonRun(self, toon, ts):
         self.notify.debug('__makeToonRun(%d)' % toon.doId)
@@ -1142,7 +1143,8 @@ class DistributedBattleBase(DistributedNode, BattleBase):
         self.choseAttackAlready = 0
         if self.localToonActive():
             self.__enterLocalToonWaitForInput()
-            self.startTimer(ts)
+            # Timer removed for singleplayer - no time limit
+            # self.startTimer(ts)
 
         if self.needAdjustTownBattle == 1:
             self.__adjustTownBattle()
@@ -1172,10 +1174,10 @@ class DistributedBattleBase(DistributedNode, BattleBase):
                     track = -1
                     level = -1
                     targetId = -1
+            # Singleplayer: Allow group heals on yourself when solo
             elif track == HEAL and len(self.activeToons) == 1:
-                self.notify.warning('invalid group target for heal')
-                track = -1
-                level = -1
+                # In singleplayer, group heals can target yourself
+                pass
             elif not attackAffectsGroup(track, level):
                 if target >= 0 and target < len(self.activeSuits):
                     targetId = self.activeSuits[target].doId
@@ -1518,7 +1520,8 @@ class DistributedBattleBase(DistributedNode, BattleBase):
         self._removeMembersKeep()
         currStateName = self.fsm.getCurrentState().getName()
         if currStateName == 'WaitForInput' and self.localToonActive():
-            self.startTimer()
+            # Timer removed for singleplayer - no time limit
+            pass # self.startTimer()
 
     def enterNotAdjusting(self):
         self.notify.debug('enterNotAdjusting()')

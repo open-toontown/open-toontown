@@ -345,6 +345,8 @@ class Suit(Avatar.Avatar):
         self.isDisguised = 0
         self.isWaiter = 0
         self.isRental = 0
+        self.maxHP = 10
+        self.currHP = 10
         return
 
     def delete(self):
@@ -842,6 +844,18 @@ class Suit(Avatar.Avatar):
         self.healthBarGlow = glow
         self.healthBar.hide()
         self.healthCondition = 0
+        # Add HP text display above health bar for singleplayer
+        from direct.gui.DirectGui import DirectLabel
+        self.hpLabel = DirectLabel(
+            text=f'{self.currHP}/{self.maxHP}',
+            text_scale=0.8,
+            text_fg=(1, 1, 1, 1),
+            text_shadow=(0, 0, 0, 1),
+            relief=None,
+            pos=(0, 0, 1.2),
+            parent=chestNull
+        )
+        self.hpLabel.setBillboardPointEye()
 
     def reseatHealthBarForSkele(self):
         self.healthBar.setPos(0.0, 0.1, 0.0)
@@ -850,6 +864,9 @@ class Suit(Avatar.Avatar):
         if hp > self.currHP:
             hp = self.currHP
         self.currHP -= hp
+        # Update HP text label for singleplayer
+        if hasattr(self, 'hpLabel') and self.hpLabel:
+            self.hpLabel['text'] = f'{max(0, self.currHP)}/{self.maxHP}'
         health = float(self.currHP) / float(self.maxHP)
         if health > 0.95:
             condition = 0
@@ -894,6 +911,10 @@ class Suit(Avatar.Avatar):
         return Task.done
 
     def removeHealthBar(self):
+        # Clean up HP label for singleplayer
+        if hasattr(self, 'hpLabel') and self.hpLabel:
+            self.hpLabel.destroy()
+            self.hpLabel = None
         if self.healthBar:
             self.healthBar.removeNode()
             self.healthBar = None

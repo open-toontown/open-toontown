@@ -696,6 +696,15 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.__disableSmartCam = 0
         self.initializeSmartCameraCollisions()
         self._smartCamEnabled = False
+        
+        # Orbital camera controls
+        self.orbitalCameraEnabled = True
+        self.cameraOrbitH = 0.0
+        self.cameraOrbitP = 0.0
+        self.cameraDistance = 20.0
+        self.lastMouseX = 0
+        self.lastMouseY = 0
+        self.isDraggingCamera = False
 
     def shutdownSmartCamera(self):
         self.deleteSmartCameraCollisions()
@@ -733,6 +742,77 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         taskMgr.remove(taskName)
         taskMgr.add(self.updateSmartCamera, taskName, priority=47)
         self.enableSmartCameraViews()
+        
+        # Setup orbital camera controls
+        if self.orbitalCameraEnabled:
+            self.accept('mouse2', self.__startCameraDrag)
+            self.accept('mouse2-up', self.__stopCameraDrag)
+            self.accept('wheel_up', self.__cameraZoomIn)
+            self.accept('wheel_down', self.__cameraZoomOut)
+    
+    def __startCameraDrag(self):
+        """Start dragging camera with right mouse button"""
+        if base.mouseWatcherNode.hasMouse():
+            self.isDraggingCamera = True
+            self.lastMouseX = base.mouseWatcherNode.getMouseX()
+            self.lastMouseY = base.mouseWatcherNode.getMouseY()
+            taskMgr.add(self.__updateCameraDrag, 'updateCameraDrag')
+    
+    def __stopCameraDrag(self):
+        """Stop dragging camera"""
+        self.isDraggingCamera = False
+        taskMgr.remove('updateCameraDrag')
+    
+    def __updateCameraDrag(self, task):
+        """Update camera position while dragging"""
+        if not self.isDraggingCamera or not base.mouseWatcherNode.hasMouse():
+            return task.cont
+        
+        mouseX = base.mouseWatcherNode.getMouseX()
+        mouseY = base.mouseWatcherNode.getMouseY()
+        
+        deltaX = mouseX - self.lastMouseX
+        deltaY = mouseY - self.lastMouseY
+        
+        # Update camera orbit angles
+        self.cameraOrbitH -= deltaX * 100.0  # Horizontal rotation
+        self.cameraOrbitP += deltaY * 50.0   # Vertical rotation
+        
+        # Clamp vertical rotation
+        self.cameraOrbitP = max(-80.0, min(80.0, self.cameraOrbitP))
+        
+        # Apply camera rotation
+        self.__updateOrbitalCamera()
+        
+        self.lastMouseX = mouseX
+        self.lastMouseY = mouseY
+        
+        return task.cont
+    
+    def __cameraZoomIn(self):
+        """Zoom camera closer"""
+        self.cameraDistance = max(5.0, self.cameraDistance - 3.0)
+        self.__updateOrbitalCamera()
+    
+    def __cameraZoomOut(self):
+        """Zoom camera farther"""
+        self.cameraDistance = min(50.0, self.cameraDistance + 3.0)
+        self.__updateOrbitalCamera()
+    
+    def __updateOrbitalCamera(self):
+        """Update camera position based on orbital parameters"""
+        from panda3d.core import Point3
+        import math
+        
+        # Calculate camera position in spherical coordinates
+        h = math.radians(self.cameraOrbitH)
+        p = math.radians(self.cameraOrbitP)
+        
+        x = self.cameraDistance * math.cos(p) * math.sin(h)
+        y = -self.cameraDistance * math.cos(p) * math.cos(h)
+        z = self.cameraDistance * math.sin(p) + self.getHeight()
+        
+        self.setIdealCameraPos(Point3(x, y, z))
 
     def stopUpdateSmartCamera(self):
         if not self._smartCamEnabled:

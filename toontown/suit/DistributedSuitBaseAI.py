@@ -48,8 +48,33 @@ class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.Su
         if hasattr(self, 'doId'):
             self.d_setLevelDist(self.level)
         hp = attributes['hp'][self.level]
+        # Apply singleplayer difficulty scaling based on zone
+        hp = self._applySingleplayerScaling(hp)
         self.maxHP = hp
         self.currHP = hp
+
+    def _applySingleplayerScaling(self, hp):
+        """Scale HP based on playground for singleplayer progression"""
+        from toontown.toonbase import ToontownGlobals
+        try:
+            zoneId = self.zoneId
+            # Get the main playground zone (divide by 1000 and multiply by 1000)
+            playgroundZone = (zoneId // 1000) * 1000
+            
+            # Difficulty scaling per playground (TTC easiest, later zones harder)
+            scaleFactors = {
+                ToontownGlobals.ToontownCentral: 0.7,     # 70% HP - easiest
+                ToontownGlobals.DonaldsDock: 0.85,        # 85% HP
+                ToontownGlobals.DaisyGardens: 1.0,        # 100% HP - baseline
+                ToontownGlobals.MinniesMelodyland: 1.1,   # 110% HP
+                ToontownGlobals.TheBrrrgh: 1.2,           # 120% HP
+                ToontownGlobals.DonaldsDreamland: 1.3,    # 130% HP - hardest
+            }
+            
+            scaleFactor = scaleFactors.get(playgroundZone, 1.0)
+            return int(hp * scaleFactor)
+        except:
+            return hp
 
     def getLevelDist(self):
         return self.getLevel()
