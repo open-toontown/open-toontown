@@ -127,6 +127,9 @@ class DistributedSuitBase(DistributedAvatar.DistributedAvatar, Suit.Suit, SuitBa
             self.currHP = self.maxHP
         else:
             self.currHP = hp
+        # Update HP label when HP is set from server
+        if hasattr(self, 'hpLabel') and self.hpLabel:
+            self.hpLabel['text'] = f'{self.currHP}/{self.maxHP}'
         return None
 
     def getDialogueArray(self, *args):

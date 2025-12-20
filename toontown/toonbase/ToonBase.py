@@ -24,6 +24,17 @@ class ToonBase(OTPBase.OTPBase):
 
     def __init__(self):
         self.settings = Settings()
+        # Remap orbital camera to right-click instead of middle-click  
+        loadPrcFileData('toonBase Camera Controls', 'drive-button2 alt-mouse3')
+        # Make orbital camera more responsive (less smooth, more precise)
+        loadPrcFileData('toonBase Camera Responsive', 'drive-rotational-speed 100')
+        loadPrcFileData('toonBase Camera Direct', 'drive-mouse-scale 0.015')
+        # Fix camera locking bug - disable acceleration and smoothing
+        loadPrcFileData('toonBase Camera No Lock', 'drive-rotate-accel 0')
+        loadPrcFileData('toonBase Camera No Smooth', 'drive-angular-smooth 0')
+        loadPrcFileData('toonBase Camera Instant', 'drive-heading-dampening 0')
+        # Enable tank-like controls (A/D rotate, W/S move forward/backward)
+        loadPrcFileData('toonBase Tank Controls', 'drive-mode tank')
         if not ConfigVariableInt('ignore-user-options', 0).value:
             self.settings.readSettings()
             mode = not self.settings.getSetting('windowed-mode', True)

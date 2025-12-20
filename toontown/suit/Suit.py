@@ -844,16 +844,18 @@ class Suit(Avatar.Avatar):
         self.healthBarGlow = glow
         self.healthBar.hide()
         self.healthCondition = 0
-        # Add HP text display above health bar for singleplayer
+        # Add HP text display on nametag for better visibility
         from direct.gui.DirectGui import DirectLabel
+        # Parent to nametag joint instead of chest for better visibility
+        nametagParent = self.nametagJoint if self.nametagJoint else self
         self.hpLabel = DirectLabel(
             text=f'{self.currHP}/{self.maxHP}',
-            text_scale=0.8,
+            text_scale=0.5,
             text_fg=(1, 1, 1, 1),
             text_shadow=(0, 0, 0, 1),
             relief=None,
-            pos=(0, 0, 1.2),
-            parent=chestNull
+            pos=(0, 0, 0.5),
+            parent=nametagParent
         )
         self.hpLabel.setBillboardPointEye()
 

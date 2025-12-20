@@ -43,7 +43,10 @@ class ChatManager(DirectObject.DirectObject):
         self.cr = cr
         self.localAvatar = localAvatar
         # Check settings for T-key only chat option
-        self.wantBackgroundFocus = not base.settings.getSetting('tKeyOnlyChat', False)
+        # When T-key only is enabled, we still want to accept the T key specifically
+        # backgroundFocus controls whether any key activates chat (False = T-key only)
+        tKeyOnlyEnabled = base.settings.getSetting('tKeyOnlyChat', False)
+        self.wantBackgroundFocus = not tKeyOnlyEnabled
         self.__scObscured = 0
         self.__normalObscured = 0
         self.openChatWarning = None
