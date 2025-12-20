@@ -171,7 +171,7 @@ class InventoryPage(ShtikerPage.ShtikerPage):
                 
                 # Calculate how many gags are needed
                 currentCount = inventory.inventory[trackIndex][levelIndex]
-                maxCount = ToontownBattleGlobals.MaxProps[trackIndex][levelIndex]
+                maxCount = inventory.getMax(trackIndex, levelIndex)
                 neededCount = maxCount - currentCount
                 
                 if neededCount > 0:
