@@ -1,13 +1,13 @@
-This is a part of the JIF Lore!
+# TOONTOWN SUPER PRESENTS: TOONTOWN THE BEST!!!
 
-TOONTOWN SUPER PRESENTS: TOONTOWN THE BEST!!!
-
-THIS IS THE BEST EVER TOONTOWN, NEVER ANY OTHER WIN
+## THIS IS THE BEST EVER TOONTOWN, NEVER ANY OTHER WIN
 
 - THE BEST TUTORIAL
 - THE BEST SHOP
 - THE BEST BUTTONS
 - MORE BEST COME TO!!!!!!!!!
+
+- tbh its really just a challenge to see if i can outslop toontown frontlines lol this source is just a joke
 
 # Open Toontown
 This repository contains the code for Open Toontown, based on the latest version of Disney's Toontown Online (sv1.0.47.38).
