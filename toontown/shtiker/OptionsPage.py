@@ -163,8 +163,14 @@ class OptionsTabPage(DirectFrame):
         self.ToonChatSounds_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 2 * textRowHeight + 0.025))
         self.ToonChatSounds_Label.setScale(0.9)
         self.TKeyOnlyChat_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 7 * textRowHeight))
+        # New QOL options
+        self.ShowFPS_Label = DirectLabel(parent=self, relief=None, text='Show FPS Counter', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 8 * textRowHeight))
+        self.MouseSensitivity_Label = DirectLabel(parent=self, relief=None, text='Mouse Sensitivity', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 9 * textRowHeight))
+        self.CameraFOV_Label = DirectLabel(parent=self, relief=None, text='Camera FOV', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 10 * textRowHeight))
+        self.SmoothAnimations_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 11 * textRowHeight))
+        self.ShowNametags_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 12 * textRowHeight))
         # Controls info - WASD and Arrow keys both work
-        self.Controls_Label = DirectLabel(parent=self, relief=None, text='Controls: WASD and Arrow Keys supported', text_align=TextNode.ALeft, text_scale=options_text_scale * 0.9, text_wordwrap=20, pos=(leftMargin, 0, textStartHeight - 8 * textRowHeight))
+        self.Controls_Label = DirectLabel(parent=self, relief=None, text='Controls: WASD and Arrow Keys, F9 for Screenshot', text_align=TextNode.ALeft, text_scale=options_text_scale * 0.75, text_wordwrap=25, pos=(leftMargin, 0, textStartHeight - 13 * textRowHeight))
         # Music volume slider
         self.Music_toggleSlider = DirectSlider(parent=self, relief=DGG.FLAT, range=(0, 100), value=100, pageSize=5, pos=(buttonbase_xcoord + 0.2, 0.0, buttonbase_ycoord), scale=0.5, command=self.__setMusicVolume)
         self.Music_volumeLabel = DirectLabel(parent=self, relief=None, text='100%', text_scale=options_text_scale * 0.8, pos=(buttonbase_xcoord + 0.5, 0.0, buttonbase_ycoord))
@@ -188,6 +194,14 @@ class OptionsTabPage(DirectFrame):
          guiButton.find('**/QuitBtn_UP')), image3_color=Vec4(0.5, 0.5, 0.5, 0.5), image_scale=button_image_scale, text='', text3_fg=(0.5, 0.5, 0.5, 0.75), text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 2 + 0.025), command=self.__doToggleToonChatSounds)
         self.ToonChatSounds_toggleButton.setScale(0.8)
         self.TKeyOnlyChat_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 7), command=self.__doToggleTKeyOnlyChat)
+        # New QOL option controls
+        self.ShowFPS_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 8), command=self.__doToggleShowFPS)
+        self.MouseSensitivity_Slider = DirectSlider(parent=self, relief=DGG.FLAT, range=(0.5, 2.0), value=1.0, pageSize=0.1, pos=(buttonbase_xcoord + 0.2, 0.0, buttonbase_ycoord - textRowHeight * 9), scale=0.5, command=self.__setMouseSensitivity)
+        self.MouseSensitivity_valueLabel = DirectLabel(parent=self, relief=None, text='1.0x', text_scale=options_text_scale * 0.8, pos=(buttonbase_xcoord + 0.5, 0.0, buttonbase_ycoord - textRowHeight * 9))
+        self.CameraFOV_Slider = DirectSlider(parent=self, relief=DGG.FLAT, range=(40, 90), value=52.5, pageSize=1, pos=(buttonbase_xcoord + 0.2, 0.0, buttonbase_ycoord - textRowHeight * 10), scale=0.5, command=self.__setCameraFOV)
+        self.CameraFOV_valueLabel = DirectLabel(parent=self, relief=None, text='52.5°', text_scale=options_text_scale * 0.8, pos=(buttonbase_xcoord + 0.5, 0.0, buttonbase_ycoord - textRowHeight * 10))
+        self.SmoothAnimations_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 11), command=self.__doToggleSmoothAnimations)
+        self.ShowNametags_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 12), command=self.__doToggleShowNametags)
         self.speedChatStyleText = SpeedChat.SpeedChat(name='OptionsPageStyleText', structure=[2000], backgroundModelName='phase_3/models/gui/ChatPanel', guiModelName='phase_3.5/models/gui/speedChatGui')
         self.speedChatStyleText.setScale(self.speed_chat_scale)
         self.speedChatStyleText.setPos(0.37, 0, buttonbase_ycoord - textRowHeight * 6 + 0.03)
@@ -208,6 +222,12 @@ class OptionsTabPage(DirectFrame):
         self.__setDisplaySettings()
         self.__setToonChatSoundsButton()
         self.__setTKeyOnlyChatButton()
+        # Initialize new QOL settings
+        self.__setShowFPSButton()
+        self.__setMouseSensitivitySlider()
+        self.__setCameraFOVSlider()
+        self.__setSmoothAnimationsButton()
+        self.__setShowNametagsButton()
         self.speedChatStyleText.enter()
         self.speedChatStyleIndex = base.localAvatar.getSpeedChatStyleIndex()
         self.updateSpeedChatStyle()
@@ -261,6 +281,27 @@ class OptionsTabPage(DirectFrame):
         self.speedChatStyleText.exit()
         self.speedChatStyleText.destroy()
         del self.speedChatStyleText
+        # Clean up new QOL widgets
+        self.ShowFPS_toggleButton.destroy()
+        del self.ShowFPS_toggleButton
+        del self.ShowFPS_Label
+        self.MouseSensitivity_Slider.destroy()
+        self.MouseSensitivity_valueLabel.destroy()
+        del self.MouseSensitivity_Slider
+        del self.MouseSensitivity_valueLabel
+        del self.MouseSensitivity_Label
+        self.CameraFOV_Slider.destroy()
+        self.CameraFOV_valueLabel.destroy()
+        del self.CameraFOV_Slider
+        del self.CameraFOV_valueLabel
+        del self.CameraFOV_Label
+        self.SmoothAnimations_toggleButton.destroy()
+        del self.SmoothAnimations_toggleButton
+        del self.SmoothAnimations_Label
+        self.ShowNametags_toggleButton.destroy()
+        del self.ShowNametags_toggleButton
+        del self.ShowNametags_Label
+        del self.Controls_Label
         self.currentSizeIndex = None
         return
 
@@ -380,6 +421,103 @@ class OptionsTabPage(DirectFrame):
         else:
             self.TKeyOnlyChat_Label['text'] = 'T-Key Only Chat: OFF'
             self.TKeyOnlyChat_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
+
+    def __doToggleShowFPS(self):
+        messenger.send('wakeup')
+        showFPS = base.settings.getSetting('show-fps', False)
+        base.settings.updateSetting('show-fps', not showFPS)
+        base.setFrameRateMeter(not showFPS)
+        self.settingsChanged = 1
+        self.__setShowFPSButton()
+
+    def __setShowFPSButton(self):
+        showFPS = base.settings.getSetting('show-fps', False)
+        if showFPS:
+            self.ShowFPS_Label['text'] = 'FPS Counter: ON'
+            self.ShowFPS_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
+            base.setFrameRateMeter(True)
+        else:
+            self.ShowFPS_Label['text'] = 'FPS Counter: OFF'
+            self.ShowFPS_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
+            base.setFrameRateMeter(False)
+
+    def __setMouseSensitivity(self):
+        messenger.send('wakeup')
+        sensitivity = round(self.MouseSensitivity_Slider['value'], 1)
+        self.MouseSensitivity_valueLabel['text'] = '%.1fx' % sensitivity
+        base.settings.updateSetting('mouse-sensitivity', sensitivity)
+        # Apply to camera control if it exists
+        if hasattr(base, 'mouseSensitivity'):
+            base.mouseSensitivity = sensitivity
+        self.settingsChanged = 1
+
+    def __setMouseSensitivitySlider(self):
+        sensitivity = base.settings.getSetting('mouse-sensitivity', 1.0)
+        self.MouseSensitivity_Slider['value'] = sensitivity
+        self.MouseSensitivity_valueLabel['text'] = '%.1fx' % sensitivity
+        if hasattr(base, 'mouseSensitivity'):
+            base.mouseSensitivity = sensitivity
+
+    def __setCameraFOV(self):
+        messenger.send('wakeup')
+        fov = round(self.CameraFOV_Slider['value'], 1)
+        self.CameraFOV_valueLabel['text'] = '%.1f°' % fov
+        base.settings.updateSetting('camera-fov', fov)
+        # Apply FOV to camera
+        if hasattr(base, 'camLens'):
+            base.camLens.setFov(fov)
+        self.settingsChanged = 1
+
+    def __setCameraFOVSlider(self):
+        fov = base.settings.getSetting('camera-fov', 52.5)
+        self.CameraFOV_Slider['value'] = fov
+        self.CameraFOV_valueLabel['text'] = '%.1f°' % fov
+        if hasattr(base, 'camLens'):
+            base.camLens.setFov(fov)
+
+    def __doToggleSmoothAnimations(self):
+        messenger.send('wakeup')
+        smoothAnims = base.settings.getSetting('smooth-animations', True)
+        base.settings.updateSetting('smooth-animations', not smoothAnims)
+        # Apply smooth animations setting
+        if hasattr(base, 'transitions'):
+            base.transitions.setUseBlend(not smoothAnims)
+        self.settingsChanged = 1
+        self.__setSmoothAnimationsButton()
+
+    def __setSmoothAnimationsButton(self):
+        smoothAnims = base.settings.getSetting('smooth-animations', True)
+        if smoothAnims:
+            self.SmoothAnimations_Label['text'] = 'Smooth Animations: ON'
+            self.SmoothAnimations_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
+        else:
+            self.SmoothAnimations_Label['text'] = 'Smooth Animations: OFF'
+            self.SmoothAnimations_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
+
+    def __doToggleShowNametags(self):
+        messenger.send('wakeup')
+        showNametags = base.settings.getSetting('show-nametags', True)
+        base.settings.updateSetting('show-nametags', not showNametags)
+        # Apply nametag visibility
+        if hasattr(base, 'cr') and hasattr(base.cr, 'doFindAll'):
+            avatars = base.cr.doFindAll('DistributedToon')
+            for avatar in avatars:
+                if hasattr(avatar, 'nametag3d'):
+                    if not showNametags:
+                        avatar.nametag3d.hide()
+                    else:
+                        avatar.nametag3d.show()
+        self.settingsChanged = 1
+        self.__setShowNametagsButton()
+
+    def __setShowNametagsButton(self):
+        showNametags = base.settings.getSetting('show-nametags', True)
+        if showNametags:
+            self.ShowNametags_Label['text'] = 'Show Nametags: ON'
+            self.ShowNametags_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
+        else:
+            self.ShowNametags_Label['text'] = 'Show Nametags: OFF'
+            self.ShowNametags_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
 
     def __doDisplaySettings(self):
         if self.displaySettings == None:
