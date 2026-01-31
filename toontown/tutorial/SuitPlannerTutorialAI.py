@@ -2,11 +2,11 @@
     which handles management of the suit you will fight during the
     tutorial."""
 
-from otp.ai.AIBaseGlobal import *
-
+from panda3d.core import Vec3
 from direct.directnotify import DirectNotifyGlobal
 from toontown.suit import DistributedTutorialSuitAI
 from toontown.tutorial import TutorialBattleManagerAI
+
 
 class SuitPlannerTutorialAI:
     """
@@ -44,13 +44,13 @@ class SuitPlannerTutorialAI:
             self.suit.requestDelete()
             self.suit = None
         if self.battle:
-            #self.battle.requestDelete()
-            #RAU made to kill the mem leak when you close the window in the middle of the battle tutorial
+            # self.battle.requestDelete()
+            # RAU made to kill the mem leak when you close the window in the middle of the battle tutorial
             cellId = self.battle.battleCellId
             battleMgr = self.battle.battleMgr
             if cellId in battleMgr.cellId2battle:
                 battleMgr.destroy(self.battle)
-            
+
             self.battle = None
 
     def getDoId(self):
@@ -61,16 +61,14 @@ class SuitPlannerTutorialAI:
         return 0
 
     def requestBattle(self, zoneId, suit, toonId):
-        # 70, 20, 0 is a battle cell position that I just made up.
+        # 35, 20, -0.5 is a battle cell position that I just made up.
         self.battle = self.battleMgr.newBattle(
-            zoneId, zoneId, Vec3(35, 20, 0),
+            zoneId, zoneId, Vec3(35, 20, -0.5),
             suit, toonId,
             finishCallback=self.battleOverCallback)
-        return 1
+        return True
 
     def removeSuit(self, suit):
         # Get rid of the suit.
         suit.requestDelete()
         self.suit = None
-        
-        

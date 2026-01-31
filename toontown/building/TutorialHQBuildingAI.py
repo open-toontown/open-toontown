@@ -1,5 +1,3 @@
-from pandac.PandaModules import *
-from direct.directnotify import DirectNotifyGlobal
 from toontown.building import DistributedDoorAI
 from toontown.building import DistributedHQInteriorAI
 from toontown.building import FADoorCodes
@@ -8,17 +6,19 @@ from toontown.toon import NPCToons
 from toontown.quest import Quests
 from toontown.toonbase import TTLocalizer
 
+
 # This is not a distributed class... It just owns and manages some distributed
 # classes.
 
 class TutorialHQBuildingAI:
+
     def __init__(self, air, exteriorZone, interiorZone, blockNumber):
         # While this is not a distributed object, it needs to know about
         # the repository.
         self.air = air
         self.exteriorZone = exteriorZone
         self.interiorZone = interiorZone
-        
+
         self.setup(blockNumber)
 
     def cleanup(self):
@@ -34,17 +34,17 @@ class TutorialHQBuildingAI:
         del self.insideDoor0
         self.insideDoor1.requestDelete()
         del self.insideDoor1
-        return
 
     def setup(self, blockNumber):
         # The interior
-        self.interior=DistributedHQInteriorAI.DistributedHQInteriorAI(
+        self.interior = DistributedHQInteriorAI.DistributedHQInteriorAI(
             blockNumber, self.air, self.interiorZone)
 
         # We do not use a standard npc toon here becuase these npcs are created on
         # the fly for as many tutorials as we need. The interior zone is not known
         # until the ai allocates a zone, so we fabricate the description here.
-        desc = (self.interiorZone, TTLocalizer.TutorialHQOfficerName, ('dls', 'ms', 'm', 'm', 6,0,6,6,0,10,0,10,2,9), "m", 1, 0)
+        desc = (self.interiorZone, TTLocalizer.TutorialHQOfficerName,
+                ('dls', 'ms', 'm', 'm', 6, 0, 6, 6, 0, 10, 0, 10, 2, 9), "m", 1, 0)
         self.npc = NPCToons.createNPC(self.air, Quests.ToonHQ, desc,
                                       self.interiorZone,
                                       questCallback=self.unlockInsideDoor1)
@@ -53,24 +53,24 @@ class TutorialHQBuildingAI:
 
         self.interior.generateWithRequired(self.interiorZone)
         # Outside door 0. Locked til you defeat the Flunky:
-        door0=DistributedDoorAI.DistributedDoorAI(
+        door0 = DistributedDoorAI.DistributedDoorAI(
             self.air, blockNumber, DoorTypes.EXT_HQ,
             doorIndex=0,
             lockValue=FADoorCodes.DEFEAT_FLUNKY_HQ)
         # Outside door 1. Always locked.
-        door1=DistributedDoorAI.DistributedDoorAI(
+        door1 = DistributedDoorAI.DistributedDoorAI(
             self.air, blockNumber, DoorTypes.EXT_HQ,
             doorIndex=1,
             lockValue=FADoorCodes.GO_TO_PLAYGROUND)
         # Inside door 0. Always locked, but the message will change.
-        insideDoor0=DistributedDoorAI.DistributedDoorAI(
+        insideDoor0 = DistributedDoorAI.DistributedDoorAI(
             self.air,
             blockNumber,
             DoorTypes.INT_HQ,
             doorIndex=0,
             lockValue=FADoorCodes.TALK_TO_HQ)
         # Inside door 1. Locked til you get your HQ reward.
-        insideDoor1=DistributedDoorAI.DistributedDoorAI(
+        insideDoor1 = DistributedDoorAI.DistributedDoorAI(
             self.air,
             blockNumber,
             DoorTypes.INT_HQ,
@@ -82,10 +82,10 @@ class TutorialHQBuildingAI:
         door1.setOtherDoor(insideDoor1)
         insideDoor1.setOtherDoor(door1)
         # Put them in the right zones
-        door0.zoneId=self.exteriorZone
-        door1.zoneId=self.exteriorZone
-        insideDoor0.zoneId=self.interiorZone
-        insideDoor1.zoneId=self.interiorZone
+        door0.zoneId = self.exteriorZone
+        door1.zoneId = self.exteriorZone
+        insideDoor0.zoneId = self.interiorZone
+        insideDoor1.zoneId = self.interiorZone
         # Now that they both now about each other, generate them:
         door0.generateWithRequired(self.exteriorZone)
         door1.generateWithRequired(self.exteriorZone)
@@ -96,14 +96,13 @@ class TutorialHQBuildingAI:
         insideDoor0.sendUpdate("setDoorIndex", [insideDoor0.getDoorIndex()])
         insideDoor1.sendUpdate("setDoorIndex", [insideDoor1.getDoorIndex()])
         # keep track of them:
-        self.door0=door0
-        self.door1=door1
-        self.insideDoor0=insideDoor0
-        self.insideDoor1=insideDoor1
+        self.door0 = door0
+        self.door1 = door1
+        self.insideDoor0 = insideDoor0
+        self.insideDoor1 = insideDoor1
         # hide the periscope
         self.interior.setTutorial(1)
-        return
-       
+
     def unlockDoor(self, door):
         door.setDoorLock(FADoorCodes.UNLOCKED)
 
