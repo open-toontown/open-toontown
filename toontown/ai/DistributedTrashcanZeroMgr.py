@@ -1,5 +1,4 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObject
 from toontown.ai import DistributedPhaseEventMgr
 
 class DistributedTrashcanZeroMgr(DistributedPhaseEventMgr.DistributedPhaseEventMgr):

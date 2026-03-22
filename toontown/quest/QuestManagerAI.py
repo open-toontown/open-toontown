@@ -109,7 +109,7 @@ class QuestManagerAI:
                     npc.assignQuest(av.getDoId(), *quests[0])
                 else:
                     # if this avatar requested a quest, include it
-                    if self.NextQuestDict.has_key(avId):
+                    if avId in self.NextQuestDict:
                         questId = self.NextQuestDict[avId]
                         # if it's already in the list of quests,
                         # we're all set

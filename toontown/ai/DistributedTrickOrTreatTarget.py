@@ -1,6 +1,4 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObject
-from otp.speedchat import SpeedChatGlobals
 from . import DistributedScavengerHuntTarget
 
 class DistributedTrickOrTreatTarget(DistributedScavengerHuntTarget.DistributedScavengerHuntTarget):

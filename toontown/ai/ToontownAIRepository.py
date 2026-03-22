@@ -751,7 +751,7 @@ class ToontownAIRepository(AIDistrict):
             if (isinstance(do, DistributedStartingBlockAI)):
                 if (isinstance(do.kartPad, DistributedRacePadAI)):
                     # Add the do to the dict
-                    if (dict.has_key(do.kartPad.doId)):
+                    if do.kartPad.doId in dict:
                         dict[do.kartPad.doId].append(do.doId)
                     else:
                         dict[do.kartPad.doId] = [do.doId]
@@ -763,7 +763,7 @@ class ToontownAIRepository(AIDistrict):
             if (isinstance(do, DistributedStartingBlockAI)):
                 if (isinstance(do.kartPad, DistributedViewPadAI)):
                     # Add the do to the dict
-                    if (dict.has_key(do.kartPad.doId)):
+                    if do.kartPad.doId in dict:
                         dict[do.kartPad.doId].append(do.doId)
                     else:
                         dict[do.kartPad.doId] = [do.doId]

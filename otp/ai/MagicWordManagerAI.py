@@ -41,7 +41,7 @@ class MagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
 
         self.notify.info("%s (%s) just said the magic word: %s" % (sender, signature, word))
         self.air.writeServerEvent('magic-word', senderId, "%s|%s|%s" % (sender, signature, word))
-        if self.air.doId2do.has_key(avId):
+        if avId in self.air.doId2do:
             av = self.air.doId2do[avId]
 
             try:

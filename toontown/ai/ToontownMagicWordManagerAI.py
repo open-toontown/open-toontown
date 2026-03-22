@@ -10,7 +10,6 @@ from direct.showbase import PythonUtil
 from direct.task import Task
 
 # toontown imports
-from otp.ai.AIBaseGlobal import *
 from otp.ai.AIZoneData import AIZoneData
 from direct.distributed import DistributedObjectAI
 from direct.directnotify import DirectNotifyGlobal
@@ -1710,7 +1709,7 @@ class ToontownMagicWordManagerAI(MagicWordManagerAI.MagicWordManagerAI):
             else:
                 streetId=int(args[4])
 
-                if not self.air.suitPlanners.has_key(streetId):
+                if streetId not in self.air.suitPlanners:
                     response = "Street %d is not known." % (streetId)
                     self.down_setMagicWordResponse(senderId, response)
                     return
@@ -1819,7 +1818,7 @@ class ToontownMagicWordManagerAI(MagicWordManagerAI.MagicWordManagerAI):
             else:
                 streetId=int(args[4])
 
-                if not self.air.suitPlanners.has_key(streetId):
+                if streetId not in self.air.suitPlanners:
                     response = "Street %d is not known." % (streetId)
                     self.down_setMagicWordResponse(senderId, response)
                     return
@@ -1916,7 +1915,7 @@ class ToontownMagicWordManagerAI(MagicWordManagerAI.MagicWordManagerAI):
             else:
                 streetId=int(args[2])
 
-                if not self.air.suitPlanners.has_key(streetId):
+                if streetId not in self.air.suitPlanners:
                     response = "Street %d is not known." % (streetId)
                     self.down_setMagicWordResponse(senderId, response)
                     return
@@ -2139,7 +2138,7 @@ class ToontownMagicWordManagerAI(MagicWordManagerAI.MagicWordManagerAI):
             for sp in self.air.suitPlanners.values():
                 if sp.buildingMgr:
                     numActual = len(sp.buildingMgr.getSuitBlocks())
-                    if not dist.has_key(numActual):
+                    if numActual not in dist:
                         dist[numActual] = []
                     dist[numActual].append(sp.zoneId)
 
@@ -2191,7 +2190,7 @@ class ToontownMagicWordManagerAI(MagicWordManagerAI.MagicWordManagerAI):
                     sp.formatNumSuitsPerTrack(numPerHeight),
                     numTotalBuildings, numTarget, numAttempting)
 
-            elif not self.air.suitPlanners.has_key(streetId):
+            elif streetId not in self.air.suitPlanners:
                 response = "Street %d is not known." % (streetId)
 
             else:
@@ -2260,14 +2259,14 @@ class ToontownMagicWordManagerAI(MagicWordManagerAI.MagicWordManagerAI):
         if len(args) > 4:
             revives = int(args[4])
 
-        if not self.air.suitPlanners.has_key(streetId):
+        if streetId not in self.air.suitPlanners:
             response = "Street %d is not known." % (streetId)
 
         else:
             sp = self.air.suitPlanners[streetId]
             map = sp.getZoneIdToPointMap()
             canonicalZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
-            if not map.has_key(canonicalZoneId):
+            if canonicalZoneId not in map:
                 response = "Zone %d isn't near a suit point." % (canonicalZoneId)
             else:
                 points = map[canonicalZoneId][:]
@@ -2491,7 +2490,7 @@ class ToontownMagicWordManagerAI(MagicWordManagerAI.MagicWordManagerAI):
                 response = "Overall, %d cogs (%s); target is %d." % (
                     numActual, sp.formatNumSuitsPerTrack(numPerTrack), numTarget)
                 
-        elif not self.air.suitPlanners.has_key(streetId):
+        elif streetId not in self.air.suitPlanners:
             response = "Street %d is not known." % (streetId)
 
         else:

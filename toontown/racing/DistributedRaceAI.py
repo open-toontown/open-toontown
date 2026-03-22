@@ -495,7 +495,7 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
 
     def racerLeft(self, avIdFromClient):
         avId=self.air.getAvatarIdFromSender()
-        if(self.racers.has_key(avId) and avId==avIdFromClient):
+        if avId in self.racers and avId == avIdFromClient:
              self.notify.debug("Removing %d from race %d" % (avId, self.doId))
              #Clear out the players kart
              racer=self.racers[avId]

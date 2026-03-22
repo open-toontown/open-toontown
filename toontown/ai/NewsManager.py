@@ -1,4 +1,3 @@
-from pandac.PandaModules import *
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
@@ -39,14 +38,12 @@ class NewsManager(DistributedObject.DistributedObject):
         base.cr.newsManager = self
         base.localAvatar.inventory.setInvasionCreditMultiplier(1)
         self.weeklyCalendarHolidays = []
-        return
 
     def delete(self):
         self.cr.newsManager = None
         if self.holidayDecorator:
             self.holidayDecorator.exit()
         DistributedObject.DistributedObject.delete(self)
-        return
 
     def setPopulation(self, population):
         self.population = population

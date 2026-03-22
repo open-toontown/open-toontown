@@ -158,7 +158,7 @@ class RaceManagerAI(DirectObject.DirectObject):
                 # see if they broke a server record
                 if not suspicious:
                     bonus = self.checkTimeRecord(race.trackId, totalTime, race.raceType, race.toonCount, playerInfo.avId)
-                    if (race.circuitTotalBonusTickets.has_key(playerInfo.avId)):
+                    if playerInfo.avId in race.circuitTotalBonusTickets:
                         race.circuitTotalBonusTickets[playerInfo.avId] += bonus
                     else:
                         race.circuitTotalBonusTickets[playerInfo.avId] = bonus                
@@ -309,7 +309,7 @@ class RaceManagerAI(DirectObject.DirectObject):
                     av.b_setTickets(newTickets)
 
                     finalBonus = 0
-                    if (race.circuitTotalBonusTickets.has_key(avId)):
+                    if av in race.circuitTotalBonusTickets:
                         finalBonus = race.circuitTotalBonusTickets[avId]
                         
                     #race.d_setCircuitPlace(avId, place, entryFee, winnings, bonus, trophies)
@@ -960,7 +960,7 @@ class RaceManagerAI(DirectObject.DirectObject):
 
         #check for new tracks
         for trackId in RaceGlobals.TrackIds:
-            if not records.has_key(trackId):
+            if not trackId in records:
                 records[trackId] = {}
                 # for each recording period (daily, etc.)
                 for i in RaceGlobals.PeriodIds:
