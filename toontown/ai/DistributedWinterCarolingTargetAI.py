@@ -1,5 +1,4 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObjectAI
 from . import DistributedScavengerHuntTargetAI
 
 class DistributedWinterCarolingTargetAI(DistributedScavengerHuntTargetAI.DistributedScavengerHuntTargetAI):
@@ -13,8 +12,7 @@ class DistributedWinterCarolingTargetAI(DistributedScavengerHuntTargetAI.Distrib
         'DistributedScavengerHuntTargetAI')
 
     def __init__(self, air, hunt, goal, totMgr):
-        DistributedScavengerHuntTargetAI.DistributedScavengerHuntTargetAI.__init__(self,  \
-                                                                                                            air, hunt, goal, totMgr)
+        DistributedScavengerHuntTargetAI.DistributedScavengerHuntTargetAI.__init__(self, air, hunt, goal, totMgr)
 
     def attemptScavengerHunt(self):
         avId = self.air.getAvatarIdFromSender()

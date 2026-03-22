@@ -1,5 +1,4 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.ai import HolidayBaseAI
 from toontown.ai import PhasedHolidayAI
 from toontown.ai import DistributedHydrantZeroMgrAI
 from toontown.toonbase import ToontownGlobals

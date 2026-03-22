@@ -1,6 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
 from toontown.ai import HolidayBaseAI
-from toontown.toonbase import ToontownGlobals
 from toontown.ai import DistributedGreenToonEffectMgrAI
 
 EVENT_ZONE = 5819 # 'Green Bean Jeans' interior

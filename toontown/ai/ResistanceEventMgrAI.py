@@ -1,6 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
 from toontown.ai import HolidayBaseAI
-from toontown.toonbase import ToontownGlobals
 from toontown.ai import DistributedResistanceEmoteMgrAI
 
 EVENT_ZONE = 9720 # 'Talking in Your Sleep Voiceover Training' interior

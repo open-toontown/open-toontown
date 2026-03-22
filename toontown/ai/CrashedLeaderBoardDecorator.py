@@ -1,7 +1,7 @@
-from panda3d.core import CSDefault, ConfigVariable, ConfigVariableBool
+from panda3d.core import CSDefault, ConfigVariableBool
+from panda3d.toontown import loadDNAFile
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
-from direct.interval.IntervalGlobal import *
 from . import HolidayDecorator
 from toontown.toonbase import ToontownGlobals
 from toontown.hood import GSHood

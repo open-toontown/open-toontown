@@ -54,7 +54,6 @@ from panda3d.core import ConfigVariableString
 #################################################################
 # Python Specific Modules
 #################################################################
-import random
 import time
 import enum
 

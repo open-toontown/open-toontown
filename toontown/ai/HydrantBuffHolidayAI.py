@@ -1,8 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.ai import HolidayBaseAI
 from toontown.ai import PropBuffHolidayAI
-from toontown.ai import DistributedPhaseEventMgrAI
-from toontown.toonbase import ToontownGlobals
 
 class HydrantBuffHolidayAI(PropBuffHolidayAI.PropBuffHolidayAI):
 

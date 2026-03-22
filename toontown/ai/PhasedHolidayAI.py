@@ -1,9 +1,6 @@
 import datetime
-import time
 from direct.directnotify import DirectNotifyGlobal
 from toontown.ai import HolidayBaseAI
-from toontown.toonbase import ToontownGlobals
-from toontown.ai import DistributedResistanceEmoteMgrAI
 
 
 class StartAndEndTime:
