@@ -12,7 +12,6 @@ whitelist/
 .idea
 venv/
 *.json
-!otpgo/config/vismap.json
 !win32/.vscode/tasks.json
 !linux/.vscode/tasks.json
 !darwin/.vscode/tasks.json

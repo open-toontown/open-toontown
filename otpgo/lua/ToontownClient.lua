@@ -6,23 +6,17 @@ local date = require('date')
 -- Load Utils:
 dofile("lua/Utils.lua")
 
--- Read vismap:
-function readVismap()
-    local json = require("json")
-    local io = require("io")
+-- Load DNAParser:
+dofile("lua/DNAParser.lua")
 
-    -- TODO: Custom path.
-    f, err = io.open("config/vismap.json", "r")
-    assert(not err, err)
+-- Generate vismap from DNA files:
+local dnaFiles = searchForDNAFiles()
 
-    decoder = json.new_decoder(f)
-    result, err = decoder:decode()
-    f:close()
-    assert(not err, err)
-    return result
+VISMAP = {}
+for _, filePath in ipairs(dnaFiles) do
+    print(string.format('ToontownClient: Reading DNA File \"%s\"', filePath))
+    parseDNAFile(filePath, VISMAP)
 end
-
-VISMAP = readVismap()
 print("ToontownClient: Vismap successfully loaded.")
 
 -- Read account bridge:
