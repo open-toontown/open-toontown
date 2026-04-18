@@ -7,7 +7,7 @@
 - THE BEST BUTTONS
 - MORE BEST COME TO!!!!!!!!!
 
-- tbh its really just a challenge to see if i can outslop toontown frontlines lol this source is just a joke
+SOON TO HAVE NEW SHADOW NEW CRANE NEW STREET NEW NEW NEW ENW ENW ! 1111!11
 
 # Open Toontown
 This repository contains the code for Open Toontown, based on the latest version of Disney's Toontown Online (sv1.0.47.38).
