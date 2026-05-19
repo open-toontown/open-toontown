@@ -188,9 +188,8 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
         if hasattr(self, 'rewardBarrier'):
             if self.rewardBarrier:
                 self.rewardBarrier.clear(avId)
-        if hasattr(self, '__barrier'):
-            if self.__barrier:
-                self.__.clear(avId)
+        if self.__barrier:
+            self.__barrier.clear(avId)
 
     def startNextHole(self):
         self.notify.debugStateCall(self)
