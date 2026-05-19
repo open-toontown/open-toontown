@@ -34,7 +34,7 @@ class DistributedInGameNewsMgr(DistributedObject):
         self.notify.info('latestIssue=%s' % self.latestIssue)
 
     def getLatestIssueStr(self):
-        pass
+        return self.latestIssueStr
 
     def getLatestIssue(self):
         return self.latestIssue
