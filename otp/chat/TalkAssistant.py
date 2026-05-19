@@ -630,6 +630,7 @@ class TalkAssistant(DirectObject.DirectObject):
              message,
              [],
              0])
+            base.localAvatar.setChatAbsolute(message, chatFlags)
             messenger.send('chatUpdate', [message, chatFlags])
         return error
 
