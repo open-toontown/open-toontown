@@ -113,7 +113,11 @@ class NewsPageButtonManager(FSM.FSM):
         self.__blinkIval.pause()
 
     def isNewIssueButtonShown(self):
-        if localAvatar.getLastTimeReadNews() < base.cr.inGameNewsMgr.getLatestIssue():
+        latestIssue = base.cr.inGameNewsMgr.getLatestIssue()
+        lastRead = localAvatar.getLastTimeReadNews()
+        if latestIssue is None or lastRead is None:
+            return False
+        if lastRead < latestIssue:
             return True
         return False
 
@@ -126,7 +130,9 @@ class NewsPageButtonManager(FSM.FSM):
     def enterNormalWalk(self):
         if not self.buttonsLoaded:
             return
-        if localAvatar.getLastTimeReadNews() < base.cr.inGameNewsMgr.getLatestIssue():
+        latestIssue = base.cr.inGameNewsMgr.getLatestIssue()
+        lastRead = localAvatar.getLastTimeReadNews()
+        if latestIssue is not None and lastRead is not None and lastRead < latestIssue:
             self.__showNewIssueButton()
             self.__blinkIval.resume()
         else:

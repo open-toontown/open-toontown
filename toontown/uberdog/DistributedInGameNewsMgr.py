@@ -13,6 +13,8 @@ class DistributedInGameNewsMgr(DistributedObject):
     def __init__(self, cr):
         DistributedObject.__init__(self, cr)
         base.cr.inGameNewsMgr = self
+        self.latestIssueStr = ''
+        self.latestIssue = None
 
     def delete(self):
         DistributedObject.delete(self)

@@ -168,7 +168,8 @@ class DirectNewsFrame(DirectObject.DirectObject):
         self.mainFrame = DirectFrame(parent=self.backFrame, frameSize=self.FrameDimensions, frameColor=(1, 0, 0, 1))
 
     def activate(self):
-        if hasattr(self, 'createdTime') and self.createdTime < base.cr.inGameNewsMgr.getLatestIssue() and self.NewsOverHttp and not self.redownloadingNews:
+        latestIssue = base.cr.inGameNewsMgr.getLatestIssue()
+        if hasattr(self, 'createdTime') and latestIssue is not None and self.createdTime < latestIssue and self.NewsOverHttp and not self.redownloadingNews:
             self.redownloadNews()
         else:
             self.addDownloadingTextTask()
@@ -361,8 +362,9 @@ class DirectNewsFrame(DirectObject.DirectObject):
             print('%s\t%s\t%s' % (filename, size, date), file=file)
 
     def handleNewIssueOut(self):
-        if hasattr(self, 'createdTime') and base.cr.inGameNewsMgr.getLatestIssue() < self.createdTime:
-            self.createdTime = base.cr.inGameNewsMgr.getLatestIssue()
+        latestIssue = base.cr.inGameNewsMgr.getLatestIssue()
+        if hasattr(self, 'createdTime') and latestIssue is not None and latestIssue < self.createdTime:
+            self.createdTime = latestIssue
         elif self.NewsOverHttp and not self.redownloadingNews:
             if not self.active:
                 self.redownloadNews()
