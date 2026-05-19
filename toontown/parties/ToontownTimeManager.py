@@ -1,6 +1,15 @@
+import sys
 import time
 from datetime import datetime, timedelta
-import pytz
+try:
+    import pytz
+except ImportError:
+    raise ImportError(
+        "pytz is not installed for this Python interpreter (%s). "
+        "Install the project's Python dependencies first: "
+        "%s -m pip install -r requirements.txt"
+        % (sys.executable, sys.executable)
+    ) from None
 from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import TTLocalizer
 

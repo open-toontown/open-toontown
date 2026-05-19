@@ -32,6 +32,15 @@ $ pip install panda3d-1.11.0-cp39-cp39-macosx_10_9_x86_64.whl
 ## Linux (Building your own)
 If you use Linux, or are interested in building Panda3D yourself, head on over to [our Panda3D fork](https://github.com/open-toontown/panda3d) and read the "Building Panda3D" section on the README file there.
 
+# Python Dependencies
+Install the packages listed in `requirements.txt` using the **Panda3D-bundled Python**, which is the interpreter the start scripts run under (the path is stored in the `PPYTHON_PATH` file in the repository root). On Windows that looks like:
+```cmd
+"C:\Panda3D-1.11.0-x64\python\ppython.exe" -m pip install -r requirements.txt
+```
+On macOS or Linux, use the same Python 3.9 you installed the Panda3D wheel into, e.g. `python3.9 -m pip install -r requirements.txt`.
+
+Skipping this step causes the UberDOG and AI servers to fail at startup with `ModuleNotFoundError: No module named 'pytz'`.
+
 # Starting the Server and Game
 To start the server and run the game locally, go to your platform directory (`win32` for Windows, `darwin` for Mac and `linux` for Linux), and make sure you start the following scripts in order:
 
