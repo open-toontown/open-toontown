@@ -326,7 +326,7 @@ class DistributedGolfCourseAI(DistributedObjectAI.DistributedObjectAI, FSM):
 
     def exitWaitReadyHole(self):
         self.notify.debugStateCall(self)
-        if hasattr(self, '__barrier'):
+        if self.__barrier:
             self.__barrier.cleanup()
             self.__barrier = None
         return
