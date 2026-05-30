@@ -77,7 +77,7 @@ class TownBattleAttackPanel(StateData.StateData):
             doneStatus['level'] = level
             messenger.send(self.doneEvent, [doneStatus])
         else:
-            self.notify.error("An item we don't have: track %s level %s was selected." % [track, level])
+            self.notify.error("An item we don't have: track %s level %s was selected." % (track, level))
 
     def __handleHide(self):
         if AttackPanelHidden:
