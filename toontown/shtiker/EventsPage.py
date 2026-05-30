@@ -779,7 +779,7 @@ class EventsPage(ShtikerPage.ShtikerPage):
         urlStrings = urlfile.read()
         urlfile.close()
         urls = urlStrings.split('\r\n')
-        for index in range(len(urls) / 2):
+        for index in range(len(urls) // 2):
             imageUrl = urls[index * 2]
             textUrl = urls[index * 2 + 1]
             img = PNMImage()
