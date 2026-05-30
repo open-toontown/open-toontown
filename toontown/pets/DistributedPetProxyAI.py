@@ -37,7 +37,7 @@ class DistributedPetProxyAI(DistributedObjectAI.DistributedObjectAI):
         self.__generateDistMoodFuncs()
 
     def getSetterName(self, valueName, prefix = 'set'):
-        return '%s%s%s' % (prefix, string.upper(valueName[0]), valueName[1:])
+        return '%s%s%s' % (prefix, valueName[0].upper(), valueName[1:])
 
     def setDNA(self, dna):
         head, ears, nose, tail, body, color, colorScale, eyes, gender = dna

@@ -4,6 +4,7 @@ from direct.gui.DirectGui import *
 from panda3d.core import *
 from toontown.toonbase import TTLocalizer
 import os
+import string
 from toontown.toonbase import ToontownGlobals
 
 class PhotoAlbumPage(ShtikerPage.ShtikerPage):
@@ -88,7 +89,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
 
     def renameDialog(self, str):
         separator = '_'
-        validChars = string.letters + string.digits + ' -'
+        validChars = string.ascii_letters + string.digits + ' -'
         str = [s for s in str if s in validChars]
         if not str:
             self.renameCleanup()

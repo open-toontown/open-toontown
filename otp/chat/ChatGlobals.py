@@ -40,7 +40,7 @@ ThoughtPrefix = '.'
 def isThought(message):
     if len(message) == 0:
         return 0
-    elif string.find(message, ThoughtPrefix, 0, len(ThoughtPrefix)) >= 0:
+    elif message.find(ThoughtPrefix, 0, len(ThoughtPrefix)) >= 0:
         return 1
     else:
         return 0
