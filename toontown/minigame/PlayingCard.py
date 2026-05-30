@@ -11,7 +11,7 @@ class PlayingCardBase:
         self.setValue(value)
 
     def getCardName(self):
-        PlayingCardGlobals.getCardName(self.value)
+        return PlayingCardGlobals.getCardName(self.value)
 
     def getRank(self):
         return self.rank
