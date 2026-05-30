@@ -21,7 +21,7 @@ class RaceManagerAI(DirectObject.DirectObject):
     def getDoId(self):
         return 0
 
-    def createRace(self, trackId, raceType, laps, players, circuitLoop, circuitPoints, circuitTimes, qualTimes=[], circuitTimeList={}, circuitTotalBonusTickets={}):
+    def createRace(self, trackId, raceType, laps, players, circuitLoop, circuitPoints, circuitTimes, qualTimes=None, circuitTimeList={}, circuitTotalBonusTickets={}):
         raceZone = self.air.allocateZone()
         race = DistributedRaceAI.DistributedRaceAI(self.air, trackId, raceZone, players, laps, raceType, self.exitedRace, self.raceOver, circuitLoop, circuitPoints, circuitTimes, qualTimes, circuitTimeList, circuitTotalBonusTickets)
         race.generateWithRequired(raceZone)

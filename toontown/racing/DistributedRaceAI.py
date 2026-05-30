@@ -11,7 +11,7 @@ from direct.distributed.ClockDelta import *
 class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRaceAI')
 
-    def __init__(self, air, trackId, zoneId, avIds, laps, raceType, racerFinishedFunc, raceDoneFunc, circuitLoop, circuitPoints, circuitTimes, qualTimes=[], circuitTimeList={}, circuitTotalBonusTickets={}):
+    def __init__(self, air, trackId, zoneId, avIds, laps, raceType, racerFinishedFunc, raceDoneFunc, circuitLoop, circuitPoints, circuitTimes, qualTimes=None, circuitTimeList={}, circuitTotalBonusTickets={}):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.trackId = trackId
         self.direction = self.trackId % 2
@@ -44,7 +44,7 @@ class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
             self.gagList = [
              0] * len(RaceGlobals.TrackDict[trackId][4])
         self.circuitLoop = circuitLoop
-        self.qualTimes = qualTimes
+        self.qualTimes = qualTimes if qualTimes is not None else []
         self.circuitTimeList = circuitTimeList
         self.qualTimes.append(RaceGlobals.TrackDict[trackId][1])
         self.circuitTotalBonusTickets = circuitTotalBonusTickets
