@@ -3,7 +3,7 @@ title Open Toontown - AI (District) Server
 cd /d %~dp0..
 
 rem Read the contents of PPYTHON_PATH into %PPYTHON_PATH%:
-set /P PPYTHON_PATH=<PPYTHON_PATH
+for /f "usebackq delims=" %%i in ("PPYTHON_PATH") do set "PPYTHON_PATH=%%i"
 
 :main
 "%PPYTHON_PATH%" -m toontown.ai.AIStart --base-channel 401000000 ^
