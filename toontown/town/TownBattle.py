@@ -130,7 +130,9 @@ class TownBattle(StateData.StateData):
          TownBattleToonPanel.TownBattleToonPanel(2),
          TownBattleToonPanel.TownBattleToonPanel(3))
         self.timer = ToontownTimer.ToontownTimer()
-        self.timer.setPos(base.a2dRight - 0.218, 0, 0.842)
+        # Use widescreen-aware positioning for proper edge alignment
+        timerPos = base.getGUIEdgePos(edge='right', xOffset=0.218, yOffset=-0.842) if hasattr(base, 'getGUIEdgePos') else Point3(base.a2dRight - 0.218, 0, 0.842)
+        self.timer.setPos(timerPos)
         self.timer.setScale(0.4)
         # Timer permanently hidden for singleplayer - no time limit
         self.timer.hide()

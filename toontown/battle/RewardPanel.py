@@ -88,10 +88,12 @@ class RewardPanel(DirectFrame):
 
         self._battleGui = loader.loadModel('phase_3.5/models/gui/battle_gui')
         from toontown.toonbase.ToonBaseGlobal import base
+        # Use widescreen-aware positioning for proper edge alignment
+        skipButtonPos = base.getGUIEdgePos(edge='right', xOffset=0.585, yOffset=-0.395) if hasattr(base, 'getGUIEdgePos') else Point3(base.a2dRight - 0.585, 0, -0.395)
         self.skipButton = DirectButton(parent=self, relief=None, image=(self._battleGui.find('**/tt_t_gui_gen_skipSectionUp'),
          self._battleGui.find('**/tt_t_gui_gen_skipSectionDown'),
          self._battleGui.find('**/tt_t_gui_gen_skipSectionRollOver'),
-         self._battleGui.find('**/tt_t_gui_gen_skipSectionDisabled')), pos=(base.a2dRight - 0.585, 0, -0.395), scale=(0.39, 1.0, 0.39), text=('',
+         self._battleGui.find('**/tt_t_gui_gen_skipSectionDisabled')), pos=skipButtonPos, scale=(0.39, 1.0, 0.39), text=('',
          TTLocalizer.RewardPanelSkip,
          TTLocalizer.RewardPanelSkip,
          ''), text_scale=TTLocalizer.RPskipScale, text_fg=Vec4(1, 1, 1, 1), text_shadow=Vec4(0, 0, 0, 1), text_pos=TTLocalizer.RPskipPos, textMayChange=0, command=self._handleSkip)
