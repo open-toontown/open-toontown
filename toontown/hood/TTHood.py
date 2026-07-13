@@ -51,8 +51,13 @@ class TTHood(ToonHood.ToonHood):
     def startSpookySky(self):
         if hasattr(self, 'sky') and self.sky:
             self.stopSky()
-        self.sky = loader.loadModel(self.spookySkyFile)
-        self.sky.setTag('sky', 'Halloween')
+        # Parent Hood._loadSkyModel handles deleted phase props / ProceduralSky placeholder.
+        self.sky = self._loadSkyModel(self.spookySkyFile, halloween=True)
+        try:
+            if self.sky.getName() in ('legacySkyDisabled', 'missingSkyPlaceholder'):
+                return
+        except Exception:
+            pass
         self.sky.setScale(1.0)
         self.sky.setDepthTest(0)
         self.sky.setDepthWrite(0)

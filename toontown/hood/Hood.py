@@ -21,6 +21,7 @@ from toontown.toon.Toon import teleportDebug
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import base
+from direct.showbase.ShowBaseGlobal import hidden
 
 
 class Hood(StateData):
@@ -84,6 +85,44 @@ class Hood(StateData):
 
         base.localAvatar.stopChat()
 
+    def _loadSkyModel(self, path, halloween=False):
+        """Load a sky model; if the file is missing use a placeholder.
+
+        Legacy sky BAM files are removed when ProceduralSky is active, so a
+        missing file is the normal case and logged at debug level only.
+        """
+        # When ProceduralSky is active the old sky BAM files are intentionally
+        # deleted – don't try to load them at all.
+        try:
+            from toontown.hood.SkyUtil import _wantProceduralSky
+            if _wantProceduralSky():
+                sky = NodePath('legacySkyDisabled')
+                sky.reparentTo(hidden)
+                sky.setTag('sky', 'Halloween' if halloween else 'Regular')
+                return sky
+        except Exception:
+            pass
+        sky = base.loader.loadModel(path)
+        try:
+            valid = sky is not None and not sky.isEmpty()
+        except Exception:
+            valid = False
+        if not valid:
+            self.notify.debug('Sky model not found (%r) – ProceduralSky will be used.' % path)
+            sky = NodePath('missingSkyPlaceholder')
+            sky.reparentTo(hidden)
+            sky.setTag('sky', 'Halloween' if halloween else 'Regular')
+            return sky
+        sky.setTag('sky', 'Halloween' if halloween else 'Regular')
+        sky.setScale(1.0)
+        if not halloween:
+            sky.setFogOff()
+        try:
+            sky.flattenLight()
+        except Exception:
+            pass
+        return sky
+
     def load(self):
         if self.storageDNAFile:
             base.loader.loadDNAFile(self.dnaStore, self.storageDNAFile)
@@ -96,23 +135,12 @@ class Hood(StateData):
                     base.loader.loadDNAFile(self.dnaStore, storageFile)
 
             if ToontownGlobals.HALLOWEEN_COSTUMES not in holidayIds and ToontownGlobals.SPOOKY_COSTUMES not in holidayIds or not self.spookySkyFile:
-                self.sky = base.loader.loadModel(self.skyFile)
-                self.sky.setTag('sky', 'Regular')
-                self.sky.setScale(1.0)
-                self.sky.setFogOff()
-                # Flatten sky for better performance
-                self.sky.flattenLight()
+                self.sky = self._loadSkyModel(self.skyFile, halloween=False)
             else:
-                self.sky = base.loader.loadModel(self.spookySkyFile)
-                self.sky.setTag('sky', 'Halloween')
-                self.sky.flattenLight()
+                self.sky = self._loadSkyModel(self.spookySkyFile, halloween=True)
 
         if not newsManager:
-            self.sky = base.loader.loadModel(self.skyFile)
-            self.sky.setTag('sky', 'Regular')
-            self.sky.setScale(1.0)
-            self.sky.setFogOff()
-            self.sky.flattenLight()
+            self.sky = self._loadSkyModel(self.skyFile, halloween=False)
 
     def unload(self):
         if hasattr(self, 'loader'):
@@ -241,6 +269,25 @@ class Hood(StateData):
             messenger.send(self.doneEvent)
 
     def startSky(self):
+        # If the procedural sky shader system is active, suppress the legacy
+        # model sky entirely so it can never render over the shader dome.
+        try:
+            from toontown.hood.SkyUtil import _wantProceduralSky
+            if _wantProceduralSky():
+                try:
+                    if self.sky and not self.sky.isEmpty():
+                        self.sky.removeNode()
+                except Exception:
+                    pass
+                try:
+                    from direct.showbase.ShowBaseGlobal import hidden
+                    self.sky = NodePath('legacySkyDisabled')
+                    self.sky.reparentTo(hidden)
+                except Exception:
+                    pass
+                return
+        except Exception:
+            pass
         self.sky.reparentTo(base.camera)
         self.sky.setZ(0.0)
         self.sky.setHpr(0.0, 0.0, 0.0)
@@ -258,8 +305,14 @@ class Hood(StateData):
         if hasattr(self, 'sky') and self.sky:
             self.stopSky()
 
-        self.sky = base.loader.loadModel(self.spookySkyFile)
-        self.sky.setTag('sky', 'Halloween')
+        # Uses _loadSkyModel so missing/deleted BAMs (replaced by ProceduralSky) do not crash.
+        self.sky = self._loadSkyModel(self.spookySkyFile, halloween=True)
+        try:
+            nm = self.sky.getName()
+            if nm in ('legacySkyDisabled', 'missingSkyPlaceholder'):
+                return
+        except Exception:
+            pass
         self.sky.setColor(0.5, 0.5, 0.5, 1)
         self.sky.reparentTo(base.camera)
         self.sky.setTransparency(TransparencyAttrib.MDual, 1)
@@ -272,10 +325,12 @@ class Hood(StateData):
 
     def endSpookySky(self):
         if hasattr(self, 'sky') and self.sky:
-            self.sky.reparentTo(base.hidden)
+            try:
+                self.sky.reparentTo(base.hidden)
+            except Exception:
+                pass
 
-        if hasattr(self, 'sky'):
-            self.sky = base.loader.loadModel(self.skyFile)
-            self.sky.setTag('sky', 'Regular')
-            self.sky.setScale(1.0)
-            self.startSky()
+        # Never call loader.loadModel(self.skyFile) here — legacy TT_sky.bam et al. may be
+        # removed when ProceduralSky is enabled; _loadSkyModel returns a safe placeholder.
+        self.sky = self._loadSkyModel(self.skyFile, halloween=False)
+        self.startSky()

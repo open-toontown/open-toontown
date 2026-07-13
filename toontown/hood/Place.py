@@ -774,6 +774,8 @@ class Place(StateData, FriendsListManager):
         base.localAvatar.stopPosHprBroadcast()
 
     def requestTeleport(self, hoodId, zoneId, shardId, avId):
+        if avId is None:
+            avId = -1
         if avId > 0:
             teleportNotify.debug('requestTeleport%s' % ((hoodId,
               zoneId,
