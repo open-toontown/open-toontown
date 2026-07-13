@@ -1,0 +1,43 @@
+#This will not work unless you have Toon Bot running on your toontown
+#If you do not have Toon Bot you can download it at youtube.com/toontowninjecting
+
+script={
+
+    'name':'CFO Maxer',\
+    
+    'description':"The CFO maxer is a script designed to max your Cashbot suit. It does the Mint \
+when you need merits and does a CFO when you have the cogbucks you need. When you are maxed \
+it will continue to do the cfo gaining you Unites. A full credit to the functions used \
+can be found of my channel (ToontownInjecting).",
+                   
+    'author': 'Freshollie',\
+    
+    'version': '1',\
+    
+    'unload':'cfoMaxer.revert()',\
+    
+    'start':'cfoMaxer.otherFunctions.start()',\
+    
+    'stop':'cfoMaxer.otherFunctions.setStop()',\
+    
+    'close':'cfoMaxer.autoerGui.hideAll()',\
+    
+    'open':'cfoMaxer.autoerGui.showAll()',\
+    
+    'options':{
+        'Only Do Mint':{
+            'command':'cfoMaxer.otherFunctions.onlyDoMint',\
+            'pos':(0,0)\
+            },
+            
+        'Do Both':{
+            'command':'cfoMaxer.otherFunctions.doBoth',\
+            'pos':(0,1)
+            }  
+        },\
+    'location':'http://raw.githubusercontent.com/freshollie/ToontownAutoers/master/CFOMaxer.py'}
+
+try:
+    toonBot.addScript(script)
+except:
+    base.localAvatar.setSystemMessage(0,'You did not follow instructions, this script needs to be added to Toon-Bot which can be found on my channel (youtube.com/toontowninjecting)')

@@ -1,0 +1,60 @@
+script={
+
+    'name':'Golf Autoer',\
+    
+    'description':"This is a golf autoer designed to get your golfing trophies maxed.\
+ It is based off the golf skipper found in multihack so most of the functions I take\
+ no credit for. A list of the functions I do take credit for can be found on my channel\
+ youtube.com/toontowninjecting.",
+                   
+    'author': 'Freshollie',\
+    
+    'version': '1',\
+    
+    'unload':'golfAutoer.revertFunctions()',\
+    
+    'start':'golfAutoer.start()',\
+    
+    'stop':'golfAutoer.setStop()',\
+    
+    'close':'golfAutoer.autoerGui.hideAll()',\
+    
+    'open':'golfAutoer.autoerGui.showAll()',\
+    
+    'options':{
+        'Make Member':{
+            'command':'golfAutoer.setMember',\
+            'pos':(0,0)
+            },
+        "No Member":{
+            'command':'golfAutoer.unsetMember',\
+            'pos':(0,1)
+            },
+        'Automatic':{
+            'command':'golfAutoer.setAutomatic',\
+            'pos':(1,1)
+            },
+        'Do Easy':{
+            'command':'golfAutoer.setPar',\
+            'pos':(1,0)
+            },
+        'Do Medium':{
+            'command':'golfAutoer.setFun',\
+            'pos':(2,0)
+            },
+        'Do Hard':{
+            'command':'golfAutoer.setHoleKit',\
+            'pos':(3,0)
+            },
+        'Lose Account':{
+            'command':'golfAutoer.setSecond',\
+            'pos':(2,1)
+            },
+        'Win Account':{
+            'command':'golfAutoer.setFirst',\
+            'pos':(3,1)
+            },
+        },\
+    'location':'http://raw.githubusercontent.com/freshollie/ToontownAutoers/master/GolfAutoer.py'}
+
+toonBot.addScript(script)

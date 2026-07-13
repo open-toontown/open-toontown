@@ -1,0 +1,60 @@
+#This will not work unless you have Toon Bot running on your toontown
+#If you do not have Toon Bot you can download it at youtube.com/toontowninjecting
+
+script={
+
+    'name':'VP Maxer',\
+    
+    'description':"The VP maxer is a script used to max the VP. \
+It does the factory when you need merits and does the \
+vp when you are ready to do the vp. The card filter can be \
+turned on and off in the options. Full credit to the functions \
+that were not created by me can be found on my channel: \
+toontowninjecting.",\
+                   
+    'author': 'Freshollie',\
+    
+    'version': '1',\
+    
+    'unload':'vpMaxer.revert()',\
+    
+    'start':'vpMaxer.otherFunctions.start()',\
+    
+    'stop':'vpMaxer.otherFunctions.setStop()',\
+    
+    'close':'vpMaxer.autoerGui.hideAll()',\
+    
+    'open':'vpMaxer.autoerGui.showAll()',\
+    
+    'options':{
+        'Card Filter 8':{
+            'command':'vpMaxer.vpAutoer.filterOn',\
+            'pos':(0,0)\
+            },
+            
+        'Card Filter 16':{
+            'command':'vpMaxer.vpAutoer.filterOn16',\
+            'pos':(0,1)
+            },    
+            
+        'Card Filter Off':{
+            'command':'vpMaxer.vpAutoer.filterOff',\
+            'pos':(1,0)
+            },
+        
+        'Only Do Factory':{
+            'command':'vpMaxer.otherFunctions.onlyDoFactory',\
+            'pos':(2,0)\
+            },
+            
+        'Do Both':{
+            'command':'vpMaxer.otherFunctions.doBoth',\
+            'pos':(2,1)
+            }  
+        },\
+    'location':'http://goo.gl/fNjs7x'}
+    
+try:
+    toonBot.addScript(script)
+except:
+    base.localAvatar.setSystemMessage(0,'You did not follow instructions, this script needs to be added to Toon-Bot which can be found on my channel (youtube.com/toontowninjecting)')
