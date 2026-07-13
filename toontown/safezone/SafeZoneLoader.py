@@ -37,7 +37,11 @@ class SafeZoneLoader(StateData.StateData):
 
     def load(self):
         self.music = base.loader.loadMusic(self.musicFile)
+        if self.music is None:
+            self.notify.warning('Missing music file %s (incomplete resources).' % self.musicFile)
         self.activityMusic = base.loader.loadMusic(self.activityMusicFile)
+        if self.activityMusic is None:
+            self.notify.warning('Missing music file %s (incomplete resources).' % self.activityMusicFile)
         self.createSafeZone(self.dnaFile)
         self.parentFSMState.addChild(self.fsm)
 
@@ -97,7 +101,9 @@ class SafeZoneLoader(StateData.StateData):
         # Skip flattenMedium for faster loading
         # self.geom.flattenMedium()
         gsg = base.win.getGsg()
-        if gsg:
+        # prepareScene walks the entire zone graph and can trigger huge C++ task/event
+        # bursts on large DNA scenes. Optional skip: safezone-want-prepare-scene #f
+        if gsg and base.config.GetBool('dna-want-prepare-scene', True):
             def prepareSceneTask(task, geom=self.geom, gsg=gsg):
                 geom.prepareScene(gsg)
                 return task.done
@@ -110,7 +116,8 @@ class SafeZoneLoader(StateData.StateData):
             groupName = base.cr.hoodMgr.extractGroupName(groupFullName)
             groupNode = self.geom.find('**/' + groupFullName)
             if groupNode.isEmpty():
-                self.notify.error('Could not find visgroup')
+                self.notify.warning('Could not find visgroup %s; using placeholder (check phase/DNA resources).' % groupFullName)
+                groupNode = self.geom.attachNewNode('missingVis_' + str(i))
             self.nodeList.append(groupNode)
 
         self.removeLandmarkBlockNodes()

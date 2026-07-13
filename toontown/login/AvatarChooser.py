@@ -13,7 +13,7 @@ from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 import random
 MAX_AVATARS = 6
-POSITIONS = (Vec3(-0.840167, 0, 0.359333),
+BASE_POSITIONS = (Vec3(-0.840167, 0, 0.359333),
  Vec3(0.00933349, 0, 0.306533),
  Vec3(0.862, 0, 0.3293),
  Vec3(-0.863554, 0, -0.445659),
@@ -55,13 +55,54 @@ class AvatarChooser(StateData.StateData):
         self.quitButton.show()
         if base.cr.loginInterface.supportsRelogin():
             self.logoutButton.show()
-        self.pickAToonBG.reparentTo(base.camera)
+        # Revamp: do not show the pick-a-toon background panel; the chooser UI
+        # should overlay the in-world backdrop (Toontown Central).
+        if getattr(self, 'pickAToonBG', None):
+            self.pickAToonBG.reparentTo(hidden)
         choice = base.config.GetInt('auto-avatar-choice', -1)
         for panel in self.panelList:
+            # Ensure panels are in the visible GUI graph and render on top.
+            panel.reparentTo(aspect2d)
+            panel.setBin('gui-popup', 10)
             panel.show()
             self.accept(panel.doneEvent, self.__handlePanelDone)
             if panel.position == choice and panel.mode == AvatarChoice.AvatarChoice.MODE_CHOOSE:
                 self.__handlePanelDone('chose', panelChoice=choice)
+
+        # A "cool transition" into Pick-a-Toon: quick pop + fade for the panels and title.
+        try:
+            if getattr(self, '_enterIval', None):
+                self._enterIval.finish()
+            items = []
+            items.append(self.title)
+            for p in self.panelList:
+                items.append(p)
+            # Buttons too, for a unified entrance.
+            items.append(self.quitButton)
+            if self.logoutButton:
+                items.append(self.logoutButton)
+
+            for item in items:
+                try:
+                    item.setColorScale(1, 1, 1, 0)
+                except Exception:
+                    pass
+
+            def _fade(alpha):
+                for item in items:
+                    try:
+                        item.setColorScale(1, 1, 1, alpha)
+                    except Exception:
+                        pass
+
+            self._enterIval = Sequence(
+                Parallel(
+                    LerpFunc(_fade, fromData=0.0, toData=1.0, duration=0.28, blendType='easeOut'),
+                ),
+            )
+            self._enterIval.start()
+        except Exception:
+            pass
 
     def exit(self):
         if self.isLoaded == 0:
@@ -73,7 +114,8 @@ class AvatarChooser(StateData.StateData):
         self.title.reparentTo(hidden)
         self.quitButton.hide()
         self.logoutButton.hide()
-        self.pickAToonBG.reparentTo(hidden)
+        if getattr(self, 'pickAToonBG', None):
+            self.pickAToonBG.reparentTo(hidden)
         return None
 
     def load(self, isPaid):
@@ -82,21 +124,65 @@ class AvatarChooser(StateData.StateData):
         self.isPaid = isPaid
         gui = loader.loadModel('phase_3/models/gui/pick_a_toon_gui')
         gui2 = loader.loadModel('phase_3/models/gui/quit_button')
-        newGui = loader.loadModel('phase_3/models/gui/tt_m_gui_pat_mainGui')
-        self.pickAToonBG = newGui.find('**/tt_t_gui_pat_background')
-        self.pickAToonBG.reparentTo(hidden)
-        self.pickAToonBG.setPos(0.0, 2.73, 0.0)
-        self.pickAToonBG.setScale(1, 1, 1)
+        # Prefer the live TTC backdrop. If it failed (or is disabled), fall back
+        # to the legacy pick-a-toon background art to avoid a blank/grey screen.
+        self.pickAToonBG = None
+        try:
+            failed = bool(getattr(base.cr, '_pickAToonTTCBackdropFailed', False))
+            haveBackdrop = bool(getattr(base.cr, '_pickAToonTTCBackdrop', None))
+        except Exception:
+            failed = False
+            haveBackdrop = False
+        guiOk = False
+        try:
+            guiOk = gui is not None and not gui.isEmpty()
+        except Exception:
+            guiOk = False
+
+        if (failed or not haveBackdrop) and guiOk:
+            try:
+                self.pickAToonBG = DirectFrame(
+                    parent=aspect2d,
+                    relief=None,
+                    image=gui,
+                    image_scale=(1.33, 1.0, 1.0),
+                    pos=(0, 0, 0),
+                )
+                self.pickAToonBG.setBin('fixed', -10)
+            except Exception:
+                self.pickAToonBG = None
+        elif failed or not haveBackdrop:
+            chooser_notify.warning('pick_a_toon_gui failed to load; skipping legacy background image')
         self.title = OnscreenText(TTLocalizer.AvatarChooserPickAToon, scale=TTLocalizer.ACtitle, parent=hidden, font=ToontownGlobals.getSignFont(), fg=(1, 0.9, 0.1, 1), pos=(0.0, 0.82))
-        quitHover = gui.find('**/QuitBtn_RLVR')
+        # Some forks remove/rename assets; guard against missing models so we
+        # don't trip Panda NodePath empty assertions.
+        quitHover = None
+        try:
+            if guiOk:
+                q = gui.find('**/QuitBtn_RLVR')
+                if q is not None and not q.isEmpty():
+                    quitHover = q
+        except Exception:
+            quitHover = None
+        if quitHover is None:
+            # Safe fallback: DirectButton allows image=None.
+            chooser_notify.warning('pick_a_toon_gui missing QuitBtn_RLVR; using fallback button visuals')
         self.quitButton = DirectButton(image=(quitHover, quitHover, quitHover), relief=None, text=TTLocalizer.AvatarChooserQuit, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_pos=TTLocalizer.ACquitButtonPos, text_scale=TTLocalizer.ACquitButton, image_scale=1, image1_scale=1.05, image2_scale=1.05, scale=1.05, pos=(1.08, 0, -0.907), command=self.__handleQuit)
         self.logoutButton = DirectButton(relief=None, image=(quitHover, quitHover, quitHover), text=TTLocalizer.OptionsPageLogout, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_scale=TTLocalizer.AClogoutButton, text_pos=(0, -0.035), pos=(-1.17, 0, -0.914), image_scale=1.15, image1_scale=1.15, image2_scale=1.18, scale=0.5, command=self.__handleLogoutWithoutConfirm)
         self.logoutButton.hide()
-        gui.removeNode()
-        gui2.removeNode()
-        newGui.removeNode()
+        try:
+            if gui is not None and not gui.isEmpty():
+                gui.removeNode()
+        except Exception:
+            pass
+        try:
+            if gui2 is not None and not gui2.isEmpty():
+                gui2.removeNode()
+        except Exception:
+            pass
         self.panelList = []
         used_position_indexs = []
+        positions = BASE_POSITIONS
         for av in self.avatarList:
             if base.cr.isPaid():
                 okToLockout = 0
@@ -105,19 +191,20 @@ class AvatarChooser(StateData.StateData):
                 if av.position in AvatarChoice.AvatarChoice.OLD_TRIALER_OPEN_POS:
                     okToLockout = 0
             panel = AvatarChoice.AvatarChoice(av, position=av.position, paid=isPaid, okToLockout=okToLockout)
-            panel.setPos(POSITIONS[av.position])
+            panel.setPos(positions[av.position])
             used_position_indexs.append(av.position)
             self.panelList.append(panel)
 
         for panelNum in range(0, MAX_AVATARS):
             if panelNum not in used_position_indexs:
                 panel = AvatarChoice.AvatarChoice(position=panelNum, paid=isPaid)
-                panel.setPos(POSITIONS[panelNum])
+                panel.setPos(positions[panelNum])
                 self.panelList.append(panel)
 
         if len(self.avatarList) > 0:
             self.initLookAtInfo()
         self.isLoaded = 1
+
 
     def getLookAtPosition(self, toonHead, toonidx):
         lookAtChoice = random.random()
@@ -174,9 +261,9 @@ class AvatarChooser(StateData.StateData):
         return
 
     def getLookAtToPosVec(self, fromIdx, toIdx):
-        x = -(POSITIONS[toIdx][0] - POSITIONS[fromIdx][0])
-        y = POSITIONS[toIdx][1] - POSITIONS[fromIdx][1]
-        z = POSITIONS[toIdx][2] - POSITIONS[fromIdx][2]
+        x = -(BASE_POSITIONS[toIdx][0] - BASE_POSITIONS[fromIdx][0])
+        y = BASE_POSITIONS[toIdx][1] - BASE_POSITIONS[fromIdx][1]
+        z = BASE_POSITIONS[toIdx][2] - BASE_POSITIONS[fromIdx][2]
         return Vec3(x, y, z)
 
     def initLookAtInfo(self):
@@ -211,7 +298,8 @@ class AvatarChooser(StateData.StateData):
         del self.quitButton
         self.logoutButton.destroy()
         del self.logoutButton
-        self.pickAToonBG.removeNode()
+        if getattr(self, 'pickAToonBG', None):
+            self.pickAToonBG.removeNode()
         del self.pickAToonBG
         del self.avatarList
         self.parentFSM.getCurrentState().removeChild(self.fsm)

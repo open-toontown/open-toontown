@@ -55,7 +55,7 @@ class TownBattleChooseAvatarPanel(StateData.StateData):
         invalidTargets = []
         if not self.toon:
             if len(luredIndices) > 0:
-                if track == BattleBase.TRAP or track == BattleBase.LURE:
+                if track == BattleBase.TRAP:
                     invalidTargets += luredIndices
             if len(trappedIndices) > 0:
                 if track == BattleBase.TRAP:
@@ -77,7 +77,7 @@ class TownBattleChooseAvatarPanel(StateData.StateData):
     def adjustCogs(self, numAvatars, luredIndices, trappedIndices, track):
         invalidTargets = []
         if len(luredIndices) > 0:
-            if track == BattleBase.TRAP or track == BattleBase.LURE:
+            if track == BattleBase.TRAP:
                 invalidTargets += luredIndices
         if len(trappedIndices) > 0:
             if track == BattleBase.TRAP:
@@ -90,7 +90,7 @@ class TownBattleChooseAvatarPanel(StateData.StateData):
 
     def __placeButtons(self, numAvatars, invalidTargets, localNum):
         for i in range(4):
-            if numAvatars > i and i not in invalidTargets and i != localNum:
+            if numAvatars > i and i not in invalidTargets:
                 self.avatarButtons[i].show()
             else:
                 self.avatarButtons[i].hide()

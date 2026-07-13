@@ -89,12 +89,28 @@ allow-incomplete-render #t
 gl-compile-and-execute #t
 gl-use-display-lists #t
 sync-video #f
-yield-timeslice #f
+# Let the async loader yield to the render thread between I/O chunks (pairs with support-threads).
+yield-timeslice #t
+# Polished startup / zone-load overlay (gradient, progress, optional live asset preview).
+want-modern-launcher-ui #t
+want-loading-asset-preview #t
+# After login: hide all zone bulk-load chrome (no compact bar, no legacy council screen).
+want-zero-load-ui #t
+# During quiet-zone fade, warm ModelPool entries in worker threads before sync loads hit disk.
+want-async-zone-prefetch #t
 auto-flip #t
 gl-finish #f
 basic-shaders-only #f
 
+# Animation smoothing
+# This enables frame blending (interpolation) between animation frames so
+# 24fps-authored animations still look smooth at high render framerates,
+# without changing their real-time speed.
+interpolate-frames #t
+
 # Performance Optimizations
+# Re-enable Panda threading so bulk zone/hood loads don't stall the main frame.
+# Use a conservative threading model to avoid instability on Windows.
 support-threads #t
 pstats-gpu-timing 0
 gl-check-errors 0
@@ -118,6 +134,26 @@ threading-model /Draw
 direct-wtext 0
 on-screen-debug-font ImpressBT.ttf
 
+# Event loop (shard entry / async loader can enqueue many C++ events in one frame)
+# Default 5000 + drain-on-flood drops the rest and can break interest/loading.
+# IMPORTANT: Each named C++ event is forwarded to Python (messenger.send). A very
+# high cap (e.g. 2M) makes a *single* doEvents() call run for many seconds per frame
+# (heartbeat mid-frame, multi-second stalls). A moderate cap spreads work across
+# frames with short passes; keep drain-off so the backlog is not discarded.
+eventmanager-max-events-per-frame 50000
+eventmanager-drain-on-flood #f
+# Skip Python messenger for C++ events that have no listeners (TaskManager-*, adjust-pg*, etc.)
+eventmanager-fast-cpp-only #t
+# Sample every Nth C++ event name; on flood, log approximate top names.
+# Use stride=1 so small persistent floods (~10-100 events) still show names.
+eventmanager-flood-approx-stride 1
+# DNA loaders: geom.prepareScene walks the whole zone and can enqueue massive C++ task/event bursts.
+# Disabled by default to avoid multi-second hitches; set #t if you need upfront GPU scene prep.
+dna-want-prepare-scene #f
+
+# Streets: load the entire street (all visgroups) on entry.
+street-load-whole 1
+
 # Misc Settings
 inactivity-timeout 180
 # If require-window is true, it means that we should raise an exception if the window fails to open correctly.
@@ -138,3 +174,13 @@ server-data-folder data
 # TEMPORARY
 skip-friend-quest true
 skip-phone-quest true
+
+# Local Astron / QuickLauncher: if MD + client agent (7198) are already open, UberDOG/AI may be skipped
+# (local-servers-skip-python-if-ca-open, default on) to avoid duplicate sessions. After a crash, CA can
+# still listen while UberDOG is dead — then login hits 10053 or error 100. Fix: kill stray ppython UD/AI
+# or restart Astron; optionally set local-servers-force-python-spawn #t only after closing duplicates.
+# local-servers-force-python-spawn #f
+# local-servers-skip-python-if-ca-open #t
+
+# Optional local overrides (dev/debug). Create this file if needed.
+load-prc-file etc/Configrc_dev.prc

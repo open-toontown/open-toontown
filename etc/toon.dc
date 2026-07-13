@@ -22,6 +22,7 @@ from toontown.classicchars import DistributedDonaldDock/AI
 from toontown.classicchars import DistributedPluto/AI
 from toontown.classicchars import DistributedWesternPluto/AI
 from toontown.safezone import DistributedTrolley/AI
+from toontown.safezone import DistributedTTCCraneSandbox/AI
 from toontown.safezone import DistributedPartyGate/AI
 from toontown.suit import DistributedSuitPlanner/AI
 from toontown.suit import DistributedSuitBase/AI
@@ -530,7 +531,7 @@ dclass DistributedToon : DistributedPlayer {
   setQuests(uint32[] = []) required broadcast ownrecv db;
   setQuestHistory(uint16[] = []) required ownrecv db;
   setRewardHistory(uint8 = 0, uint16[] = []) required ownrecv db;
-  setQuestCarryLimit(uint8 = 1) required ownrecv db;
+  setQuestCarryLimit(uint8 = 4) required ownrecv db;
   requestDeleteQuest(uint32[]) ownsend airecv;
   setCheesyEffect(int16 = 0, uint32 = 0, uint32 = 0) required broadcast ownrecv db;
   setGhostMode(uint8) broadcast ownrecv ram;
@@ -711,6 +712,9 @@ dclass DistributedTrolley : DistributedObject {
   rejectBoard(uint32);
   requestExit() airecv clsend;
   setMinigameZone(uint32, uint16);
+};
+
+dclass DistributedTTCCraneSandbox : DistributedObject {
 };
 
 dclass DistributedSuitPlanner : DistributedObject {

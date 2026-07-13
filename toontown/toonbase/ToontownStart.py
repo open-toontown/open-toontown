@@ -22,12 +22,15 @@ from panda3d.core import (
 
 import time
 import sys
+
+# Always load config so PRC toggles work regardless of launcher path / -O.
+try:
+    loadPrcFile('etc/Configrc.prc')
+except Exception:
+    pass
 try:
     launcher
 except:
-    if __debug__:
-        loadPrcFile('etc/Configrc.prc')
-
     from toontown.launcher.ToontownDummyLauncher import ToontownDummyLauncher
     launcher = ToontownDummyLauncher()
     builtins.launcher = launcher
@@ -46,7 +49,6 @@ else:
     http = launcher.http
 
 tempLoader = Loader()
-backgroundNode = tempLoader.loadSync(Filename('phase_3/models/gui/loading-background'))
 from direct.gui import DirectGuiGlobals
 print('ToontownStart: setting default font')
 from . import ToontownGlobals
@@ -68,12 +70,101 @@ ConfigVariableBool('compressed-textures').setValue(1)
 ConfigVariableBool('garbage-collect-states').setValue(0)
 ConfigVariableBool('support-threads').setValue(1)
 # Texture and Model pools are managed automatically by Panda3D
-backgroundNodePath = aspect2d.attachNewNode(backgroundNode, 0)
-backgroundNodePath.setPos(0.0, 0.0, 0.0)
-backgroundNodePath.setScale(render2d, VBase3(1))
-backgroundNodePath.find('**/fg').setBin('fixed', 20)
-backgroundNodePath.find('**/bg').setBin('fixed', 10)
+
+# Modern launcher/loading overlay (best-effort).
+try:
+    from toontown.toontowngui.ModernLoadingScreen import ModernLoadingScreen
+    base.modernLoading = ModernLoadingScreen()
+    _ml = getattr(base, 'modernLoading', None)
+    if _ml and _ml.enabled():
+        base.modernLoading.set_title('Toontown', 'Starting up…')
+        base.modernLoading.set_status('Initializing engine…')
+        base.modernLoading.set_progress(3)
+except Exception:
+    try:
+        import traceback
+        print('ToontownStart: ModernLoadingScreen failed:')
+        print(traceback.format_exc())
+    except Exception:
+        pass
+    base.modernLoading = None
+
+# Legacy loading background when modern UI is unavailable (init failure or PRC disabled).
+# Important: ModernLoadingScreen() is truthy even when want-modern-launcher-ui is off (root is None);
+# skipping legacy in that case leaves a blank (grey) window until login draws.
+backgroundNodePath = None
+_modern = getattr(base, 'modernLoading', None)
+if not (_modern and _modern.enabled()):
+    backgroundNode = tempLoader.loadSync(Filename('phase_3/models/gui/loading-background'))
+    backgroundNodePath = aspect2d.attachNewNode(backgroundNode, 0)
+    backgroundNodePath.setPos(0.0, 0.0, 0.0)
+    backgroundNodePath.setScale(render2d, VBase3(1))
+    backgroundNodePath.find('**/fg').setBin('fixed', 20)
+    backgroundNodePath.find('**/bg').setBin('fixed', 10)
 base.graphicsEngine.renderFrame()
+
+# Optional: auto-start local servers (Astron/UberDOG/AI) before connecting.
+try:
+    from panda3d.core import ConfigVariableBool
+    wantAutoServers = ConfigVariableBool('auto-start-local-servers', False).value
+except Exception:
+    wantAutoServers = False
+
+try:
+    print('ToontownStart: auto-start-local-servers = %s' % wantAutoServers)
+    print('ToontownStart: local-servers-forward-logs = %s' % ConfigVariableBool('local-servers-forward-logs', True).value)
+    print('ToontownStart: local-servers-always-spawn-python = %s' % ConfigVariableBool('local-servers-always-spawn-python', True).value)
+except Exception:
+    pass
+
+if wantAutoServers:
+    try:
+        from toontown.launcher.LocalServerManager import LocalServerManager
+        mgr = LocalServerManager()
+        # Keep a reference for shutdown cleanup.
+        try:
+            base.localServerManager = mgr
+        except Exception:
+            pass
+
+        def _status_cb(msg: str):
+            try:
+                try:
+                    print('ToontownStart: LocalServers: %s' % msg)
+                except Exception:
+                    pass
+                if getattr(base, 'modernLoading', None):
+                    base.modernLoading.set_status(msg)
+                    base.modernLoading.set_progress(18)
+                    base.graphicsEngine.renderFrame()
+            except Exception:
+                pass
+
+        if getattr(base, 'modernLoading', None):
+            base.modernLoading.set_status('Booting local servers…')
+            base.modernLoading.set_progress(12)
+            base.graphicsEngine.renderFrame()
+
+        ok = mgr.start_if_needed(status_cb=_status_cb)
+        if not ok:
+            # Give the user a readable status before connection attempts.
+            if getattr(base, 'modernLoading', None):
+                base.modernLoading.set_status('Server not ready yet… retrying shortly')
+                base.modernLoading.set_progress(18)
+                base.graphicsEngine.renderFrame()
+            time.sleep(1.0)
+
+        if getattr(base, 'modernLoading', None):
+            base.modernLoading.set_status('Connecting…')
+            base.modernLoading.set_progress(26)
+            base.graphicsEngine.renderFrame()
+    except Exception:
+        try:
+            import traceback
+            print('ToontownStart: ERROR starting local servers:')
+            print(traceback.format_exc())
+        except Exception:
+            pass
 DirectGuiGlobals.setDefaultRolloverSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_rollover.ogg'))
 DirectGuiGlobals.setDefaultClickSound(base.loader.loadSfx('phase_3/audio/sfx/GUI_create_toon_fwd.ogg'))
 DirectGuiGlobals.setDefaultDialogGeom(loader.loadModel('phase_3/models/gui/dialog_box_gui'))
@@ -97,7 +188,15 @@ from direct.gui.DirectGui import OnscreenText
 serverVersion = ConfigVariableString('server-version', 'no_version_set').value
 print('ToontownStart: serverVersion: ', serverVersion)
 version = OnscreenText(serverVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
-loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 138, 0, TTLocalizer.TIP_NONE)
+try:
+    if getattr(base, 'modernLoading', None):
+        base.modernLoading.set_status('Loading client repository…')
+        base.modernLoading.set_progress(38)
+        base.graphicsEngine.renderFrame()
+except Exception:
+    pass
+# Progress range: six `loader.loadModel` calls in initNametagGlobals (ToonBase).
+loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 6, 0, TTLocalizer.TIP_NONE)
 from toontown.distributed.ToontownClientRepository import ToontownClientRepository
 cr = ToontownClientRepository(serverVersion, launcher)
 cr.music = music
@@ -112,10 +211,14 @@ if not launcher.isDummy():
 else:
     base.startShow(cr)
 
-backgroundNodePath.reparentTo(hidden)
-backgroundNodePath.removeNode()
-del backgroundNodePath
-del backgroundNode
+if backgroundNodePath is not None:
+    backgroundNodePath.reparentTo(hidden)
+    backgroundNodePath.removeNode()
+    del backgroundNodePath
+try:
+    del backgroundNode
+except Exception:
+    pass
 del tempLoader
 version.cleanup()
 del version

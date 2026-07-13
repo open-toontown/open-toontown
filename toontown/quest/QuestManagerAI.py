@@ -95,10 +95,24 @@ class QuestManagerAI:
 
         needsQuestButNoneLeft = 0
         if (self.needsQuest(av) and npc.getGivesQuests()):
+            if Quests.wantRandomTaskSystem() and npc.getHq():
+                assignedAny = 0
+                while self.needsQuest(av):
+                    quests = self.getNextQuestIds(npc, av)
+                    if not quests:
+                        if not assignedAny:
+                            needsQuestButNoneLeft = 1
+                        break
+                    fromNpcId = Quests.ToonHQ
+                    self.assignQuest(avId, fromNpcId, *quests[0])
+                    npc.assignQuest(av.getDoId(), *quests[0])
+                    assignedAny = 1
+                if assignedAny:
+                    return
             # bestQuests is a nested list of [questId, rewardId, toNpcId] lists
             quests = self.getNextQuestIds(npc, av)
             if quests:
-                if (Quests.getNumChoices(av.getRewardTier()) == 0):
+                if Quests.wantRandomTaskSystem() or Quests.getNumChoices(av.getRewardTier()) == 0:
                     assert(len(quests) == 1) # There should only be one
                     if npc.getHq():
                         fromNpcId = Quests.ToonHQ
@@ -149,7 +163,7 @@ class QuestManagerAI:
                         # quests is a nested list of [questId, rewardId, toNpcId] lists
                         quests = self.getNextQuestIds(npc, av)
                         if quests:
-                            if (Quests.getNumChoices(av.getRewardTier()) == 0):
+                            if Quests.wantRandomTaskSystem() or Quests.getNumChoices(av.getRewardTier()) == 0:
                                 assert(len(quests) == 1) # There should only be one
                                 if npc.getHq():
                                     fromNpcId = Quests.ToonHQ
@@ -267,6 +281,16 @@ class QuestManagerAI:
             # This happens in avatarChoseTrack
             return
 
+        # See if this quest is part of a multiquest. If it is, we assign
+        # the next part of the multiquest.
+        nextQuestId, nextToNpcId = Quests.getNextQuest(questId, npc, av)
+
+        # Random task "spaghetti": sometimes send the player to another shopkeeper
+        # instead of paying out (must run before DeliverGag side effects).
+        if nextQuestId == Quests.NA and Quests.tryTerminalSpaghettiRedirect(self.air, av, npc, questId):
+            npc.freeAvatar(av.getDoId())
+            return
+
         # If this is a deliver gag quest, we need to actually remove the
         # gags delivered from the player's inventory
         if questClass == Quests.DeliverGagQuest:
@@ -279,15 +303,15 @@ class QuestManagerAI:
                 av.inventory.useItem(track, level)
             av.d_setInventory(av.inventory.makeNetString())
 
-
-        # See if this quest is part of a multiquest. If it is, we assign
-        # the next part of the multiquest.
-        nextQuestId, nextToNpcId = Quests.getNextQuest(questId, npc, av)
         eventLogMessage = "%s|%s|%s|%s" % (
             questId, npc.getNpcId(), questClass.__name__, nextQuestId)
 
         if nextQuestId == Quests.NA:
-            rewardId = Quests.getAvatarRewardId(av, questId)
+            if Quests.wantRandomTaskSystem():
+                baseRewardId = Quests.chooseRandomCompletionReward(av)
+                rewardId = Quests.transformReward(baseRewardId, av)
+            else:
+                rewardId = Quests.getAvatarRewardId(av, questId)
             # Update the toon with the reward
             reward = Quests.getReward(rewardId)
 
@@ -301,6 +325,9 @@ class QuestManagerAI:
 
             # Nope, this is the end, dish out the reward
             av.removeQuest(questId)
+            if Quests.wantRandomTaskSystem():
+                tier, hist = av.getRewardHistory()
+                av.b_setRewardHistory(tier, hist + [rewardId])
             # TODO: put this in the movie
             reward.sendRewardAI(av)
             # Full heal for completing a quest
@@ -308,8 +335,11 @@ class QuestManagerAI:
             # Tell the npc to deliver the movie which will
             # complete the quest, display the reward, and do nothing else
             npc.completeQuest(av.getDoId(), questId, rewardId)
-            # Bump the reward
-            self.incrementReward(av)
+            if Quests.wantRandomTaskSystem():
+                self._assignRandomFollowupQuest(av, npc)
+            else:
+                # Bump the reward
+                self.incrementReward(av)
 
             eventLogMessage += "|%s|%s" % (
                 reward.__class__.__name__, reward.getAmount())
@@ -432,11 +462,17 @@ class QuestManagerAI:
             # Update the toon with the reward
             rewardId = Quests.getRewardIdFromTrackId(trackId)
             reward = Quests.getReward(rewardId)
+            if Quests.wantRandomTaskSystem():
+                tier, hist = av.getRewardHistory()
+                av.b_setRewardHistory(tier, hist + [rewardId])
             reward.sendRewardAI(av)
             # Tell the npc to deliver the movie which will
             # complete the quest, display the reward, and do nothing else
             npc.completeQuest(av.getDoId(), questId, rewardId)
-            self.incrementReward(av)
+            if Quests.wantRandomTaskSystem():
+                self._assignRandomFollowupQuest(av, npc)
+            else:
+                self.incrementReward(av)
         else:
             self.notify.warning("avatarChoseTrack: av is gone.")
 
@@ -483,6 +519,8 @@ class QuestManagerAI:
             # count the reward twice
             else:
                 finalRewardId = None
+            if Quests.wantRandomTaskSystem() and startingQuest:
+                finalRewardId = None
             # 0 for initial progress
             initialProgress = 0
             # To make it easy for testing purposes.
@@ -500,7 +538,10 @@ class QuestManagerAI:
                 recordHistory = 0
             else:
                 recordHistory = 1
-            av.addQuest((questId, npcId, toNpcId, rewardId, initialProgress), finalRewardId, recordHistory)
+            questRow = [questId, npcId, toNpcId, rewardId, initialProgress]
+            if Quests.wantRandomTaskSystem():
+                Quests.spaghettiRandomizeNewQuestEndpoints(av, questRow)
+            av.addQuest(tuple(questRow), finalRewardId, recordHistory)
             # if this was a requested quest, clear it
             if self.NextQuestDict.get(avId) == questId:
                 del self.NextQuestDict[avId]
@@ -966,8 +1007,8 @@ class QuestManagerAI:
                         # now but it may in the future, so it is the right thing to do
                         reward = Quests.getReward(rewardId)
                         reward.sendRewardAI(av)
-                        # Bump the reward
-                        self.incrementReward(av)
+                        if not Quests.wantRandomTaskSystem():
+                            self.incrementReward(av)
                         return 1
                     else:
                         # Reward was not a clothing ticket
@@ -980,6 +1021,23 @@ class QuestManagerAI:
                 continue
         # Did not find it, avId does not have clothing ticket on this tailor
         return 0
+
+    def _assignRandomFollowupQuest(self, av, npc):
+        if not Quests.wantRandomTaskSystem():
+            return
+        if not self.needsQuest(av):
+            return
+        if not npc.getGivesQuests():
+            return
+        quests = self.getNextQuestIds(npc, av)
+        if not quests:
+            return
+        if npc.getHq():
+            fromNpcId = Quests.ToonHQ
+        else:
+            fromNpcId = npc.getNpcId()
+        self.assignQuest(av.getDoId(), fromNpcId, *quests[0])
+        npc.assignQuest(av.getDoId(), *quests[0])
 
     def setNextQuest(self, avId, questId):
         # for ~nextQuest: queue up a quest for this avatar

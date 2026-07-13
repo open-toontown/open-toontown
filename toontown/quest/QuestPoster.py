@@ -278,7 +278,7 @@ class QuestPoster(DirectFrame):
             reward = Quests.getReward(transformedReward)
         else:
             reward = Quests.getReward(rewardId)
-        if reward and questId not in Quests.NoRewardTierZeroQuests:
+        if reward and (rewardId != Quests.NA or questId not in Quests.NoRewardTierZeroQuests):
             rewardString = reward.getPosterString()
         else:
             rewardString = ''

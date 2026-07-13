@@ -7,6 +7,7 @@ from toontown.toontowngui import TTDialog
 from toontown.toonbase import TTLocalizer
 from toontown.racing import RaceGlobals
 from direct.fsm import State
+from toontown.hood import OutdoorLighting
 from toontown.safezone import GolfKart
 
 class GZPlayground(Playground.Playground):
@@ -35,6 +36,7 @@ class GZPlayground(Playground.Playground):
 
     def enter(self, requestStatus):
         Playground.Playground.enter(self, requestStatus)
+        OutdoorLighting.shadeExtraSubtree(self.hub)
         blimp = base.cr.playGame.hood.loader.geom.find('**/GS_blimp')
         if blimp.isEmpty():
             return
@@ -51,6 +53,7 @@ class GZPlayground(Playground.Playground):
         self.rotateBlimp.loop()
 
     def exit(self):
+        OutdoorLighting.clearExtraSubtree(self.hub)
         Playground.Playground.exit(self)
         if hasattr(self, 'rotateBlimp'):
             self.rotateBlimp.finish()

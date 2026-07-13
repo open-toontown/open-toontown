@@ -4,6 +4,7 @@ from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from toontown.toonbase import ToontownGlobals
+from toontown.hood import OutdoorLighting
 from toontown.hood import ZoneUtil
 from toontown.building import Elevator
 from panda3d.core import *
@@ -65,6 +66,7 @@ class FactoryExterior(BattlePlace.BattlePlace):
         self.fsm.enterInitialState()
         base.playMusic(self.loader.music, looping=1, volume=0.8)
         self.loader.geom.reparentTo(render)
+        OutdoorLighting.begin(self.loader.geom, 'cog')
         self.nodeList = [self.loader.geom]
         self.loader.hood.startSky()
         self._telemLimiter = TLGatherAllAvs('FactoryExterior', RotationLimitToH)
@@ -85,6 +87,8 @@ class FactoryExterior(BattlePlace.BattlePlace):
             node.removeNode()
 
         del self.tunnelOriginList
+        if self.loader.geom:
+            OutdoorLighting.end(self.loader.geom)
         del self.nodeList
         self.ignoreAll()
         BattlePlace.BattlePlace.exit(self)

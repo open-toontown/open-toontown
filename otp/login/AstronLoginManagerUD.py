@@ -226,13 +226,16 @@ class LoginOperation(GameOperation):
         self.__handleSetAccount()
 
     def __handleSetAccount(self):
-        # if somebody's already logged into this account, disconnect them
-        datagram = PyDatagram()
-        datagram.addServerHeader(self.loginManager.GetAccountConnectionChannel(self.accountId),
-                                 self.loginManager.air.ourChannel, CLIENTAGENT_EJECT)
-        datagram.addUint16(100)
-        datagram.addString('This account has been logged in elsewhere.')
-        self.loginManager.air.send(datagram)
+        # If somebody's already logged into this account, disconnect them.
+        # IMPORTANT: Do NOT eject the entire account connection channel; doing so
+        # can race with channel open and eject the newly logging-in client.
+        oldSender = self.loginManager.accountId2sender.get(self.accountId)
+        if oldSender and oldSender != self.sender:
+            datagram = PyDatagram()
+            datagram.addServerHeader(oldSender, self.loginManager.air.ourChannel, CLIENTAGENT_EJECT)
+            datagram.addUint16(100)
+            datagram.addString('This account has been logged in elsewhere.')
+            self.loginManager.air.send(datagram)
 
         # add connection to account channel
         datagram = PyDatagram()
@@ -248,6 +251,9 @@ class LoginOperation(GameOperation):
 
         # set client state to established, thus un-sandboxing the sender
         self.loginManager.air.setClientState(self.sender, 2)
+
+        # Record the current sender as the active connection for this account.
+        self.loginManager.accountId2sender[self.accountId] = self.sender
 
          # Update the last login timestamp.
         self.loginManager.air.dbInterface.updateObject(self.loginManager.air.dbId, self.accountId,
@@ -845,6 +851,8 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         self.accountDb = None
         self.sender2loginOperation = {}
         self.account2operation = {}
+        # Tracks the active connection channel (sender) per accountId.
+        self.accountId2sender = {}
 
     def announceGenerate(self):
         DistributedObjectGlobalUD.announceGenerate(self)
@@ -876,8 +884,14 @@ class AstronLoginManagerUD(DistributedObjectGlobalUD):
         if isAccount:
             # Closes the account's connection.
             datagram.addServerHeader(self.GetAccountConnectionChannel(connectionId), self.air.ourChannel, CLIENTAGENT_EJECT)
+            # Also clear any tracked active sender for this account.
+            self.accountId2sender.pop(connectionId, None)
         else:
             datagram.addServerHeader(connectionId, self.air.ourChannel, CLIENTAGENT_EJECT)
+            # If this sender was tracked as active for any account, clear it.
+            for accId, sender in list(self.accountId2sender.items()):
+                if sender == connectionId:
+                    del self.accountId2sender[accId]
         datagram.addUint32(122)
         if forOperations and not reason:
             datagram.addString('An operation is already running: %s' % operation.__class__.__name__)

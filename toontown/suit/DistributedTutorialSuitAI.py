@@ -10,7 +10,7 @@ class DistributedTutorialSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory(
                                         'DistributedTutorialSuitAI')
 
-    def __init__(self, air, suitPlanner):
+    def __init__(self, air, suitPlanner=None):
         """__init__(air, suitPlanner)"""
         DistributedSuitBaseAI.DistributedSuitBaseAI.__init__(self, air, 
                                                              suitPlanner)

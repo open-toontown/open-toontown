@@ -24,6 +24,22 @@ DELETE_POSITIONS = ((0.187, 0, -0.26),
 
 class AvatarChoice(DirectButton):
     notify = DirectNotifyGlobal.directNotify.newCategory('AvatarChoice')
+
+    def __reparentToButtonStateNodes(self, np):
+        """Parent GUI geometry to this DirectButton's per-state roots, or to self if those are invalid."""
+        try:
+            snp = self.stateNodePath
+        except Exception:
+            np.reparentTo(self)
+            return
+        if len(snp) < 3 or snp[0].isEmpty() or snp[1].isEmpty() or snp[2].isEmpty():
+            self.notify.warning(
+                'AvatarChoice slot %s: stateNodePath invalid; parenting to button root' % self.position)
+            np.reparentTo(self)
+            return
+        np.reparentTo(snp[0], 20)
+        np.instanceTo(snp[1], 20)
+        np.instanceTo(snp[2], 20)
     NEW_TRIALER_OPEN_POS = (1,)
     OLD_TRIALER_OPEN_POS = (1, 4)
     MODE_CREATE = 0
@@ -65,6 +81,17 @@ class AvatarChoice(DirectButton):
         self.buttonBgs.append(self.pickAToonGui.find('**/tt_t_gui_pat_squareBlue'))
         self.buttonBgs.append(self.pickAToonGui.find('**/tt_t_gui_pat_squarePink'))
         self.buttonBgs.append(self.pickAToonGui.find('**/tt_t_gui_pat_squareYellow'))
+        fallbackBg = None
+        for bg in self.buttonBgs:
+            if bg and not bg.isEmpty():
+                fallbackBg = bg
+                break
+        if fallbackBg is None:
+            self.notify.error('pick_a_toon_gui is missing all button background textures')
+        else:
+            for i in range(len(self.buttonBgs)):
+                if self.buttonBgs[i].isEmpty():
+                    self.buttonBgs[i] = fallbackBg
         self['image'] = self.buttonBgs[position]
         self.setScale(1.01)
         if self.mode is AvatarChoice.MODE_LOCKED:
@@ -79,12 +106,13 @@ class AvatarChoice(DirectButton):
             self['text_pos'] = (0, 0.19)
             upsellModel = loader.loadModel('phase_3/models/gui/tt_m_gui_ups_mainGui')
             upsellTex = upsellModel.find('**/tt_t_gui_ups_logo_noBubbles')
-            self.logoModelImage = loader.loadModel('phase_3/models/gui/members_only_gui').find('**/MembersOnly')
-            logo = DirectFrame(state=DGG.DISABLED, parent=self, relief=None, image=upsellTex, image_scale=(0.9, 0, 0.9), image_pos=(0, 0, 0), scale=0.45)
-            logo.reparentTo(self.stateNodePath[0], 20)
-            logo.instanceTo(self.stateNodePath[1], 20)
-            logo.instanceTo(self.stateNodePath[2], 20)
-            self.logo = logo
+            self.logo = None
+            if not upsellTex.isEmpty():
+                logo = DirectFrame(state=DGG.DISABLED, parent=self, relief=None, image=upsellTex, image_scale=(0.9, 0, 0.9), image_pos=(0, 0, 0), scale=0.45)
+                self.__reparentToButtonStateNodes(logo)
+                self.logo = logo
+            else:
+                self.notify.warning('AvatarChoice locked slot %s: missing upsell texture' % self.position)
             upsellModel.removeNode()
         elif self.mode is AvatarChoice.MODE_CREATE:
             self['command'] = self.__handleCreate
@@ -125,9 +153,7 @@ class AvatarChoice(DirectButton):
                 self.statusText['text'] = ''
             self.head = hidden.attachNewNode('head')
             self.head.setPosHprScale(0, 5, -0.1, 180, 0, 0, 0.24, 0.24, 0.24)
-            self.head.reparentTo(self.stateNodePath[0], 20)
-            self.head.instanceTo(self.stateNodePath[1], 20)
-            self.head.instanceTo(self.stateNodePath[2], 20)
+            self.__reparentToButtonStateNodes(self.head)
             self.headModel = ToonHead.ToonHead()
             self.headModel.setupHead(self.dna, forGui=1)
             self.headModel.reparentTo(self.head)
@@ -153,7 +179,10 @@ class AvatarChoice(DirectButton):
         del self.pickAToonGui
         del self.dna
         if self.mode in (AvatarChoice.MODE_CREATE, AvatarChoice.MODE_LOCKED):
-            pass
+            logo = getattr(self, 'logo', None)
+            if logo is not None:
+                logo.destroy()
+                del self.logo
         else:
             self.headModel.stopBlink()
             self.headModel.stopLookAroundNow()

@@ -131,6 +131,12 @@ class InventoryBase(DirectObject.DirectObject):
     def useItem(self, track, level):
         if type(track) == type(''):
             track = Tracks.index(track)
+        if ToontownGlobals.WantUnlimitedGags:
+            if self.numItem(track, level) > 0:
+                return
+            if self.numItem(track, level) == -1:
+                return -1
+            return
         if self.numItem(track, level) > 0:
             self.inventory[track][level] -= 1
             self.calcTotalProps()

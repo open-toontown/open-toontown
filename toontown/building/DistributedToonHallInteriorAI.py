@@ -3,8 +3,8 @@ from toontown.toonbase import ToontownGlobals
 
 class DistributedToonHallInteriorAI(DistributedToonInteriorAI):
 
-    def __init__(self, block, air, zoneId, building):
-        DistributedToonInteriorAI.__init__(self, block, air, zoneId, building)
+    def __init__(self, *args):
+        DistributedToonInteriorAI.__init__(self, *args)
         self.accept('ToonEnteredZone', self.logToonEntered)
         self.accept('ToonLeftZone', self.logToonLeft)
 

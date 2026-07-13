@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
-from toontown.hood import Place
+from toontown.hood import OutdoorLighting, Place
 from toontown.building import Elevator
 from toontown.toonbase import ToontownGlobals
 from panda3d.core import *
@@ -48,6 +48,7 @@ class CogHQLobby(Place.Place):
         self.fsm.enterInitialState()
         base.playMusic(self.loader.music, looping=1, volume=0.8)
         self.loader.geom.reparentTo(render)
+        OutdoorLighting.begin(self.loader.geom, 'cog')
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
         NametagGlobals.setMasterArrowsOn(1)
@@ -63,6 +64,7 @@ class CogHQLobby(Place.Place):
         self.loader.music.stop()
         if self.loader.geom != None:
             self.loader.geom.reparentTo(hidden)
+            OutdoorLighting.end(self.loader.geom)
         Place.Place.exit(self)
         return
 

@@ -45,6 +45,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
          TTLocalizer.GardenPageTitle,
          TTLocalizer.GolfPageTitle,
          TTLocalizer.EventsPageName,
+         TTLocalizer.AutoerPageTitle,
          TTLocalizer.NewsPageName]
         return
 
@@ -123,11 +124,8 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self['image'] = bookModel.find('**/big_book')
         self['image_scale'] = (2, 1, 1.5)
         self.resetFrameSize()
-        # Widescreen support - maintain distance from right edge
-        baseXPos = 1.175
-        adjustedXPos = base.getWidescreenXOffset(baseXPos, 'right') if hasattr(base, 'getWidescreenXOffset') else baseXPos
-        self.bookOpenButton = DirectButton(image=(bookModel.find('**/BookIcon_CLSD'), bookModel.find('**/BookIcon_OPEN'), bookModel.find('**/BookIcon_RLVR')), relief=None, pos=(adjustedXPos, 0, -0.83), scale=0.305, command=self.__open)
-        self.bookCloseButton = DirectButton(image=(bookModel.find('**/BookIcon_OPEN'), bookModel.find('**/BookIcon_CLSD'), bookModel.find('**/BookIcon_RLVR2')), relief=None, pos=(adjustedXPos, 0, -0.83), scale=0.305, command=self.__close)
+        self.bookOpenButton = DirectButton(image=(bookModel.find('**/BookIcon_CLSD'), bookModel.find('**/BookIcon_OPEN'), bookModel.find('**/BookIcon_RLVR')), relief=None, pos=(1.175, 0, -0.83), scale=0.305, command=self.__open)
+        self.bookCloseButton = DirectButton(image=(bookModel.find('**/BookIcon_OPEN'), bookModel.find('**/BookIcon_CLSD'), bookModel.find('**/BookIcon_RLVR2')), relief=None, pos=(1.175, 0, -0.83), scale=0.305, command=self.__close)
         self.bookOpenButton.hide()
         self.bookCloseButton.hide()
         self.nextArrow = DirectButton(parent=self, relief=None, image=(bookModel.find('**/arrow_button'), bookModel.find('**/arrow_down'), bookModel.find('**/arrow_rollover')), scale=(0.1, 0.1, 0.1), pos=(0.838, 0, -0.661), command=self.__pageChange, extraArgs=[1])
@@ -270,6 +268,10 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             iconModels = loader.loadModel('phase_4/models/parties/partyStickerbook')
             iconGeom = iconModels.find('**/Stickerbook_PartyIcon')
             iconModels.detachNode()
+        elif pageName == TTLocalizer.AutoerPageTitle:
+            iconModels = loader.loadModel('phase_3.5/models/gui/sos_textures')
+            iconGeom = iconModels.find('**/gui_gear')
+            iconModels.detachNode()
         elif pageName == TTLocalizer.NewsPageName:
             iconModels = loader.loadModel('phase_3.5/models/gui/sos_textures')
             iconGeom = iconModels.find('**/tt_t_gui_sbk_newsPageTab')
@@ -278,6 +280,8 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             extraArgs = [page]
         if pageName == TTLocalizer.OptionsPageTitle:
             pageName = TTLocalizer.OptionsTabTitle
+        elif pageName == TTLocalizer.AutoerPageTitle:
+            pageName = TTLocalizer.AutoerPageTabTitle
         pageTab = DirectButton(parent=self.pageTabFrame, relief=DGG.RAISED, frameSize=(-0.575,
          0.575,
          -0.575,

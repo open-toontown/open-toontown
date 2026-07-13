@@ -427,16 +427,15 @@ class BattleCalculatorAI:
                     if self.notify.getDebug():
                         self.notify.debug('Suit lured, but no trap exists')
                     if self.SUITS_UNLURED_IMMEDIATELY:
-                        if not self.__suitIsLured(targetId, prevRound=1):
-                            if not self.__combatantDead(targetId, toon=toonTarget):
-                                validTargetAvail = 1
-                            rounds = self.NumRoundsLured[atkLevel]
-                            wakeupChance = 100 - atkAcc * 2
-                            npcLurer = attack[TOON_TRACK_COL] == NPCSOS
-                            currLureId = self.__addLuredSuitInfo(targetId, -1, rounds, wakeupChance, toonId, atkLevel, lureId=currLureId, npc=npcLurer)
-                            if self.notify.getDebug():
-                                self.notify.debug('Suit lured for ' + str(rounds) + ' rounds max with ' + str(wakeupChance) + '% chance to wake up each round')
-                            targetLured = 1
+                        if not self.__combatantDead(targetId, toon=toonTarget):
+                            validTargetAvail = 1
+                        rounds = self.NumRoundsLured[atkLevel]
+                        wakeupChance = 100 - atkAcc * 2
+                        npcLurer = attack[TOON_TRACK_COL] == NPCSOS
+                        currLureId = self.__addLuredSuitInfo(targetId, -1, rounds, wakeupChance, toonId, atkLevel, lureId=currLureId, npc=npcLurer)
+                        if self.notify.getDebug():
+                            self.notify.debug('Suit lured for ' + str(rounds) + ' rounds max with ' + str(wakeupChance) + '% chance to wake up each round')
+                        targetLured = 1
                 else:
                     attackTrack = TRAP
                     if targetId in self.traps:
@@ -457,16 +456,15 @@ class BattleCalculatorAI:
                         validTargetAvail = 1
                     targetLured = 1
                 if not self.SUITS_UNLURED_IMMEDIATELY:
-                    if not self.__suitIsLured(targetId, prevRound=1):
-                        if not self.__combatantDead(targetId, toon=toonTarget):
-                            validTargetAvail = 1
-                        rounds = self.NumRoundsLured[atkLevel]
-                        wakeupChance = 100 - atkAcc * 2
-                        npcLurer = attack[TOON_TRACK_COL] == NPCSOS
-                        currLureId = self.__addLuredSuitInfo(targetId, -1, rounds, wakeupChance, toonId, atkLevel, lureId=currLureId, npc=npcLurer)
-                        if self.notify.getDebug():
-                            self.notify.debug('Suit lured for ' + str(rounds) + ' rounds max with ' + str(wakeupChance) + '% chance to wake up each round')
-                        targetLured = 1
+                    if not self.__combatantDead(targetId, toon=toonTarget):
+                        validTargetAvail = 1
+                    rounds = self.NumRoundsLured[atkLevel]
+                    wakeupChance = 100 - atkAcc * 2
+                    npcLurer = attack[TOON_TRACK_COL] == NPCSOS
+                    currLureId = self.__addLuredSuitInfo(targetId, -1, rounds, wakeupChance, toonId, atkLevel, lureId=currLureId, npc=npcLurer)
+                    if self.notify.getDebug():
+                        self.notify.debug('Suit lured for ' + str(rounds) + ' rounds max with ' + str(wakeupChance) + '% chance to wake up each round')
+                    targetLured = 1
                     if attackLevel != -1:
                         self.__addLuredSuitsDelayed(toonId, targetId)
                 if targetLured and (targetId not in self.successfulLures or targetId in self.successfulLures and self.successfulLures[targetId][1] < atkLevel):
@@ -1498,6 +1496,12 @@ class BattleCalculatorAI:
                     lureInfo[2] = wakeChance
                 lureInfo[3][lurer] = [
                  lureLvl, availLureId, credit]
+            else:
+                lureInfo[1] += maxRounds
+                if wakeChance < lureInfo[2]:
+                    lureInfo[2] = wakeChance
+                lureInfo[3][lurer][0] = lureLvl
+                lureInfo[3][lurer][2] = credit
         else:
             lurerInfo = {lurer: [lureLvl, availLureId, credit]}
             self.currentlyLuredSuits[suitId] = [

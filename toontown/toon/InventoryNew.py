@@ -9,6 +9,10 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
 from otp.otpbase import OTPGlobals
 
+def _invDetailRightX(x):
+    return x
+
+
 class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('InventoryNew')
     PressableTextColor = Vec4(1, 1, 1, 1)
@@ -126,7 +130,10 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         DirectFrame.hide(self)
 
     def updateTotalPropsText(self):
-        textTotal = TTLocalizer.InventoryTotalGags % (self.totalProps, self.toon.getMaxCarry())
+        if ToontownGlobals.WantUnlimitedGags:
+            textTotal = ''
+        else:
+            textTotal = TTLocalizer.InventoryTotalGags % (self.totalProps, self.toon.getMaxCarry())
         if localAvatar.getPinkSlips() > 1:
             textTotal = textTotal + '\n\n' + TTLocalizer.InventroyPinkSlips % localAvatar.getPinkSlips()
         elif localAvatar.getPinkSlips() == 1:
@@ -287,8 +294,11 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.detailNameLabel.configure(text=AvPropStrings[track][level], image_image=self.invModels[track][level])
         self.detailNameLabel.configure(image_scale=20, image_pos=(-0.2, 0, -2.2))
         self.detailAmountLabel.show()
-        self.detailAmountLabel.configure(text=TTLocalizer.InventoryDetailAmount % {'numItems': self.numItem(track, level),
-         'maxItems': self.getMax(track, level)})
+        if ToontownGlobals.WantUnlimitedGags:
+            self.detailAmountLabel.configure(text='')
+        else:
+            self.detailAmountLabel.configure(text=TTLocalizer.InventoryDetailAmount % {'numItems': self.numItem(track, level),
+             'maxItems': self.getMax(track, level)})
         self.detailDataLabel.show()
         damage = getAvPropDamage(track, level, self.toon.experience.getExp(track))
         organicBonus = self.toon.checkGagBonus(track, level)
@@ -451,10 +461,10 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.detailFrame.setPos(0.1, 0, -0.855)
         self.detailFrame.setScale(0.75)
         self.deleteEnterButton.hide()
-        self.deleteEnterButton.setPos(1.029, 0, -0.639)
+        self.deleteEnterButton.setPos(_invDetailRightX(1.029), 0, -0.639)
         self.deleteEnterButton.setScale(0.75)
         self.deleteExitButton.hide()
-        self.deleteExitButton.setPos(1.029, 0, -0.639)
+        self.deleteExitButton.setPos(_invDetailRightX(1.029), 0, -0.639)
         self.deleteExitButton.setScale(0.75)
         self.invFrame.reparentTo(self)
         self.invFrame.setPos(0, 0, 0)
@@ -486,10 +496,10 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.setPos(-0.2, 0, 0.4)
         self.setScale(0.8)
         self.deleteEnterButton.hide()
-        self.deleteEnterButton.setPos(1.029, 0, -0.639)
+        self.deleteEnterButton.setPos(_invDetailRightX(1.029), 0, -0.639)
         self.deleteEnterButton.setScale(0.75)
         self.deleteExitButton.show()
-        self.deleteExitButton.setPos(1.029, 0, -0.639)
+        self.deleteExitButton.setPos(_invDetailRightX(1.029), 0, -0.639)
         self.deleteExitButton.setScale(0.75)
         self.deleteHelpText.show()
         self.invFrame.reparentTo(self)
@@ -529,7 +539,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.reparentTo(self.purchaseFrame)
         self.invFrame.setPos(-0.235, 0, 0.52)
         self.invFrame.setScale(0.81)
-        self.detailFrame.setPos(1.17, 0, -0.02)
+        self.detailFrame.setPos(_invDetailRightX(1.17), 0, -0.02)
         self.detailFrame.setScale(1.25)
         self.deleteEnterButton.hide()
         self.deleteEnterButton.setPos(-0.441, 0, -0.917)
@@ -589,7 +599,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.reparentTo(self.storePurchaseFrame)
         self.invFrame.setPos(-0.23, 0, 0.505)
         self.invFrame.setScale(0.81)
-        self.detailFrame.setPos(1.175, 0, 0)
+        self.detailFrame.setPos(_invDetailRightX(1.175), 0, 0)
         self.detailFrame.setScale(1.25)
         self.deleteEnterButton.hide()
         self.deleteEnterButton.setPos(-0.55, 0, -0.91)
@@ -633,7 +643,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.reparentTo(self.storePurchaseFrame)
         self.invFrame.setPos(-0.23, 0, 0.505)
         self.invFrame.setScale(0.81)
-        self.detailFrame.setPos(1.175, 0, 0)
+        self.detailFrame.setPos(_invDetailRightX(1.175), 0, 0)
         self.detailFrame.setScale(1.25)
         self.deleteEnterButton.show()
         self.deleteEnterButton.setPos(-0.55, 0, -0.91)
@@ -702,7 +712,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.reparentTo(self.purchaseFrame)
         self.invFrame.setPos(-0.235, 0, 0.52)
         self.invFrame.setScale(0.81)
-        self.detailFrame.setPos(1.17, 0, -0.02)
+        self.detailFrame.setPos(_invDetailRightX(1.17), 0, -0.02)
         self.detailFrame.setScale(1.25)
         totalProps = self.totalProps
         maxProps = self.toon.getMaxCarry()
@@ -757,7 +767,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.reparentTo(self.storePurchaseFrame)
         self.invFrame.setPos(-0.23, 0, 0.505)
         self.invFrame.setScale(0.81)
-        self.detailFrame.setPos(1.175, 0, 0)
+        self.detailFrame.setPos(_invDetailRightX(1.175), 0, 0)
         self.detailFrame.setScale(1.25)
         totalProps = self.totalProps
         maxProps = self.toon.getMaxCarry()
@@ -810,7 +820,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.reparentTo(self.purchaseFrame)
         self.invFrame.setPos(-0.235, 0, 0.52)
         self.invFrame.setScale(0.81)
-        self.detailFrame.setPos(1.17, 0, -0.02)
+        self.detailFrame.setPos(_invDetailRightX(1.17), 0, -0.02)
         self.detailFrame.setScale(1.25)
         self.deleteEnterButton.show()
         self.deleteEnterButton.setPos(-0.441, 0, -0.917)
@@ -851,7 +861,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.reparentTo(self.purchaseFrame)
         self.invFrame.setPos(-0.235, 0, 0.52)
         self.invFrame.setScale(0.81)
-        self.detailFrame.setPos(1.17, 0, -0.02)
+        self.detailFrame.setPos(_invDetailRightX(1.17), 0, -0.02)
         self.detailFrame.setScale(1.25)
         self.deleteEnterButton.show()
         self.deleteEnterButton.setPos(-0.441, 0, -0.917)
@@ -892,7 +902,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.reparentTo(self.battleFrame)
         self.invFrame.setPos(-0.26, 0, 0.35)
         self.invFrame.setScale(1)
-        self.detailFrame.setPos(1.125, 0, -0.08)
+        self.detailFrame.setPos(_invDetailRightX(1.125), 0, -0.08)
         self.detailFrame.setScale(1)
         self.deleteEnterButton.hide()
         self.deleteExitButton.hide()
@@ -957,7 +967,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.invFrame.reparentTo(self.battleFrame)
         self.invFrame.setPos(-0.25, 0, 0.35)
         self.invFrame.setScale(1)
-        self.detailFrame.setPos(1.125, 0, -0.08)
+        self.detailFrame.setPos(_invDetailRightX(1.125), 0, -0.08)
         self.detailFrame.setScale(1)
         self.deleteEnterButton.hide()
         self.deleteExitButton.hide()
@@ -1129,7 +1139,10 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
 
     def updateButton(self, track, level):
         button = self.buttons[track][level]
-        button['text'] = str(self.numItem(track, level))
+        if ToontownGlobals.WantUnlimitedGags:
+            button['text'] = ''
+        else:
+            button['text'] = str(self.numItem(track, level))
         organicBonus = self.toon.checkGagBonus(track, level)
         propBonus = self.checkPropBonus(track)
         bonus = organicBonus or propBonus

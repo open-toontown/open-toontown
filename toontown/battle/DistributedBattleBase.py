@@ -1185,7 +1185,7 @@ class DistributedBattleBase(DistributedNode, BattleBase):
                     target = -1
 
             if len(self.luredSuits) > 0:
-                if track == TRAP or track == LURE and not levelAffectsGroup(LURE, level):
+                if track == TRAP:
                     if target != -1:
                         suit = self.findSuit(targetId)
                         if self.luredSuits.count(suit) != 0:
@@ -1193,12 +1193,6 @@ class DistributedBattleBase(DistributedNode, BattleBase):
                             track = -1
                             level = -1
                             targetId = -1
-                elif track == LURE:
-                    if levelAffectsGroup(LURE, level) and len(self.activeSuits) == len(self.luredSuits):
-                        self.notify.warning('All suits are lured!')
-                        track = -1
-                        level = -1
-                        targetId = -1
 
             if track == TRAP:
                 if target != -1:

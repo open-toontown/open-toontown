@@ -38,6 +38,7 @@ from . import HoodMgr
 from . import PlayGame
 from toontown.toontowngui import ToontownLoadingBlocker
 from toontown.hood import StreetSign
+import faulthandler
 
 class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
     SupportTutorial = 1
@@ -51,6 +52,11 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def __init__(self, serverVersion, launcher = None):
         OTPClientRepository.OTPClientRepository.__init__(self, serverVersion, launcher, playGame=PlayGame.PlayGame)
+        # Pick-a-Toon TTC revamp: keep a preloaded TTC backdrop alive across
+        # the set-avatar transition, then hand it off to PlayGame.
+        self._keepPickAToonBackdrop = False
+        # Paired with OTPClientRepository.enterPlayGame: only endBulkLoad if we began.
+        self._localAvatarPlayGameBulkLoadActive = False
         self._playerAvDclass = self.dclassesByName['DistributedToon']
         setInterfaceFont(TTLocalizer.InterfaceFont)
         setSignFont(TTLocalizer.SignFont)
@@ -102,6 +108,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.hoodMgr = HoodMgr.HoodMgr(self)
         self.setZonesEmulated = 0
         self.old_setzone_interest_handle = None
+        self._setZoneOpSerial = 0
         self.setZoneQueue = Queue()
         self.accept(ToontownClientRepository.SetZoneDoneEvent, self._handleEmuSetZoneDone)
         self.previousInterestZones = None
@@ -203,6 +210,18 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         TexturePool.garbageCollect()
         self.sendSetAvatarIdMsg(0)
         self.clearFriendState()
+        self.__preloadPickAToonTTCBackdrop()
+        # Modern launcher transition: keep the new loading screen up through
+        # server connect, then transition out into Pick-a-Toon.
+        try:
+            ml = getattr(base, 'modernLoading', None)
+            if ml:
+                ml.set_title('Toontown', 'Pick-a-Toon')
+                ml.set_status('Loading Pick-a-Toon…')
+                ml.set_progress(72)
+                base.graphicsEngine.renderFrame()
+        except Exception:
+            pass
         if self.music == None and base.musicManagerIsValid:
             self.music = base.musicManager.getSound('phase_3/audio/bgm/tt_theme.ogg')
             if self.music:
@@ -216,13 +235,26 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.avChoice.load(self.isPaid())
         self.avChoice.enter()
         self.accept(self.avChoiceDoneEvent, self.__handleAvatarChooserDone, [avList])
-        if ConfigVariableBool('want-gib-loader', 1).value:
-            self.loadingBlocker = ToontownLoadingBlocker.ToontownLoadingBlocker(avList)
+        # Legacy download blocker can still be used for phase downloads, but
+        # default to the modern overlay if present.
+        try:
+            ml = getattr(base, 'modernLoading', None)
+            if ml:
+                ml.set_status('Ready.')
+                ml.set_progress(100)
+                ml.transition_out()
+            else:
+                if ConfigVariableBool('want-gib-loader', 1).value:
+                    self.loadingBlocker = ToontownLoadingBlocker.ToontownLoadingBlocker(avList)
+        except Exception:
+            if ConfigVariableBool('want-gib-loader', 1).value:
+                self.loadingBlocker = ToontownLoadingBlocker.ToontownLoadingBlocker(avList)
         return
 
     def __handleAvatarChooserDone(self, avList, doneStatus):
         done = doneStatus['mode']
         if done == 'exit':
+            self.cleanupPickAToonTTCBackdrop()
             if not launcher.isDummy():
                 if not self.isPaid():
                     self.loginFSM.request('shutdown', [OTPLauncherGlobals.ExitUpsell])
@@ -251,20 +283,31 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         if done == 'chose':
             self.avChoice.exit()
             if avatarChoice.approvedName != '':
+                self.cleanupPickAToonTTCBackdrop()
                 self.congratulations(avatarChoice)
                 avatarChoice.approvedName = ''
             elif avatarChoice.rejectedName != '':
+                self.cleanupPickAToonTTCBackdrop()
                 avatarChoice.rejectedName = ''
                 self.betterlucknexttime(avList, index)
             else:
+                # Keep the preloaded TTC backdrop so entering PlayGame can reuse
+                # it and spawn immediately into the already-loaded scene.
+                self._keepPickAToonBackdrop = True
                 self.loginFSM.request('waitForSetAvatarResponse', [avatarChoice])
         elif done == 'nameIt':
+            self._keepPickAToonBackdrop = False
+            self.cleanupPickAToonTTCBackdrop()
             self.accept('downloadAck-response', self.__handleDownloadAck, [avList, index])
             self.downloadAck = DownloadForceAcknowledge('downloadAck-response')
             self.downloadAck.enter(4)
         elif done == 'create':
+            self._keepPickAToonBackdrop = False
+            self.cleanupPickAToonTTCBackdrop()
             self.loginFSM.request('createAvatar', [avList, index])
         elif done == 'delete':
+            self._keepPickAToonBackdrop = False
+            self.cleanupPickAToonTTCBackdrop()
             self.loginFSM.request('waitForDeleteAvatarResponse', [avatarChoice])
 
     def __handleDownloadAck(self, avList, index, doneStatus):
@@ -283,7 +326,166 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.avChoice.unload()
         self.avChoice = None
         self.ignore(self.avChoiceDoneEvent)
+        # If the user picked a toon, keep the backdrop alive across the
+        # set-avatar transition so PlayGame can reuse it.
+        if not getattr(self, '_keepPickAToonBackdrop', False):
+            self.cleanupPickAToonTTCBackdrop()
         return
+
+    def __preloadPickAToonTTCBackdrop(self):
+        """
+        Revamp: Render the Pick-a-Toon UI on top of a live Toontown Central
+        safezone backdrop. This intentionally loads only the hood geometry/sky,
+        and does NOT enter the playground state (which requires a localAvatar).
+        """
+        try:
+            if not ConfigVariableBool('want-pick-a-toon-ttc-backdrop', 0).value:
+                return
+        except Exception:
+            return
+        # Track whether the backdrop could not be created, so Pick-a-Toon can
+        # fall back to legacy background art instead of a blank/grey screen.
+        try:
+            self._pickAToonTTCBackdropFailed = False
+        except Exception:
+            pass
+        if getattr(self, '_pickAToonTTCBackdrop', None):
+            return
+        try:
+            from toontown.toonbase import ToontownGlobals
+            from toontown.hood import TTHood
+        except Exception:
+            return
+
+        try:
+            # Ensure PlayGame has a DNA store ready for hood loading.
+            self.playGame.loadDnaStore()
+        except Exception:
+            # If this fails, just skip the backdrop (picker still works).
+            return
+
+        hoodId = ToontownGlobals.ToontownCentral
+        requestStatus = {
+            'loader': 'safeZoneLoader',
+            'where': 'playground',
+            'how': 'teleportIn',
+            'hoodId': hoodId,
+            'zoneId': hoodId,
+            'shardId': None,
+            'avId': -1,
+        }
+
+        # Important: some Panda3D NodePath operations can assert in C++ (not raise
+        # Python exceptions). Be very defensive here to avoid hard crashes or
+        # "Assertion failed: !is_empty()" spew. If anything is missing/empty,
+        # mark failed and let Pick-a-Toon fall back to legacy art.
+        hood = None
+        try:
+            hood = TTHood.TTHood(self.playGame.fsm, self.playGame.hoodDoneEvent, self.playGame.dnaStore, hoodId)
+            hood.load()
+            try:
+                hood.startSky()
+            except Exception:
+                pass
+            hood.loadLoader(requestStatus)
+
+            geom = None
+            try:
+                if hasattr(hood, 'loader') and hasattr(hood.loader, 'geom'):
+                    geom = hood.loader.geom
+            except Exception:
+                geom = None
+
+            if not geom or geom.isEmpty():
+                try:
+                    self._pickAToonTTCBackdropFailed = True
+                except Exception:
+                    pass
+                try:
+                    hood.unload()
+                except Exception:
+                    pass
+                return
+
+            try:
+                geom.reparentTo(render)
+            except Exception:
+                try:
+                    self._pickAToonTTCBackdropFailed = True
+                except Exception:
+                    pass
+                try:
+                    hood.unload()
+                except Exception:
+                    pass
+                return
+
+            # Apply outdoor lighting only if enabled and safe.
+            self._pickAToonTTCBackdropHasLighting = False
+            try:
+                if ConfigVariableBool('pick-a-toon-ttc-backdrop-want-lighting', 0).value:
+                    from toontown.hood import OutdoorLighting
+                    OutdoorLighting.begin(geom, 'playground', hoodId=hoodId)
+                    self._pickAToonTTCBackdropHasLighting = True
+            except Exception:
+                self._pickAToonTTCBackdropHasLighting = False
+
+            # Camera pose while picking (safe best-effort).
+            try:
+                base.disableMouse()
+                if getattr(base, 'camera', None) and not base.camera.isEmpty():
+                    base.camera.reparentTo(render)
+                    base.camera.setPos(0, -70, 28)
+                    base.camera.setHpr(0, -10, 0)
+            except Exception:
+                pass
+
+            self._pickAToonTTCBackdrop = hood
+            self._pickAToonTTCBackdropRequestStatus = requestStatus
+        except Exception:
+            try:
+                self._pickAToonTTCBackdropFailed = True
+            except Exception:
+                pass
+            try:
+                if hood:
+                    hood.unload()
+            except Exception:
+                pass
+            self._pickAToonTTCBackdrop = None
+            self._pickAToonTTCBackdropRequestStatus = None
+            self._pickAToonTTCBackdropHasLighting = False
+
+    def cleanupPickAToonTTCBackdrop(self):
+        hood = getattr(self, '_pickAToonTTCBackdrop', None)
+        if not hood:
+            return
+        try:
+            if getattr(self, '_pickAToonTTCBackdropHasLighting', False) and hasattr(hood, 'loader') and hasattr(hood.loader, 'geom'):
+                from toontown.hood import OutdoorLighting
+                OutdoorLighting.end(hood.loader.geom)
+        except Exception:
+            pass
+        try:
+            hood.stopSky()
+        except Exception:
+            pass
+        try:
+            hood.unload()
+        except Exception:
+            pass
+        self._pickAToonTTCBackdrop = None
+        self._pickAToonTTCBackdropRequestStatus = None
+        self._pickAToonTTCBackdropHasLighting = False
+        # The backdrop TTHood used playGame.dnaStore. hood.unload() calls
+        # dnaStore.resetHood() and drops the Hood's reference, but PlayGame still
+        # keeps the same DNAStorage. loadDnaStore() only runs when dnaStore is
+        # missing — so the next real hood load would reuse a half-reset store
+        # and mix neighborhoods (assertions / instant exit). Force a full reset.
+        try:
+            self.playGame.unloadDnaStore()
+        except Exception:
+            pass
 
     def goToPickAName(self, avList, index):
         self.avChoice.exit()
@@ -359,7 +561,13 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             if returnCode == 0:
                 dclass = self.dclassesByName['DistributedToon']
                 NametagGlobals.setMasterArrowsOn(0)
-                loader.beginBulkLoad('localAvatarPlayGame', OTPLocalizer.CREnteringToontown, 400, 1, TTLocalizer.TIP_GENERAL)
+                # Revamp: when using the Pick-a-Toon TTC backdrop, avoid putting
+                # up a blocking loading screen while generating localAvatar.
+                if not getattr(self, '_keepPickAToonBackdrop', False):
+                    loader.beginBulkLoad('localAvatarPlayGame', OTPLocalizer.CREnteringToontown, 400, 1, TTLocalizer.TIP_GENERAL)
+                    self._localAvatarPlayGameBulkLoadActive = True
+                else:
+                    self._localAvatarPlayGameBulkLoadActive = False
                 localAvatar = LocalToon.LocalToon(self)
                 localAvatar.dclass = dclass
                 base.localAvatar = localAvatar
@@ -385,7 +593,13 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             self.cleanupWaitingForDatabase()
             dclass = self.dclassesByName['DistributedToon']
             NametagGlobals.setMasterArrowsOn(0)
-            loader.beginBulkLoad('localAvatarPlayGame', OTPLocalizer.CREnteringToontown, 400, 1, TTLocalizer.TIP_GENERAL)
+            # Revamp: when using the Pick-a-Toon TTC backdrop, avoid putting
+            # up a blocking loading screen while generating localAvatar.
+            if not getattr(self, '_keepPickAToonBackdrop', False):
+                loader.beginBulkLoad('localAvatarPlayGame', OTPLocalizer.CREnteringToontown, 400, 1, TTLocalizer.TIP_GENERAL)
+                self._localAvatarPlayGameBulkLoadActive = True
+            else:
+                self._localAvatarPlayGameBulkLoadActive = False
             localAvatar = LocalToon.LocalToon(self)
             localAvatar.dclass = dclass
             base.localAvatar = localAvatar
@@ -456,10 +670,16 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def enterPlayingGame(self, *args, **kArgs):
         OTPClientRepository.OTPClientRepository.enterPlayingGame(self, *args, **kArgs)
-        self.gameFSM.request('waitOnEnterResponses', [None,
-         base.localAvatar.defaultZone,
-         base.localAvatar.defaultZone,
-         -1])
+        # Once we are in-game, we no longer need the "keep" latch.
+        self._keepPickAToonBackdrop = False
+        # Use the correct hoodId and avatarId when entering the shard.
+        # Passing -1 here can break downstream zone-load flow and make it
+        # look like the client "freezes" during shard entry.
+        from toontown.hood import ZoneUtil
+        zoneId = base.localAvatar.defaultZone
+        hoodId = ZoneUtil.getHoodId(zoneId)
+        avId = base.localAvatar.getDoId()
+        self.gameFSM.request('waitOnEnterResponses', [None, hoodId, zoneId, avId])
         self._userLoggingOut = False
         
         if self.wantStreetSign and not self.streetSign:
@@ -500,6 +720,20 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
 
     def enterWaitOnEnterResponses(self, shardId, hoodId, zoneId, avId):
         self.resetDeletedSubShardDoIds()
+        # Pick-a-Toon preloads TTC behind the chooser. If the avatar's last
+        # location was not TTC playground, we must drop that backdrop before
+        # shard entry — otherwise TTC and the real hood both load (assertions).
+        try:
+            from toontown.hood import ZoneUtil
+            pre = getattr(self, '_pickAToonTTCBackdrop', None)
+            if pre:
+                canon = ZoneUtil.getCanonicalZoneId(zoneId)
+                loaderName = ZoneUtil.getLoaderName(zoneId)
+                reuseBackdrop = canon == ToontownCentral and loaderName == 'safeZoneLoader'
+                if not reuseBackdrop:
+                    self.cleanupPickAToonTTCBackdrop()
+        except Exception:
+            pass
         OTPClientRepository.OTPClientRepository.enterWaitOnEnterResponses(self, shardId, hoodId, zoneId, avId)
 
     def enterSkipTutorialRequest(self, hoodId, zoneId, avId):
@@ -1012,13 +1246,15 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
     def sendSetZoneMsg(self, zoneId, visibleZoneList = None):
         event = self.getNextSetZoneDoneEvent()
         self.setZonesEmulated += 1
+        self._setZoneOpSerial += 1
         parentId = base.localAvatar.defaultShard
         self.sendSetLocation(base.localAvatar.doId, parentId, zoneId)
         localAvatar.setLocation(parentId, zoneId)
         interestZones = zoneId
         if visibleZoneList is not None:
             interestZones = visibleZoneList
-        self._addInterestOpToQueue(ToontownClientRepository.SetInterest, [parentId, interestZones, 'OldSetZoneEmulator'], event)
+        # Include a serial so timeout tasks can be uniquely named/cancelled.
+        self._addInterestOpToQueue(ToontownClientRepository.SetInterest, [parentId, interestZones, 'OldSetZoneEmulator', self._setZoneOpSerial], event)
         return
 
     def resetInterestStateForConnectionLoss(self):
@@ -1039,7 +1275,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
     def _sendNextSetZone(self):
         op, args, event = self.setZoneQueue.top()
         if op == ToontownClientRepository.SetInterest:
-            parentId, interestZones, name = args
+            parentId, interestZones, name, serial = args
             if self.old_setzone_interest_handle == None:
                 if interestZones == []:
                     # Empty zones at startup, don't do anything to save bandwidth, just send the event.
@@ -1056,6 +1292,46 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                 else:
                     self.alterInterest(self.old_setzone_interest_handle, parentId, interestZones, name, ToontownClientRepository.SetZoneDoneEvent)
             self.previousInterestZones = interestZones
+
+            # Diagnostic escape hatch: if the server never responds to the
+            # set-zone interest (DONE_INTEREST), forcibly advance instead of
+            # hard-freezing in quiet zone. This is opt-in via PRC.
+            if ConfigVariableBool('force-setzone-done', 0).value:
+                try:
+                    self.notify.warning('[ShardDbg] force-setzone-done=1; bypassing DONE_INTEREST wait for set-zone interest')
+                except Exception:
+                    pass
+                try:
+                    if ConfigVariableBool('shard-debug', 0).value:
+                        self.notify.info(f'[ShardDbg] force-setzone-done calling _handleEmuSetZoneDone; event={event!r} serial={serial} parentId={parentId} zones={interestZones!r}')
+                except Exception:
+                    pass
+                self._handleEmuSetZoneDone()
+                try:
+                    if ConfigVariableBool('shard-debug', 0).value:
+                        self.notify.info('[ShardDbg] force-setzone-done returned from _handleEmuSetZoneDone')
+                except Exception:
+                    pass
+                return
+
+            # Safety net: if the server never sends DONE_INTEREST for this
+            # zone interest, don't hard-freeze the client. We'll force the
+            # set-zone completion event after a timeout.
+            try:
+                timeout = ConfigVariableDouble('setzone-interest-timeout', 15.0).value
+            except Exception:
+                timeout = 15.0
+            taskName = f'setZoneInterestTimeout-{serial}'
+            taskMgr.remove(taskName)
+            taskMgr.doMethodLater(timeout, self._forceEmuSetZoneDone, taskName, extraArgs=[taskName])
+            try:
+                if ConfigVariableBool('shard-debug', 0).value:
+                    self.notify.info(f'[ShardDbg] armed setZone timeout {timeout:.1f}s task={taskName}')
+                    # If we hard-wedge, try to get Python stacks anyway.
+                    # Note: output destination is controlled by OTPClientRepository's faulthandler setup.
+                    faulthandler.dump_traceback_later(timeout + 5.0, repeat=False)
+            except Exception:
+                pass
         elif op == ToontownClientRepository.ClearInterest:
             self.removeInterest(self.old_setzone_interest_handle, ToontownClientRepository.SetZoneDoneEvent)
             self.old_setzone_interest_handle = None
@@ -1064,12 +1340,55 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             self.notify.error('unknown setZone op: %s' % op)
         return
 
+    def _forceEmuSetZoneDone(self, taskName):
+        # If we already advanced, ignore.
+        if self.setZoneQueue.isEmpty():
+            return Task.done
+        try:
+            self.notify.warning(f'[ShardDbg] setZone interest timed out ({taskName}); forcing {ToontownClientRepository.SetZoneDoneEvent}')
+        except Exception:
+            pass
+        self._handleEmuSetZoneDone()
+        return Task.done
+
     def _handleEmuSetZoneDone(self):
+        try:
+            if ConfigVariableBool('shard-debug', 0).value:
+                self.notify.info('[ShardDbg] _handleEmuSetZoneDone.enter')
+        except Exception:
+            pass
+        # This can be invoked both by the normal DONE_INTEREST event path
+        # and by our force-setzone-done/timeout safety nets. If the queue was
+        # already advanced, ignore duplicate callbacks.
+        if self.setZoneQueue.isEmpty():
+            try:
+                if ConfigVariableBool('shard-debug', 0).value:
+                    self.notify.warning('[ShardDbg] _handleEmuSetZoneDone called but setZoneQueue is empty; ignoring')
+            except Exception:
+                pass
+            return
+
         op, args, event = self.setZoneQueue.pop()
         queueIsEmpty = self.setZoneQueue.isEmpty()
+        # Cancel any pending timeout for the setzone operation we just completed.
+        try:
+            if op == ToontownClientRepository.SetInterest and args and len(args) >= 4:
+                taskMgr.remove(f'setZoneInterestTimeout-{args[3]}')
+        except Exception:
+            pass
         if event is not None:
             if not base.killInterestResponse:
+                try:
+                    if ConfigVariableBool('shard-debug', 0).value:
+                        self.notify.info(f'[ShardDbg] _handleEmuSetZoneDone sending {event!r}')
+                except Exception:
+                    pass
                 messenger.send(event)
+                try:
+                    if ConfigVariableBool('shard-debug', 0).value:
+                        self.notify.info(f'[ShardDbg] _handleEmuSetZoneDone sent {event!r}')
+                except Exception:
+                    pass
             elif not hasattr(self, '_dontSendSetZoneDone'):
                 import random
                 if random.random() < 0.05:
@@ -1078,6 +1397,11 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
                     messenger.send(event)
         if not queueIsEmpty:
             self._sendNextSetZone()
+        try:
+            if ConfigVariableBool('shard-debug', 0).value:
+                self.notify.info('[ShardDbg] _handleEmuSetZoneDone.exit')
+        except Exception:
+            pass
         return
 
     def _isPlayerDclass(self, dclass):

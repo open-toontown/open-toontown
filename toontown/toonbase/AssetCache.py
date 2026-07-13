@@ -31,7 +31,6 @@ class AssetCache:
         
         # Common models that are used everywhere
         commonModels = [
-            'phase_3/models/gui/toontown-logo',
             'phase_3/models/props/arrow',
             'phase_3/models/props/panel',
             'phase_3/models/props/chatbox',

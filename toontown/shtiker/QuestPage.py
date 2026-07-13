@@ -169,7 +169,7 @@ class QuestPage(ShtikerPage.ShtikerPage):
         self.hide()
 
     def canDeleteQuest(self, questDesc):
-        return Quests.isQuestJustForFun(questDesc[0], questDesc[3]) and self.onscreen == 0
+        return self.onscreen == 0
 
     def __deleteQuest(self, questDesc):
         base.localAvatar.d_requestDeleteQuest(questDesc)

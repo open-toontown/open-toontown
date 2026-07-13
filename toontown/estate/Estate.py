@@ -4,14 +4,13 @@ from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import *
 from direct.distributed.ClockDelta import *
-from toontown.hood import Place
+from toontown.hood import OutdoorLighting, Place
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.task.Task import Task
 from toontown.toonbase import TTLocalizer
 import random
 from direct.showbase import PythonUtil
-from toontown.hood import Place
 from toontown.hood import SkyUtil
 from toontown.pets import PetTutorial
 from direct.controls.GravityWalker import GravityWalker
@@ -130,6 +129,7 @@ class Estate(Place.Place):
             self.loader.enterAnimatedProps(i)
 
         self.loader.geom.reparentTo(render)
+        OutdoorLighting.begin(self.loader.geom, 'estate')
         if hasattr(base.cr, 'newsManager') and base.cr.newsManager:
             holidayIds = base.cr.newsManager.getHolidayIdList()
             if ToontownGlobals.APRIL_FOOLS_COSTUMES in holidayIds or ToontownGlobals.SILLYMETER_EXT_HOLIDAY in holidayIds:
@@ -157,6 +157,7 @@ class Estate(Place.Place):
         if hasattr(self, 'fsm'):
             self.fsm.requestFinalState()
         self.loader.geom.reparentTo(hidden)
+        OutdoorLighting.end(self.loader.geom)
         for i in self.loader.nodeList:
             self.loader.exitAnimatedProps(i)
 

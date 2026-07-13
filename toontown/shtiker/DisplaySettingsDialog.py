@@ -16,6 +16,17 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
     EmbeddedMode = 2
     notify = DirectNotifyGlobal.directNotify.newCategory('DisplaySettingsDialog')
 
+    class _Layout:
+        def __init__(self):
+            self.leftX = -0.62
+            self.labelRightX = -0.05
+            self.controlLeftX = 0.05
+            self.topY = 0.20
+            self.rowH = 0.11
+
+        def rowY(self, i):
+            return self.topY - i * self.rowH
+
     def __init__(self):
         DirectFrame.__init__(self, pos=(0, 0, 0.3), relief=None, image=DGG.getDefaultDialogGeom(), image_scale=(1.6, 1, 1.2), image_pos=(0, 0, -0.05), image_color=ToontownGlobals.GlobalDialogColor, text=TTLocalizer.DisplaySettingsTitle, text_scale=0.12, text_pos=(0, 0.4), borderWidth=(0.01, 0.01))
         StateData.StateData.__init__(self, 'display-settings-done')
@@ -37,6 +48,7 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         self.isLoaded = 1
         self.anyChanged = 0
         self.apiChanged = 0
+        layout = self._Layout()
         # Standard resolutions including widescreen (16:9 and 16:10)
         screenSizes = [(640, 480),    # 4:3
          (800, 600),                  # 4:3
@@ -66,30 +78,30 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
         innerCircle.setPos(0, 0, 0.2)
         self.c1b = circle.copyTo(self, -1)
         self.c1b.setColor(0, 0, 0, 1)
-        self.c1b.setPos(0.044, 0, -0.21)
+        self.c1b.setPos(layout.controlLeftX + 0.03, 0, layout.rowY(3) + 0.01)
         self.c1b.setScale(0.4)
         c1f = circle.copyTo(self.c1b)
         c1f.setColor(1, 1, 1, 1)
         c1f.setScale(0.8)
         self.c2b = circle.copyTo(self, -2)
         self.c2b.setColor(0, 0, 0, 1)
-        self.c2b.setPos(0.044, 0, -0.3)
+        self.c2b.setPos(layout.controlLeftX + 0.03, 0, layout.rowY(4) + 0.01)
         self.c2b.setScale(0.4)
         c2f = circle.copyTo(self.c2b)
         c2f.setColor(1, 1, 1, 1)
         c2f.setScale(0.8)
         self.c3b = circle.copyTo(self, -2)
         self.c3b.setColor(0, 0, 0, 1)
-        self.c3b.setPos(0.044, 0, -0.4)
+        self.c3b.setPos(layout.controlLeftX + 0.03, 0, layout.rowY(5) + 0.01)
         self.c3b.setScale(0.4)
         c3f = circle.copyTo(self.c3b)
         c3f.setColor(1, 1, 1, 1)
         c3f.setScale(0.8)
-        self.introText = DirectLabel(parent=self, relief=None, scale=TTLocalizer.DSDintroText, text=TTLocalizer.DisplaySettingsIntro, text_wordwrap=TTLocalizer.DSDintroTextWordwrap, text_align=TextNode.ALeft, pos=(-0.725, 0, 0.3))
-        self.introTextSimple = DirectLabel(parent=self, relief=None, scale=0.06, text=TTLocalizer.DisplaySettingsIntroSimple, text_wordwrap=25, text_align=TextNode.ALeft, pos=(-0.725, 0, 0.3))
-        self.apiLabel = DirectLabel(parent=self, relief=None, scale=0.06, text=TTLocalizer.DisplaySettingsApi, text_align=TextNode.ARight, pos=(-0.08, 0, 0))
-        self.apiMenu = DirectOptionMenu(parent=self, relief=DGG.RAISED, scale=0.06, items=['x'], pos=(0, 0, 0))
-        self.screenSizeLabel = DirectLabel(parent=self, relief=None, scale=0.06, text=TTLocalizer.DisplaySettingsResolution, text_align=TextNode.ARight, pos=(-0.08, 0, -0.1))
+        self.introText = DirectLabel(parent=self, relief=None, scale=0.06, text=TTLocalizer.DisplaySettingsIntro, text_wordwrap=30, text_align=TextNode.ALeft, pos=(layout.leftX, 0, layout.rowY(0) + 0.08))
+        self.introTextSimple = DirectLabel(parent=self, relief=None, scale=0.06, text=TTLocalizer.DisplaySettingsIntroSimple, text_wordwrap=30, text_align=TextNode.ALeft, pos=(layout.leftX, 0, layout.rowY(0) + 0.08))
+        self.apiLabel = DirectLabel(parent=self, relief=None, scale=0.06, text=TTLocalizer.DisplaySettingsApi, text_align=TextNode.ARight, pos=(layout.labelRightX, 0, layout.rowY(1)))
+        self.apiMenu = DirectOptionMenu(parent=self, relief=DGG.RAISED, scale=0.06, items=['x'], pos=(layout.controlLeftX, 0, layout.rowY(1)))
+        self.screenSizeLabel = DirectLabel(parent=self, relief=None, scale=0.06, text=TTLocalizer.DisplaySettingsResolution, text_align=TextNode.ARight, pos=(layout.labelRightX, 0, layout.rowY(2)))
         self.screenSizeLeftArrow = DirectButton(parent=self, relief=None, image=(gui.find('**/Horiz_Arrow_UP'),
          gui.find('**/Horiz_Arrow_DN'),
          gui.find('**/Horiz_Arrow_Rllvr'),
@@ -98,12 +110,14 @@ class DisplaySettingsDialog(DirectFrame, StateData.StateData):
          gui.find('**/Horiz_Arrow_DN'),
          gui.find('**/Horiz_Arrow_Rllvr'),
          gui.find('**/Horiz_Arrow_UP')), pos=(0.54, 0, -0.085), command=self.__doScreenSizeRight)
-        self.screenSizeValueText = DirectLabel(parent=self, relief=None, text='x', text_align=TextNode.ACenter, text_scale=0.06, pos=(0.29, 0, -0.1))
-        self.windowedButton = DirectCheckButton(parent=self, relief=None, text=TTLocalizer.DisplaySettingsWindowed, text_align=TextNode.ALeft, text_scale=0.6, scale=0.1, boxImage=innerCircle, boxImageScale=2.5, boxImageColor=VBase4(0, 0.25, 0.5, 1), boxRelief=None, pos=TTLocalizer.DSDwindowedButtonPos, command=self.__doWindowed)
-        self.fullscreenButton = DirectCheckButton(parent=self, relief=None, text=TTLocalizer.DisplaySettingsFullscreen, text_align=TextNode.ALeft, text_scale=0.6, scale=0.1, boxImage=innerCircle, boxImageScale=2.5, boxImageColor=VBase4(0, 0.25, 0.5, 1), boxRelief=None, pos=TTLocalizer.DSDfullscreenButtonPos, command=self.__doFullscreen)
-        self.embeddedButton = DirectCheckButton(parent=self, relief=None, text=TTLocalizer.DisplaySettingsEmbedded, text_align=TextNode.ALeft, text_scale=0.6, scale=0.1, boxImage=innerCircle, boxImageScale=2.5, boxImageColor=VBase4(0, 0.25, 0.5, 1), boxRelief=None, pos=TTLocalizer.DSDembeddedButtonPos, command=self.__doEmbedded)
+        self.screenSizeLeftArrow.setPos(layout.controlLeftX + 0.03, 0, layout.rowY(2) + 0.015)
+        self.screenSizeRightArrow.setPos(layout.controlLeftX + 0.53, 0, layout.rowY(2) + 0.015)
+        self.screenSizeValueText = DirectLabel(parent=self, relief=None, text='x', text_align=TextNode.ACenter, text_scale=0.06, pos=(layout.controlLeftX + 0.28, 0, layout.rowY(2)))
+        self.windowedButton = DirectCheckButton(parent=self, relief=None, text=TTLocalizer.DisplaySettingsWindowed, text_align=TextNode.ALeft, text_scale=0.6, scale=0.1, boxImage=innerCircle, boxImageScale=2.5, boxImageColor=VBase4(0, 0.25, 0.5, 1), boxRelief=None, pos=(layout.controlLeftX, 0, layout.rowY(3)), command=self.__doWindowed)
+        self.fullscreenButton = DirectCheckButton(parent=self, relief=None, text=TTLocalizer.DisplaySettingsFullscreen, text_align=TextNode.ALeft, text_scale=0.6, scale=0.1, boxImage=innerCircle, boxImageScale=2.5, boxImageColor=VBase4(0, 0.25, 0.5, 1), boxRelief=None, pos=(layout.controlLeftX, 0, layout.rowY(4)), command=self.__doFullscreen)
+        self.embeddedButton = DirectCheckButton(parent=self, relief=None, text=TTLocalizer.DisplaySettingsEmbedded, text_align=TextNode.ALeft, text_scale=0.6, scale=0.1, boxImage=innerCircle, boxImageScale=2.5, boxImageColor=VBase4(0, 0.25, 0.5, 1), boxRelief=None, pos=(layout.controlLeftX, 0, layout.rowY(5)), command=self.__doEmbedded)
         self.apply = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=(0.6, 1, 1), text=TTLocalizer.DisplaySettingsApply, text_scale=0.06, text_pos=(0, -0.02), pos=(0.52, 0, -0.53), command=self.__apply)
-        self.cancel = DirectButton(parent=self, relief=None, text=TTLocalizer.DisplaySettingsCancel, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=(0.6, 1, 1), text_scale=TTLocalizer.DSDcancel, text_pos=TTLocalizer.DSDcancelPos, pos=(0.2, 0, -0.53), command=self.__cancel)
+        self.cancel = DirectButton(parent=self, relief=None, text=TTLocalizer.DisplaySettingsCancel, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=(0.6, 1, 1), text_scale=0.06, text_pos=(0, -0.02), pos=(0.2, 0, -0.53), command=self.__cancel)
         guiButton.removeNode()
         gui.removeNode()
         nameShopGui.removeNode()

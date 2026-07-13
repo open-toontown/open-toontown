@@ -21,31 +21,27 @@ from toontown.toonbase.AssetCache import assetCache
 
 class ToonBase(OTPBase.OTPBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonBase')
+    CAM_TOGGLE_LOCK = False
 
     def __init__(self):
         self.settings = Settings()
-        # Remap orbital camera to right-click instead of middle-click  
-        loadPrcFileData('toonBase Camera Controls', 'drive-button2 alt-mouse3')
-        # Make orbital camera more responsive (less smooth, more precise)
-        loadPrcFileData('toonBase Camera Responsive', 'drive-rotational-speed 100')
-        loadPrcFileData('toonBase Camera Direct', 'drive-mouse-scale 0.015')
-        # Fix camera locking bug - disable acceleration and smoothing
-        loadPrcFileData('toonBase Camera No Lock', 'drive-rotate-accel 0')
-        loadPrcFileData('toonBase Camera No Smooth', 'drive-angular-smooth 0')
-        loadPrcFileData('toonBase Camera Instant', 'drive-heading-dampening 0')
-        # Enable tank-like controls (A/D rotate, W/S move forward/backward)
-        loadPrcFileData('toonBase Tank Controls', 'drive-mode tank')
         if not ConfigVariableInt('ignore-user-options', 0).value:
             self.settings.readSettings()
             mode = not self.settings.getSetting('windowed-mode', True)
             music = self.settings.getSetting('music', True)
             sfx = self.settings.getSetting('sfx', True)
             toonChatSounds = self.settings.getSetting('toon-chat-sounds', True)
-            res = self.settings.getSetting('resolution', (800, 600))
+            # Default to a smaller 16:9 windowed resolution on first launch.
+            # (Chosen to fit comfortably on low-res displays.)
+            res = self.settings.getSetting('resolution', (960, 540))
             if mode == None:
                 mode = 1
             if res == None:
-                res = (800, 600)
+                res = (960, 540)
+            # If the user has never saved settings, default to windowed 16:9.
+            # (Avoid surprising fullscreen on first launch.)
+            if not self.settings.doSavedSettingsExist():
+                mode = False
             loadPrcFileData('toonBase Settings Window Res', 'win-size %s %s' % (res[0], res[1]))
             loadPrcFileData('toonBase Settings Window FullScreen', 'fullscreen %s' % mode)
             loadPrcFileData('toonBase Settings Music Active', 'audio-music-active %s' % music)
@@ -60,18 +56,36 @@ class ToonBase(OTPBase.OTPBase):
 
             sys.exit(1)
         self.disableShowbaseMouse()
+        self.applyMouseSensitivity()
         base.debugRunningMultiplier /= OTPGlobals.ToonSpeedFactor
         self.toonChatSounds = ConfigVariableBool('toon-chat-sounds', 1).value
         
         # Setup WASD controls alongside arrow keys
         self.setupWASDControls()
+        # Some camera/control code expects a `base.controls` object that defines
+        # movement event names. In this codebase, movement is driven via
+        # InputState watchers ('forward', 'reverse', etc.), so map these here.
+        # This prevents crashes like `AttributeError: 'ToonBase' object has no attribute 'controls'`.
+        if not hasattr(self, 'controls'):
+            self.controls = ScratchPad(
+                MOVE_UP='forward',
+                MOVE_DOWN='reverse',
+                MOVE_LEFT='turnLeft',
+                MOVE_RIGHT='turnRight',
+                JUMP='jump',
+            )
+        base.controls = self.controls
         self.placeBeforeObjects = ConfigVariableBool('place-before-objects', 0).value
         self.endlessQuietZone = False
-        self.wantDynamicShadows = 0
+        self.wantDynamicShadows = 1 if self.settings.getSetting('dynamic-shadows', False) else 0
         self.exitErrorCode = 0
         camera.setPosHpr(0, 0, 0, 0, 0, 0)
         # Set up widescreen support with dynamic FOV based on aspect ratio
-        self.baseFov = ToontownGlobals.DefaultCameraFov
+        try:
+            ufov = float(self.settings.getSetting('camera-fov', ToontownGlobals.DefaultCameraFov))
+        except (TypeError, ValueError):
+            ufov = ToontownGlobals.DefaultCameraFov
+        self.baseFov = max(40.0, min(90.0, ufov))
         self.updateFovForAspectRatio()
         self.camLens.setNearFar(ToontownGlobals.DefaultCameraNear, ToontownGlobals.DefaultCameraFar)
         # Apply saved volume settings
@@ -90,11 +104,14 @@ class ToonBase(OTPBase.OTPBase):
         tpm.setProperties('candidate_inactive', candidateInactive)
         self.transitions.IrisModelName = 'phase_3/models/misc/iris'
         self.transitions.FadeModelName = 'phase_3/models/misc/fade'
+        smooth = self.settings.getSetting('smooth-animations', True)
+        if hasattr(self.transitions, 'setUseBlend'):
+            self.transitions.setUseBlend(not smooth)
         self.exitFunc = self.userExit
         if 'launcher' in __builtins__ and launcher:
             launcher.setPandaErrorCode(11)
         globalClock.setMaxDt(0.2)
-        if ConfigVariableBool('want-particles', 1).value == 1:
+        if ConfigVariableBool('want-particles', 1).value and self.settings.getSetting('particles-enabled', True):
             self.notify.debug('Enabling particles')
             self.enableParticles()
         self.accept(ToontownGlobals.ScreenshotHotkey, self.takeScreenShot)
@@ -134,7 +151,10 @@ class ToonBase(OTPBase.OTPBase):
             self.cogdoGameDifficulty = cogdoGameDifficulty
         if cogdoGameSafezoneId != -1:
             self.cogdoGameSafezoneId = cogdoGameSafezoneId
-        ToontownBattleGlobals.SkipMovie = ConfigVariableBool('skip-battle-movies', 0).value
+        if ConfigVariableBool('skip-battle-movies', 0).value:
+            ToontownBattleGlobals.SkipMovie = 1
+        else:
+            ToontownBattleGlobals.SkipMovie = 1 if self.settings.getSetting('skip-battle-movies', False) else 0
         self.creditCardUpFront = ConfigVariableInt('credit-card-up-front', -1).value
         if self.creditCardUpFront == -1:
             del self.creditCardUpFront
@@ -172,6 +192,15 @@ class ToonBase(OTPBase.OTPBase):
         self.oldY = max(1, base.win.getYSize())
         self.aspectRatio = float(self.oldX) / self.oldY
         return
+
+    def applyMouseSensitivity(self, multiplier=None):
+        if multiplier is None:
+            try:
+                multiplier = float(self.settings.getSetting('mouse-sensitivity', 1.0))
+            except (TypeError, ValueError):
+                multiplier = 1.0
+        multiplier = max(0.5, min(2.0, multiplier))
+        self.mouseSensitivity = multiplier
     
     def updateFovForAspectRatio(self):
         """Update FOV dynamically based on aspect ratio for proper widescreen support."""
@@ -241,6 +270,13 @@ class ToonBase(OTPBase.OTPBase):
         
         # Update FOV when window is resized for widescreen support
         self.updateFovForAspectRatio()
+
+        # If anything left the main DisplayRegions cropped (common after some
+        # RTT/post-process paths), restore full-window rendering on resize.
+        try:
+            self.repairMainViewports()
+        except Exception:
+            pass
         
         if not ConfigVariableInt('keep-aspect-ratio', 0).value:
             return
@@ -294,11 +330,14 @@ class ToonBase(OTPBase.OTPBase):
         """Add WASD key bindings as alternative to arrow keys"""
         from direct.showbase.InputStateGlobal import inputState
         
-        # Map WASD to same states as arrow keys
+        # Map WASD for modern third-person orbit camera movement:
+        # - W/S: forward/back
+        # - A/D: strafe left/right
+        # Turning is handled by camera orbit; arrow keys remain for legacy turning.
         inputState.watchWithModifiers('forward', 'w')
         inputState.watchWithModifiers('reverse', 's')
-        inputState.watchWithModifiers('turnLeft', 'a')
-        inputState.watchWithModifiers('turnRight', 'd')
+        inputState.watchWithModifiers('slideLeft', 'a')
+        inputState.watchWithModifiers('slideRight', 'd')
         inputState.watchWithModifiers('jump', 'space')
         
         # Keep arrow keys working too
@@ -450,6 +489,14 @@ class ToonBase(OTPBase.OTPBase):
 
     def exitShow(self, errorCode = None):
         self.notify.info('Exiting Toontown: errorCode = %s' % errorCode)
+        # If we started local servers from the client, stop them now.
+        try:
+            mgr = getattr(base, 'localServerManager', None)
+            if mgr:
+                mgr.shutdown()
+                base.localServerManager = None
+        except Exception:
+            pass
         if errorCode:
             launcher.setPandaErrorCode(errorCode)
         else:
@@ -491,6 +538,14 @@ class ToonBase(OTPBase.OTPBase):
 
     def panda3dRenderError(self):
         launcher.setPandaErrorCode(14)
+        # Ensure local servers are stopped on render/device loss exit.
+        try:
+            mgr = getattr(base, 'localServerManager', None)
+            if mgr:
+                mgr.shutdown()
+                base.localServerManager = None
+        except Exception:
+            pass
         if self.cr.timeManager:
             self.cr.timeManager.setDisconnectReason(ToontownGlobals.DisconnectGraphicsError)
         self.cr.sendDisconnect()

@@ -86,9 +86,22 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.soundSystemMessage = base.loader.loadSfx('phase_3/audio/sfx/clock03.ogg')
             self.positionExaminer = PositionExaminer.PositionExaminer()
             friendsGui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
-            friendsButtonNormal = friendsGui.find('**/FriendsBox_Closed')
-            friendsButtonPressed = friendsGui.find('**/FriendsBox_Rollover')
-            friendsButtonRollover = friendsGui.find('**/FriendsBox_Rollover')
+            friendsButtonNormal = friendsButtonPressed = friendsButtonRollover = None
+            try:
+                if friendsGui is not None and not friendsGui.isEmpty():
+                    n = friendsGui.find('**/FriendsBox_Closed')
+                    p = friendsGui.find('**/FriendsBox_Rollover')
+                    r = friendsGui.find('**/FriendsBox_Rollover')
+                    if n is not None and not n.isEmpty():
+                        friendsButtonNormal = n
+                    if p is not None and not p.isEmpty():
+                        friendsButtonPressed = p
+                    if r is not None and not r.isEmpty():
+                        friendsButtonRollover = r
+            except Exception:
+                friendsButtonNormal = friendsButtonPressed = friendsButtonRollover = None
+            if friendsButtonNormal is None or friendsButtonPressed is None or friendsButtonRollover is None:
+                self.notify.warning('friendslist_gui missing expected FriendsBox_* nodes; using fallback button visuals')
             newScale = oldScale = 0.8
             if WantNewsPage:
                 newScale = oldScale * ToontownGlobals.NewsPageScaleAdjust
@@ -101,7 +114,11 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
             self.friendsListButtonObscured = 0
             self.moveFurnitureButtonObscured = 0
             self.clarabelleButtonObscured = 0
-            friendsGui.removeNode()
+            try:
+                if friendsGui is not None and not friendsGui.isEmpty():
+                    friendsGui.removeNode()
+            except Exception:
+                pass
             self.__furnitureGui = None
             self.__clarabelleButton = None
             self.__clarabelleFlash = None
@@ -431,6 +448,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.accept('InputState-turnRight', self.__toonMoved)
         self.accept('InputState-slide', self.__toonMoved)
         QuestParser.init()
+        if base.config.GetBool('want-autoer-sticker-page', True):
+            from toontown.quest import AutoerManager
+            AutoerManager.attachEmergencyStopListener()
         return
 
     def __handlePurchase(self):
@@ -1848,6 +1868,17 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.eventsPage = EventsPage.EventsPage()
         self.eventsPage.load()
         self.book.addPage(self.eventsPage, pageName=TTLocalizer.EventsPageName)
+        if base.config.GetBool('want-autoer-sticker-page', True):
+            self.addAutoerPage()
+        return
+
+    def addAutoerPage(self):
+        if hasattr(self, 'autoerPage') and self.autoerPage != None:
+            return
+        from toontown.shtiker import AutoerPage
+        self.autoerPage = AutoerPage.AutoerPage()
+        self.autoerPage.load()
+        self.book.addPage(self.autoerPage, pageName=TTLocalizer.AutoerPageTitle)
         return
 
     def addNewsPage(self):

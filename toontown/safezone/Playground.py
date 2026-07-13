@@ -11,6 +11,7 @@ from direct.showbase.MessengerGlobal import messenger
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 
 from toontown.classicchars import CCharPaths
+from toontown.hood import OutdoorLighting
 from toontown.hood.Place import Place
 from toontown.quest import Quests
 from toontown.toon.DeathForceAcknowledge import DeathForceAcknowledge
@@ -205,8 +206,11 @@ class Playground(Place):
         messenger.send('enterPlayground')
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
         self.accept('DistributedDoor_doorTrigger', self.handleDoorTrigger)
-        base.playMusic(self.loader.music, looping=1, volume=0.8)
+        if self.loader.music is not None:
+            base.playMusic(self.loader.music, looping=1, volume=0.8)
         self.loader.geom.reparentTo(base.render)
+        _hoodId = getattr(getattr(self.loader, 'hood', None), 'id', None)
+        OutdoorLighting.begin(self.loader.geom, 'playground', hoodId=_hoodId)
         for i in self.loader.nodeList:
             self.loader.enterAnimatedProps(i)
 
@@ -254,6 +258,7 @@ class Playground(Place):
 
         del self.tunnelOriginList
         self.loader.geom.reparentTo(base.hidden)
+        OutdoorLighting.end(self.loader.geom)
 
         def __lightDecorationOff__():
             for light in self.loader.hood.halloweenLights:
@@ -264,7 +269,8 @@ class Playground(Place):
             self.loader.exitAnimatedProps(i)
 
         self.loader.hood.stopSky()
-        self.loader.music.stop()
+        if self.loader.music is not None:
+            self.loader.music.stop()
 
     def load(self):
         Place.load(self)
@@ -407,7 +413,13 @@ class Playground(Place):
         del self.dfa
         ds = doneStatus['mode']
         if ds == 'complete':
-            self.fsm.request('NPCFA', [requestStatus])
+            # The TTC newbie quest gates (trolley/friend/first cog/etc.) can hard-lock
+            # "stuck tutorial" toons from leaving via map teleport/tunnels. If a toon
+            # has not acknowledged the tutorial, allow leaving without NPC gating.
+            if getattr(base.localAvatar, 'tutorialAck', 1) == 0:
+                self.fsm.request('HFA', [requestStatus])
+            else:
+                self.fsm.request('NPCFA', [requestStatus])
         elif ds == 'incomplete':
             self.fsm.request('DFAReject')
         else:
@@ -495,61 +507,9 @@ class Playground(Place):
             x, y, z, h, p, r = base.cr.hoodMgr.getPlaygroundCenterFromId(self.loader.hood.id)
             self.accept('deathAck', self.__handleDeathAck, extraArgs=[requestStatus])
             self.deathAckBox = DeathForceAcknowledge(doneEvent='deathAck')
-        elif base.localAvatar.hp > 0 and (Quests.avatarHasTrolleyQuest(base.localAvatar) or Quests.avatarHasFirstCogQuest(base.localAvatar) or Quests.avatarHasFriendQuest(base.localAvatar) or Quests.avatarHasPhoneQuest(base.localAvatar) and Quests.avatarHasCompletedPhoneQuest(base.localAvatar)) and self.loader.hood.id == ToontownGlobals.ToontownCentral:
-            requestStatus['nextState'] = 'popup'
-            imageModel = base.loader.loadModel('phase_4/models/gui/tfa_images')
-            if base.localAvatar.quests[0][0] == Quests.TROLLEY_QUEST_ID:
-                if not Quests.avatarHasCompletedTrolleyQuest(base.localAvatar):
-                    x, y, z, h, p, r = base.cr.hoodMgr.getDropPoint(base.cr.hoodMgr.ToontownCentralInitialDropPoints)
-                    msg = TTLocalizer.NPCForceAcknowledgeMessage3
-                    imgNodePath = imageModel.find('**/trolley-dialog-image')
-                    imgPos = (0, 0, 0.04)
-                    imgScale = 0.5
-                else:
-                    x, y, z, h, p, r = base.cr.hoodMgr.getDropPoint(base.cr.hoodMgr.ToontownCentralHQDropPoints)
-                    msg = TTLocalizer.NPCForceAcknowledgeMessage4
-                    imgNodePath = imageModel.find('**/hq-dialog-image')
-                    imgPos = (0, 0, -0.02)
-                    imgScale = 0.5
-            elif base.localAvatar.quests[0][0] == Quests.FIRST_COG_QUEST_ID:
-                if not Quests.avatarHasCompletedFirstCogQuest(base.localAvatar):
-                    x, y, z, h, p, r = base.cr.hoodMgr.getDropPoint(base.cr.hoodMgr.ToontownCentralTunnelDropPoints)
-                    msg = TTLocalizer.NPCForceAcknowledgeMessage5
-                    imgNodePath = imageModel.find('**/tunnelSignA')
-                    imgPos = (0, 0, 0.04)
-                    imgScale = 0.5
-                else:
-                    x, y, z, h, p, r = base.cr.hoodMgr.getDropPoint(base.cr.hoodMgr.ToontownCentralHQDropPoints)
-                    msg = TTLocalizer.NPCForceAcknowledgeMessage6
-                    imgNodePath = imageModel.find('**/hq-dialog-image')
-                    imgPos = (0, 0, 0.05)
-                    imgScale = 0.5
-            elif base.localAvatar.quests[0][0] == Quests.FRIEND_QUEST_ID:
-                if not Quests.avatarHasCompletedFriendQuest(base.localAvatar):
-                    x, y, z, h, p, r = base.cr.hoodMgr.getDropPoint(base.cr.hoodMgr.ToontownCentralInitialDropPoints)
-                    msg = TTLocalizer.NPCForceAcknowledgeMessage7
-                    gui = base.loader.loadModel('phase_3.5/models/gui/friendslist_gui')
-                    imgNodePath = gui.find('**/FriendsBox_Closed')
-                    imgPos = (0, 0, 0.04)
-                    imgScale = 1.0
-                    gui.removeNode()
-                else:
-                    x, y, z, h, p, r = base.cr.hoodMgr.getDropPoint(base.cr.hoodMgr.ToontownCentralHQDropPoints)
-                    msg = TTLocalizer.NPCForceAcknowledgeMessage8
-                    imgNodePath = imageModel.find('**/hq-dialog-image')
-                    imgPos = (0, 0, 0.05)
-                    imgScale = 0.5
-            elif base.localAvatar.quests[0][0] == Quests.PHONE_QUEST_ID:
-                if Quests.avatarHasCompletedPhoneQuest(base.localAvatar):
-                    x, y, z, h, p, r = base.cr.hoodMgr.getDropPoint(base.cr.hoodMgr.ToontownCentralHQDropPoints)
-                    msg = TTLocalizer.NPCForceAcknowledgeMessage9
-                    imgNodePath = imageModel.find('**/hq-dialog-image')
-                    imgPos = (0, 0, 0.05)
-                    imgScale = 0.5
-
-            self.dialog = TTDialog.TTDialog(text=msg, command=self.__cleanupDialog, style=TTDialog.Acknowledge)
-            imgLabel = DirectLabel(parent=self.dialog, relief=None, pos=imgPos, scale=TTLocalizer.PimgLabel, image=imgNodePath, image_scale=imgScale)
-            imageModel.removeNode()
+        # Disable TTC "newbie quest" force-acknowledge popups (trolley/friend/phone/first cog).
+        # These popups are what display "You must ride the trolley before leaving" and can
+        # hard-lock travel via tunnels or the map teleport.
         else:
             requestStatus['nextState'] = 'walk'
             x, y, z, h, p, r = base.cr.hoodMgr.getPlaygroundCenterFromId(self.loader.hood.id)
