@@ -83,7 +83,19 @@ class QuietZoneState(StateData.StateData):
         return
 
     def _start(self, requestStatus):
-        base.transitions.fadeScreen(0.3)
+        # Allow callers (eg. Pick-a-Toon TTC preload) to suppress the quiet-zone
+        # fade while still performing interest setup/network handoff.
+        if requestStatus.get('noFade'):
+            base.transitions.noTransitions()
+        else:
+            base.transitions.fadeScreen(0.3)
+        try:
+            if ConfigVariableBool('want-async-zone-prefetch', True).value:
+                ld = getattr(base, 'loader', None)
+                if ld and hasattr(ld, 'schedulePrefetchForQuietZone'):
+                    ld.schedulePrefetchForQuietZone(requestStatus)
+        except Exception:
+            pass
         self.fsm.request('waitForQuietZoneResponse')
 
     def getRequestStatus(self):
@@ -310,10 +322,18 @@ class QuietZoneState(StateData.StateData):
     
     if __astron__:
         def getStreetViszones(self, zoneId):
-            visZones = [ZoneUtil.getBranchZone(zoneId)]
-            # Assuming that the DNA have been loaded by bulk load before this (see Street.py).
-            loader = base.cr.playGame.hood.loader
-            visZones += [loader.node2zone[x] for x in loader.nodeDict[zoneId]]
+            # When enabled, request interest in the entire street at once (all visgroups).
+            if ConfigVariableBool('street-load-whole', 1).value:
+                loader = base.cr.playGame.hood.loader
+                visZones = set(loader.zoneDict.keys())
+                visZones.add(ZoneUtil.getBranchZone(zoneId))
+                visZones.add(zoneId)
+                visZones = sorted(visZones)
+            else:
+                visZones = [ZoneUtil.getBranchZone(zoneId)]
+                # Assuming that the DNA have been loaded by bulk load before this (see Street.py).
+                loader = base.cr.playGame.hood.loader
+                visZones += [loader.node2zone[x] for x in loader.nodeDict[zoneId]]
             self.notify.debug(f'getStreetViszones(zoneId={zoneId}): returning visZones: {visZones}')
             return visZones
         
@@ -358,6 +378,11 @@ class QuietZoneState(StateData.StateData):
     def enterWaitForSetZoneComplete(self):
         # self.notify.debug('enterWaitForSetZoneComplete(requestStatus=' + str(self._requestStatus) + ')')
         if not self.Disable:
+            if ConfigVariableBool('shard-debug', 0).value:
+                try:
+                    self.notify.info(f"[ShardDbg] QuietZoneState.enterWaitForSetZoneComplete setZoneDoneEvent={base.cr.getLastSetZoneDoneEvent()!r}")
+                except Exception:
+                    pass
             base.cr.handlerArgs = self._requestStatus
             if base.slowQuietZone:
 
@@ -405,12 +430,51 @@ class QuietZoneState(StateData.StateData):
             base.cr.handlerArgs = self._requestStatus
             self._onShardEvent = localAvatar.getArrivedOnDistrictEvent()
             self.waitForDatabase('WaitForLocalAvatarOnShard')
+            if ConfigVariableBool('shard-debug', 0).value:
+                try:
+                    self.notify.info(f"[ShardDbg] QuietZoneState.enterWaitForLocalAvatarOnShard onShardEvent={self._onShardEvent!r} shard={getattr(localAvatar, 'defaultShard', None)!r} zone={getattr(localAvatar, 'zoneId', None)!r}")
+                except Exception:
+                    pass
+                # If we wedge hard, try to force a Python stack dump later.
+                try:
+                    import faulthandler
+                    faulthandler.dump_traceback_later(ConfigVariableDouble('localav-onshard-timeout', 20.0).value + 5.0, repeat=False)
+                except Exception:
+                    pass
+            # Safety net: if the local avatar never arrives on the district,
+            # the client appears to hard-freeze on a loading screen forever.
+            if ConfigVariableBool('shard-debug', 0).value:
+                timeout = ConfigVariableDouble('localav-onshard-timeout', 20.0).value
+                taskMgr.remove('localAvOnShardTimeout')
+                taskMgr.doMethodLater(timeout, self._localAvOnShardTimeout, 'localAvOnShardTimeout')
             if localAvatar.isGeneratedOnDistrict(localAvatar.defaultShard):
                 self._announceDone()
             else:
                 self.acceptOnce(self._onShardEvent, self._announceDone)
 
+    def _localAvOnShardTimeout(self, task):
+        try:
+            self.notify.warning('[ShardDbg] timed out waiting for localAvatar arrived-on-district; returning to noConnection')
+        except Exception:
+            pass
+        try:
+            self.ignore(self._onShardEvent)
+        except Exception:
+            pass
+        try:
+            base.cr.loginFSM.request('noConnection')
+        except Exception:
+            try:
+                base.userExit()
+            except Exception:
+                pass
+        return Task.done
+
     def _announceDone(self):
+        try:
+            taskMgr.remove('localAvOnShardTimeout')
+        except Exception:
+            pass
         base.localAvatar.startChat()
         if base.endlessQuietZone:
             self._dequeue()
