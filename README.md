@@ -1,3 +1,5 @@
+Disclaimer and Disclosure: This is a joke source. Take nothing you see here seriously, any changes, additions, or new content is jokingly fabricated to make Toontown a very, very silly game. Yes, AI was used to create this, as the original goal of this source was to "outslop" Toontown: Frontlines.
+
 # TOONTOWN SUPER PRESENTS: TOONTOWN THE BEST!!!
 
 ## THIS IS THE BEST EVER TOONTOWN, NEVER ANY OTHER WIN
