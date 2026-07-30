@@ -1,14 +1,13 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
-from . import DistributedSwitch, MovingPlatform
-
+from direct.distributed.ClockDelta import *
+from . import MovingPlatform
+from toontown.toonbase import ToontownGlobals
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM
+from . import DistributedSwitch
+from toontown.toonbase import TTLocalizer
 
 class DistributedButton(DistributedSwitch.DistributedSwitch):
     countdownSeconds = 3.0

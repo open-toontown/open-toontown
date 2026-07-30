@@ -1,7 +1,5 @@
 from panda3d.core import ModifierButtons
-
 from direct.showbase.DirectObject import DirectObject
-
 
 class ArrowKeys(DirectObject):
     UP_KEY = 'arrow_up'

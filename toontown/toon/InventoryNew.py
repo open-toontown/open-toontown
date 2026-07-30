@@ -1,17 +1,13 @@
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import *
-
-from otp.otpbase import OTPGlobals
-
-from toontown.quest import BlinkingArrows
-from toontown.toonbase import ToontownGlobals, TTLocalizer
+from panda3d.core import *
 from toontown.toonbase.ToontownBattleGlobals import *
-
 from . import InventoryBase
-
+from toontown.toonbase import TTLocalizer
+from toontown.quest import BlinkingArrows
+from direct.interval.IntervalGlobal import *
+from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import ToontownGlobals
+from otp.otpbase import OTPGlobals
 
 class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('InventoryNew')

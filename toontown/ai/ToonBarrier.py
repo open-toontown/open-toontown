@@ -1,10 +1,7 @@
-import random
-
-from direct.showbase import DirectObject
-from direct.task import Task
-
 from otp.ai.AIBase import *
-
+from direct.task import Task
+from direct.showbase import DirectObject
+import random
 
 class ToonBarrier(DirectObject.DirectObject):
     notify = directNotify.newCategory('ToonBarrier')

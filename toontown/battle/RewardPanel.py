@@ -1,25 +1,23 @@
-import copy
-import math
+from panda3d.core import *
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from direct.interval.IntervalGlobal import *
+from toontown.toonbase import ToontownBattleGlobals
+from . import BattleBase
+from direct.directnotify import DirectNotifyGlobal
 import random
 import string
-
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import *
-
-from otp.otpbase import OTPGlobals
-
-from toontown.coghq import CogDisguiseGlobals
 from toontown.quest import Quests
-from toontown.shtiker import DisguisePage
+import copy
 from toontown.suit import SuitDNA
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from toontown.toon import NPCToons
-from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
-
-from . import BattleBase, Fanfare
-
+import math
+from toontown.coghq import CogDisguiseGlobals
+from toontown.shtiker import DisguisePage
+from . import Fanfare
+from otp.otpbase import OTPGlobals
 
 class RewardPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('RewardPanel')

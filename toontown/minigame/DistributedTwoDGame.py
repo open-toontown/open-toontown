@@ -1,21 +1,18 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM, State
+from direct.interval.IntervalGlobal import *
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase import TTLocalizer
 from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectGui import DGG
-from direct.interval.IntervalGlobal import *
 from direct.task.Task import Task
-
-from toontown.toonbase import ToontownTimer, TTLocalizer
-from toontown.toonbase.ToonBaseGlobal import *
-
-from . import (ArrowKeys, MinigameAvatarScorePanel, ToonBlitzAssetMgr, ToonBlitzGlobals, TwoDCamera, TwoDGameToonSD,
-               TwoDSectionMgr)
+from direct.fsm import ClassicFSM, State
+from direct.directnotify import DirectNotifyGlobal
 from .DistributedMinigame import *
-from .TwoDDrive import *
+from . import MinigameAvatarScorePanel, ArrowKeys, ToonBlitzAssetMgr, TwoDCamera
+from . import TwoDSectionMgr, ToonBlitzGlobals, TwoDGameToonSD
+from toontown.toonbase import ToontownTimer
 from .TwoDWalk import *
-
+from .TwoDDrive import *
 COLOR_RED = VBase4(1, 0, 0, 0.3)
 
 class DistributedTwoDGame(DistributedMinigame):

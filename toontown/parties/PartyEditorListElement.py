@@ -1,13 +1,10 @@
 from panda3d.core import Vec3
-
-from direct.gui import DirectGuiGlobals
 from direct.gui.DirectGui import DirectButton, DirectLabel
-
+from direct.gui import DirectGuiGlobals
+from toontown.toonbase import TTLocalizer
 from toontown.parties import PartyGlobals
 from toontown.parties.PartyEditorGridElement import PartyEditorGridElement
 from toontown.parties.PartyUtils import getPartyActivityIcon
-from toontown.toonbase import TTLocalizer
-
 
 class PartyEditorListElement(DirectButton):
     notify = directNotify.newCategory('PartyEditorListElement')

@@ -1,6 +1,5 @@
 from bisect import bisect_left
 
-
 class WhiteList:
 
     def __init__(self, wordlist):

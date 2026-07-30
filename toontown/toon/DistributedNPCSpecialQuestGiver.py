@@ -1,12 +1,11 @@
 from panda3d.core import *
-
-from toontown.hood import ZoneUtil
-from toontown.quest import QuestChoiceGui, QuestParser, TrackChoiceGui
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TeaserPanel
-
 from .DistributedNPCToonBase import *
-
+from toontown.quest import QuestParser
+from toontown.quest import QuestChoiceGui
+from toontown.quest import TrackChoiceGui
+from toontown.toonbase import TTLocalizer
+from toontown.hood import ZoneUtil
+from toontown.toontowngui import TeaserPanel
 ChoiceTimeout = 20
 
 class DistributedNPCSpecialQuestGiver(DistributedNPCToonBase):

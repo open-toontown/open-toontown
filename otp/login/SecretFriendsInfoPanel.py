@@ -1,13 +1,9 @@
 from panda3d.core import *
-
-from direct.gui.DirectGui import *
-
-from otp.otpbase import OTPLocalizer
 from otp.otpbase.OTPGlobals import *
-from otp.otpgui import OTPDialog
-
+from direct.gui.DirectGui import *
 from .MultiPageTextFrame import *
-
+from otp.otpbase import OTPLocalizer
+from otp.otpgui import OTPDialog
 
 class SecretFriendsInfoPanel(getGlobalDialogClass()):
 

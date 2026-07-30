@@ -1,10 +1,7 @@
-import types
-from enum import IntEnum
-
 from direct.directnotify import DirectNotifyGlobal
-
+from enum import IntEnum
 from toontown.pets import PetTricks
-
+import types
 notify = DirectNotifyGlobal.directNotify.newCategory('PetObserve')
 
 def getEventName(zoneId):

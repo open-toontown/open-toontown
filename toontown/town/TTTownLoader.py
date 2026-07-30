@@ -1,7 +1,6 @@
+from . import TownLoader
+from . import TTStreet
 from toontown.suit import Suit
-
-from . import TownLoader, TTStreet
-
 
 class TTTownLoader(TownLoader.TownLoader):
 

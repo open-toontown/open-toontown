@@ -1,5 +1,5 @@
-from . import BasicEntities, ZoneEntityBase
-
+from . import ZoneEntityBase
+from . import BasicEntities
 
 class ZoneEntity(ZoneEntityBase.ZoneEntityBase, BasicEntities.NodePathAttribs):
 

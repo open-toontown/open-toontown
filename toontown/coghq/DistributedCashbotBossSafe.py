@@ -1,14 +1,9 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-
-from otp.otpbase import OTPGlobals
-
+from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
-
+from otp.otpbase import OTPGlobals
 from . import DistributedCashbotBossObject
-
 
 class DistributedCashbotBossSafe(DistributedCashbotBossObject.DistributedCashbotBossObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCashbotBossSafe')

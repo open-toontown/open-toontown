@@ -1,14 +1,10 @@
-import functools
-import random
-
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import DirectObject
-
-from toontown.coghq import LevelBattleManagerAI
 from toontown.suit import SuitDNA
-
+from direct.directnotify import DirectNotifyGlobal
+from toontown.coghq import LevelBattleManagerAI
+import random
+import functools
 
 class LevelSuitPlannerAI(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('LevelSuitPlannerAI')

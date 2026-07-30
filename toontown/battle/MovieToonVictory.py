@@ -1,15 +1,11 @@
-import types
-
 from panda3d.otp import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
 from direct.showbase.DirectObject import DirectObject
-
-from . import MovieCamera
-from .BattleSounds import *
 from .RewardPanel import *
-
+from .BattleSounds import *
+from . import MovieCamera
+from direct.directnotify import DirectNotifyGlobal
+import types
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieToonVictory')
 
 def __findToonReward(rewards, toon):

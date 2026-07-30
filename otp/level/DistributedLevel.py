@@ -1,22 +1,19 @@
-import random
-
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObject
 from direct.distributed.ClockDelta import *
-from direct.gui import OnscreenText
+from panda3d.core import *
+from direct.showbase.PythonUtil import Functor, sameElements, list2dict, uniqueElements
 from direct.interval.IntervalGlobal import *
-from direct.showbase.PythonUtil import Functor, list2dict, sameElements, uniqueElements
-from direct.task import Task
-
-from otp.otpbase import OTPGlobals
-
 from toontown.distributed.ToontownMsgTypes import *
 from toontown.toonbase import ToontownGlobals
-
-from . import EntityCreator, Level, LevelConstants, LevelUtil
-
+from otp.otpbase import OTPGlobals
+from direct.distributed import DistributedObject
+from . import Level
+from . import LevelConstants
+from direct.directnotify import DirectNotifyGlobal
+from . import EntityCreator
+from direct.gui import OnscreenText
+from direct.task import Task
+from . import LevelUtil
+import random
 
 class DistributedLevel(DistributedObject.DistributedObject, Level.Level):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLevel')

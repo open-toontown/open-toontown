@@ -1,19 +1,14 @@
-import math
-import random
-
-from panda3d.core import *
-from panda3d.ode import OdeBody, OdeRayGeom, OdeTriMeshData, OdeTriMeshGeom
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
+from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+from panda3d.ode import OdeTriMeshData, OdeTriMeshGeom, OdeBody, OdeRayGeom
+from . import DistributedPhysicsWorldAI
 from direct.fsm.FSM import FSM
-
 from toontown.ai.ToonBarrier import *
 from toontown.golf import GolfGlobals
-from toontown.toonbase import ToontownGlobals
-
-from . import DistributedPhysicsWorldAI
-
+import random
+import math
 
 class GolfHoleBase:
 

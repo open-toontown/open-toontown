@@ -1,16 +1,13 @@
+from direct.actor import Actor
+from otp.avatar import Avatar
+from . import SuitDNA
+from toontown.toonbase import ToontownGlobals
 from panda3d.core import *
 from panda3d.otp import *
-
-from direct.actor import Actor
+from toontown.battle import SuitBattleGlobals
 from direct.task.Task import Task
-
-from otp.avatar import Avatar
-
-from toontown.battle import BattleProps, SuitBattleGlobals
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
-from . import SuitDNA
-
+from toontown.battle import BattleProps
+from toontown.toonbase import TTLocalizer
 aSize = 6.06
 bSize = 5.29
 cSize = 4.14

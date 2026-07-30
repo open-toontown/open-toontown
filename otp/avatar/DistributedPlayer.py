@@ -1,17 +1,18 @@
 from panda3d.core import *
-from panda3d.otp import CFPageButton, CFQuicktalker, CFQuitButton, CFSpeech, CFThought, CFTimeout, WhisperPopup
-
-from otp.avatar import Avatar, DistributedAvatar, PlayerBase
-from otp.avatar.Avatar import teleportNotify
-from otp.chat import ChatGarbler, TalkAssistant
-from otp.distributed.TelemetryLimited import TelemetryLimited
-from otp.otpbase import OTPGlobals, OTPLocalizer
+from panda3d.otp import WhisperPopup
+from panda3d.otp import CFQuicktalker, CFPageButton, CFQuitButton, CFSpeech, CFThought, CFTimeout
+from otp.chat import ChatGarbler
+from otp.otpbase import OTPLocalizer
 from otp.speedchat import SCDecoders
-
+from otp.avatar import DistributedAvatar
+from otp.avatar import Avatar, PlayerBase
+from otp.chat import TalkAssistant
+from otp.otpbase import OTPGlobals
+from otp.avatar.Avatar import teleportNotify
+from otp.distributed.TelemetryLimited import TelemetryLimited
 if ConfigVariableBool('want-chatfilter-hacks', 0).value:
-    import os
-
     from otp.switchboard import badwordpy
+    import os
     badwordpy.init(os.environ.get('OTP') + '\\src\\switchboard\\', '')
 
 class DistributedPlayer(DistributedAvatar.DistributedAvatar, PlayerBase.PlayerBase, TelemetryLimited):

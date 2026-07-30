@@ -1,5 +1,5 @@
-from . import FishBase, FishGlobals
-
+from . import FishBase
+from . import FishGlobals
 
 class FishCollection:
 

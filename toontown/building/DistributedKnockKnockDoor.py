@@ -1,18 +1,15 @@
 from panda3d.core import *
 from panda3d.otp import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM
 from direct.interval.IntervalGlobal import *
-
-from toontown.distributed import DelayDelete
-from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
-from . import DistributedAnimatedProp
+from direct.distributed.ClockDelta import *
 from .KnockKnockJokes import *
-
+from toontown.toonbase import ToontownGlobals
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM
+from . import DistributedAnimatedProp
+from toontown.distributed import DelayDelete
+from toontown.toonbase import TTLocalizer
+from toontown.hood import ZoneUtil
 
 class DistributedKnockKnockDoor(DistributedAnimatedProp.DistributedAnimatedProp):
 

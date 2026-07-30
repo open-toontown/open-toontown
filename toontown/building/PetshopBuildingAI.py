@@ -1,15 +1,11 @@
 from panda3d.core import *
-
 from direct.directnotify import DirectNotifyGlobal
-
-from toontown.hood import ZoneUtil
-from toontown.pets import DistributedPetAI, PetTraits, PetUtil
-from toontown.quest import Quests
+from . import DistributedDoorAI, DistributedPetshopInteriorAI, FADoorCodes, DoorTypes
 from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
-
-from . import DistributedDoorAI, DistributedPetshopInteriorAI, DoorTypes, FADoorCodes
-
+from toontown.quest import Quests
+from toontown.pets import DistributedPetAI, PetTraits, PetUtil
+from toontown.hood import ZoneUtil
 
 class PetshopBuildingAI:
 

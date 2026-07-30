@@ -1,18 +1,11 @@
-from enum import IntEnum
-
-from panda3d.core import *
-
 from direct.directnotify import DirectNotifyGlobal
-
 from toontown.toonbase import TTLocalizer
-
+from panda3d.core import *
 from .KartShopGlobals import *
-
+from enum import IntEnum
 if (__debug__):
     import pdb
-
 import copy
-
 KartDNA = IntEnum('KartDNA', ('bodyType', 'bodyColor', 'accColor', 'ebType', 'spType', 'fwwType', 'bwwType', 'rimsType', 'decalType'), start=0)
 InvalidEntry = -1
 KartInfo = IntEnum('KartInfo', ('name', 'model', 'cost', 'viewDist', 'decalId', 'LODmodel1', 'LODmodel2'), start=0)

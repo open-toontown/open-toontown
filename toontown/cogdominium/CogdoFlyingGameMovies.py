@@ -1,17 +1,13 @@
-from panda3d.core import Plane, PlaneNode, Point3
-
-from direct.interval.FunctionInterval import Func, Wait
-from direct.interval.MetaInterval import Parallel, Sequence
+from panda3d.core import Point3, Plane, PlaneNode
 from direct.showbase.RandomNumGen import RandomNumGen
-
-from toontown.suit import Suit, SuitDNA
-from toontown.toon import Toon, ToonDNA, ToonHead
+from direct.interval.MetaInterval import Sequence, Parallel
+from direct.interval.FunctionInterval import Func, Wait
 from toontown.toonbase import TTLocalizer
-
+from toontown.toon import Toon, ToonHead, ToonDNA
+from toontown.suit import Suit, SuitDNA
 from . import CogdoFlyingGameGlobals as Globals
-from . import CogdoUtil
 from .CogdoUtil import CogdoGameMovie
-
+from . import CogdoUtil
 
 class CogdoFlyingGameIntro(CogdoGameMovie):
 

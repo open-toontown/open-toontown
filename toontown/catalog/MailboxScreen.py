@@ -1,21 +1,17 @@
-from panda3d.core import *
-
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject, PythonUtil
-from direct.showbase.PythonUtil import StackTrace
-
+from panda3d.core import *
 from toontown.parties import PartyGlobals
 from toontown.parties.InviteInfo import InviteInfoBase
-from toontown.parties.InviteVisual import InviteVisual
 from toontown.parties.PartyGlobals import InviteStatus
 from toontown.parties.SimpleMailBase import SimpleMailBase
-from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase import TTLocalizer, ToontownGlobals
 from toontown.toontowngui import TTDialog
 from toontown.toontowngui.TeaserPanel import TeaserPanel
-
+from toontown.parties.InviteVisual import InviteVisual
 from . import CatalogItem
-
+from direct.showbase.PythonUtil import StackTrace
 
 class MailboxScreen(DirectObject.DirectObject):
     notify = directNotify.newCategory('MailboxScreen')

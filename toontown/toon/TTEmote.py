@@ -1,17 +1,13 @@
+from . import Toon, ToonDNA
+from direct.interval.IntervalGlobal import *
+from otp.otpbase import OTPLocalizer
+from toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPLocalizer
+from direct.showbase import PythonUtil
 from panda3d.core import *
 from panda3d.otp import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.interval.IntervalGlobal import *
-from direct.showbase import PythonUtil
-
 from otp.avatar import Emote
-from otp.otpbase import OTPLocalizer
-
-from toontown.toonbase import TTLocalizer
-
-from . import Toon, ToonDNA
-
+from direct.directnotify import DirectNotifyGlobal
 EmoteSleepIndex = 4
 EmoteClear = -1
 

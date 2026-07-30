@@ -1,12 +1,8 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-
 from toontown.toonbase.ToontownGlobals import *
-
+from direct.directnotify import DirectNotifyGlobal
 from . import DistributedBarrelBase
-
 
 class DistributedHealBarrel(DistributedBarrelBase.DistributedBarrelBase):
 

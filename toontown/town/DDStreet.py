@@ -1,6 +1,5 @@
 from . import Street
 
-
 class DDStreet(Street.Street):
 
     def __init__(self, loader, parentFSM, doneEvent):

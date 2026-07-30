@@ -1,25 +1,18 @@
-import math
-import random
-import time
-from math import *
-
-from panda3d.core import *
-from panda3d.ode import (OdeBody, OdeBoxGeom, OdeHingeJoint, OdeJointGroup, OdeMass, OdePlaneGeom, OdeSimpleSpace,
-                         OdeSliderJoint, OdeSphereGeom, OdeTriMeshData, OdeTriMeshGeom, OdeWorld)
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
-from direct.distributed.ClockDelta import *
+from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+from panda3d.ode import OdeWorld, OdeSimpleSpace, OdeJointGroup, OdePlaneGeom, OdeBody, OdeMass, OdeSphereGeom, OdeBoxGeom, OdeSliderJoint, OdeTriMeshData, OdeTriMeshGeom, OdeHingeJoint
+from math import *
+import math
 from direct.fsm.FSM import FSM
+from toontown.minigame import ArrowKeys
 from direct.showbase import PythonUtil
 from direct.task import Task
-
-from toontown.golf import GolfGlobals
-from toontown.minigame import ArrowKeys
-from toontown.toonbase import ToontownGlobals
-
+from direct.distributed.ClockDelta import *
 from . import BuildGeometry
-
+from toontown.golf import GolfGlobals
+import random, time
 
 def scalp(vec, scal):
     vec0 = vec[0] * scal

@@ -1,15 +1,11 @@
-from panda3d.core import *
-
-from direct.gui.DirectGui import *
-from direct.task.Task import Task
-
-from toontown.racing.KartShopGlobals import *
-from toontown.racing.KartShopGui import *
-from toontown.toonbase import TTLocalizer
-
-from . import NPCToons
 from .DistributedNPCToonBase import *
-
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from . import NPCToons
+from direct.task.Task import Task
+from toontown.toonbase import TTLocalizer
+from toontown.racing.KartShopGui import *
+from toontown.racing.KartShopGlobals import *
 
 class DistributedNPCKartClerk(DistributedNPCToonBase):
 

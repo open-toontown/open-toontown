@@ -1,9 +1,6 @@
 from panda3d.core import DecalEffect, DepthWriteAttrib
-
 from direct.directnotify import DirectNotifyGlobal
-
 from toontown.building import DistributedBuilding
-
 
 class DistributedAnimBuilding(DistributedBuilding.DistributedBuilding):
 

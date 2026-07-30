@@ -1,15 +1,12 @@
-import random
-
-from direct.distributed import DistributedObjectAI
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM, State
-from direct.task import Task
-
 from otp.ai.AIBase import *
-
-from toontown.safezone import ButterflyGlobals
 from toontown.toonbase.ToontownGlobals import *
-
+from direct.distributed.ClockDelta import *
+from direct.distributed import DistributedObjectAI
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+from direct.task import Task
+from toontown.safezone import ButterflyGlobals
+import random
 
 class DistributedButterflyAI(DistributedObjectAI.DistributedObjectAI):
 

@@ -1,10 +1,11 @@
-from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-from direct.gui.DirectGui import DGG, DirectFrame, DirectLabel
-
+from direct.gui.DirectGui import DirectFrame
+from direct.gui.DirectGui import DGG
+from direct.gui.DirectGui import DirectLabel
+from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import ToontownGlobals
 from toontown.shtiker import ShtikerPage
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.toonbase import TTLocalizer
 UseDirectNewsFrame = config.GetBool('use-direct-news-frame', True)
 HaveNewsFrame = True
 if UseDirectNewsFrame:

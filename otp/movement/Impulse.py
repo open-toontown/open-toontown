@@ -1,7 +1,5 @@
 from panda3d.core import *
-
 from direct.showbase import DirectObject
-
 
 class Impulse(DirectObject.DirectObject):
 

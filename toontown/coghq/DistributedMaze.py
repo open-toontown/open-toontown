@@ -1,20 +1,17 @@
-import random
-
+from otp.level.BasicEntities import DistributedNodePathEntity
 from panda3d.core import *
-
+from direct.interval.IntervalGlobal import *
+from toontown.toonbase.ToontownGlobals import *
+import random
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import globalClockDelta
-from direct.gui.DirectGui import DGG, DirectFrame, DirectLabel
-from direct.interval.IntervalGlobal import *
-from direct.task import Task
-
-from otp.level.BasicEntities import DistributedNodePathEntity
-
-from toontown.toonbase import ToontownGlobals, ToontownTimer, TTLocalizer
-from toontown.toonbase.ToontownGlobals import *
-
 from . import DistributedBarrelBase
-
+from otp.level.BasicEntities import DistributedNodePathEntity
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownTimer
+from direct.task import Task
+from direct.gui.DirectGui import DGG, DirectFrame, DirectLabel
 
 class DistributedMaze(DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMaze')

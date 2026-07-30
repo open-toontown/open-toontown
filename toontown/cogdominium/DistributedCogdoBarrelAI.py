@@ -1,10 +1,7 @@
 import random
-
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
-
 from toontown.cogdominium import CogdoBarrelRoomConsts
-
 
 class DistributedCogdoBarrelAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogdoBarrelAI')

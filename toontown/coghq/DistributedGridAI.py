@@ -1,9 +1,6 @@
-from direct.directnotify import DirectNotifyGlobal
-
-from otp.level import DistributedEntityAI
-
 from .CrateGlobals import *
-
+from otp.level import DistributedEntityAI
+from direct.directnotify import DirectNotifyGlobal
 
 class DistributedGridAI(DistributedEntityAI.DistributedEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGridAI')

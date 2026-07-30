@@ -1,9 +1,6 @@
-from direct.directnotify import DirectNotifyGlobal
-
-from toontown.toonbase import TTLocalizer
-
 from . import GardenGlobals
-
+from toontown.toonbase import TTLocalizer
+from direct.directnotify import DirectNotifyGlobal
 
 class FlowerBase:
     notify = DirectNotifyGlobal.directNotify.newCategory('FlowerBase')

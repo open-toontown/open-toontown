@@ -1,24 +1,20 @@
-import random
-
+from direct.gui.DirectGui import *
 from panda3d.core import *
-
-from direct.actor import Actor
-from direct.distributed import DistributedObject
+from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import FSM
-from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import *
-from direct.showbase import PythonUtil
+from direct.distributed import DistributedObject
 from direct.showutil import Rope
+from direct.showbase import PythonUtil
 from direct.task import Task
-
-from otp.otpbase import OTPGlobals
-
-from toontown.battle import BattleProps
-from toontown.suit import Suit, SuitDNA
-from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
-
+from otp.otpbase import OTPGlobals
+from direct.actor import Actor
+from toontown.suit import Suit
+from toontown.suit import SuitDNA
+import random
+from toontown.battle import BattleProps
+from toontown.toon import NPCToons
 
 class DistributedLawbotChair(DistributedObject.DistributedObject, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotChair')

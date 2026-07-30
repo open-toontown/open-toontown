@@ -1,22 +1,20 @@
-import random
-
+from direct.directnotify import DirectNotifyGlobal
+from toontown.battle import BattlePlace
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+from direct.showbase import BulletinBoardWatcher
 from panda3d.core import *
 from panda3d.otp import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM, State
-from direct.showbase import BulletinBoardWatcher
-
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-
-from toontown.battle import BattlePlace
-from toontown.building import Elevator
-from toontown.coghq import DistributedCountryClub
-from toontown.hood import ZoneUtil
 from toontown.toon import Toon
-from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.hood import ZoneUtil
+from toontown.toonbase import TTLocalizer
 from toontown.toontowngui import TTDialog
-
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.coghq import DistributedCountryClub
+from toontown.building import Elevator
+import random
 
 class CountryClubInterior(BattlePlace.BattlePlace):
     notify = DirectNotifyGlobal.directNotify.newCategory('CountryClubInterior')

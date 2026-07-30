@@ -1,6 +1,5 @@
 from . import DistributedSZTreasure
 
-
 class DistributedTTTreasure(DistributedSZTreasure.DistributedSZTreasure):
 
     def __init__(self, cr):

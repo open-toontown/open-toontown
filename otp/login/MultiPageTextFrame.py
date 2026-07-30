@@ -1,9 +1,6 @@
 from panda3d.core import *
-
 from direct.gui.DirectGui import *
-
 from otp.otpbase import OTPLocalizer
-
 
 class MultiPageTextFrame(DirectFrame):
     defWidth = 1.8

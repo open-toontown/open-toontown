@@ -20,7 +20,8 @@ from toontown.hood.TrialerForceAcknowledge import TrialerForceAcknowledge
 from toontown.launcher.DownloadForceAcknowledge import DownloadForceAcknowledge
 from toontown.safezone.PublicWalk import PublicWalk
 from toontown.toon.Toon import teleportDebug
-from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import base
 
 

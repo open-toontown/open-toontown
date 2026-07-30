@@ -1,7 +1,5 @@
-from direct.directnotify import DirectNotifyGlobal
-
 from . import Entity
-
+from direct.directnotify import DirectNotifyGlobal
 
 class EditMgrBase(Entity.Entity):
     notify = DirectNotifyGlobal.directNotify.newCategory('EditMgr')

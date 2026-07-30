@@ -1,13 +1,10 @@
-import os
 import random
-
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+import os
 from direct.showbase import AppRunnerGlobal
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from direct.directnotify import DirectNotifyGlobal
+from panda3d.core import *
 
 class PetNameGenerator:
     notify = DirectNotifyGlobal.directNotify.newCategory('PetNameGenerator')

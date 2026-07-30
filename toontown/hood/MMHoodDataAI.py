@@ -1,11 +1,10 @@
 from direct.directnotify import DirectNotifyGlobal
-
-from toontown.classicchars import DistributedMinnieAI
-from toontown.safezone import DistributedMMPianoAI, DistributedTrolleyAI, MMTreasurePlannerAI
-from toontown.toonbase import ToontownGlobals
-
 from . import HoodDataAI
-
+from toontown.toonbase import ToontownGlobals
+from toontown.safezone import DistributedTrolleyAI
+from toontown.safezone import MMTreasurePlannerAI
+from toontown.classicchars import DistributedMinnieAI
+from toontown.safezone import DistributedMMPianoAI
 
 class MMHoodDataAI(HoodDataAI.HoodDataAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('MMHoodDataAI')

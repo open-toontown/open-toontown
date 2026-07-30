@@ -1,12 +1,9 @@
-from direct.interval.IntervalGlobal import *
-
-from otp.otpbase import OTPLocalizer
-
-from toontown.estate import GardenGlobals
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
 from . import CatalogGardenItem
-
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPLocalizer
+from direct.interval.IntervalGlobal import *
+from toontown.estate import GardenGlobals
 
 class CatalogToonStatueItem(CatalogGardenItem.CatalogGardenItem):
     pictureToonStatue = None

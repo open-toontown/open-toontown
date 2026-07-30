@@ -1,16 +1,12 @@
 from panda3d.core import *
-
-from direct.task.Task import Task
-
-from toontown.hood import ZoneUtil
+from .DistributedNPCToonBase import *
 from toontown.minigame import ClerkPurchase
 from toontown.shtiker.PurchaseManagerConstants import *
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TeaserPanel
-
 from . import NPCToons
-from .DistributedNPCToonBase import *
-
+from direct.task.Task import Task
+from toontown.toonbase import TTLocalizer
+from toontown.hood import ZoneUtil
+from toontown.toontowngui import TeaserPanel
 
 class DistributedNPCClerk(DistributedNPCToonBase):
 

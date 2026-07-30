@@ -1,6 +1,5 @@
 from toontown.safezone import DistributedTreasure
 
-
 class DistributedTagTreasure(DistributedTreasure.DistributedTreasure):
 
     def __init__(self, cr):

@@ -1,7 +1,8 @@
 from toontown.toonbase import ToontownGlobals
-
-from . import LawbotLegFactoryCogs, LawbotLegFactorySpec, SellbotLegFactoryCogs, SellbotLegFactorySpec
-
+from . import SellbotLegFactorySpec
+from . import SellbotLegFactoryCogs
+from . import LawbotLegFactorySpec
+from . import LawbotLegFactoryCogs
 
 def getFactorySpecModule(factoryId):
     return FactorySpecModules[factoryId]

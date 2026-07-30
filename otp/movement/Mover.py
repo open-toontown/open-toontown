@@ -1,13 +1,9 @@
-import builtins
-
 from panda3d.core import *
 from panda3d.otp import CMover
-
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase import PythonUtil
-
 from otp.movement.PyVec3 import PyVec3
-
+from direct.showbase import PythonUtil
+import builtins
 
 class Mover(CMover):
     notify = DirectNotifyGlobal.directNotify.newCategory('Mover')

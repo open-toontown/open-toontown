@@ -1,18 +1,16 @@
-import random
-
-from panda3d.core import *
-
-from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed import DistributedObject
-from direct.distributed.ClockDelta import *
-from direct.interval.IntervalGlobal import SoundInterval
-
-from toontown.catalog import CatalogItem, CatalogItemList, MailboxScreen
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.toontowngui import TTDialog
-
+from toontown.toonbase import ToontownGlobals
 from . import MailboxGlobals
-
+from toontown.catalog import CatalogItem
+from toontown.catalog import CatalogItemList
+from toontown.toontowngui import TTDialog
+from toontown.toonbase import TTLocalizer
+from toontown.catalog import MailboxScreen
+from direct.directnotify.DirectNotifyGlobal import *
+from direct.distributed.ClockDelta import *
+from panda3d.core import *
+import random
+from direct.interval.IntervalGlobal import SoundInterval
 FlagPitchEmpty = -70
 FlagPitchFull = 0
 

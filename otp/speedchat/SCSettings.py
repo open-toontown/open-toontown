@@ -1,7 +1,5 @@
-from otp.otpbase import OTPLocalizer
-
 from .SCColorScheme import SCColorScheme
-
+from otp.otpbase import OTPLocalizer
 
 class SCSettings:
 

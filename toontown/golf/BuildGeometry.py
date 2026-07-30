@@ -1,13 +1,9 @@
-import math
-from math import *
-
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
-
+from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
-
+from panda3d.core import *
+from math import *
+import math
 GEO_ID = 0
 
 def circleX(angle, radius, centerX, centerY):

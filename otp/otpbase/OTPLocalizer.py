@@ -15,7 +15,6 @@ else:
     _languageModule = 'otp.otpbase.OTPLocalizer_' + language
 print('from ' + _languageModule + ' import *')
 from otp.otpbase.OTPLocalizerEnglish import *
-
 if checkLanguage:
     l = {}
     g = {}

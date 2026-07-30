@@ -1,13 +1,10 @@
+import socket
 import datetime
 import os
-import socket
-
-from direct.distributed.DistributedObject import DistributedObject
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
-
+from direct.distributed.DistributedObject import DistributedObject
 from toontown.toonbase import ToontownGlobals
 from toontown.uberdog import InGameNewsResponses
-
 
 class DistributedInGameNewsMgr(DistributedObject):
     notify = directNotify.newCategory('InGameNewsMgr')

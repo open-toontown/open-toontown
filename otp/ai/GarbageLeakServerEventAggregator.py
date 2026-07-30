@@ -1,6 +1,5 @@
-from direct.showbase import GarbageReport
 from direct.showbase.DirectObject import DirectObject
-
+from direct.showbase import GarbageReport
 
 class GarbageLeakServerEventAggregator(DirectObject):
 

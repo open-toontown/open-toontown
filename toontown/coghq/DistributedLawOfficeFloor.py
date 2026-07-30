@@ -1,19 +1,17 @@
-import random
-
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-
-from otp.level import DistributedLevel, LevelConstants, LevelSpec
-
-from toontown.coghq import FactoryCameraViews
+import random
+from otp.level import DistributedLevel
+from direct.directnotify import DirectNotifyGlobal
+from . import LawOfficeBase
+from . import FactoryEntityCreator
+from . import FactorySpecs
+from otp.level import LevelSpec
+from otp.level import LevelConstants
 from toontown.toonbase import TTLocalizer
-from toontown.toonbase.ToontownGlobals import *
-
-from . import FactoryEntityCreator, FactorySpecs, LawOfficeBase
-
+from toontown.coghq import FactoryCameraViews
 if __dev__:
     from otp.level import EditorGlobals
 

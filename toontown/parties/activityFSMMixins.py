@@ -1,6 +1,5 @@
 from .BaseActivityFSM import BaseActivityFSM
 
-
 class IdleMixin:
 
     def enterIdle(self, *args):

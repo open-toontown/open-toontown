@@ -1,7 +1,5 @@
-from toontown.toonbase import ToontownGlobals
-
 from .DistributedToonInteriorAI import *
-
+from toontown.toonbase import ToontownGlobals
 
 class DistributedToonHallInteriorAI(DistributedToonInteriorAI):
 

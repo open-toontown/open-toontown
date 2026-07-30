@@ -1,9 +1,7 @@
-from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
-
-from otp.friends.PlayerFriendsManager import PlayerFriendsManager
+from direct.directnotify.DirectNotifyGlobal import directNotify
 from otp.otpbase import OTPGlobals
-
+from otp.friends.PlayerFriendsManager import PlayerFriendsManager
 
 class TTPlayerFriendsManager(PlayerFriendsManager):
 

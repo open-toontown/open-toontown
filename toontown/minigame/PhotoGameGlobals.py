@@ -1,7 +1,6 @@
 from panda3d.core import *
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 GAME_TIME = 60
 MAX_SCORE = 23
 MIN_SCORE = 5

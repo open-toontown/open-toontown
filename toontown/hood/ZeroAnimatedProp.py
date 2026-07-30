@@ -1,15 +1,13 @@
-import math
 import types
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import FSM
-from direct.interval.IntervalGlobal import ActorInterval, Func, Parallel, Sequence, SoundInterval, Wait
-from direct.showbase.PythonUtil import weightedChoice
+import math
+from direct.interval.IntervalGlobal import Sequence, Wait, ActorInterval, Func, SoundInterval, Parallel
 from direct.task import Task
-
-from toontown.hood import AnimatedProp, GenericAnimatedProp
+from direct.fsm import FSM
+from direct.showbase.PythonUtil import weightedChoice
+from toontown.hood import GenericAnimatedProp
+from toontown.hood import AnimatedProp
 from toontown.toonbase import ToontownGlobals
-
+from direct.directnotify import DirectNotifyGlobal
 
 class ZeroAnimatedProp(GenericAnimatedProp.GenericAnimatedProp, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('ZeroAnimatedProp')

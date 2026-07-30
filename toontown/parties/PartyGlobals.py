@@ -1,9 +1,7 @@
-from enum import IntEnum
-
-from panda3d.core import BitMask32, Point3, VBase4
-
+from panda3d.core import BitMask32
+from panda3d.core import Point3, VBase4
 from toontown.toonbase import TTLocalizer
-
+from enum import IntEnum
 KICK_TO_PLAYGROUND_EVENT = 'parties_kickToPlayground'
 MaxSetInvites = 1000
 MaxSetPartiesInvitedTo = 100

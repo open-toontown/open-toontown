@@ -1,21 +1,16 @@
 import math
 import random
-
+from direct.showbase.PythonUtil import *
+from direct.showbase.DirectObject import DirectObject
+from direct.task import Task
 from panda3d.core import *
 from panda3d.physics import *
-
-from direct.distributed import DistributedSmoothNode
 from direct.fsm import FSM
-from direct.showbase.DirectObject import DirectObject
-from direct.showbase.PythonUtil import *
-from direct.task import Task
-
+from direct.distributed import DistributedSmoothNode
 from otp.avatar import ShadowCaster
 from otp.otpbase import OTPGlobals
-
-from toontown.battle import MovieUtil
 from toontown.racing.FlyingGag import FlyingGag
-
+from toontown.battle import MovieUtil
 
 class Piejectile(DirectObject, FlyingGag):
     physicsCalculationsPerSecond = 60

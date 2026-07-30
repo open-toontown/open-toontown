@@ -1,19 +1,19 @@
 from panda3d.core import *
 from panda3d.otp import WhisperPopup
-
 from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 from direct.distributed import DistributedObject
-from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import *
-
+from toontown.toon import GroupInvitee
+from toontown.toon import GroupPanel
+from toontown.toon import BoardingGroupInviterPanels
 from toontown.building import BoardingPartyBase
+from direct.gui.DirectGui import *
+from toontown.toontowngui import TTDialog
 from toontown.hood import ZoneUtil
-from toontown.toon import BoardingGroupInviterPanels, GroupInvitee, GroupPanel
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.toontowngui import TeaserPanel, TTDialog
-
+from toontown.toontowngui import TeaserPanel
+from direct.interval.IntervalGlobal import *
 from . import BoardingGroupShow
-
 
 class DistributedBoardingParty(DistributedObject.DistributedObject, BoardingPartyBase.BoardingPartyBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBoardingParty')

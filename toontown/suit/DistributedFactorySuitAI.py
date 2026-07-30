@@ -1,12 +1,8 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.showbase.PythonUtil import StackTrace
-
 from otp.ai.AIBaseGlobal import *
-
+from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import SuitBattleGlobals
-
 from . import DistributedSuitBaseAI, SuitDialog
-
+from direct.showbase.PythonUtil import StackTrace
 
 class DistributedFactorySuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactorySuitAI')

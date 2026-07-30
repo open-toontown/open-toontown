@@ -1,11 +1,9 @@
 from panda3d.core import *
-
-from toontown.racing import DistributedVehicle
+from . import ToonHood
 from toontown.safezone import GSSafeZoneLoader
 from toontown.toonbase.ToontownGlobals import *
-
-from . import SkyUtil, ToonHood
-
+from toontown.racing import DistributedVehicle
+from . import SkyUtil
 
 class GSHood(ToonHood.ToonHood):
 

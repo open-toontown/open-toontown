@@ -1,9 +1,8 @@
-import copy
-import random
+from toontown.toonbase import TTLocalizer
 from math import ceil, pow
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+import random
+from toontown.toonbase import ToontownGlobals
+import copy
 NoMovie = 0
 EnterMovie = 1
 ExitMovie = 2

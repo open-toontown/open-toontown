@@ -1,8 +1,6 @@
-import random
-
 from direct.distributed import ClockDelta
 from direct.task import Task
-
+import random
 
 class LaserGameBase:
 

@@ -1,11 +1,8 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.interval.IntervalGlobal import *
-
-from otp.level import BasicEntities
-
-from toontown.suit import GoonPathData
 from toontown.toonbase.ToontownGlobals import *
-
+from direct.interval.IntervalGlobal import *
+from direct.directnotify import DirectNotifyGlobal
+from toontown.suit import GoonPathData
+from otp.level import BasicEntities
 
 class RenderingEntity(BasicEntities.NodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('PathMasterEntity')

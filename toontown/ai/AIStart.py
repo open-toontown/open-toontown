@@ -1,7 +1,7 @@
-import argparse
+from panda3d.core import *
 import builtins
 
-from panda3d.core import *
+import argparse
 
 parser = argparse.ArgumentParser(description='Open Toontown - AI Server')
 parser.add_argument('--base-channel', help='The base channel that the server will use.')
@@ -41,7 +41,6 @@ class game:
 builtins.game = game
 
 from otp.ai.AIBaseGlobal import *
-
 from toontown.ai.ToontownAIRepository import ToontownAIRepository
 from toontown.toonbase import TTLocalizer
 

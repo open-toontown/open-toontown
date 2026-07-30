@@ -1,18 +1,13 @@
-import string
-
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.gui import OnscreenText
-from direct.interval.IntervalGlobal import *
-
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToontownBattleGlobals import *
 from toontown.toonbase.ToontownGlobals import *
-
-from . import BattleBase
 from .SuitBattleGlobals import *
-
+from direct.interval.IntervalGlobal import *
+from direct.directnotify import DirectNotifyGlobal
+import string
+from direct.gui import OnscreenText
+from . import BattleBase
 
 class PlayByPlayText(OnscreenText.OnscreenText):
     notify = DirectNotifyGlobal.directNotify.newCategory('PlayByPlayText')

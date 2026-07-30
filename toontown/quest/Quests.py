@@ -1,19 +1,16 @@
-import copy
-import random
-import time
-import types
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.showbase import PythonUtil
-
 from otp.otpbase import OTPGlobals
-
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import ToontownGlobals
 from toontown.battle import SuitBattleGlobals
 from toontown.coghq import CogDisguiseGlobals
-from toontown.hood import ZoneUtil
+import random
 from toontown.toon import NPCToons
-from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
-
+import copy
+from toontown.hood import ZoneUtil
+from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import TTLocalizer
+from direct.showbase import PythonUtil
+import time, types, random
 notify = DirectNotifyGlobal.directNotify.newCategory('Quests')
 ItemDict = TTLocalizer.QuestsItemDict
 CompleteString = TTLocalizer.QuestsCompleteString
@@ -79,8 +76,7 @@ PHONE_QUEST_ID = 175
 NEWBIE_HP = 25
 SELLBOT_HQ_NEWBIE_HP = 50
 CASHBOT_HQ_NEWBIE_HP = 85
-from toontown.toonbase.ToontownGlobals import FT_Arm, FT_FullSuit, FT_Leg, FT_Torso
-
+from toontown.toonbase.ToontownGlobals import FT_FullSuit, FT_Leg, FT_Arm, FT_Torso
 QuestRandGen = random.Random()
 
 def seedRandomGen(npcId, avId, tier, rewardHistory):

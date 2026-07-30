@@ -1,10 +1,8 @@
 from panda3d.core import *
-
-from toontown.toonbase.ToontownGlobals import *
+from . import ToonHood
 from toontown.town import TutorialTownLoader
-
-from . import SkyUtil, ToonHood
-
+from toontown.toonbase.ToontownGlobals import *
+from . import SkyUtil
 
 class TutorialHood(ToonHood.ToonHood):
 

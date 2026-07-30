@@ -1,15 +1,11 @@
-import time
-
-from direct.interval.IntervalGlobal import *
-
-from otp.otpbase import OTPLocalizer
-
-from toontown.estate import GardenTutorial
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.toontowngui import TTDialog
-
 from . import CatalogItem
-
+import time
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPLocalizer
+from direct.interval.IntervalGlobal import *
+from toontown.toontowngui import TTDialog
+from toontown.estate import GardenTutorial
 
 class CatalogGardenStarterItem(CatalogItem.CatalogItem):
 

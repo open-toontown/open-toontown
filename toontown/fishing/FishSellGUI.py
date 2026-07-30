@@ -1,13 +1,11 @@
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
+from panda3d.core import *
+from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from direct.task import Task
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
-from . import FishBase, FishPicker
-
+from . import FishBase
+from . import FishPicker
 
 class FishSellGUI(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('FishGui')

@@ -1,20 +1,20 @@
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import Sequence, Func, Wait, LerpColorScaleInterval, Parallel
 from direct.distributed import DistributedObject
-from direct.distributed.ClockDelta import *
-from direct.fsm.FSM import FSM
-from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import Func, LerpColorScaleInterval, Parallel, Sequence, Wait
-from direct.showbase import PythonUtil
+from direct.directnotify import DirectNotifyGlobal
 from direct.task.Task import Task
-
+from direct.showbase import PythonUtil
 from toontown.distributed import DelayDelete
 from toontown.distributed.DelayDeletable import DelayDeletable
-from toontown.golf import GolfGlobals, GolfRewardDialog, GolfScoreBoard
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from panda3d.core import *
+from direct.gui.DirectGui import *
+from direct.distributed.ClockDelta import *
+from direct.fsm.FSM import FSM
+from toontown.golf import GolfGlobals
+from toontown.golf import GolfScoreBoard
+from toontown.golf import GolfRewardDialog
 from toontown.toon import ToonHeadFrame
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
 
 class DistributedGolfCourse(DistributedObject.DistributedObject, FSM, DelayDeletable):
     notify = directNotify.newCategory('DistributedGolfCourse')

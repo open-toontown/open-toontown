@@ -1,8 +1,6 @@
-import math
-import types
-
 from panda3d.core import *
-
+import types
+import math
 
 class PyVec3:
     Epsilon = 0.0001

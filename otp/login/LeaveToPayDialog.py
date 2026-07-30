@@ -1,11 +1,9 @@
-import os
-
-from panda3d.core import *
-
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLauncherGlobals
+from otp.otpbase import OTPLocalizer
 from direct.gui.DirectGui import *
-
-from otp.otpbase import OTPGlobals, OTPLauncherGlobals, OTPLocalizer
-
+from panda3d.core import *
+import os
 
 class LeaveToPayDialog:
 

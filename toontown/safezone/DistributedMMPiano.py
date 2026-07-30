@@ -1,13 +1,10 @@
 from panda3d.core import *
-from panda3d.core import NodePath
-
-from direct.distributed import DistributedObject
+from direct.task.Task import Task
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from direct.task.Task import Task
-
+from direct.distributed import DistributedObject
+from panda3d.core import NodePath
 from toontown.toonbase import ToontownGlobals
-
 ChangeDirectionDebounce = 1.0
 ChangeDirectionTime = 1.0
 

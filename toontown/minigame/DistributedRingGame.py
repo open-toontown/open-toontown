@@ -1,18 +1,20 @@
-from functools import reduce
-
 from panda3d.core import *
-
+from toontown.toonbase.ToonBaseGlobal import *
+from direct.interval.IntervalGlobal import *
+from .DistributedMinigame import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
-from direct.interval.IntervalGlobal import *
+from direct.fsm import State
 from direct.task import Task
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.toonbase.ToonBaseGlobal import *
-
-from . import ArrowKeys, Ring, RingGameGlobals, RingGroup, RingTrack, RingTrackGroups
-from .DistributedMinigame import *
-
+from . import ArrowKeys
+from . import Ring
+from . import RingTrack
+from . import RingGameGlobals
+from . import RingGroup
+from . import RingTrackGroups
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from functools import reduce
 
 class DistributedRingGame(DistributedMinigame):
     UPDATE_ENVIRON_TASK = 'RingGameUpdateEnvironTask'

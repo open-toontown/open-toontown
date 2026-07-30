@@ -1,14 +1,11 @@
-from panda3d.core import CollisionNode, CollisionTube, NodePath, Point3
-
-from direct.actor import Actor
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObject
+from panda3d.core import NodePath, Point3, CollisionTube, CollisionNode
 from direct.fsm import FSM
-from direct.interval.IntervalGlobal import Func, LerpPosInterval, ProjectileInterval, Sequence, SoundInterval, Wait
-
-from toontown.coghq.FoodBeltBase import FoodBeltBase
+from direct.distributed import DistributedObject
+from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import Sequence, Wait, LerpPosInterval, ProjectileInterval, Func, SoundInterval
+from direct.actor import Actor
 from toontown.toonbase import ToontownGlobals
-
+from toontown.coghq.FoodBeltBase import FoodBeltBase
 
 class DistributedFoodBelt(DistributedObject.DistributedObject, FSM.FSM, FoodBeltBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFoodBelt')

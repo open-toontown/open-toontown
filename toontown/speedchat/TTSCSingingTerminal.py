@@ -1,6 +1,5 @@
-from otp.otpbase.OTPLocalizer import SpeedChatStaticText
 from otp.speedchat.SCTerminal import SCTerminal
-
+from otp.otpbase.OTPLocalizer import SpeedChatStaticText
 TTSCSingingMsgEvent = 'SCSingingMsg'
 
 def decodeSCStaticTextMsg(textId):

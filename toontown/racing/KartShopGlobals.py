@@ -1,6 +1,5 @@
 from enum import IntEnum
 
-
 class KartShopGlobals:
     EVENTDICT = {'guiDone': 'guiDone',
      'returnKart': 'returnKart',

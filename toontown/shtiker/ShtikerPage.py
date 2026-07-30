@@ -1,10 +1,7 @@
-from panda3d.core import *
-
+from . import ShtikerBook
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-
-from . import ShtikerBook
-
+from panda3d.core import *
 
 class ShtikerPage(DirectFrame, StateData.StateData):
 

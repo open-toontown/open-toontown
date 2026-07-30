@@ -1,11 +1,9 @@
-from direct.directnotify import DirectNotifyGlobal
-
 from toontown.battle import DistributedBattleAI
-
+from direct.directnotify import DirectNotifyGlobal
 
 class DistributedBattleTutorialAI(DistributedBattleAI.DistributedBattleAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleTutorialAI')
-
+    
     def __init__(self, air, battleMgr, pos, suit, toonId, zoneId,
                  finishCallback=None, maxSuits=4, interactivePropTrackBonus = -1):
         """__init__(air, battleMgr, pos, suit, toonId, zoneId,

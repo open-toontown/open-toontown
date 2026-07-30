@@ -1,6 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
 
-
 class PetManagerAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('PetManagerAI')
 

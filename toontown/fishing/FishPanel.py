@@ -1,13 +1,11 @@
-from panda3d.core import *
-
+from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
+from panda3d.core import *
+from toontown.toonbase import TTLocalizer
 from direct.interval.IntervalGlobal import *
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
-from . import FishGlobals, FishPhoto
-
+from . import FishGlobals
+from . import FishPhoto
 
 class FishPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('FishPanel')

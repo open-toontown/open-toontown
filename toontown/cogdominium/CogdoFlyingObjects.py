@@ -1,20 +1,15 @@
 import random
-
 from panda3d.core import *
 from panda3d.physics import *
-
-from direct.interval.IntervalGlobal import (Func, LerpFunctionInterval, LerpHprInterval, LerpScaleInterval, Parallel,
-                                            Sequence, Wait)
-from direct.particles import ForceGroup, ParticleEffect, Particles
-
+from direct.interval.IntervalGlobal import Sequence, Func, Parallel, Wait, LerpHprInterval, LerpScaleInterval, LerpFunctionInterval
 from otp.otpbase import OTPGlobals
-
 from toontown.toonbase import ToontownGlobals
-
+from .CogdoGameGatherable import CogdoGameGatherable, CogdoMemo
 from . import CogdoFlyingGameGlobals as Globals
 from . import CogdoUtil
-from .CogdoGameGatherable import CogdoGameGatherable, CogdoMemo
-
+from direct.particles import ParticleEffect
+from direct.particles import Particles
+from direct.particles import ForceGroup
 
 class CogdoFlyingGatherableFactory:
 

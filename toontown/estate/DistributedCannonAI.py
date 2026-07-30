@@ -1,13 +1,12 @@
-from direct.distributed import DistributedObjectAI
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM, State
-from direct.task import Task
-
-from toontown.minigame import CannonGameGlobals, Trajectory
 from toontown.toonbase import ToontownGlobals
-
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM
+from direct.fsm import State
+from direct.task import Task
+from toontown.minigame import CannonGameGlobals
+from direct.distributed import DistributedObjectAI
+from toontown.minigame import Trajectory
 from . import CannonGlobals
-
 
 class DistributedCannonAI(DistributedObjectAI.DistributedObjectAI):
     notify = directNotify.newCategory('DistributedCannonAI')

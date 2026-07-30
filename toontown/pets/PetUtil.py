@@ -1,9 +1,7 @@
-import random
-
+from toontown.pets import PetDNA, PetTraits, PetConstants
+from toontown.pets import PetNameGenerator
 from direct.showbase import PythonUtil
-
-from toontown.pets import PetConstants, PetDNA, PetNameGenerator, PetTraits
-
+import random
 
 def getPetInfoFromSeed(seed, safezoneId):
     S = random.getstate()

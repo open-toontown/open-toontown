@@ -1,16 +1,13 @@
-import functools
-
 from panda3d.core import *
-
-from direct.fsm import StateData
 from direct.gui.DirectGui import *
-
-from otp.otpbase import OTPGlobals
-
-from toontown.friends import ToontownFriendSecret
+from panda3d.core import *
+from direct.fsm import StateData
 from toontown.toon import ToonAvatarPanel
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.friends import ToontownFriendSecret
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPGlobals
+import functools
 FLPPets = 1
 FLPOnline = 2
 FLPAll = 3

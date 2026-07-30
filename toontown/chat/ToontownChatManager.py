@@ -1,22 +1,17 @@
 import sys
-
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
 from direct.showbase.PythonUtil import traceFunctionCall
-
-from otp.chat import ChatManager
-from otp.otpbase import OTPGlobals, OTPLocalizer
-
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLocalizer
 from toontown.toonbase import TTLocalizer
 from toontown.toontowngui import TeaserPanel
-
-from .TTChatInputNormal import TTChatInputNormal
+from direct.directnotify import DirectNotifyGlobal
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from otp.chat import ChatManager
 from .TTChatInputSpeedChat import TTChatInputSpeedChat
+from .TTChatInputNormal import TTChatInputNormal
 from .TTChatInputWhiteList import TTChatInputWhiteList
-
 
 class HackedDirectRadioButton(DirectCheckButton):
 

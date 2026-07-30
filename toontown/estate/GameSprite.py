@@ -1,6 +1,5 @@
 import math
 
-
 class GameSprite:
     colorRed = (1, 0, 0, 1)
     colorBlue = (0, 0, 1, 1)

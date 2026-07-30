@@ -1,7 +1,6 @@
+from . import TownLoader
+from . import DGStreet
 from toontown.suit import Suit
-
-from . import DGStreet, TownLoader
-
 
 class DGTownLoader(TownLoader.TownLoader):
 

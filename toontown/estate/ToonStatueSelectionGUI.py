@@ -1,16 +1,17 @@
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObject
+from toontown.estate import PlantingGUI
 from direct.gui.DirectGui import *
-from direct.gui.DirectScrolledList import *
-from direct.interval.IntervalGlobal import *
+from panda3d.core import *
+from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from direct.task import Task
-
-from toontown.estate import DistributedToonStatuary, GardenGlobals, PlantingGUI
-from toontown.toon import DistributedToon, Toon
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.estate import GardenGlobals
+from toontown.estate import DistributedToonStatuary
+from direct.interval.IntervalGlobal import *
+from direct.gui.DirectScrolledList import *
+from toontown.toon import Toon
+from toontown.toon import DistributedToon
+from direct.distributed import DistributedObject
 
 class ToonStatueSelectionGUI(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonStatueSelectionGUI')

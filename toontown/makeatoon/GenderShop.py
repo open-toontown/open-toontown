@@ -1,16 +1,13 @@
-import random
-
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-
-from toontown.toon import Toon, ToonDNA
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toon import ToonDNA
+from toontown.toon import Toon
 from .MakeAToonGlobals import *
-
+from direct.directnotify import DirectNotifyGlobal
+import random
 
 class GenderShop(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('GenderShop')

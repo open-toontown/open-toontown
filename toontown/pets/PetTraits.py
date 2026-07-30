@@ -1,11 +1,8 @@
-import copy
-import random
+from direct.showbase.PythonUtil import randFloat, normalDistrib
+from direct.showbase.PythonUtil import clampScalar
+from toontown.toonbase import TTLocalizer, ToontownGlobals
+import random, copy
 from enum import IntEnum
-
-from direct.showbase.PythonUtil import clampScalar, normalDistrib, randFloat
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
 TraitDivisor = 10000
 
 def getTraitNames():

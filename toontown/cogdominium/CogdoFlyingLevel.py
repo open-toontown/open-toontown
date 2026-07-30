@@ -1,18 +1,15 @@
-from panda3d.core import CollisionNode, CollisionPlane, NodePath, Plane, Point3, Vec3
-
+from panda3d.core import NodePath, Plane, Vec3, Point3
+from panda3d.core import CollisionPlane, CollisionNode
+from direct.showbase.RandomNumGen import RandomNumGen
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.PythonUtil import bound as clamp
-from direct.showbase.RandomNumGen import RandomNumGen
-
-from otp.otpbase import OTPGlobals
-
-from . import CogdoFlyingGameGlobals as Globals
 from . import CogdoUtil
+from . import CogdoFlyingGameGlobals as Globals
 from .CogdoFlyingLevelQuadrant import CogdoFlyingLevelQuadrant
-from .CogdoFlyingObjects import CogdoFlyingGatherableFactory, CogdoFlyingLevelFog, CogdoFlyingPlatform
+from .CogdoFlyingObjects import CogdoFlyingGatherableFactory, CogdoFlyingPlatform, CogdoFlyingLevelFog
 from .CogdoFlyingObstacles import CogdoFlyingObtacleFactory
 from .CogdoGameExit import CogdoGameExit
-
+from otp.otpbase import OTPGlobals
 
 class CogdoFlyingLevel(DirectObject):
     notify = directNotify.newCategory('CogdoFlyingLevel')

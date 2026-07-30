@@ -1,12 +1,11 @@
 from panda3d.core import TextNode
-
 from direct.gui.DirectButton import DirectButton
 from direct.gui.OnscreenText import OnscreenText
 from direct.task.Task import Task
-
-from toontown.parties import PartyGlobals, PartyUtils
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.parties import PartyUtils
+from toontown.parties import PartyGlobals
 
 class TeamActivityGui:
     COUNTDOWN_TASK_NAME = 'updateCountdownTask'

@@ -1,14 +1,11 @@
-import copy
-import os
+from panda3d.core import *
 import random
 import string
-
-from panda3d.core import *
-
+import copy
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+import os
 from direct.directnotify import DirectNotifyGlobal
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
 
 class NameGenerator:
     text = TextNode('text')

@@ -1,14 +1,11 @@
-import random
-
-from panda3d.core import NodePath, Point3
-
+from panda3d.core import Point3, NodePath
 from direct.fsm.FSM import FSM
-from direct.interval.IntervalGlobal import ActorInterval, Func, Parallel, ProjectileInterval, Sequence, Track
-
+from direct.interval.IntervalGlobal import ProjectileInterval, Track, ActorInterval
+from direct.interval.IntervalGlobal import Func, Sequence, Parallel
+from .CogdoMazeGameObjects import CogdoMazeSplattable
 from . import CogdoMazeGameGlobals as Globals
 from . import CogdoUtil
-from .CogdoMazeGameObjects import CogdoMazeSplattable
-
+import random
 
 class CogdoMazePlayer(FSM, CogdoMazeSplattable):
     notify = directNotify.newCategory('CogdoMazePlayer')

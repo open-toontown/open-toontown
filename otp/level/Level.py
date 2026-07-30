@@ -1,11 +1,8 @@
-import string
-import types
-
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase.PythonUtil import lineInfo, uniqueElements
-
+import string
 from . import LevelConstants
-
+from direct.showbase.PythonUtil import lineInfo, uniqueElements
+import types
 
 class Level:
     notify = DirectNotifyGlobal.directNotify.newCategory('Level')

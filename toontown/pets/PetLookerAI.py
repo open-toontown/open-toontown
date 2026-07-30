@@ -1,13 +1,9 @@
 from panda3d.core import *
-
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import DirectObject
-
 from otp.ai.AIZoneData import AIZoneData
-
-from toontown.pets import PetConstants
 from toontown.toonbase import ToontownGlobals
-
+from toontown.pets import PetConstants
 
 def getStartLookingAtOtherEvent(lookingAvId):
     return 'PetLookerAI-%s-startLookingAtOther' % lookingAvId

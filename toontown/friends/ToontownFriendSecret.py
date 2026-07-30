@@ -1,15 +1,16 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-
-from otp.friends import FriendSecret
-from otp.friends.FriendSecret import (AccountSecret, AvatarSecret, BothSecrets, globalFriendSecret, hideFriendSecret,
-                                      showFriendSecret, unloadFriendSecret)
+from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase import OTPLocalizer
-
 from toontown.toonbase import TTLocalizer
-
+from otp.friends.FriendSecret import AccountSecret
+from otp.friends.FriendSecret import AvatarSecret
+from otp.friends.FriendSecret import BothSecrets
+from otp.friends import FriendSecret
+from otp.friends.FriendSecret import globalFriendSecret
+from otp.friends.FriendSecret import showFriendSecret
+from otp.friends.FriendSecret import hideFriendSecret
+from otp.friends.FriendSecret import unloadFriendSecret
 
 def openFriendSecret(secretType):
     global globalFriendSecret

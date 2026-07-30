@@ -1,12 +1,10 @@
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM, State
-from direct.task import Task
-
-from otp.level import DistributedEntityAI
-
+from direct.directnotify import DirectNotifyGlobal
 from . import DistributedSwitchBase
-
+from direct.task import Task
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+from otp.level import DistributedEntityAI
 
 class DistributedSwitchAI(DistributedSwitchBase.DistributedSwitchBase, DistributedEntityAI.DistributedEntityAI):
 

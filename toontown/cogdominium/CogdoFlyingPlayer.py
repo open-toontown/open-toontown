@@ -1,20 +1,16 @@
-from panda3d.core import DepthOffsetAttrib, NodePath, TextNode, Vec3, Vec4
-
+from panda3d.core import DepthOffsetAttrib, NodePath, Vec3, Vec4, TextNode
 from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.ClockDelta import globalClockDelta
 from direct.fsm.FSM import FSM
 from direct.interval.FunctionInterval import Wait
-from direct.interval.IntervalGlobal import Func, LerpFunctionInterval, LerpHprInterval, LerpScaleInterval
-from direct.interval.MetaInterval import Parallel, Sequence
-
-from toontown.effects import DustCloud
+from direct.interval.IntervalGlobal import Func, LerpHprInterval, LerpScaleInterval, LerpFunctionInterval
+from direct.interval.MetaInterval import Sequence, Parallel
+from direct.distributed.ClockDelta import globalClockDelta
 from toontown.toonbase import ToontownGlobals
-
+from toontown.effects import DustCloud
 from . import CogdoFlyingGameGlobals as Globals
 from . import CogdoUtil
 from .CogdoFlyingObjects import CogdoFlyingGatherable
 from .CogdoFlyingUtil import swapAvatarShadowPlacer
-
 
 class CogdoFlyingPlayer(FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogdoFlyingPlayer')

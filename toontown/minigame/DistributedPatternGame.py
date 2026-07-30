@@ -1,5 +1,3 @@
-from random import choice
-
 from panda3d.core import Point3, VBase4, Vec3
 from panda3d.otp import CFSpeech, NametagGlobals
 
@@ -7,17 +5,28 @@ from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.fsm.ClassicFSM import ClassicFSM
 from direct.fsm.State import State
 from direct.gui.DirectGui import DirectLabel
-from direct.interval.IntervalGlobal import (ActorInterval, Func, LerpColorInterval, LerpHprInterval, LerpPosInterval,
-                                            Parallel, Sequence, Wait)
+from direct.interval.IntervalGlobal import (
+    ActorInterval,
+    Func,
+    LerpColorInterval,
+    LerpHprInterval,
+    LerpPosInterval,
+    Parallel,
+    Sequence,
+    Wait
+)
 
 from toontown.char.Char import Char
 from toontown.char.CharDNA import CharDNA
 from toontown.minigame import PatternGameGlobals
 from toontown.minigame.ArrowKeys import ArrowKeys
 from toontown.minigame.DistributedMinigame import DistributedMinigame
-from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import base
 from toontown.toonbase.ToontownTimer import ToontownTimer
+
+from random import choice
 
 
 class DistributedPatternGame(DistributedMinigame):

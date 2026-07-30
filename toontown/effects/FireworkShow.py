@@ -1,14 +1,10 @@
-import random
-
 from panda3d.core import *
-
 from direct.interval.IntervalGlobal import *
-
-from toontown.effects.Firework import Firework
 from toontown.effects.FireworkGlobals import *
-from toontown.parties import PartyGlobals
+from toontown.effects.Firework import Firework
 from toontown.toonbase import ToontownGlobals
-
+from toontown.parties import PartyGlobals
+import random
 colors = [Vec4(1, 1, 1, 1),
  Vec4(1, 0.1, 0.1, 1),
  Vec4(0.1, 1, 0.1, 1),

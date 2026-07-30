@@ -1,7 +1,6 @@
 from panda3d.core import *
-
-from . import DLPlayground, SafeZoneLoader
-
+from . import SafeZoneLoader
+from . import DLPlayground
 
 class DLSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
 

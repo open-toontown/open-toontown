@@ -1,10 +1,10 @@
 from panda3d.core import *
-from panda3d.core import NodePath
-
 from toontown.toonbase.ToonBaseGlobal import *
-
-from . import Ring, RingGameGlobals, RingTrack, RingTrackGroup
-
+from panda3d.core import NodePath
+from . import Ring
+from . import RingTrack
+from . import RingTrackGroup
+from . import RingGameGlobals
 
 class RingGroup(NodePath):
 

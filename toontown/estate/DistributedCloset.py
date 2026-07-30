@@ -1,19 +1,19 @@
-from panda3d.core import *
-
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM, State, StateData
 from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import *
-from direct.showbase import DirectObject
-from direct.task.Task import Task
-
-from toontown.toon import ToonDNA
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
 from toontown.toonbase.ToontownGlobals import *
-
-from . import ClosetGlobals, ClosetGUI, DistributedFurnitureItem
-
+from toontown.toonbase.ToonBaseGlobal import *
+from panda3d.core import *
+from direct.interval.IntervalGlobal import *
+from direct.distributed.ClockDelta import *
+from toontown.toonbase import ToontownGlobals
+from direct.showbase import DirectObject
+from toontown.toon import ToonDNA
+from direct.fsm import ClassicFSM, State, StateData
+from . import ClosetGUI
+from direct.task.Task import Task
+from . import ClosetGlobals
+from . import DistributedFurnitureItem
+from toontown.toonbase import TTLocalizer
 
 class DistributedCloset(DistributedFurnitureItem.DistributedFurnitureItem):
     notify = directNotify.newCategory('DistributedCloset')

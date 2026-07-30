@@ -1,6 +1,5 @@
 from direct.showbase import DirectObject
 
-
 class InGameEditorElement(DirectObject.DirectObject):
     elementId = 0
 

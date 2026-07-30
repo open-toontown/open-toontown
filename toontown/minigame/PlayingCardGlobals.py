@@ -1,7 +1,6 @@
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownBattleGlobals
 from panda3d.core import Vec4
-
-from toontown.toonbase import ToontownBattleGlobals, TTLocalizer
-
 Up = 1
 Down = 0
 MaxRank = 13

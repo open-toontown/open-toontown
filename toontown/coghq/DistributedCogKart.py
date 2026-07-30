@@ -1,17 +1,16 @@
 import math
-
-from panda3d.core import CollisionNode, CollisionSphere, Point3, Vec3, deg2Rad
-
+from panda3d.core import CollisionSphere, CollisionNode, Vec3, Point3, deg2Rad
+from direct.interval.IntervalGlobal import Sequence, Func, Parallel, ActorInterval, Wait, Parallel, LerpHprInterval, ProjectileInterval, LerpPosInterval
 from direct.directnotify import DirectNotifyGlobal
-from direct.interval.IntervalGlobal import (ActorInterval, Func, LerpHprInterval, LerpPosInterval, Parallel,
-                                            ProjectileInterval, Sequence, Wait)
-from direct.showbase import PythonUtil
-
-from toontown.building import BoardingGroupShow, DistributedElevatorExt, ElevatorConstants
-from toontown.distributed import DelayDelete
+from toontown.building import ElevatorConstants
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from toontown.safezone import DistributedGolfKart
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.building import DistributedElevatorExt
+from toontown.building import ElevatorConstants
+from toontown.distributed import DelayDelete
+from direct.showbase import PythonUtil
+from toontown.building import BoardingGroupShow
 
 class DistributedCogKart(DistributedElevatorExt.DistributedElevatorExt):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogKart')

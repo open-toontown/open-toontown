@@ -1,14 +1,11 @@
 from panda3d.core import *
-
-from direct.gui.DirectGui import *
-from direct.task.Task import Task
-
-from toontown.fishing import FishSellGUI
-from toontown.toonbase import TTLocalizer
-
-from . import NPCToons
 from .DistributedNPCToonBase import *
-
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from . import NPCToons
+from toontown.toonbase import TTLocalizer
+from toontown.fishing import FishSellGUI
+from direct.task.Task import Task
 
 class DistributedNPCFisherman(DistributedNPCToonBase):
 

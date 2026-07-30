@@ -1,23 +1,20 @@
-import random
-import string
 import time
-
+import string
 from panda3d.core import *
-from panda3d.otp import Nametag
-
-from direct.actor.DistributedActor import DistributedActor
 from direct.distributed import DistributedNode
+from direct.actor.DistributedActor import DistributedActor
 from direct.interval.IntervalGlobal import *
-from direct.showbase import PythonUtil
 from direct.task import Task
-
-from otp.chat import ChatGarbler, ChatManager
-from otp.otpbase import OTPGlobals, OTPLocalizer
+from direct.showbase import PythonUtil
+from panda3d.otp import Nametag
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLocalizer
 from otp.speedchat import SCDecoders
-
-from . import AvatarDNA
+from otp.chat import ChatGarbler
+from otp.chat import ChatManager
+import random
 from .Avatar import Avatar
-
+from . import AvatarDNA
 
 class DistributedAvatar(DistributedActor, Avatar):
     HpTextGenerator = TextNode('HpTextGenerator')

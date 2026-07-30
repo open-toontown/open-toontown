@@ -1,6 +1,5 @@
-from .SCEmoteTerminal import SCEmoteTerminal
 from .SCMenu import SCMenu
-
+from .SCEmoteTerminal import SCEmoteTerminal
 
 class SCEmoteMenu(SCMenu):
 

@@ -1,15 +1,11 @@
 from panda3d.core import *
-
+from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNode
-from direct.fsm import FSM
-from direct.interval.IntervalGlobal import *
-from direct.task import Task
-
-from otp.otpbase import OTPGlobals
-
 from toontown.toonbase import ToontownGlobals
-
+from otp.otpbase import OTPGlobals
+from direct.fsm import FSM
+from direct.task import Task
 smileyDoId = 1
 
 class DistCogdoCraneObject(DistributedSmoothNode.DistributedSmoothNode, FSM.FSM):

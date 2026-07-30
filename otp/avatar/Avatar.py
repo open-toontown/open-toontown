@@ -1,17 +1,15 @@
-import random
-
 from panda3d.core import *
-from panda3d.otp import (CFNoQuitButton, CFPageButton, CFQuitButton, CFSpeech, CFThought, CFTimeout, Nametag,
-                         NametagGroup)
-
+from panda3d.otp import Nametag, NametagGroup
+from panda3d.otp import CFSpeech, CFThought, CFTimeout, CFPageButton, CFNoQuitButton, CFQuitButton
+from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPLocalizer
 from direct.actor.Actor import Actor
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import ClockDelta
-
 from otp.avatar.ShadowCaster import ShadowCaster
-from otp.otpbase import OTPGlobals, OTPLocalizer, OTPRender
+import random
+from otp.otpbase import OTPRender
 from otp.otpbase.PythonUtil import recordCreationStack
-
 teleportNotify = DirectNotifyGlobal.directNotify.newCategory('Teleport')
 teleportNotify.showTime = True
 if ConfigVariableBool('want-teleport-debug', 1).value:

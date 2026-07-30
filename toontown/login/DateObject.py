@@ -1,6 +1,5 @@
 import time
 
-
 class DateObject:
 
     def getYear(self):

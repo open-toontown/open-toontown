@@ -1,11 +1,7 @@
 from panda3d.core import *
-
 from direct.distributed import DistributedObject
-
-from toontown.toonbase import ToontownGlobals
-
 from . import SuitPlannerBase
-
+from toontown.toonbase import ToontownGlobals
 
 class DistributedSuitPlanner(DistributedObject.DistributedObject, SuitPlannerBase.SuitPlannerBase):
 

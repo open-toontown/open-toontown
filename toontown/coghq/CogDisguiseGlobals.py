@@ -1,10 +1,7 @@
-from enum import IntEnum
-
-from otp.otpbase import OTPGlobals
-
 from toontown.suit import SuitDNA
 from toontown.toonbase import TTLocalizer
-
+from otp.otpbase import OTPGlobals
+from enum import IntEnum
 PartsPerSuit = (17,
  14,
  12,

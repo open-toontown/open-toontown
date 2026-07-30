@@ -1,7 +1,5 @@
 from panda3d.core import *
-
 from direct.directnotify import DirectNotifyGlobal
-
 
 class BattleSounds:
     notify = DirectNotifyGlobal.directNotify.newCategory('BattleSounds')

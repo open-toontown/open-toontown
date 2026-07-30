@@ -1,11 +1,8 @@
+from direct.showbase.DirectObject import DirectObject
+from toontown.toonbase.ToontownGlobals import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-from direct.showbase.DirectObject import DirectObject
-
-from toontown.toonbase.ToontownGlobals import *
-
 from . import DivingGameGlobals
-
 
 class DivingTreasure(DirectObject):
 

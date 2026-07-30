@@ -1,11 +1,8 @@
-import random
-
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.DistributedObjectAI import DistributedObjectAI
 from direct.task import Task
-
 from otp.distributed import OtpDoGlobals
-
+import random
 
 class NonRepeatableRandomSourceAI(DistributedObjectAI):
     notify = directNotify.newCategory('NonRepeatableRandomSourceAI')

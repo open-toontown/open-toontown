@@ -1,7 +1,6 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.showbase import DirectObject, TaskThreaded
 
-
 class GameServerTestSuite(DirectObject.DirectObject, TaskThreaded.TaskThreaded):
     notify = directNotify.newCategory('GarbageReport')
 

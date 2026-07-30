@@ -1,10 +1,7 @@
-from panda3d.core import *
-
 from direct.directnotify import DirectNotifyGlobal
+from panda3d.core import *
 from direct.interval.IntervalGlobal import *
-
 from . import FishGlobals
-
 
 class DirectRegion(NodePath):
     notify = DirectNotifyGlobal.directNotify.newCategory('DirectRegion')

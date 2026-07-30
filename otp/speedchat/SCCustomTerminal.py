@@ -1,7 +1,5 @@
-from otp.otpbase.OTPLocalizer import CustomSCStrings
-
 from .SCTerminal import SCTerminal
-
+from otp.otpbase.OTPLocalizer import CustomSCStrings
 SCCustomMsgEvent = 'SCCustomMsg'
 
 def decodeSCCustomMsg(textId):

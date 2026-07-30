@@ -1,11 +1,8 @@
 from direct.showbase.PythonUtil import boolEqual
-
-from otp.otpbase import OTPLocalizer
-
+from .SpeedChatTypes import *
 from .SCSettings import SCSettings
 from .SCTerminal import SCWhisperModeChangeEvent
-from .SpeedChatTypes import *
-
+from otp.otpbase import OTPLocalizer
 
 class SpeedChat(SCMenu):
 

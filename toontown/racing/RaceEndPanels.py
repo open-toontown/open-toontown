@@ -1,13 +1,12 @@
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
+from panda3d.core import *
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from toontown.racing import RaceGlobals
 from toontown.shtiker.KartPage import RacingTrophy
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.racing import RaceGlobals
 
 class RaceResultsPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('RaceEndPanels')

@@ -1,14 +1,10 @@
-from panda3d.core import *
-
-from direct.task import Task
-
 from otp.ai.AIBaseGlobal import *
-
+from panda3d.core import *
+from .DistributedNPCToonBaseAI import *
 from toontown.fishing import FishGlobals
 from toontown.toonbase import TTLocalizer
-
-from .DistributedNPCToonBaseAI import *
-
+from toontown.fishing import FishGlobals
+from direct.task import Task
 
 class DistributedNPCFishermanAI(DistributedNPCToonBaseAI):
 

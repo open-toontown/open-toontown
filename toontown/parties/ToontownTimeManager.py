@@ -1,12 +1,8 @@
 import time
 from datetime import datetime, timedelta
-
-from direct.directnotify import DirectNotifyGlobal
-
 import pytz
-
+from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import TTLocalizer
-
 
 class ToontownTimeManager:
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownTimeManager')

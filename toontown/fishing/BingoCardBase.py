@@ -1,10 +1,8 @@
-from math import ceil, pow
-
 from direct.directnotify import DirectNotifyGlobal
+from toontown.fishing import FishGlobals
+from toontown.fishing import BingoGlobals
 from direct.showbase import RandomNumGen
-
-from toontown.fishing import BingoGlobals, FishGlobals
-
+from math import ceil, pow
 
 class BingoCardBase:
     notify = DirectNotifyGlobal.directNotify.newCategory('BingoCardBase')

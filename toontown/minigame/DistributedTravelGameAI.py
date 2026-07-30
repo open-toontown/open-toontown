@@ -1,12 +1,9 @@
-import functools
-
-from direct.fsm import ClassicFSM, State
-
 from toontown.minigame.DistributedMinigameAI import *
-from toontown.toonbase import ToontownGlobals
-
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
 from . import TravelGameGlobals
-
+from toontown.toonbase import ToontownGlobals
+import functools
 
 class DistributedTravelGameAI(DistributedMinigameAI):
     notify = directNotify.newCategory('DistributedTravelGameAI')

@@ -1,12 +1,8 @@
 from panda3d.core import *
-
 from direct.interval.IntervalGlobal import *
-
-from toontown.battle import BattleParticles
-from toontown.battle.BattleProps import globalPropPool
-
 from .Ripples import *
-
+from toontown.battle.BattleProps import globalPropPool
+from toontown.battle import BattleParticles
 
 class Splash(NodePath):
     splashCount = 0

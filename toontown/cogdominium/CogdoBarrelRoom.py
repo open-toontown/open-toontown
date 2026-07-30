@@ -1,14 +1,10 @@
 import random
-
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-
+from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import ToontownGlobals, ToontownTimer
 from toontown.cogdominium import CogdoBarrelRoomConsts, CogdoBarrelRoomRewardPanel
 from toontown.distributed import DelayDelete
-from toontown.toonbase import ToontownGlobals, ToontownTimer
-
 
 class CogdoBarrelRoom:
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogdoBarrelRoom')

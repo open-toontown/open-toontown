@@ -1,6 +1,5 @@
 from . import Entity
 
-
 class VisibilityExtender(Entity.Entity):
 
     def __init__(self, level, entId):

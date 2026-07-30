@@ -1,7 +1,6 @@
-from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.DirectObject import DirectObject
 from direct.showbase.PythonUtil import lineInfo
-
+from direct.directnotify import DirectNotifyGlobal
 
 class Entity(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('Entity')

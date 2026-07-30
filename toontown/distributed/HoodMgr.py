@@ -1,14 +1,10 @@
-import random
-
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import DirectObject
-
-from toontown.hood import ZoneUtil
+from direct.directnotify import DirectNotifyGlobal
 from toontown.launcher import DownloadForceAcknowledge
+import random
 from toontown.toonbase import ToontownGlobals
-
+from toontown.hood import ZoneUtil
 
 class HoodMgr(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('HoodMgr')

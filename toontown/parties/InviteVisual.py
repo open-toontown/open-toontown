@@ -1,14 +1,12 @@
-import calendar
 from datetime import datetime
-
-from direct.fsm.FSM import FSM
+import calendar
 from direct.gui.DirectGui import DirectFrame, DirectLabel
-from direct.showbase import PythonUtil
-
-from toontown.parties import PartyGlobals, PartyUtils
 from toontown.toonbase import TTLocalizer
+from direct.showbase import PythonUtil
+from direct.fsm.FSM import FSM
+from toontown.parties import PartyGlobals
+from toontown.parties import PartyUtils
 from toontown.toonbase.ToontownGlobals import VALENTINES_DAY
-
 
 class InviteVisual(DirectFrame):
     notify = directNotify.newCategory('InviteVisual')

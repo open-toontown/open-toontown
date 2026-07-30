@@ -1,9 +1,16 @@
-from panda3d.core import CompassEffect, ModelPool, NodePath, TexturePool, TransparencyAttrib, Vec4
+from panda3d.core import (
+    CompassEffect,
+    ModelPool,
+    NodePath,
+    TexturePool,
+    TransparencyAttrib,
+    Vec4
+)
 
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.fsm.StateData import StateData
 from direct.gui.OnscreenText import OnscreenText
-from direct.interval.IntervalGlobal import Func, Sequence, Wait
+from direct.interval.IntervalGlobal import Sequence, Wait, Func
 from direct.showbase.MessengerGlobal import messenger
 from direct.showbase.PythonUtil import uniqueName
 from direct.task.TaskManagerGlobal import taskMgr
@@ -11,7 +18,8 @@ from direct.task.TaskManagerGlobal import taskMgr
 from toontown.hood import ZoneUtil
 from toontown.hood.QuietZoneState import QuietZoneState
 from toontown.toon.Toon import teleportDebug
-from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import base
 
 

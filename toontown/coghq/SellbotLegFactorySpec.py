@@ -1,6 +1,5 @@
-from toontown.coghq.SpecImports import *
 from toontown.toonbase import TTLocalizer
-
+from toontown.coghq.SpecImports import *
 GlobalEntities = {1000: {'type': 'levelMgr',
         'name': 'LevelMgr',
         'comment': '',

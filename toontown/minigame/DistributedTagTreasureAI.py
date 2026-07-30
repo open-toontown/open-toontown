@@ -1,7 +1,5 @@
-from direct.distributed.ClockDelta import *
-
 from toontown.safezone import DistributedTreasureAI
-
+from direct.distributed.ClockDelta import *
 
 class DistributedTagTreasureAI(DistributedTreasureAI.DistributedTreasureAI):
 

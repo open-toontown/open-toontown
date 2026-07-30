@@ -1,6 +1,5 @@
 from otp.otpgui.OTPDialog import *
 
-
 class TTDialog(OTPDialog):
 
     def __init__(self, parent = None, style = NoButtons, **kw):

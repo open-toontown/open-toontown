@@ -1,10 +1,7 @@
+from panda3d.core import *
+from direct.interval.IntervalGlobal import *
 import math
 import random
-
-from panda3d.core import *
-
-from direct.interval.IntervalGlobal import *
-
 
 class GameSprite:
     colorRed = Vec4(1, 0.2, 0.2, 1)

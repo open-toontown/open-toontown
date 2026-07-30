@@ -1,13 +1,11 @@
-from panda3d.core import *
-
+from toontown.toonbase import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
+from panda3d.core import *
+from toontown.toonbase import TTLocalizer
 from direct.interval.IntervalGlobal import *
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
-from . import FlowerPhoto, GardenGlobals
-
+from . import GardenGlobals
+from . import FlowerPhoto
 
 class FlowerPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('FlowerPanel')

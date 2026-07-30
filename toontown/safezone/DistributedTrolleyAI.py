@@ -1,18 +1,17 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObjectAI
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM, State
-from direct.task import Task
-
 from otp.ai.AIBase import *
-
-from toontown.minigame import MinigameCreatorAI, TrolleyHolidayMgrAI, TrolleyWeekendMgrAI
-from toontown.quest import Quests
-from toontown.toonbase import ToontownAccessAI
 from toontown.toonbase.ToontownGlobals import *
-
+from direct.distributed.ClockDelta import *
 from .TrolleyConstants import *
-
+from direct.distributed import DistributedObjectAI
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+from direct.task import Task
+from direct.directnotify import DirectNotifyGlobal
+from toontown.minigame import MinigameCreatorAI
+from toontown.quest import Quests
+from toontown.minigame import TrolleyHolidayMgrAI
+from toontown.minigame import TrolleyWeekendMgrAI
+from toontown.toonbase import ToontownAccessAI
 
 class DistributedTrolleyAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTrolleyAI')

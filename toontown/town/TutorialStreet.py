@@ -1,6 +1,5 @@
 from . import TTStreet
 
-
 class TutorialStreet(TTStreet.TTStreet):
 
     def enter(self, requestStatus):

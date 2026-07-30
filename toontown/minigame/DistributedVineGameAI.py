@@ -1,8 +1,7 @@
-from direct.fsm import ClassicFSM, State
-
-from . import VineGameGlobals
 from .DistributedMinigameAI import *
-
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+from . import VineGameGlobals
 
 class DistributedVineGameAI(DistributedMinigameAI):
 

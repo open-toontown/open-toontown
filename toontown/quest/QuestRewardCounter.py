@@ -1,16 +1,12 @@
 from panda3d.core import *
-
 from direct.directnotify import DirectNotifyGlobal
-
-from toontown.estate import GardenGlobals
-from toontown.fishing import FishGlobals
-from toontown.golf import GolfGlobals
-from toontown.racing import RaceGlobals
-from toontown.suit import SuitDNA
-from toontown.toonbase import ToontownGlobals
-
 from . import Quests
-
+from toontown.toonbase import ToontownGlobals
+from toontown.fishing import FishGlobals
+from toontown.suit import SuitDNA
+from toontown.racing import RaceGlobals
+from toontown.estate import GardenGlobals
+from toontown.golf import GolfGlobals
 
 class QuestRewardCounter:
     notify = directNotify.newCategory('QuestRewardCounter')

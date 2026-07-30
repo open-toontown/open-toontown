@@ -1,14 +1,9 @@
-import math
-
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-
-from otp.level import BasicEntities
-
+import math
 from . import StomperGlobals
-
+from direct.directnotify import DirectNotifyGlobal
+from otp.level import BasicEntities
 
 class DistributedStomperPair(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStomperPair')

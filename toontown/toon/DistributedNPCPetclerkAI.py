@@ -1,15 +1,10 @@
-from panda3d.core import *
-
-from direct.task import Task
-
 from otp.ai.AIBaseGlobal import *
-
-from toontown.fishing import FishGlobals
-from toontown.pets import PetConstants, PetDNA, PetUtil
-from toontown.toonbase import TTLocalizer
-
+from panda3d.core import *
 from .DistributedNPCToonBaseAI import *
-
+from toontown.toonbase import TTLocalizer
+from direct.task import Task
+from toontown.fishing import FishGlobals
+from toontown.pets import PetUtil, PetDNA, PetConstants
 
 class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
 

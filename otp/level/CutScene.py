@@ -1,15 +1,13 @@
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM
-from direct.interval.IntervalGlobal import *
 from direct.showbase import DirectObject
-
-from toontown.toonbase import ToontownGlobals
-
+from direct.directnotify import DirectNotifyGlobal
 from . import BasicEntities
-
+from panda3d.core import *
+from panda3d.core import *
+from direct.interval.IntervalGlobal import *
+from direct.distributed.ClockDelta import *
+from toontown.toonbase import ToontownGlobals
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM
 
 def nothing(self, track, subjectNodePath, duration):
     return track

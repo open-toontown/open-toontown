@@ -1,13 +1,10 @@
-import copy
-import random
-
-from direct.fsm import ClassicFSM, State
-
-from toontown.ai.ToonBarrier import *
-
-from . import PatternGameGlobals
 from .DistributedMinigameAI import *
-
+from toontown.ai.ToonBarrier import *
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+import random
+from . import PatternGameGlobals
+import copy
 
 class DistributedPatternGameAI(DistributedMinigameAI):
 

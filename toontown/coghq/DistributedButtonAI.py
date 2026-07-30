@@ -1,8 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
-
-from . import DistributedSwitchAI, DistributedSwitchBase
-
+from . import DistributedSwitchBase, DistributedSwitchAI
 
 class DistributedButtonAI(DistributedSwitchAI.DistributedSwitchAI):
     setColor = DistributedSwitchBase.stubFunction

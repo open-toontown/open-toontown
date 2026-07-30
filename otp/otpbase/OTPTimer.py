@@ -1,11 +1,8 @@
 from panda3d.core import Vec4
-
-from direct.gui.DirectGui import DGG, DirectFrame
-from direct.showbase.PythonUtil import bound
+from direct.gui.DirectGui import DirectFrame, DGG
 from direct.task import Task
-
+from direct.showbase.PythonUtil import bound
 from otp.otpbase import OTPGlobals
-
 
 class OTPTimer(DirectFrame):
     ClockImage = None

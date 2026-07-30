@@ -1,6 +1,5 @@
 from . import PlatformEntity
 
-
 class PaintMixer(PlatformEntity.PlatformEntity):
 
     def start(self):

@@ -1,19 +1,13 @@
-import json
 import os
-import random
-import time
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.task.Task import Task
-
+import json
 from otp.ai.AIBaseGlobal import *
-
-from toontown.building import DistributedAnimBuildingAI
+from . import DistributedBuildingAI, HQBuildingAI, GagshopBuildingAI, PetshopBuildingAI
 from toontown.building.KartShopBuildingAI import KartShopBuildingAI
+from toontown.building import DistributedAnimBuildingAI
+from direct.directnotify import DirectNotifyGlobal
 from toontown.hood import ZoneUtil
-
-from . import DistributedBuildingAI, GagshopBuildingAI, HQBuildingAI, PetshopBuildingAI
-
+import time, random
 
 class DistributedBuildingMgrAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBuildingMgrAI')

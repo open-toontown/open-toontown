@@ -1,9 +1,6 @@
-import random
-
-from direct.directnotify import DirectNotifyGlobal
-
 from toontown.toonbase import TTLocalizer
-
+from direct.directnotify import DirectNotifyGlobal
+import random
 FLOWERS_PER_BONUS = 10
 ACCELERATOR_USED_FROM_SHTIKER_BOOK = True
 COLLECT_NO_UPDATE = 0

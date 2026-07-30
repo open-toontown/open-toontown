@@ -1,15 +1,11 @@
-from panda3d.core import *
-
 from direct.gui.DirectGui import *
+from panda3d.core import *
 from direct.showbase import DirectObject
-
-from otp.otpbase import OTPLocalizer
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.toontowngui import TTDialog
-
 from . import CatalogItem
-
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+from otp.otpbase import OTPLocalizer
+from toontown.toontowngui import TTDialog
 NUM_ITEMS_SHOWN = 15
 
 class CatalogChatItemPicker(DirectObject.DirectObject):

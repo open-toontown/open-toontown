@@ -1,17 +1,15 @@
+import os
 import datetime
 import functools
-import os
-
-from panda3d.core import (ConfigVariableBool, ConfigVariableString, DocumentSpec, DSearchPath, Filename, HTTPClient,
-                          Ramfile)
-
+from panda3d.core import Filename, DSearchPath, ConfigVariableString, ConfigVariableBool
+from panda3d.core import HTTPClient, Ramfile, DocumentSpec
+from direct.showbase import DirectObject
+from direct.gui.DirectGui import DirectFrame, DGG
 from direct.directnotify import DirectNotifyGlobal
-from direct.gui.DirectGui import DGG, DirectFrame
-from direct.showbase import AppRunnerGlobal, DirectObject
-
-from toontown.shtiker import IssueFrame, IssueFrameV2
+from direct.showbase import AppRunnerGlobal
+from toontown.shtiker import IssueFrame
+from toontown.shtiker import IssueFrameV2
 from toontown.toonbase import TTLocalizer
-
 
 class DirectNewsFrame(DirectObject.DirectObject):
     TaskName = 'HtmlViewUpdateTask'

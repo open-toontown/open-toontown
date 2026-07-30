@@ -1,18 +1,17 @@
+from toontown.toonbase.ToonBaseGlobal import *
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObject
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM
 from direct.interval.IntervalGlobal import *
+from direct.distributed.ClockDelta import *
+from direct.distributed import DistributedObject
+from toontown.toonbase import ToontownGlobals
+from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.MessengerGlobal import messenger
-
-from toontown.building import DistributedDoor, DoorTypes, FADoorCodes
+from direct.fsm import ClassicFSM
+from toontown.building import DistributedDoor
 from toontown.hood import ZoneUtil
 from toontown.suit import Suit
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase.ToonBaseGlobal import *
-
+from toontown.building import FADoorCodes
+from toontown.building import DoorTypes
 
 class DistributedHouseDoor(DistributedDoor.DistributedDoor):
 

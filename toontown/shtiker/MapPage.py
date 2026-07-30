@@ -1,15 +1,11 @@
-from panda3d.core import *
-
-from direct.gui.DirectGui import *
-from direct.showbase import PythonUtil
-
-from otp.otpbase import PythonUtil as OTPPythonUtil
-
-from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
 from . import ShtikerPage
-
+from toontown.toonbase import ToontownGlobals
+from direct.showbase import PythonUtil
+from otp.otpbase import PythonUtil as OTPPythonUtil
+from toontown.hood import ZoneUtil
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from toontown.toonbase import TTLocalizer
 
 class MapPage(ShtikerPage.ShtikerPage):
 

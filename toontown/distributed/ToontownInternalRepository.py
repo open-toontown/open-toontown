@@ -1,8 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
-
-from otp.distributed.OtpDoGlobals import *
 from otp.distributed.OTPInternalRepository import OTPInternalRepository
-
+from otp.distributed.OtpDoGlobals import *
 
 class ToontownInternalRepository(OTPInternalRepository):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownInternalRepository')

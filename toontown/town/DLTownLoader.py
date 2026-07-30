@@ -1,7 +1,6 @@
+from . import TownLoader
+from . import DLStreet
 from toontown.suit import Suit
-
-from . import DLStreet, TownLoader
-
 
 class DLTownLoader(TownLoader.TownLoader):
 

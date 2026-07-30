@@ -1,21 +1,18 @@
-import base64
-import os
-import re
-import sys
-import time
-
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObject
-from direct.distributed.ClockDelta import *
-from direct.showbase import GarbageReport, PythonUtil
 from direct.showbase.DirectObject import *
+from direct.distributed.ClockDelta import *
 from direct.task import Task
-
+from direct.distributed import DistributedObject
+from direct.directnotify import DirectNotifyGlobal
 from otp.otpbase import OTPGlobals
+from direct.showbase import PythonUtil
 from otp.otpbase.PythonUtil import describeException
-
+from direct.showbase import GarbageReport
+import base64
+import time
+import os
+import sys
+import re
 
 class TimeManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TimeManager')

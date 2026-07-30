@@ -1,18 +1,12 @@
-import math
-import random
-import time
-from math import *
-
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
-
-from toontown.golf import PhysicsWorldBase
+from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
-
+from panda3d.core import *
 from . import BuildGeometry
-
+import random, time
+from math import *
+import math
+from toontown.golf import PhysicsWorldBase
 
 class DistributedPhysicsWorldAI(DistributedObjectAI.DistributedObjectAI, PhysicsWorldBase.PhysicsWorldBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPhysicsWorldAI')

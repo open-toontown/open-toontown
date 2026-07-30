@@ -1,13 +1,11 @@
-from panda3d.core import *
-
-from direct.fsm import StateData
-from direct.gui.DirectGui import *
 from direct.task import Task
-
-from toontown.minigame import MinigameGlobals
-from toontown.toonbase import ToontownTimer, TTLocalizer
+from direct.fsm import StateData
 from toontown.toonbase.ToontownGlobals import *
-
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from toontown.toonbase import ToontownTimer
+from toontown.toonbase import TTLocalizer
+from toontown.minigame import MinigameGlobals
 
 class CogdoGameRulesPanel(StateData.StateData):
     hiddenNode = NodePath('hiddenNode')

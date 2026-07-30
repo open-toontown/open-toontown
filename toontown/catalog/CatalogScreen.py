@@ -1,18 +1,19 @@
-import random
-
 from panda3d.core import *
-
-from direct.actor import Actor
-from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
+from panda3d.core import *
 from direct.gui.DirectScrolledList import *
-
-from toontown.toon import DistributedToon
-from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase import ToontownGlobals
 from toontown.toontowngui import TTDialog
-
-from . import CatalogFurnitureItem, CatalogInvalidItem, CatalogItem, CatalogItemPanel, CatalogItemTypes
-
+from . import CatalogItem
+from . import CatalogInvalidItem
+from . import CatalogFurnitureItem
+from toontown.toonbase import TTLocalizer
+from . import CatalogItemPanel
+from . import CatalogItemTypes
+from direct.actor import Actor
+import random
+from toontown.toon import DistributedToon
+from direct.directnotify import DirectNotifyGlobal
 NUM_CATALOG_ROWS = 3
 NUM_CATALOG_COLS = 2
 CatalogPanelCenters = [[Point3(-0.95, 0, 0.91), Point3(-0.275, 0, 0.91)], [Point3(-0.95, 0, 0.275), Point3(-0.275, 0, 0.275)], [Point3(-0.95, 0, -0.4), Point3(-0.275, 0, -0.4)]]

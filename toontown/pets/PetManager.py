@@ -1,9 +1,6 @@
 from panda3d.core import *
-
-from direct.task import Task
-
 from toontown.toonbase import ToontownGlobals
-
+from direct.task import Task
 
 def acquirePetManager():
     if not hasattr(base, 'petManager'):

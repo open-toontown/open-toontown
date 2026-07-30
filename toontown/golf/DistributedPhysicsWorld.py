@@ -1,25 +1,20 @@
-import math
-import random
-import time
-from math import *
-
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
-from direct.distributed.ClockDelta import *
+from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+from math import *
+import math
 from direct.fsm.FSM import FSM
-from direct.interval.SoundInterval import SoundInterval
+from toontown.minigame import ArrowKeys
 from direct.showbase import PythonUtil
 from direct.showutil import Rope
 from direct.task import Task
-
-from toontown.golf import GolfGlobals, PhysicsWorldBase
-from toontown.minigame import ArrowKeys
-from toontown.toonbase import ToontownGlobals
-
+from direct.distributed.ClockDelta import *
 from . import BuildGeometry
-
+from toontown.golf import GolfGlobals
+from toontown.golf import PhysicsWorldBase
+import random, time
+from direct.interval.SoundInterval import SoundInterval
 
 def scalp(vec, scal):
     vec0 = vec[0] * scal

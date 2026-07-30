@@ -1,7 +1,5 @@
 from direct.showbase.PythonUtil import Functor
-
 from . import LevelMgrBase
-
 
 class LevelMgrAI(LevelMgrBase.LevelMgrBase):
 

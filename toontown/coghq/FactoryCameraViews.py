@@ -1,10 +1,7 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.PythonUtil import Functor
-
 from toontown.toonbase import ToontownGlobals
-
+from direct.directnotify import DirectNotifyGlobal
 
 class FactoryCameraViews:
     notify = DirectNotifyGlobal.directNotify.newCategory('FactoryCameraViews')

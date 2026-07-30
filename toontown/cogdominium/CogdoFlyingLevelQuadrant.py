@@ -1,12 +1,8 @@
 import math
-
-from panda3d.core import NodePath, Point3, Vec4
-
 from direct.directutil import Mopath
-
-from . import CogdoFlyingGameGlobals as Globals
+from panda3d.core import NodePath, Point3, Vec4
 from .CogdoFlyingObjects import CogdoFlyingPlatform
-
+from . import CogdoFlyingGameGlobals as Globals
 
 class CogdoFlyingLevelQuadrant:
     notify = directNotify.newCategory('CogdoFlyingLevelQuadrant')

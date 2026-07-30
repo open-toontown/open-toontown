@@ -1,11 +1,8 @@
+from otp.level import DistributedEntityAI
+from . import DistributedBarrelBaseAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import globalClockDelta
 from direct.task import Task
-
-from otp.level import DistributedEntityAI
-
-from . import DistributedBarrelBaseAI
-
 
 class DistributedMazeAI(DistributedEntityAI.DistributedEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMazeAI')

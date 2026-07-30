@@ -1,9 +1,7 @@
 from panda3d.core import Vec4
-
 from direct.gui.DirectGui import DirectFrame, DirectLabel
-
-from toontown.toonbase import ToontownGlobals, ToontownIntervals
-
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownIntervals
 
 class LaffMeter(DirectFrame):
     deathColor = Vec4(0.58039216, 0.80392157, 0.34117647, 1.0)

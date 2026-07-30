@@ -1,10 +1,7 @@
 from panda3d.core import *
-
 from direct.gui.DirectGui import *
-
-from toontown.cogdominium import CogdoBarrelRoomConsts
 from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.cogdominium import CogdoBarrelRoomConsts
 
 class CogdoBarrelRoomRewardPanel(DirectFrame):
 

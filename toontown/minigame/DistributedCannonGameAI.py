@@ -1,10 +1,9 @@
+from .DistributedMinigameAI import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
+from direct.fsm import State
 from direct.task import Task
-
 from . import CannonGameGlobals
-from .DistributedMinigameAI import *
-
 
 class DistributedCannonGameAI(DistributedMinigameAI):
 

@@ -1,16 +1,12 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import StateData
-from direct.interval.IntervalGlobal import *
+from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.PythonUtil import *
 from direct.task import Task
-
-from toontown.toonbase import ToontownGlobals
-
 from . import CCharPaths
-
+from toontown.toonbase import ToontownGlobals
 
 class CharNeutralState(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('CharNeutralState')

@@ -1,14 +1,10 @@
-import functools
-
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase.ToontownBattleGlobals import *
 from direct.task.Timer import *
-
+import functools
+from direct.directnotify import DirectNotifyGlobal
 from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
-from toontown.toonbase.ToontownBattleGlobals import *
-
 TOON_ID_COL = 0
 TOON_TRACK_COL = 1
 TOON_LVL_COL = 2

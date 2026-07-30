@@ -1,16 +1,11 @@
-import random
-
-from direct.directnotify import DirectNotifyGlobal
+from otp.ai.AIBaseGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import StateData
+from direct.directnotify import DirectNotifyGlobal
+import random
 from direct.task import Task
-
-from otp.ai.AIBaseGlobal import *
-
 from toontown.toonbase import ToontownGlobals
-
 from . import CCharChatter, CCharPaths
-
 CHATTY_DURATION = 120.0
 
 class CharLonelyStateAI(StateData.StateData):

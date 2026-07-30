@@ -1,7 +1,5 @@
 from panda3d.core import *
-
 from .DistributedNPCToon import *
-
 
 class DistributedNPCFlippyInToonHall(DistributedNPCToon):
 

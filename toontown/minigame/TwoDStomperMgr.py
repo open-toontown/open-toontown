@@ -1,10 +1,8 @@
 from panda3d.core import *
-
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.DirectObject import DirectObject
-
-from toontown.minigame import ToonBlitzGlobals, TwoDStomper
-
+from toontown.minigame import ToonBlitzGlobals
+from toontown.minigame import TwoDStomper
 
 class TwoDStomperMgr(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDStomperMgr')

@@ -1,14 +1,10 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-
-from otp.otpbase import OTPGlobals
-
-from toontown.cogdominium import CogdoCraneGameConsts as GameConsts
-from toontown.cogdominium.DistCogdoCraneObject import DistCogdoCraneObject
+from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
-
+from otp.otpbase import OTPGlobals
+from toontown.cogdominium.DistCogdoCraneObject import DistCogdoCraneObject
+from toontown.cogdominium import CogdoCraneGameConsts as GameConsts
 
 class DistCogdoCraneMoneyBag(DistCogdoCraneObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistCogdoCraneMoneyBag')

@@ -1,12 +1,9 @@
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
 from direct.showbase import DirectObject
-
-from toontown.golf import DistributedGolfCourseAI
+from direct.directnotify import DirectNotifyGlobal
 from toontown.toonbase import ToontownGlobals
-
+from toontown.golf import DistributedGolfCourseAI
+from panda3d.core import *
 RequestHole = {}
 
 def GolfManagerAI():

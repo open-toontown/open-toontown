@@ -1,9 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from direct.interval.IntervalGlobal import *
-
 from toontown.effects import DustCloud
-
 
 def getDustCloudIval(toon):
     dustCloud = DustCloud.DustCloud(fBillboard=0)

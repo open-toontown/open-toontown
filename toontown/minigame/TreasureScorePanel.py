@@ -1,10 +1,8 @@
-from direct.gui.DirectGui import *
 from direct.showbase.ShowBaseGlobal import *
-
+from toontown.toonbase.ToontownGlobals import *
+from direct.gui.DirectGui import *
 from toontown.toon import LaffMeter
 from toontown.toonbase import TTLocalizer
-from toontown.toonbase.ToontownGlobals import *
-
 
 class TreasureScorePanel(DirectFrame):
 

@@ -1,19 +1,16 @@
+from .DistributedNPCToonBase import DistributedNPCToonBase
+from direct.distributed.DistributedObject import DistributedObject
+from toontown.toon import NPCToons
+from toontown.toonbase import TTLocalizer
+from direct.task.Task import Task
+from direct.distributed import ClockDelta
 from panda3d.core import Point3, Quat
 from panda3d.otp import CFSpeech, CFTimeout
-
-from direct.distributed import ClockDelta
-from direct.distributed.DistributedObject import DistributedObject
-from direct.task.Task import Task
-
+from toontown.toontowngui import TTDialog
 from otp.otpbase import OTPLocalizer
-
 from toontown.parties import PartyGlobals
-from toontown.toon import NPCToons
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.toontowngui import TeaserPanel, TTDialog
-
-from .DistributedNPCToonBase import DistributedNPCToonBase
-
+from toontown.toonbase import ToontownGlobals
+from toontown.toontowngui import TeaserPanel
 
 class DistributedNPCPartyPerson(DistributedNPCToonBase):
 

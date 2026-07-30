@@ -1,13 +1,8 @@
 import os
-
-from panda3d.core import *
-
 from direct.showbase.EventManagerGlobal import *
-
+from panda3d.core import *
 from otp.launcher.LauncherBase import LauncherBase
-
 from toontown.toonbase import TTLocalizer
-
 
 class QuickLauncher(LauncherBase):
     GameName = 'Toontown'

@@ -1,14 +1,11 @@
-from panda3d.core import *
-
 from direct.directnotify import DirectNotifyGlobal
-
-from toontown.building import DoorTypes, FADoorCodes
+from panda3d.core import *
+from toontown.building import FADoorCodes, DoorTypes
 from toontown.building.DistributedDoorAI import DistributedDoorAI
 from toontown.building.DistributedKartShopInteriorAI import DistributedKartShopInteriorAI
 from toontown.hood import ZoneUtil
 from toontown.toon import NPCToons
 from toontown.toonbase import ToontownGlobals
-
 if __debug__:
     import pdb
 

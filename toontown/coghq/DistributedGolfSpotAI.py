@@ -1,7 +1,6 @@
 from direct.distributed import DistributedObjectAI
 from direct.fsm import FSM
 
-
 class DistributedGolfSpotAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM):
 
     def __init__(self, air, boss, index):

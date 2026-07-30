@@ -1,6 +1,5 @@
-from . import DistributedBossElevatorAI
 from .ElevatorConstants import *
-
+from . import DistributedBossElevatorAI
 
 class DistributedCJElevatorAI(DistributedBossElevatorAI.DistributedBossElevatorAI):
 

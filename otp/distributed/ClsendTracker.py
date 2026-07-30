@@ -1,9 +1,6 @@
-import random
-
 from panda3d.core import StringStream
-
 from direct.distributed.PyDatagram import PyDatagram
-
+import random
 
 class ClsendTracker:
     clsendNotify = directNotify.newCategory('clsend')

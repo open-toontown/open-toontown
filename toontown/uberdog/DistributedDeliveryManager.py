@@ -1,9 +1,7 @@
 from panda3d.core import *
-
 from direct.distributed.DistributedObject import DistributedObject
-
-from toontown.catalog import CatalogItem, CatalogItemList
-
+from toontown.catalog import CatalogItemList
+from toontown.catalog import CatalogItem
 
 class DistributedDeliveryManager(DistributedObject):
     neverDisable = 1

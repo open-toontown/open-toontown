@@ -1,20 +1,15 @@
-import random
-import time
-
+from otp.ai.AIBase import *
+from direct.interval.IntervalGlobal import *
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import ClockDelta
-from direct.distributed.ClockDelta import *
-from direct.interval.IntervalGlobal import *
 from direct.task import Task
-
-from otp.ai.AIBase import *
-from otp.level import BasicEntities, DistributedEntityAI
-
+from otp.level import DistributedEntityAI
+from otp.level import BasicEntities
 from toontown.coghq import BattleBlockerAI
+from direct.distributed.ClockDelta import *
 from toontown.toonbase import ToontownBattleGlobals
-
 from .GolfGreenGameGlobals import *
-
+import random, time
 
 class DistributedGolfGreenGameAI(BattleBlockerAI.BattleBlockerAI, NodePath, BasicEntities.NodePathAttribs):
 

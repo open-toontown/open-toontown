@@ -1,6 +1,5 @@
 import math
 
-
 def rgb2hsv(r, g, b):
     _min = float(min(r, g, b))
     _max = float(max(r, g, b))

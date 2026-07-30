@@ -1,14 +1,11 @@
-import dbm
-import os
-import pickle
-import sys
-import time
-
-from panda3d.core import ConfigVariableBool
-
 from direct.directnotify import DirectNotifyGlobal
+from panda3d.core import ConfigVariableBool
 from direct.task import Task
-
+import pickle
+import os
+import sys
+import dbm
+import time
 
 class DataStore:
     QueryTypes = []

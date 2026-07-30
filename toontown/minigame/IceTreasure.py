@@ -1,12 +1,9 @@
-from panda3d.core import BitMask32, CollisionNode, CollisionSphere, Point3
-
+from panda3d.core import Point3, CollisionSphere, CollisionNode, BitMask32
+from direct.interval.IntervalGlobal import Sequence, LerpScaleInterval, Parallel, Func, SoundInterval
 from direct.directnotify import DirectNotifyGlobal
-from direct.interval.IntervalGlobal import Func, LerpScaleInterval, Parallel, Sequence, SoundInterval
 from direct.showbase.DirectObject import DirectObject
-
-from toontown.battle import BattleParticles
 from toontown.toonbase import ToontownGlobals
-
+from toontown.battle import BattleParticles
 
 class IceTreasure(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('IceTreasure')

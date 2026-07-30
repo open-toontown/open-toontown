@@ -1,9 +1,6 @@
-from direct.directnotify import DirectNotifyGlobal
-
-from toontown.toonbase import TTLocalizer
-
 from . import FishGlobals
-
+from toontown.toonbase import TTLocalizer
+from direct.directnotify import DirectNotifyGlobal
 
 class FishBase:
     notify = DirectNotifyGlobal.directNotify.newCategory('FishBase')

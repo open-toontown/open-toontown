@@ -1,13 +1,11 @@
-import random
-
+from direct.interval.IntervalGlobal import *
+from direct.particles import ParticleEffect
+from direct.particles import Particles
+from direct.particles import ForceGroup
 from panda3d.core import *
 from panda3d.physics import *
-
-from direct.interval.IntervalGlobal import *
-from direct.particles import ForceGroup, ParticleEffect, Particles
-
+import random
 from .FireworkGlobals import *
-
 colors = {WHITE: Vec4(1, 1, 1, 1),
  RED: Vec4(1, 0.2, 0.2, 1),
  BLUE: Vec4(0.2, 0.2, 1, 1),

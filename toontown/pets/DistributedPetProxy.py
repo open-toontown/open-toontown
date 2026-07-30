@@ -1,11 +1,9 @@
-import string
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
-
-from toontown.pets import PetMood, PetTraits, PetTricks
+from direct.directnotify import DirectNotifyGlobal
+from toontown.pets import PetTraits
+from toontown.pets import PetMood, PetTricks
 from toontown.toonbase import ToontownGlobals
-
+import string
 
 class DistributedPetProxy(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPetProxy')

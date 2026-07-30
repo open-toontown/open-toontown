@@ -1,12 +1,10 @@
-from panda3d.core import Point3, TextNode
-
+from direct.gui.DirectGui import DirectFrame, DGG, DirectLabel
 from direct.directnotify import DirectNotifyGlobal
-from direct.gui.DirectGui import DGG, DirectFrame, DirectLabel
-from direct.interval.IntervalGlobal import Func, LerpFunc, Parallel, Sequence, Wait
-
+from toontown.toonbase import ToontownGlobals
+from panda3d.core import Point3, TextNode
 from toontown.minigame import TravelGameGlobals
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.toonbase import TTLocalizer
+from direct.interval.IntervalGlobal import Parallel, Sequence, LerpFunc, Func, Wait
 
 class VoteResultsPanel(DirectFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('VoteResultsPanel')

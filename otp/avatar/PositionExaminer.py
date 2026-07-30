@@ -1,9 +1,6 @@
 from panda3d.core import *
-
 from direct.showbase.DirectObject import DirectObject
-
 from otp.otpbase import OTPGlobals
-
 
 class PositionExaminer(DirectObject, NodePath):
 

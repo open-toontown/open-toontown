@@ -1,19 +1,16 @@
-import math
-
 from panda3d.core import *
 from panda3d.otp import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM, State
 from direct.interval.IntervalGlobal import *
-
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-
-from toontown.battle import BattlePlace
+from direct.directnotify import DirectNotifyGlobal
 from toontown.hood import Place
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.battle import BattlePlace
 from toontown.suit import Suit
-from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
-
+import math
 
 class CogHQBossBattle(BattlePlace.BattlePlace):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogHQBossBattle')
@@ -121,7 +118,7 @@ class CogHQBossBattle(BattlePlace.BattlePlace):
         NametagGlobals.setMasterArrowsOn(1)
         base.localAvatar.inventory.setRespectInvasions(0)
         self.fsm.request(requestStatus['how'], [requestStatus])
-
+    
     def __bossGenerate(self, boss):
         if self.bossCog:
             return

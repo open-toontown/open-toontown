@@ -1,11 +1,8 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.interval.IntervalGlobal import *
-from direct.task.Task import Task
-
 from toontown.toonbase.ToonBaseGlobal import *
-
+from direct.task.Task import Task
+from direct.interval.IntervalGlobal import *
 from .OrthoDrive import *
-
+from direct.directnotify import DirectNotifyGlobal
 
 class OrthoWalk:
     notify = DirectNotifyGlobal.directNotify.newCategory('OrthoWalk')

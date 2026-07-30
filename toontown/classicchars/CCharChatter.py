@@ -1,5 +1,5 @@
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 GREETING = 0
 COMMENT = 1
 GOODBYE = 2

@@ -1,14 +1,13 @@
 from panda3d.core import *
-
-from direct.gui.DirectGui import *
-from direct.task.Task import Task
-
-from toontown.estate import ClosetGlobals
-from toontown.toonbase import TTLocalizer
-
-from . import NPCToons, TailorClothesGUI, ToonDNA
 from .DistributedNPCToonBase import *
-
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from . import NPCToons
+from direct.task.Task import Task
+from . import TailorClothesGUI
+from toontown.toonbase import TTLocalizer
+from . import ToonDNA
+from toontown.estate import ClosetGlobals
 
 class DistributedNPCTailor(DistributedNPCToonBase):
 

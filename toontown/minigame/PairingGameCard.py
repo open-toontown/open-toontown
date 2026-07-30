@@ -1,10 +1,7 @@
-from panda3d.core import NodePath, Vec3
-
-from direct.interval.IntervalGlobal import LerpHprInterval, Parallel, SoundInterval
-
-from . import PlayingCardGlobals
 from .PlayingCard import PlayingCardNodePath
-
+from . import PlayingCardGlobals
+from panda3d.core import NodePath, Vec3
+from direct.interval.IntervalGlobal import LerpHprInterval, Parallel, SoundInterval
 
 class PairingGameCard(PlayingCardNodePath):
     DoIntervalDefault = True

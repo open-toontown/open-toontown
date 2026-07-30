@@ -1,12 +1,13 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM, State
 from direct.showbase.ShowBaseGlobal import *
-
+from . import DistributedCCharBase
+from . import DistributedDaisy
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM
+from direct.fsm import State
+from . import CharStateDatas
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from toontown.hood import TTHood
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
-from . import CharStateDatas, DistributedCCharBase, DistributedDaisy
-
 
 class DistributedSockHopDaisy(DistributedDaisy.DistributedDaisy):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSockHopDaisy')

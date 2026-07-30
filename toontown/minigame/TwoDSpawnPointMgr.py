@@ -1,11 +1,8 @@
 from panda3d.core import *
-
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.DirectObject import DirectObject
-
 from toontown.minigame import ToonBlitzGlobals
 from toontown.toonbase import ToontownGlobals
-
 
 class TwoDSpawnPointMgr(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDSpawnPointMgr')

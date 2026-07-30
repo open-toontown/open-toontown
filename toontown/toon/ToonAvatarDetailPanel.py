@@ -1,18 +1,17 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM, State
-from direct.gui.DirectGui import *
-from direct.showbase import DirectObject
-
-from toontown.friends import FriendInviter
-from toontown.hood import ZoneUtil
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase.ToontownBattleGlobals import Levels, Tracks
 from toontown.toonbase.ToontownGlobals import *
-
-from . import DistributedToon, ToonTeleportPanel
-
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from direct.showbase import DirectObject
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+from direct.directnotify import DirectNotifyGlobal
+from . import DistributedToon
+from toontown.friends import FriendInviter
+from . import ToonTeleportPanel
+from toontown.toonbase import TTLocalizer
+from toontown.hood import ZoneUtil
+from toontown.toonbase.ToontownBattleGlobals import Tracks, Levels
 globalAvatarDetail = None
 
 def showAvatarDetail(avId, avName, playerId = None):

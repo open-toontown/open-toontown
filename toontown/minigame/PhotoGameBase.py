@@ -1,7 +1,5 @@
-import random
-
 from . import PhotoGameGlobals
-
+import random
 
 class PhotoGameBase:
 

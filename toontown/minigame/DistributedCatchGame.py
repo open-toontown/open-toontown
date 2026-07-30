@@ -1,27 +1,32 @@
-import math
-from functools import reduce
-
 from panda3d.core import *
-
-from direct.distributed import DistributedSmoothNode
-from direct.fsm import ClassicFSM, State
-from direct.interval.IntervalGlobal import *
-from direct.showbase.PythonUtil import Functor, bound, lerp, lineupPos
-from direct.showbase.RandomNumGen import RandomNumGen
-from direct.task.Task import Task
-
-from toontown.suit import Suit, SuitDNA
-from toontown.toon import Toon, ToonDNA
-from toontown.toonbase import ToontownGlobals, ToontownTimer, TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import *
-
-from . import CatchGameGlobals, CatchGameToonSD, MinigameAvatarScorePanel, MinigameGlobals, Trajectory
-from .CatchGameGlobals import DropObjectTypes, Name2DropObjectType
 from .DistributedMinigame import *
+from direct.interval.IntervalGlobal import *
+from .OrthoWalk import *
+from direct.showbase.PythonUtil import Functor, bound, lineupPos, lerp
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+from toontown.toonbase import TTLocalizer
+from . import CatchGameGlobals
+from direct.task.Task import Task
+from toontown.toon import Toon
+from toontown.suit import Suit
+from . import MinigameAvatarScorePanel
+from toontown.toonbase import ToontownTimer
+from toontown.toonbase import ToontownGlobals
+from . import CatchGameToonSD
+from . import Trajectory
+import math
+from direct.distributed import DistributedSmoothNode
+from direct.showbase.RandomNumGen import RandomNumGen
+from . import MinigameGlobals
+from toontown.toon import ToonDNA
+from toontown.suit import SuitDNA
+from .CatchGameGlobals import DropObjectTypes
+from .CatchGameGlobals import Name2DropObjectType
 from .DropPlacer import *
 from .DropScheduler import *
-from .OrthoWalk import *
-
+from functools import reduce
 
 class DistributedCatchGame(DistributedMinigame):
     DropTaskName = 'dropSomething'

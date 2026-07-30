@@ -1,23 +1,21 @@
 import random
-from enum import IntEnum
-
+from direct.showbase.DirectObject import DirectObject
+from direct.interval.IntervalGlobal import LerpFunc, ActorInterval, LerpPosInterval
+from direct.interval.MetaInterval import Sequence
+from direct.directutil import Mopath
 from panda3d.core import *
 from panda3d.physics import *
-
-from direct.directutil import Mopath
-from direct.interval.IntervalGlobal import ActorInterval, LerpFunc, LerpPosInterval
-from direct.interval.MetaInterval import Sequence
-from direct.particles import ForceGroup, ParticleEffect, Particles
-from direct.showbase.DirectObject import DirectObject
-
-from toontown.battle import BattleProps
-from toontown.suit import Suit, SuitDNA
 from toontown.toonbase import ToontownGlobals
-
-from . import CogdoFlyingGameGlobals as Globals
+from toontown.suit import Suit
+from toontown.suit import SuitDNA
+from toontown.battle import BattleProps
 from . import CogdoUtil
+from . import CogdoFlyingGameGlobals as Globals
 from .CogdoFlyingUtil import swapAvatarShadowPlacer
-
+from direct.particles import ParticleEffect
+from direct.particles import Particles
+from direct.particles import ForceGroup
+from enum import IntEnum
 
 class CogdoFlyingObtacleFactory:
 
@@ -195,7 +193,6 @@ class CogdoFlyingObstacle(DirectObject):
 
 
 from panda3d.core import TransformState
-
 
 class CogdoFlyingWhirlwind(CogdoFlyingObstacle):
 

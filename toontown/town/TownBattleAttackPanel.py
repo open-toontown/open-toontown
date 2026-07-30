@@ -1,13 +1,9 @@
-import string
-
 from panda3d.core import *
-
 from direct.directnotify import DirectNotifyGlobal
+import string
 from direct.fsm import StateData
-
-from toontown.toonbase.ToontownBattleGlobals import gagIsPaidOnly
 from toontown.toontowngui.TeaserPanel import TeaserPanel
-
+from toontown.toonbase.ToontownBattleGlobals import gagIsPaidOnly
 AttackPanelHidden = 0
 
 def hideAttackPanel(flag):

@@ -1,11 +1,8 @@
-import random
-
-from panda3d.core import *
-
 from direct.gui.DirectGui import *
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from panda3d.core import *
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
+import random
 
 class ToontownLoadingScreen:
 

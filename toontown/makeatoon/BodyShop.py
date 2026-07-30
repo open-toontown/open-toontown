@@ -1,18 +1,13 @@
-import random
-
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
+from toontown.toon import ToonDNA
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-
-from toontown.toon import ToonDNA
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TeaserPanel
-
-from . import ShuffleButton
 from .MakeAToonGlobals import *
-
+import random
+from toontown.toonbase import TTLocalizer
+from direct.directnotify import DirectNotifyGlobal
+from toontown.toontowngui import TeaserPanel
+from . import ShuffleButton
 
 class BodyShop(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('BodyShop')

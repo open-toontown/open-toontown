@@ -1,6 +1,5 @@
 from toontown.toonbase import ToontownGlobals
 
-
 class CountryClubRoomBase:
 
     def __init__(self):
@@ -19,8 +18,7 @@ class CountryClubRoomBase:
     if __dev__:
 
         def getCountryClubEntityTypeReg(self):
-            from otp.level import EntityTypeRegistry
-
             from . import FactoryEntityTypes
+            from otp.level import EntityTypeRegistry
             typeReg = EntityTypeRegistry.EntityTypeRegistry(FactoryEntityTypes)
             return typeReg

@@ -1,7 +1,6 @@
 from direct.showbase.PythonUtil import SerialNumGen
 from direct.task import Task
 
-
 class SpeedMonitor:
     notify = directNotify.newCategory('SpeedMonitor')
     SerialGen = SerialNumGen()

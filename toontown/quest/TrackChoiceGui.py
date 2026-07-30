@@ -1,9 +1,9 @@
-from panda3d.core import *
-
 from direct.gui.DirectGui import *
-
-from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, ToontownTimer, TTLocalizer
-
+from panda3d.core import *
+from toontown.toonbase import ToontownTimer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownBattleGlobals
+from toontown.toonbase import TTLocalizer
 
 class TrackPoster(DirectFrame):
     normalTextColor = (0.3, 0.25, 0.2, 1)

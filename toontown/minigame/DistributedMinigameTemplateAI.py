@@ -1,7 +1,6 @@
-from direct.fsm import ClassicFSM, State
-
 from .DistributedMinigameAI import *
-
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
 
 class DistributedMinigameTemplateAI(DistributedMinigameAI):
 

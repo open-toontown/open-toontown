@@ -1,13 +1,9 @@
+from direct.gui.DirectGui import *
 from panda3d.core import *
 from panda3d.otp import *
-
-from direct.gui.DirectGui import *
-
+from . import ToonHead
 from toontown.distributed import DelayDelete
 from toontown.toonbase import ToontownGlobals
-
-from . import ToonHead
-
 
 class ToonHeadFrame(DirectFrame):
 

@@ -1,11 +1,8 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.MsgTypes import *
-from direct.distributed.PyDatagram import PyDatagram
-
+from direct.directnotify import DirectNotifyGlobal
 from . import LoginBase
-
+from direct.distributed.PyDatagram import PyDatagram
 
 class LoginTTAccount(LoginBase.LoginBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('LoginTTAcct')

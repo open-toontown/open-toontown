@@ -1,15 +1,14 @@
 from panda3d.core import *
 from panda3d.otp import *
-
-from direct.directnotify import DirectNotifyGlobal
+from toontown.toonbase import ToontownGlobals
+from direct.showbase import DirectObject
 from direct.fsm import StateData
 from direct.gui.DirectGui import *
-from direct.showbase import DirectObject
-
+from panda3d.core import *
+from toontown.toonbase import TTLocalizer
 from toontown.effects import DistributedFireworkShow
 from toontown.parties import DistributedPartyFireworksActivity
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from direct.directnotify import DirectNotifyGlobal
 
 class ShtikerBook(DirectFrame, StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('ShtikerBook')

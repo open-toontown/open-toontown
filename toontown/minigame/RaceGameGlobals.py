@@ -1,5 +1,4 @@
 from toontown.toonbase import TTLocalizer
-
 ValidChoices = [0,
  1,
  2,

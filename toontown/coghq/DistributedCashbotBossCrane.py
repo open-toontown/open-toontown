@@ -1,23 +1,19 @@
-import random
-
+from direct.gui.DirectGui import *
 from panda3d.core import *
 from panda3d.direct import *
-from panda3d.otp import *
 from panda3d.physics import *
-
-from direct.distributed import DistributedObject
+from panda3d.otp import *
+from direct.interval.IntervalGlobal import *
 from direct.distributed.ClockDelta import *
 from direct.fsm import FSM
-from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import *
-from direct.showbase import PythonUtil
+from direct.distributed import DistributedObject
 from direct.showutil import Rope
+from direct.showbase import PythonUtil
 from direct.task import Task
-
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from otp.otpbase import OTPGlobals
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+import random
 
 class DistributedCashbotBossCrane(DistributedObject.DistributedObject, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCashbotBossCrane')

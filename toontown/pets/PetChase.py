@@ -1,11 +1,7 @@
-import math
-
 from panda3d.core import *
-
 from direct.showbase.PythonUtil import reduceAngle
-
 from otp.movement import Impulse
-
+import math
 
 class PetChase(Impulse.Impulse):
 

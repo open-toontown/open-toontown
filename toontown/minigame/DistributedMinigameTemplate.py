@@ -1,12 +1,9 @@
 from panda3d.core import *
-
-from direct.fsm import ClassicFSM, State
-
-from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import *
-
 from .DistributedMinigame import *
-
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+from toontown.toonbase import TTLocalizer
 
 class DistributedMinigameTemplate(DistributedMinigame):
 

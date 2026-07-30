@@ -1,7 +1,5 @@
-from toontown.toonbase import ToontownGlobals
-
 from .SpecImports import *
-
+from toontown.toonbase import ToontownGlobals
 CogParent = 10000
 FrontCogParent = 10002
 LeftCogParent = 10007

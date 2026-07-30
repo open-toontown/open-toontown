@@ -1,13 +1,12 @@
 import random
-
 from panda3d.core import Point3
-
+from direct.fsm import ClassicFSM
+from direct.fsm import State
 from direct.distributed.ClockDelta import globalClockDelta
-from direct.fsm import ClassicFSM, State
 from direct.task import Task
-
-from toontown.minigame import CogThiefGameGlobals, DistributedMinigameAI, MinigameGlobals
-
+from toontown.minigame import DistributedMinigameAI
+from toontown.minigame import MinigameGlobals
+from toontown.minigame import CogThiefGameGlobals
 CTGG = CogThiefGameGlobals
 
 class DistributedCogThiefGameAI(DistributedMinigameAI.DistributedMinigameAI):

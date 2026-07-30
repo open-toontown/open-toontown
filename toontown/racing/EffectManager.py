@@ -1,11 +1,9 @@
 from panda3d.core import *
-
-from direct.interval.IntervalGlobal import *
+from panda3d.core import *
 from direct.showbase.DirectObject import DirectObject
-
-from toontown.battle import MovieUtil
+from direct.interval.IntervalGlobal import *
 from toontown.battle.BattleProps import *
-
+from toontown.battle import MovieUtil
 
 class EffectManager(DirectObject):
 

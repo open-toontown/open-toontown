@@ -1,15 +1,11 @@
-import random
-
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import *
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals
 from .MakeAToonGlobals import *
-
+from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
+import random
 
 class ShuffleButton:
     notify = DirectNotifyGlobal.directNotify.newCategory('ShuffleButton')

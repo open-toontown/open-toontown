@@ -1,7 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-
 from otp.distributed.DistributedDistrictAI import DistributedDistrictAI
-
 
 class ToontownDistrictAI(DistributedDistrictAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToontownDistrictAI')

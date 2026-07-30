@@ -1,5 +1,4 @@
 from panda3d.core import ColorBlendAttrib
-
 ModelPhase = 5
 ModelTypes = {'animation': 'a',
  'model': 'm',
@@ -58,9 +57,8 @@ class CogdoGameMovie:
         return
 
     def load(self):
-        from panda3d.core import TextNode
-
         from toontown.toonbase import ToontownGlobals
+        from panda3d.core import TextNode
         textNode = TextNode('moviedialogue')
         textNode.setTextColor(0, 0, 0, 1)
         textNode.setCardColor(1, 1, 1, 1)

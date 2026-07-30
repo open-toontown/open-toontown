@@ -1,6 +1,5 @@
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
-
+from direct.directnotify import DirectNotifyGlobal
 
 class DistributedPetshopInteriorAI(DistributedObjectAI.DistributedObjectAI):
 

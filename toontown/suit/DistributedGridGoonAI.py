@@ -1,15 +1,10 @@
-import random
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.task.Task import Task
-
 from otp.ai.AIBaseGlobal import *
-
+from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import SuitBattleGlobals
-from toontown.coghq import DistributedCrushableEntityAI
-
 from . import DistributedGoonAI
-
+from direct.task.Task import Task
+from toontown.coghq import DistributedCrushableEntityAI
+import random
 
 class DistributedGridGoonAI(DistributedGoonAI.DistributedGoonAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGridGoonAI')

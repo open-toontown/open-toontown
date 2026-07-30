@@ -1,11 +1,7 @@
 from panda3d.core import *
-
 from direct.interval.IntervalGlobal import *
-
-from otp.level import BasicEntities
-
 from . import MovingPlatform
-
+from otp.level import BasicEntities
 
 class ConveyorBelt(BasicEntities.NodePathEntity):
     UseClipPlanes = 1

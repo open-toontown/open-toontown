@@ -1,19 +1,23 @@
 from panda3d.core import *
 from panda3d.otp import *
-
+from . import FriendsListPanel
+from . import FriendInviter
+from . import FriendInvitee
+from . import FriendNotifier
 from direct.directnotify import DirectNotifyGlobal
-
-from otp.otpbase import OTPGlobals
-
+from toontown.toon import ToonTeleportPanel
 from toontown.friends import ToontownFriendSecret
 from toontown.pets import PetAvatarPanel
+from toontown.toon import ToonAvatarPanel
+from toontown.toon import PlayerInfoPanel
 from toontown.suit import SuitAvatarPanel
-from toontown.toon import (PlayerDetailPanel, PlayerInfoPanel, Toon, ToonAvatarDetailPanel, ToonAvatarPanel, ToonDNA,
-                           ToonTeleportPanel)
+from toontown.toon import ToonDNA
+from toontown.toon import ToonAvatarDetailPanel
+from toontown.toon import PlayerDetailPanel
 from toontown.toonbase import ToontownGlobals
-
-from . import FriendHandle, FriendInvitee, FriendInviter, FriendNotifier, FriendsListPanel
-
+from toontown.toon import Toon
+from . import FriendHandle
+from otp.otpbase import OTPGlobals
 
 class FriendsListManager:
     notify = DirectNotifyGlobal.directNotify.newCategory('FriendsListManager')

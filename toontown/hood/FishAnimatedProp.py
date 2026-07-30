@@ -1,13 +1,9 @@
-import random
-
+from . import AnimatedProp
 from direct.actor import Actor
 from direct.interval.IntervalGlobal import *
-
-from toontown.effects.Ripples import *
 from toontown.effects.Splash import *
-
-from . import AnimatedProp
-
+from toontown.effects.Ripples import *
+import random
 
 class FishAnimatedProp(AnimatedProp.AnimatedProp):
 

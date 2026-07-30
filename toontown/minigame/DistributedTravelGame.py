@@ -1,19 +1,18 @@
-import math
-
 from panda3d.core import *
-from panda3d.core import rad2Deg
-
-from direct.fsm import ClassicFSM, State
-from direct.interval.IntervalGlobal import *
-
-from toontown.toonbase import ToontownTimer, TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import GlobalDialogColor
-from toontown.toontowngui import TTDialog
-
-from . import TravelGameGlobals, VoteResultsPanel, VoteResultsTrolleyPanel
 from .DistributedMinigame import *
-
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownTimer
+from . import TravelGameGlobals
+import math
+from panda3d.core import rad2Deg
+from toontown.toontowngui import TTDialog
+from direct.interval.IntervalGlobal import *
+from . import VoteResultsPanel
+from . import VoteResultsTrolleyPanel
 IconDict = {ToontownGlobals.RaceGameId: 'mg_trolley_sign_race',
  ToontownGlobals.CannonGameId: 'mg_trolley_sign_cannon',
  ToontownGlobals.TagGameId: 'mg_trolley_sign_tag',

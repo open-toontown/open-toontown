@@ -1,11 +1,9 @@
-from panda3d.core import *
-
-from direct.gui.DirectGui import *
-
-from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
-
 from . import ShtikerPage
-
+from toontown.toonbase import ToontownBattleGlobals
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 
 class InventoryPage(ShtikerPage.ShtikerPage):
 

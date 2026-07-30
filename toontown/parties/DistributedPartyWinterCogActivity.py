@@ -1,6 +1,5 @@
 from toontown.parties.DistributedPartyCogActivity import DistributedPartyCogActivity
 
-
 class DistributedPartyWinterCogActivity(DistributedPartyCogActivity):
 
     def __init__(self, cr):

@@ -1,12 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
-
-from otp.otpbase import OTPLocalizer
-from otp.speedchat import SCMenuHolder
 from otp.speedchat.SCMenu import SCMenu
+from otp.speedchat import SCMenuHolder
 from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
-
+from otp.otpbase import OTPLocalizer
 from toontown.toonbase import ToontownGlobals
-
 holidayId2menuInfo = {ToontownGlobals.ELECTION_PROMOTION: (OTPLocalizer.SCMenuElection, [10000,
                                        10001,
                                        10006,

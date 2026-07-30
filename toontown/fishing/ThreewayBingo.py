@@ -1,7 +1,6 @@
 from direct.directnotify import DirectNotifyGlobal
-
-from toontown.fishing import BingoCardBase, BingoGlobals
-
+from toontown.fishing import BingoGlobals
+from toontown.fishing import BingoCardBase
 
 class ThreewayBingo(BingoCardBase.BingoCardBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ThreewayBingo')

@@ -1,10 +1,9 @@
-from direct.distributed import DistributedObject
-from direct.distributed.ClockDelta import *
-from direct.interval.IntervalGlobal import *
-
-from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toonbase.ToontownGlobals import *
-
+from direct.interval.IntervalGlobal import *
+from direct.distributed.ClockDelta import *
+from toontown.toonbase import ToontownGlobals
+from direct.distributed import DistributedObject
+from toontown.toonbase import TTLocalizer
 
 class DistributedHouseItem(DistributedObject.DistributedObject):
     notify = directNotify.newCategory('DistributedHouseItem')

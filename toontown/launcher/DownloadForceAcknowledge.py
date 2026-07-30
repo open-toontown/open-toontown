@@ -1,10 +1,7 @@
-import random
-
 from panda3d.core import *
-
-from toontown.toonbase import TTLocalizer
 from toontown.toontowngui import TTDialog
-
+from toontown.toonbase import TTLocalizer
+import random
 
 class DownloadForceAcknowledge:
 

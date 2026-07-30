@@ -1,13 +1,11 @@
 from panda3d.core import NodePath, Point3
-
-from direct.interval.FunctionInterval import Func, Wait
 from direct.interval.MetaInterval import Parallel, Sequence
 from direct.interval.SoundInterval import SoundInterval
-
-from toontown.building import ElevatorConstants, ElevatorUtils
-
-from . import CogdoGameConsts, CogdoUtil
-
+from direct.interval.FunctionInterval import Wait, Func
+from toontown.building import ElevatorConstants
+from toontown.building import ElevatorUtils
+from . import CogdoUtil
+from . import CogdoGameConsts
 
 class CogdoGameExit(NodePath):
 

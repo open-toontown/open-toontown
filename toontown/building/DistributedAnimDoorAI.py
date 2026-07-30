@@ -1,7 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
-
 from toontown.building import DistributedDoorAI
-
 
 class DistributedAnimDoorAI(DistributedDoorAI.DistributedDoorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedAnimDoorAI')

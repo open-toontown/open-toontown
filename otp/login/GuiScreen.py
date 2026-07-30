@@ -1,12 +1,10 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
+from otp.otpbase import OTPGlobals
 from direct.gui.DirectGui import *
-from direct.task.Task import Task
-
-from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.otpgui import OTPDialog
-
+from direct.directnotify import DirectNotifyGlobal
+from otp.otpbase import OTPLocalizer
+from direct.task.Task import Task
 
 class GuiScreen:
     notify = DirectNotifyGlobal.directNotify.newCategory('GuiScreen')

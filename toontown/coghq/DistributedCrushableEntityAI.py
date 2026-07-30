@@ -1,7 +1,5 @@
-from direct.directnotify import DirectNotifyGlobal
-
 from otp.level import DistributedEntityAI
-
+from direct.directnotify import DirectNotifyGlobal
 
 class DistributedCrushableEntityAI(DistributedEntityAI.DistributedEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCrushableEntityAI')

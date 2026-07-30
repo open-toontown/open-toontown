@@ -1,15 +1,12 @@
-import importlib
+from panda3d.core import *
+from direct.directnotify import DirectNotifyGlobal
+import types
+from . import AttribDesc
+from . import EntityTypeDesc
+from direct.showbase.PythonUtil import mostDerivedLast
 import os
 import string
-import types
-
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.showbase.PythonUtil import mostDerivedLast
-
-from . import AttribDesc, EntityTypeDesc
-
+import importlib
 
 class EntityTypeRegistry:
     notify = DirectNotifyGlobal.directNotify.newCategory('EntityTypeRegistry')

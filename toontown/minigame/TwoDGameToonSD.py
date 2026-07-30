@@ -1,19 +1,16 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM, State, StateData
+from toontown.toonbase.ToonBaseGlobal import *
 from direct.interval.IntervalGlobal import *
-from direct.task.Task import Task
-
+from toontown.toonbase.ToontownGlobals import *
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import StateData
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
+from . import ToonBlitzGlobals
 from otp.otpbase import OTPGlobals
-
+from direct.task.Task import Task
 from toontown.minigame import TwoDBattleMgr
 from toontown.racing import RaceHeadFrame
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-
-from . import ToonBlitzGlobals
-
 COLOR_RED = VBase4(1, 0, 0, 0.3)
 
 class TwoDGameToonSD(StateData.StateData):

@@ -1,12 +1,10 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM, State
-from direct.task.Task import Task
-
 from otp.ai.AIBaseGlobal import *
-
+from direct.distributed.ClockDelta import *
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM
 from . import DistributedAnimatedPropAI
-
+from direct.task.Task import Task
+from direct.fsm import State
 
 class DistributedKnockKnockDoorAI(DistributedAnimatedPropAI.DistributedAnimatedPropAI):
 

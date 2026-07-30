@@ -1,12 +1,10 @@
-from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM, State
-from direct.task import Task
-
 from otp.level import DistributedEntityAI
-
+from direct.directnotify import DirectNotifyGlobal
+from direct.task import Task
+from direct.fsm import ClassicFSM, State
+from direct.fsm import State
 from . import LiftConstants
-
 
 class DistributedLiftAI(DistributedEntityAI.DistributedEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLiftAI')

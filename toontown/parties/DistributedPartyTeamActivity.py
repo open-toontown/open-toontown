@@ -1,11 +1,9 @@
 from direct.distributed.ClockDelta import globalClockDelta
-
-from toontown.parties import PartyGlobals
-from toontown.parties.activityFSMs import TeamActivityFSM
-from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
-from toontown.parties.TeamActivityGui import TeamActivityGui
 from toontown.toonbase import TTLocalizer
-
+from toontown.parties import PartyGlobals
+from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
+from toontown.parties.activityFSMs import TeamActivityFSM
+from toontown.parties.TeamActivityGui import TeamActivityGui
 
 class DistributedPartyTeamActivity(DistributedPartyActivity):
     notify = directNotify.newCategory('DistributedPartyTeamActivity')

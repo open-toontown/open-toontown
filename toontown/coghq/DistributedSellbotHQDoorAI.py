@@ -1,13 +1,10 @@
 from direct.directnotify import DirectNotifyGlobal
-
-from otp.otpbase import OTPGlobals
-
-from toontown.building import DoorTypes, FADoorCodes
 from toontown.coghq import DistributedCogHQDoorAI
-from toontown.toonbase import ToontownAccessAI, ToontownGlobals
-
+from toontown.building import FADoorCodes, DoorTypes
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownAccessAI
 from . import CogDisguiseGlobals
-
+from otp.otpbase import OTPGlobals
 
 class DistributedSellbotHQDoorAI(DistributedCogHQDoorAI.DistributedCogHQDoorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSellbotHQDoorAI')

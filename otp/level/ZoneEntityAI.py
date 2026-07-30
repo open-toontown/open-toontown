@@ -1,6 +1,5 @@
 from . import ZoneEntityBase
 
-
 class ZoneEntityAI(ZoneEntityBase.ZoneEntityBase):
 
     def __init__(self, level, entId):

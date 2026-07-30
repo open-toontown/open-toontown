@@ -1,8 +1,7 @@
-from otp.otpbase import OTPLocalizer
-from otp.speedchat import SCMenuHolder
 from otp.speedchat.SCMenu import SCMenu
+from otp.speedchat import SCMenuHolder
 from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
-
+from otp.otpbase import OTPLocalizer
 ZoneToMsgs = {3: [1803, 1903],
  4: [1804, 1904],
  5: [1805, 1905],

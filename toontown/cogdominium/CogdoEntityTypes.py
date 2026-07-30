@@ -1,6 +1,5 @@
 from otp.level.EntityTypes import *
 
-
 class CogdoLevelMgr(LevelMgr):
     type = 'levelMgr'
 

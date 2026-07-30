@@ -1,6 +1,5 @@
 from direct.directnotify import DirectNotifyGlobal
 
-
 class CogdoLayout:
     notify = DirectNotifyGlobal.directNotify.newCategory('CogdoLayout')
 

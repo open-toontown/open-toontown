@@ -1,7 +1,5 @@
-import random
-
 from panda3d.core import *
-
+import random
 OFF = 0
 FLYING = 1
 LANDED = 2

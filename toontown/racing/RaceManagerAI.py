@@ -1,14 +1,11 @@
-import os
-import pickle
-
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase import DirectObject
-
-from toontown.ai import HolidayBaseAI
-from toontown.coghq import MintLayout
-from toontown.racing import DistributedRaceAI, RaceGlobals
+from toontown.racing import DistributedRaceAI
 from toontown.toonbase import ToontownGlobals, TTLocalizer
-
+from toontown.coghq import MintLayout
+from toontown.ai import HolidayBaseAI
+from direct.showbase import DirectObject
+from toontown.racing import RaceGlobals
+import os, pickle
 
 class RaceManagerAI(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('RaceManagerAI')

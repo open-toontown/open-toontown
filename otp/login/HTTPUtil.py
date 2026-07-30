@@ -1,6 +1,5 @@
 from panda3d.core import *
 
-
 class HTTPUtilException(Exception):
 
     def __init__(self, what):

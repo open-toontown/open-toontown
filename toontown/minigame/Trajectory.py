@@ -1,9 +1,6 @@
-from math import *
-
-from panda3d.core import *
-
 from direct.directnotify import DirectNotifyGlobal
-
+from panda3d.core import *
+from math import *
 
 class Trajectory:
     notify = DirectNotifyGlobal.directNotify.newCategory('Trajectory')

@@ -1,13 +1,9 @@
-import random
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.task import Task
-
 from otp.ai.AIBaseGlobal import *
-
-from toontown.toon import NPCToons
-
+from direct.task import Task
+from direct.directnotify import DirectNotifyGlobal
 from . import Quests
+from toontown.toon import NPCToons
+import random
 
 """
 TODO: (done, tested)

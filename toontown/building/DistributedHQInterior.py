@@ -1,6 +1,3 @@
-import pickle
-from random import Random
-
 from panda3d.core import ModelNode, NodePath, TextNode
 from panda3d.toontown import DNADoor
 
@@ -9,8 +6,12 @@ from direct.distributed.DistributedObject import DistributedObject
 from direct.task.TaskManagerGlobal import taskMgr
 
 from toontown.building import ToonInteriorColors
-from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import base
+
+import pickle
+from random import Random
 
 
 class DistributedHQInterior(DistributedObject):

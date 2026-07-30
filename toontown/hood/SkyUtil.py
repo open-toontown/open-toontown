@@ -1,10 +1,7 @@
 from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.task.Task import Task
-
 from toontown.toonbase.ToontownGlobals import *
-
+from direct.task.Task import Task
+from direct.directnotify import DirectNotifyGlobal
 notify = DirectNotifyGlobal.directNotify.newCategory('SkyUtil')
 
 def cloudSkyTrack(task):

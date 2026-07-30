@@ -1,12 +1,10 @@
-from direct.distributed import ClockDelta
-from direct.task import Task
-
-from toontown.parties import PartyGlobals
-from toontown.toon import NPCToons
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-
 from .DistributedNPCToonBaseAI import DistributedNPCToonBaseAI
-
+from toontown.toonbase import TTLocalizer
+from direct.task import Task
+from toontown.toonbase import ToontownGlobals
+from toontown.toon import NPCToons
+from direct.distributed import ClockDelta
+from toontown.parties import PartyGlobals
 
 class DistributedNPCPartyPersonAI(DistributedNPCToonBaseAI):
 

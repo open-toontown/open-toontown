@@ -1,13 +1,11 @@
-from panda3d.core import *
-
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import StateData
-from direct.gui.DirectGui import *
-
-from toontown.battle import BattleBase
-from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toonbase.ToontownBattleGlobals import *
-
+from toontown.toonbase import ToontownGlobals
+from direct.fsm import StateData
+from direct.directnotify import DirectNotifyGlobal
+from toontown.battle import BattleBase
+from direct.gui.DirectGui import *
+from panda3d.core import *
+from toontown.toonbase import TTLocalizer
 
 class FireCogPanel(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('ChooseAvatarPanel')
