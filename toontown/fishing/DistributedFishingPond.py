@@ -1,11 +1,14 @@
-from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from . import FishGlobals
-from toontown.fishing import DistributedPondBingoManager
 from panda3d.core import Vec3
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
 from direct.task import Task
+
+from toontown.fishing import DistributedPondBingoManager
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import FishGlobals
+
 
 class DistributedFishingPond(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFishingPond')

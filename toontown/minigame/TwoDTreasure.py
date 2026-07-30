@@ -1,10 +1,13 @@
-from direct.showbase.DirectObject import DirectObject
-from toontown.toonbase.ToontownGlobals import *
+import random
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-from toontown.minigame import ToonBlitzGlobals
+from direct.showbase.DirectObject import DirectObject
+
 from toontown.estate.GardenGlobals import BeanColors
-import random
+from toontown.minigame import ToonBlitzGlobals
+from toontown.toonbase.ToontownGlobals import *
+
 
 class TwoDTreasure(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDTreasure')

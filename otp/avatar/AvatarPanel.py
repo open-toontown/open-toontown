@@ -1,8 +1,11 @@
 from panda3d.core import *
+
+from direct.distributed import DistributedObject
 from direct.gui.DirectGui import *
 from direct.showbase import DirectObject
+
 from . import Avatar
-from direct.distributed import DistributedObject
+
 
 class AvatarPanel(DirectObject.DirectObject):
     currentAvatarPanel = None

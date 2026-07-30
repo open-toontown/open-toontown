@@ -1,7 +1,10 @@
-from otp.avatar.Avatar import teleportNotify
-from toontown.toonbase import ToontownGlobals
 import copy
+
+from otp.avatar.Avatar import teleportNotify
+
 from toontown.chat import ToonChatGarbler
+from toontown.toonbase import ToontownGlobals
+
 
 class FriendHandle:
 

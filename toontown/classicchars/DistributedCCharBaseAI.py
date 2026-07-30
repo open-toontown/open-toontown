@@ -1,11 +1,15 @@
-from otp.ai.AIBaseGlobal import *
+import functools
+import random
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
+
+from otp.ai.AIBaseGlobal import *
 from otp.avatar import DistributedAvatarAI
 from otp.avatar.DistributedPlayerAI import DistributedPlayerAI
-from direct.directnotify import DirectNotifyGlobal
+
 from toontown.toonbase import ToontownGlobals
-import random
-import functools
+
 
 class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCCharBaseAI')

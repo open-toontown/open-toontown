@@ -1,6 +1,7 @@
 import math
-from . import RingTrack
-from . import RingAction
+
+from . import RingAction, RingTrack
+
 center = (0, 0)
 up = (0, 1)
 down = (0, -1)

@@ -1,5 +1,5 @@
-from . import Entity
-from . import LevelConstants
+from . import Entity, LevelConstants
+
 
 class ZoneEntityBase(Entity.Entity):
 

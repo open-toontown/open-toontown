@@ -1,17 +1,15 @@
 from panda3d.core import Point3
+
 from direct.directnotify import DirectNotifyGlobal
-from . import HoodDataAI
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import DistributedCogHQDoorAI
-from toontown.building import DistributedDoorAI
-from toontown.building import DoorTypes
-from toontown.coghq import LobbyManagerAI
-from toontown.building import DistributedBossElevatorAI
+
+from toontown.building import (DistributedBBElevatorAI, DistributedBoardingPartyAI, DistributedBossElevatorAI,
+                               DistributedDoorAI, DoorTypes, FADoorCodes)
+from toontown.coghq import DistributedCogHQDoorAI, DistributedCogKartAI, LobbyManagerAI
 from toontown.suit import DistributedBossbotBossAI
-from toontown.building import DistributedBBElevatorAI
-from toontown.building import DistributedBoardingPartyAI
-from toontown.building import FADoorCodes
-from toontown.coghq import DistributedCogKartAI
+from toontown.toonbase import ToontownGlobals
+
+from . import HoodDataAI
+
 
 class BossbotHQDataAI(HoodDataAI.HoodDataAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('BossbotHQDataAI')

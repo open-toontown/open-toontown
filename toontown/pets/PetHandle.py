@@ -1,5 +1,6 @@
+from toontown.pets import PetDetail, PetMood, PetTraits
 from toontown.toonbase import ToontownGlobals
-from toontown.pets import PetMood, PetTraits, PetDetail
+
 
 class PetHandle:
 

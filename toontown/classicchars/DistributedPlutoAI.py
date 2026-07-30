@@ -1,12 +1,12 @@
-from otp.ai.AIBaseGlobal import *
-from toontown.classicchars import DistributedCCharBaseAI
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
 from direct.task import Task
-from toontown.classicchars import CharStateDatasAI, CCharChatter
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+
+from otp.ai.AIBaseGlobal import *
+
+from toontown.classicchars import CCharChatter, CharStateDatasAI, DistributedCCharBaseAI
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class DistributedPlutoAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPlutoAI')

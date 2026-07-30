@@ -1,13 +1,16 @@
+from panda3d.core import *
+
 from direct.actor.Actor import Actor
 from direct.task.Task import Task
-from panda3d.core import *
+
 from otp.otpbase.OTPBase import OTPBase
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+
 from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
-from toontown.parties.PartyGlobals import ActivityIds, ActivityTypes, JUKEBOX_TIMEOUT
-from toontown.parties.PartyGlobals import getMusicRepeatTimes, MUSIC_PATH, sanitizePhase
 from toontown.parties.JukeboxGui import JukeboxGui
+from toontown.parties.PartyGlobals import (JUKEBOX_TIMEOUT, MUSIC_PATH, ActivityIds, ActivityTypes, getMusicRepeatTimes,
+                                           sanitizePhase)
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class DistributedPartyJukeboxActivityBase(DistributedPartyActivity):
     notify = directNotify.newCategory('DistributedPartyJukeboxActivityBase')

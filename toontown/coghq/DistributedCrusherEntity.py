@@ -1,5 +1,7 @@
-from otp.level import BasicEntities
 from direct.directnotify import DirectNotifyGlobal
+
+from otp.level import BasicEntities
+
 
 class DistributedCrusherEntity(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCrusherEntity')

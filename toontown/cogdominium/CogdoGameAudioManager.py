@@ -1,5 +1,7 @@
 from panda3d.core import AudioSound
+
 from direct.interval.SoundInterval import SoundInterval
+
 
 class CogdoGameSfx:
 

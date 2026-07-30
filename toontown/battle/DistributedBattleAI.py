@@ -1,12 +1,17 @@
+import random
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.task import Task
+
 from otp.ai.AIBase import *
+
+from toontown.toonbase.ToontownBattleGlobals import *
+
+from . import DistributedBattleBaseAI
 from .BattleBase import *
 from .BattleCalculatorAI import *
-from toontown.toonbase.ToontownBattleGlobals import *
 from .SuitBattleGlobals import *
-from . import DistributedBattleBaseAI
-from direct.task import Task
-from direct.directnotify import DirectNotifyGlobal
-import random
+
 
 class DistributedBattleAI(DistributedBattleBaseAI.DistributedBattleBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleAI')

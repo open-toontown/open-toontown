@@ -1,19 +1,23 @@
 import math
+
+from panda3d.core import CollisionNode, CollisionSphere, CollisionTube, Mat4, NodePath, Point3, TextNode, Vec4
+
 from direct.actor.Actor import Actor
+from direct.fsm.FSM import FSM
 from direct.interval.ActorInterval import ActorInterval
-from direct.interval.MetaInterval import Sequence, Parallel
 from direct.interval.FunctionInterval import Func, Wait
+from direct.interval.LerpInterval import LerpFunc, LerpScaleInterval
+from direct.interval.MetaInterval import Parallel, Sequence
 from direct.interval.SoundInterval import SoundInterval
-from direct.interval.LerpInterval import LerpScaleInterval, LerpFunc
 from direct.showbase.PythonUtil import bound as clamp
 from direct.task import Task
-from direct.fsm.FSM import FSM
-from panda3d.core import CollisionTube, CollisionNode, CollisionSphere
-from panda3d.core import Point3, Vec4, NodePath, TextNode, Mat4
-from toontown.toonbase import ToontownGlobals
+
 from toontown.battle.BattleProps import globalPropPool
 from toontown.battle.BattleSounds import globalBattleSoundCache
+from toontown.toonbase import ToontownGlobals
+
 from . import PartyGlobals
+
 
 class PartyCogManager:
 

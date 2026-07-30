@@ -1,16 +1,19 @@
+import string
+
 from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from direct.showbase.PythonUtil import lineInfo, Functor
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
-from otp.level import Level
-from otp.level import LevelConstants
-from otp.level import Entity
-from otp.level import EditMgr
-from .SpecImports import *
-from .InGameEditorElements import *
+from direct.interval.IntervalGlobal import *
+from direct.showbase.PythonUtil import Functor, lineInfo
+
+from otp.level import EditMgr, Entity, Level, LevelConstants
+
 from toontown.cogdominium import CogdoEntityCreator
-import string
+
+from .InGameEditorElements import *
+from .SpecImports import *
+
 
 class InGameEditorEntityBase(InGameEditorElement):
 

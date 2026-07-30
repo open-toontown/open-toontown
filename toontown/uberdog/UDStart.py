@@ -1,7 +1,7 @@
-from panda3d.core import *
+import argparse
 import builtins
 
-import argparse
+from panda3d.core import *
 
 parser = argparse.ArgumentParser(description="Open Toontown - UberDOG Server")
 parser.add_argument('--base-channel', help='The base channel that the server will use.')
@@ -41,6 +41,7 @@ builtins.game = game
 loadPrcFile('etc/Configrc.prc')
 
 from otp.ai.AIBaseGlobal import *
+
 from toontown.uberdog.ToontownUDRepository import ToontownUDRepository
 
 simbase.air = ToontownUDRepository(ConfigVariableInt('air-base-channel', 1000000).value, ConfigVariableInt('air-stateserver', 4002).value)

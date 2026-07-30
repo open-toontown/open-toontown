@@ -1,5 +1,6 @@
 from otp.avatar.AvatarHandle import AvatarHandle
 
+
 class FriendInfo(AvatarHandle):
 
     def __init__(self, avatarName = '', playerName = '', onlineYesNo = 0, openChatEnabledYesNo = 0, openChatFriendshipYesNo = 0, wlChatEnabledYesNo = 0, location = '', sublocation = '', timestamp = 0, avatarId = 0, friendPrivs = 0, tokenPrivs = 0):

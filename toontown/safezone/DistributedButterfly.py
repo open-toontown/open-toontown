@@ -1,18 +1,22 @@
-from panda3d.core import *
-from direct.distributed.ClockDelta import *
-from direct.interval.IntervalGlobal import *
-from panda3d.direct import ShowInterval, HideInterval
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedObject
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from panda3d.core import NodePath
-from direct.directutil import Mopath
-from toontown.toonbase import ToontownGlobals
-from direct.actor import Actor
-from . import ButterflyGlobals
-from direct.showbase import RandomNumGen
 import random
+
+from panda3d.core import *
+from panda3d.core import NodePath
+from panda3d.direct import HideInterval, ShowInterval
+
+from direct.actor import Actor
+from direct.directnotify import DirectNotifyGlobal
+from direct.directutil import Mopath
+from direct.distributed import DistributedObject
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+from direct.interval.IntervalGlobal import *
+from direct.showbase import RandomNumGen
+
+from toontown.toonbase import ToontownGlobals
+
+from . import ButterflyGlobals
+
 
 class DistributedButterfly(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedButterfly')

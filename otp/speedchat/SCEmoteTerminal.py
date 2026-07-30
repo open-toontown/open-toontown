@@ -1,7 +1,10 @@
 from direct.gui.DirectGui import *
-from .SCTerminal import SCTerminal
-from otp.otpbase.OTPLocalizer import EmoteList, EmoteWhispers
+
 from otp.avatar import Emote
+from otp.otpbase.OTPLocalizer import EmoteList, EmoteWhispers
+
+from .SCTerminal import SCTerminal
+
 SCEmoteMsgEvent = 'SCEmoteMsg'
 SCEmoteNoAccessEvent = 'SCEmoteNoAccess'
 

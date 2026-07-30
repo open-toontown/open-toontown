@@ -1,6 +1,8 @@
-from direct.distributed import DistributedObject
-from . import Entity
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+
+from . import Entity
+
 
 class DistributedEntity(DistributedObject.DistributedObject, Entity.Entity):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedEntity')

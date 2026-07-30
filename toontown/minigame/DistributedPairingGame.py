@@ -1,18 +1,18 @@
 from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
-from .DistributedMinigame import *
+
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from toontown.toonbase import TTLocalizer, ToontownTimer
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.minigame import PlayingCardGlobals
-from toontown.minigame import PairingGameCard
-from toontown.minigame import PlayingCardDeck
-from toontown.minigame import PairingGameGlobals
-from .OrthoWalk import OrthoWalk
-from .OrthoDrive import OrthoDrive
-from direct.interval.IntervalGlobal import Sequence, Parallel, Func, LerpColorScaleInterval, LerpScaleInterval, LerpFunctionInterval, Wait, SoundInterval, WaitInterval
+from direct.interval.IntervalGlobal import (Func, LerpColorScaleInterval, LerpFunctionInterval, LerpScaleInterval,
+                                            Parallel, Sequence, SoundInterval, Wait, WaitInterval)
+
+from toontown.minigame import PairingGameCard, PairingGameGlobals, PlayingCardDeck, PlayingCardGlobals
+from toontown.toonbase import ToontownBattleGlobals, ToontownTimer, TTLocalizer
+from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import GlobalDialogColor
+
+from .DistributedMinigame import *
+from .OrthoDrive import OrthoDrive
+from .OrthoWalk import OrthoWalk
+
 
 class DistributedPairingGame(DistributedMinigame):
     TOON_SPEED = 11

@@ -1,15 +1,18 @@
 from panda3d.otp import *
-from .PurchaseBase import *
-from direct.task.Task import Task
-from toontown.toon import ToonHead
-from toontown.toonbase import ToontownTimer
-from direct.gui import DirectGuiGlobals as DGG
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.gui import DirectGuiGlobals as DGG
 from direct.showbase.PythonUtil import Functor
-from toontown.minigame import TravelGameGlobals
+from direct.task.Task import Task
+
 from toontown.distributed import DelayDelete
-from toontown.toonbase import ToontownGlobals
+from toontown.minigame import TravelGameGlobals
+from toontown.toon import ToonHead
+from toontown.toonbase import ToontownGlobals, ToontownTimer
+
 from . import MinigameGlobals
+from .PurchaseBase import *
+
 COUNT_UP_RATE = 0.15
 COUNT_UP_DURATION = 0.5
 DELAY_BEFORE_COUNT_UP = 1.0

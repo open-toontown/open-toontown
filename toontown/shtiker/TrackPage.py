@@ -1,12 +1,13 @@
 from panda3d.core import *
-from . import ShtikerPage
+
 from direct.gui.DirectGui import *
-from panda3d.core import *
+
 from toontown.quest import Quests
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import TTLocalizer
 from toontown.toon import Toon
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
+
+from . import ShtikerPage
+
 MAX_FRAMES = 18
 Track2Anim = {ToontownBattleGlobals.HEAL_TRACK: 'juggle',
  ToontownBattleGlobals.TRAP_TRACK: 'toss',

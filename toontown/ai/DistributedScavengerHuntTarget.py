@@ -1,6 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
+
 from otp.speedchat import SpeedChatGlobals
+
 
 class DistributedScavengerHuntTarget(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedScavengerHuntTarget')

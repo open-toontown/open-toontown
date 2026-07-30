@@ -1,20 +1,26 @@
 import urllib.request
-from panda3d.core import Vec4, Vec3, TextNode, PNMImage, StringStream, Texture, HTTPClient, DocumentSpec, Ramfile, Point3, ConfigVariableBool, ConfigVariableString
-from direct.task.Task import Task
-from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton, DirectScrolledList, DirectCheckButton, OnscreenText
-from direct.gui import DirectGuiGlobals
+
+from panda3d.core import (ConfigVariableBool, ConfigVariableString, DocumentSpec, HTTPClient, PNMImage, Point3, Ramfile,
+                          StringStream, TextNode, Texture, Vec3, Vec4)
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.gui import DirectGuiGlobals
+from direct.gui.DirectGui import (DirectButton, DirectCheckButton, DirectFrame, DirectLabel, DirectScrolledList,
+                                  OnscreenText)
+from direct.task.Task import Task
+
 from otp.otpbase import OTPLocalizer
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.toontowngui import TTDialog
-from toontown.parties import PartyGlobals
-from toontown.parties import PartyUtils
+
+from toontown.parties import PartyGlobals, PartyUtils
 from toontown.parties.CalendarGuiMonth import CalendarGuiMonth
-from toontown.parties.PartyUtils import getPartyActivityIcon
 from toontown.parties.Party import Party
+from toontown.parties.PartyUtils import getPartyActivityIcon
 from toontown.parties.ServerTimeGui import ServerTimeGui
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toontowngui import TTDialog
+
 from . import ShtikerPage
+
 EventsPage_Host = 0
 EventsPage_Invited = 1
 EventsPage_Calendar = 2

@@ -1,6 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
+
 from toontown.ai import DistributedPhaseEventMgr
+
 
 class DistributedMailboxZeroMgr(DistributedPhaseEventMgr.DistributedPhaseEventMgr):
     neverDisable = 1

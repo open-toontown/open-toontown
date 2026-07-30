@@ -1,9 +1,13 @@
-from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from panda3d.core import *
-from direct.distributed.ClockDelta import *
 import time
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+from direct.distributed.ClockDelta import *
+
+from toontown.toonbase import ToontownGlobals
+
 
 class DistributedTimer(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedTimer')

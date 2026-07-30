@@ -15,36 +15,16 @@ from direct.task.Timer import Timer
 
 from otp.avatar.Emote import globalEmote
 
-from toontown.battle import BattleParticles
-from toontown.battle import MovieUtil
-from toontown.battle.BattleBase import (
-    attackAffectsGroup,
-    BattleBase,
-    BATTLE_SMALL_VALUE,
-    CLIENT_INPUT_TIMEOUT,
-    FIRE,
-    HEAL,
-    levelAffectsGroup,
-    LURE,
-    MAX_JOIN_T,
-    NO_ATTACK,
-    NO_TRAP,
-    NPCSOS,
-    PASS,
-    PASS_ATTACK,
-    PETSOS,
-    SOS,
-    TRAP,
-    UN_ATTACK
-)
-
+from toontown.battle import BattleParticles, MovieUtil
+from toontown.battle.BattleBase import (BATTLE_SMALL_VALUE, CLIENT_INPUT_TIMEOUT, FIRE, HEAL, LURE, MAX_JOIN_T,
+                                        NO_ATTACK, NO_TRAP, NPCSOS, PASS, PASS_ATTACK, PETSOS, SOS, TRAP, UN_ATTACK,
+                                        BattleBase, attackAffectsGroup, levelAffectsGroup)
 from toontown.battle.BattleProps import globalPropPool
 from toontown.battle.Movie import Movie
 from toontown.distributed.DelayDelete import DelayDelete, cleanupDelayDeletes
 from toontown.hood import ZoneUtil
 from toontown.suit.Suit import Suit
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
 from toontown.toonbase.ToonBaseGlobal import base
 
 

@@ -1,10 +1,12 @@
 from panda3d.core import *
-from . import SafeZoneLoader
-from . import DDPlayground
+
 from direct.fsm import State
-from toontown.char import CharDNA
-from toontown.char import Char
+
+from toontown.char import Char, CharDNA
 from toontown.toonbase import ToontownGlobals
+
+from . import DDPlayground, SafeZoneLoader
+
 
 class DDSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
 

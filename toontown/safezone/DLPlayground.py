@@ -1,6 +1,9 @@
-from panda3d.core import *
-from . import Playground
 import random
+
+from panda3d.core import *
+
+from . import Playground
+
 
 class DLPlayground(Playground.Playground):
 

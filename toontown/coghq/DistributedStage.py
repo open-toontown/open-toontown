@@ -1,17 +1,21 @@
-from panda3d.core import *
-from direct.distributed.ClockDelta import *
-from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from direct.showbase import BulletinBoardWatcher
-from otp.otpbase import OTPGlobals
-from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase import TTLocalizer
-from direct.gui import OnscreenText
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import DistributedStageRoom, StageLayout, StageRoom
 import random
-from direct.task.Task import Task
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+from direct.distributed.ClockDelta import *
+from direct.gui import OnscreenText
 from direct.interval.IntervalGlobal import *
+from direct.showbase import BulletinBoardWatcher
+from direct.task.Task import Task
+
+from otp.otpbase import OTPGlobals
+
+from toontown.coghq import DistributedStageRoom, StageLayout, StageRoom
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToontownGlobals import *
+
 
 class DistributedStage(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedStage')

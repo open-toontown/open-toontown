@@ -1,4 +1,5 @@
-from direct.distributed.DistributedObject import ESGenerating, ESGenerated, ESNum2Str
+from direct.distributed.DistributedObject import ESGenerated, ESGenerating, ESNum2Str
+
 
 class DelayDeletable:
     DelayDeleteSerialGen = SerialNumGen()

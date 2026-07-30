@@ -1,10 +1,13 @@
 from direct.showbase import PythonUtil
+
+from otp.otpbase import OTPLocalizer
+from otp.otpbase.OTPLocalizer import SpeedChatStaticText
 from otp.speedchat.SCMenu import SCMenu
 from otp.speedchat.SCMenuHolder import SCMenuHolder
 from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
-from otp.otpbase.OTPLocalizer import SpeedChatStaticText
+
 from toontown.speedchat.TTSCIndexedTerminal import TTSCIndexedTerminal
-from otp.otpbase import OTPLocalizer
+
 VictoryPartiesMenu = [(OTPLocalizer.VictoryPartiesMenuSections[1], [30350,
    30351,
    30352,

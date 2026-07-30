@@ -1,16 +1,18 @@
+import functools
+import math
+import random
+
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import DistributedCashbotBossCraneAI
-from toontown.coghq import DistributedCashbotBossSafeAI
-from toontown.suit import DistributedCashbotBossGoonAI
-from toontown.coghq import DistributedCashbotBossTreasureAI
+from direct.fsm import FSM
+
 from toontown.battle import BattleExperienceAI
 from toontown.chat import ResistanceChat
-from direct.fsm import FSM
-from toontown.suit import DistributedBossCogAI
-import random, math
-import functools
+from toontown.coghq import DistributedCashbotBossCraneAI, DistributedCashbotBossSafeAI, DistributedCashbotBossTreasureAI
+from toontown.suit import DistributedBossCogAI, DistributedCashbotBossGoonAI
+from toontown.toonbase import ToontownGlobals
+
 
 class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCashbotBossAI')
@@ -477,7 +479,7 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def enterEpilogue(self):
         DistributedBossCogAI.DistributedBossCogAI.enterEpilogue(self)
         self.d_setRewardId(self.rewardId)
-    
+
     def getNextState(self):
         currState = self.getCurrentOrNextState()
         if currState == "Elevator":
@@ -493,5 +495,5 @@ class DistributedCashbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         # Do not skip Victory, weird stuff may happen, like not collecting their rewards.
         elif currState == "Reward":
             return "Epilogue"
-        
+
         return None

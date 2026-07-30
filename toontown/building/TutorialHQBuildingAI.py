@@ -1,12 +1,12 @@
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
-from . import DistributedDoorAI
-from . import DistributedHQInteriorAI
-from . import FADoorCodes
-from . import DoorTypes
-from toontown.toon import NPCToons
+
 from toontown.quest import Quests
+from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
+
+from . import DistributedDoorAI, DistributedHQInteriorAI, DoorTypes, FADoorCodes
 
 # This is not a distributed class... It just owns and manages some distributed
 # classes.
@@ -18,7 +18,7 @@ class TutorialHQBuildingAI:
         self.air = air
         self.exteriorZone = exteriorZone
         self.interiorZone = interiorZone
-        
+
         self.setup(blockNumber)
 
     def cleanup(self):
@@ -103,7 +103,7 @@ class TutorialHQBuildingAI:
         # hide the periscope
         self.interior.setTutorial(1)
         return
-       
+
     def unlockDoor(self, door):
         door.setDoorLock(FADoorCodes.UNLOCKED)
 

@@ -1,12 +1,15 @@
-from direct.distributed import DistributedObjectAI
-from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.golf import DistributedGolfHoleAI
-from panda3d.core import *
-from direct.fsm.FSM import FSM
-from toontown.ai.ToonBarrier import *
-from toontown.golf import GolfGlobals
 import functools
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObjectAI
+from direct.fsm.FSM import FSM
+
+from toontown.ai.ToonBarrier import *
+from toontown.golf import DistributedGolfHoleAI, GolfGlobals
+from toontown.toonbase import ToontownGlobals
+
 INITIAL = 0
 EXITED = 1
 EXPECTED = 2

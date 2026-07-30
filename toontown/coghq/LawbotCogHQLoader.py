@@ -1,15 +1,12 @@
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import StateData
-from . import CogHQLoader
-from toontown.toonbase import ToontownGlobals
+from direct.fsm import State, StateData
 from direct.gui import DirectGui
-from toontown.toonbase import TTLocalizer
+
 from toontown.toon import Toon
-from direct.fsm import State
-from . import StageInterior
-from . import LawbotHQExterior
-from . import LawbotHQBossBattle
-from . import LawbotOfficeExterior
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CogHQLoader, LawbotHQBossBattle, LawbotHQExterior, LawbotOfficeExterior, StageInterior
+
 aspectSF = 0.7227
 
 class LawbotCogHQLoader(CogHQLoader.CogHQLoader):

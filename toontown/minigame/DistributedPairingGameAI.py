@@ -1,12 +1,11 @@
-from .DistributedMinigameAI import *
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from toontown.minigame import PlayingCardGlobals
-from toontown.minigame import PlayingCard
-from toontown.minigame.PlayingCard import PlayingCardBase
-from toontown.minigame import PlayingCardDeck
-from toontown.minigame import PairingGameGlobals
+
 from toontown.ai.ToonBarrier import ToonBarrier
+from toontown.minigame import PairingGameGlobals, PlayingCard, PlayingCardDeck, PlayingCardGlobals
+from toontown.minigame.PlayingCard import PlayingCardBase
+
+from .DistributedMinigameAI import *
+
 
 class DistributedPairingGameAI(DistributedMinigameAI):
     notify = directNotify.newCategory('DistributedPairingGameAI')

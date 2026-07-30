@@ -1,17 +1,19 @@
-from panda3d.core import *
-from direct.directnotify import DirectNotifyGlobal
-from direct.showbase.DirectObject import DirectObject
-from direct.showbase import PythonUtil
-from direct.interval.IntervalGlobal import *
-from toontown.minigame import ToonBlitzGlobals
-from toontown.toonbase import ToontownGlobals
-from toontown.suit import Suit
-from toontown.suit import SuitDNA
-from toontown.battle.BattleProps import *
-from toontown.battle import MovieUtil
-from toontown.battle import BattleParticles, BattleProps
-from direct.particles import ParticleEffect
 import math
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
+from direct.particles import ParticleEffect
+from direct.showbase import PythonUtil
+from direct.showbase.DirectObject import DirectObject
+
+from toontown.battle import BattleParticles, BattleProps, MovieUtil
+from toontown.battle.BattleProps import *
+from toontown.minigame import ToonBlitzGlobals
+from toontown.suit import Suit, SuitDNA
+from toontown.toonbase import ToontownGlobals
+
 COLOR_RED = VBase4(1, 0, 0, 0.3)
 
 class TwoDEnemy(DirectObject):

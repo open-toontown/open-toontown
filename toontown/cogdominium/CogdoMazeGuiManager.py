@@ -1,12 +1,16 @@
 from panda3d.core import NodePath
-from direct.interval.MetaInterval import Sequence
+
 from direct.interval.FunctionInterval import Func
-from toontown.toonbase.ToontownTimer import ToontownTimer
+from direct.interval.MetaInterval import Sequence
+
 from toontown.toonbase import ToontownIntervals
-from .CogdoMazeGameGuis import CogdoMazeHud, CogdoMazeMapGui, CogdoMazeBossGui
-from .CogdoGameMessageDisplay import CogdoGameMessageDisplay
+from toontown.toonbase.ToontownTimer import ToontownTimer
+
 from . import CogdoMazeGameGlobals as Globals
+from .CogdoGameMessageDisplay import CogdoGameMessageDisplay
+from .CogdoMazeGameGuis import CogdoMazeBossGui, CogdoMazeHud, CogdoMazeMapGui
 from .CogdoMemoGui import CogdoMemoGui
+
 
 class CogdoMazeGuiManager:
 

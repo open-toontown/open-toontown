@@ -1,7 +1,9 @@
-from direct.showbase.DirectObject import DirectObject
-from direct.gui.DirectGui import DirectFrame, DirectButton
 import direct.gui.DirectGuiGlobals as DGG
+from direct.gui.DirectGui import DirectButton, DirectFrame
+from direct.showbase.DirectObject import DirectObject
+
 from toontown.parties import PartyUtils
+
 
 class CannonGui(DirectObject):
     notify = directNotify.newCategory('CannonGui')

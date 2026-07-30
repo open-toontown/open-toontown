@@ -1,5 +1,6 @@
-from toontown.cogdominium import CogdoCraneGameSpec
 from toontown.cogdominium import CogdoCraneGameConsts as Consts
+from toontown.cogdominium import CogdoCraneGameSpec
+
 
 class CogdoCraneGameBase:
 

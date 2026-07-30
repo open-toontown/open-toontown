@@ -1,17 +1,16 @@
+from direct.actor import Actor
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
+from direct.particles import ParticleEffect
+
+from toontown.toonbase import ToontownBattleGlobals
+
+from . import BattleParticles, BattleProps, MovieCamera, MovieNPCSOS, MovieUtil
 from .BattleBase import *
 from .BattleProps import *
 from .BattleSounds import *
-from . import MovieUtil
-from . import MovieCamera
-from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownBattleGlobals
-from direct.actor import Actor
-from direct.particles import ParticleEffect
-from . import BattleParticles
-from . import BattleProps
-from . import MovieNPCSOS
 from .MovieSound import createSuitResetPosTrack
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieTrap')
 
 def doTraps(traps):

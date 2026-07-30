@@ -1,10 +1,15 @@
+import types
+
 from panda3d.core import *
-from .ToontownAIMsgTypes import *
+
 from direct.directnotify.DirectNotifyGlobal import *
-from toontown.toon import DistributedToonAI
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
-import types
+
+from toontown.toon import DistributedToonAI
+
+from .ToontownAIMsgTypes import *
+
 
 class DatabaseObject:
     notify = directNotify.newCategory('DatabaseObject')

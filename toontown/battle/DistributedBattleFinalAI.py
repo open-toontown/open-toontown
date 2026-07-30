@@ -1,14 +1,20 @@
-from otp.ai.AIBase import *
-from .BattleBase import *
-from .BattleCalculatorAI import *
-from toontown.toonbase.ToontownBattleGlobals import *
-from .SuitBattleGlobals import *
-from . import DistributedBattleBaseAI
-from direct.task import Task
+import random
+import types
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import State
 from direct.showbase.PythonUtil import addListsByValue
-import random, types
+from direct.task import Task
+
+from otp.ai.AIBase import *
+
+from toontown.toonbase.ToontownBattleGlobals import *
+
+from . import DistributedBattleBaseAI
+from .BattleBase import *
+from .BattleCalculatorAI import *
+from .SuitBattleGlobals import *
+
 
 class DistributedBattleFinalAI(DistributedBattleBaseAI.DistributedBattleBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleFinalAI')

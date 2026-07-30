@@ -1,9 +1,14 @@
+import random
+
 from panda3d.core import *
+
 from direct.interval.IntervalGlobal import *
+
+from toontown.effects.SparksTrailLong import SparksTrailLong
+
 from .EffectController import EffectController
 from .PooledEffect import PooledEffect
-from toontown.effects.SparksTrailLong import SparksTrailLong
-import random
+
 
 class TrailExplosion(PooledEffect, EffectController):
     trailsVel = [[Vec3(150, -50, 100), Vec3(-150, -50, 100), Vec3(0, 150, 100)], [Vec3(120, 120, 100),

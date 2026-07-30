@@ -1,5 +1,6 @@
 from otp.otpbase import OTPGlobals
 
+
 class SubDetailRecord:
 
     def __init__(self):

@@ -1,6 +1,9 @@
 from panda3d.core import *
-from toontown.toonbase import TTLocalizer, ToontownGlobals
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 from . import DistributedNPCToonBase
+
 
 class DistributedNPCScientist(DistributedNPCToonBase.DistributedNPCToonBase):
 

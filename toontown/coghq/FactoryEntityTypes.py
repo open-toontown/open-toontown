@@ -1,5 +1,6 @@
 from otp.level.EntityTypes import *
 
+
 class FactoryLevelMgr(LevelMgr):
     type = 'levelMgr'
     attribs = (('cogLevel',

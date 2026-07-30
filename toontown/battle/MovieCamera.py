@@ -1,12 +1,17 @@
+import random
+
 from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
+
+from toontown.toonbase.ToontownBattleGlobals import *
+
+from . import MovieUtil
 from .BattleBase import *
 from .BattleProps import *
-from toontown.toonbase.ToontownBattleGlobals import *
 from .SuitBattleGlobals import *
-from direct.directnotify import DirectNotifyGlobal
-import random
-from . import MovieUtil
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieCamera')
 
 def chooseHealShot(heals, attackDuration):

@@ -1,6 +1,8 @@
-from .SCMenu import SCMenu
-from .SCCustomTerminal import SCCustomTerminal
 from otp.otpbase.OTPLocalizer import CustomSCStrings
+
+from .SCCustomTerminal import SCCustomTerminal
+from .SCMenu import SCMenu
+
 
 class SCCustomMenu(SCMenu):
 

@@ -1,4 +1,6 @@
-from panda3d.core import Point3, Quat, rad2Deg, Vec3
+import math
+
+from panda3d.core import Point3, Quat, Vec3, rad2Deg
 from panda3d.otp import Nametag, NametagFloat3d
 
 from direct.directnotify.DirectNotifyGlobal import directNotify
@@ -11,17 +13,13 @@ from direct.task.TaskManagerGlobal import taskMgr
 
 from toontown.effects.DustCloud import DustCloud
 from toontown.effects.Splash import Splash
-from toontown.minigame import CannonGameGlobals
-from toontown.minigame import MinigameGlobals
+from toontown.minigame import CannonGameGlobals, MinigameGlobals
 from toontown.minigame.DistributedMinigame import DistributedMinigame
 from toontown.minigame.Trajectory import Trajectory
 from toontown.toon.ToonHead import ToonHead
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import base
 from toontown.toonbase.ToontownTimer import ToontownTimer
-
-import math
 
 LAND_TIME = 2
 WORLD_SCALE = 2.0

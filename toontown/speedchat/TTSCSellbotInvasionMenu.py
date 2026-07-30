@@ -1,9 +1,12 @@
 from direct.showbase import PythonUtil
+
+from otp.otpbase import OTPLocalizer
 from otp.speedchat.SCMenu import SCMenu
 from otp.speedchat.SCMenuHolder import SCMenuHolder
 from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
+
 from toontown.speedchat.TTSCIndexedTerminal import TTSCIndexedTerminal
-from otp.otpbase import OTPLocalizer
+
 SellbotInvasionMenu = [(OTPLocalizer.SellbotInvasionMenuSections[0], list(range(30400, 30404)))]
 
 class TTSCSellbotInvasionMenu(SCMenu):

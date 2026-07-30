@@ -1,30 +1,30 @@
-from direct.interval.IntervalGlobal import *
-from direct.task.TaskManagerGlobal import *
-from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
-from . import DistributedBossCog
-from direct.task.Task import Task
-from . import DistributedCashbotBossGoon
-from . import SuitDNA
-from toontown.toon import Toon
-from toontown.toon import ToonDNA
-from direct.fsm import FSM
-from toontown.toonbase import ToontownGlobals
-from otp.otpbase import OTPGlobals
-from toontown.building import ElevatorUtils
-from toontown.building import ElevatorConstants
-from toontown.battle import MovieToonVictory
-from toontown.battle import RewardPanel
-from toontown.distributed import DelayDelete
-from toontown.chat import ResistanceChat
-from toontown.coghq import CogDisguiseGlobals
+import functools
+import math
+import random
+
 from panda3d.core import *
 from panda3d.direct import ShowInterval
-from panda3d.physics import *
 from panda3d.otp import *
-import random
-import math
-import functools
+from panda3d.physics import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import FSM
+from direct.interval.IntervalGlobal import *
+from direct.task.Task import Task
+from direct.task.TaskManagerGlobal import *
+
+from otp.otpbase import OTPGlobals
+
+from toontown.battle import MovieToonVictory, RewardPanel
+from toontown.building import ElevatorConstants, ElevatorUtils
+from toontown.chat import ResistanceChat
+from toontown.coghq import CogDisguiseGlobals
+from toontown.distributed import DelayDelete
+from toontown.toon import Toon, ToonDNA
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import DistributedBossCog, DistributedCashbotBossGoon, SuitDNA
+
 OneBossCog = None
 TTL = TTLocalizer
 
@@ -483,7 +483,7 @@ class DistributedCashbotBoss(DistributedBossCog.DistributedBossCog, FSM.FSM):
                 track.append(toon.posHprInterval(0.2, pos, hpr))
 
         return track
-    
+
     def moveLocalToonToBattleThreePos(self):
         # This exists because when skipping to the crane round via a magic word, the toon gets
         # teleported to the center, taking damage in the progress.  This is done to remedy that.

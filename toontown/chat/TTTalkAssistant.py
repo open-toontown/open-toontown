@@ -1,19 +1,22 @@
 import string
 import sys
-from direct.showbase import DirectObject
-from otp.otpbase import OTPLocalizer
-from toontown.toonbase import TTLocalizer
-from direct.directnotify import DirectNotifyGlobal
-from otp.otpbase import OTPGlobals
-from otp.speedchat import SCDecoders
-from panda3d.core import *
-from otp.chat.ChatGlobals import *
-from otp.chat.TalkGlobals import *
-from otp.speedchat import SpeedChatGlobals
-from otp.chat.TalkMessage import TalkMessage
-from otp.chat.TalkAssistant import TalkAssistant
-from toontown.speedchat import TTSCDecoders
 import time
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.showbase import DirectObject
+
+from otp.chat.ChatGlobals import *
+from otp.chat.TalkAssistant import TalkAssistant
+from otp.chat.TalkGlobals import *
+from otp.chat.TalkMessage import TalkMessage
+from otp.otpbase import OTPGlobals, OTPLocalizer
+from otp.speedchat import SCDecoders, SpeedChatGlobals
+
+from toontown.speedchat import TTSCDecoders
+from toontown.toonbase import TTLocalizer
+
 
 class TTTalkAssistant(TalkAssistant):
     notify = DirectNotifyGlobal.directNotify.newCategory('TTTalkAssistant')

@@ -1,20 +1,22 @@
+import random
+
 from panda3d.core import *
 from panda3d.otp import *
-from direct.interval.IntervalGlobal import *
-from .BattleBase import *
+
 from direct.actor import Actor
-from toontown.suit import SuitDNA
 from direct.directnotify import DirectNotifyGlobal
-from . import DistributedBattleBase
-from toontown.toon import TTEmote
-from otp.avatar import Emote
-from toontown.toonbase import TTLocalizer
-from . import MovieUtil
 from direct.fsm import State
-from toontown.suit import Suit
-from . import SuitBattleGlobals
-import random
-from toontown.toonbase import ToontownGlobals
+from direct.interval.IntervalGlobal import *
+
+from otp.avatar import Emote
+
+from toontown.suit import Suit, SuitDNA
+from toontown.toon import TTEmote
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import DistributedBattleBase, MovieUtil, SuitBattleGlobals
+from .BattleBase import *
+
 
 class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBattleBldg')

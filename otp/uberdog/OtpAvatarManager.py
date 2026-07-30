@@ -1,6 +1,8 @@
-from pickle import loads, dumps
-from direct.distributed import DistributedObject
+from pickle import dumps, loads
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+
 notify = DirectNotifyGlobal.directNotify.newCategory('AvatarManager')
 
 class OtpAvatarManager(DistributedObject.DistributedObject):

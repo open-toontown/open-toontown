@@ -1,11 +1,13 @@
 from panda3d.core import *
 from panda3d.otp import *
-from direct.gui.DirectGui import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
-from otp.otpbase import OTPLocalizer
-from otp.otpbase import OTPGlobals
+from direct.gui.DirectGui import *
+
+from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.uberdog import RejectCode
+
 globalFriendSecret = None
 AccountSecret = 0
 AvatarSecret = 1

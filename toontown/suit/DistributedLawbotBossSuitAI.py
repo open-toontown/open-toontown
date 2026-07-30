@@ -1,12 +1,15 @@
-from otp.ai.AIBaseGlobal import *
-from direct.distributed.ClockDelta import *
-from direct.directnotify import DirectNotifyGlobal
-from toontown.battle import SuitBattleGlobals
-from toontown.toonbase import ToontownGlobals
-from toontown.suit import DistributedSuitBaseAI
 import random
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
+
+from otp.ai.AIBaseGlobal import *
+
+from toontown.battle import SuitBattleGlobals
+from toontown.suit import DistributedSuitBaseAI
+from toontown.toonbase import ToontownGlobals
+
 
 class DistributedLawbotBossSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotBossSuitAI')

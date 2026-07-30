@@ -1,17 +1,19 @@
 import time
-from panda3d.core import Vec3, Vec4, Point3, TextNode, VBase4
-from direct.gui.DirectGui import DirectFrame, DirectButton, DirectLabel, DirectScrolledList, DirectCheckButton
-from direct.gui import DirectGuiGlobals
-from direct.showbase.DirectObject import DirectObject
-from direct.showbase import PythonUtil
+
+from panda3d.core import Point3, TextNode, VBase4, Vec3, Vec4
+
 from direct.fsm.FSM import FSM
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.parties import PartyGlobals
-from toontown.parties.PartyInfo import PartyInfo
-from toontown.parties import PartyUtils
+from direct.gui import DirectGuiGlobals
+from direct.gui.DirectGui import DirectButton, DirectCheckButton, DirectFrame, DirectLabel, DirectScrolledList
+from direct.showbase import PythonUtil
+from direct.showbase.DirectObject import DirectObject
+
+from toontown.parties import PartyGlobals, PartyUtils
 from toontown.parties.PartyEditorGrid import PartyEditorGrid
 from toontown.parties.PartyEditorListElement import PartyEditorListElement
+from toontown.parties.PartyInfo import PartyInfo
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class PartyEditor(FSM, DirectObject):
     notify = directNotify.newCategory('PartyEditor')

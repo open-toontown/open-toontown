@@ -1,10 +1,12 @@
-from .DistributedMinigameAI import *
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from . import TargetGameGlobals
 import random
 import types
+
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+
+from . import TargetGameGlobals
+from .DistributedMinigameAI import *
+
 
 def checkPlace(placeX, placeY, fillSize, placeList):
     goodPlacement = 1

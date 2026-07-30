@@ -1,17 +1,22 @@
 import math
-from panda3d.core import Point3, CollisionSphere, CollisionNode, CollisionHandlerEvent, TextNode, VBase4, NodePath, BitMask32
+
+from panda3d.core import (BitMask32, CollisionHandlerEvent, CollisionNode, CollisionSphere, NodePath, Point3, TextNode,
+                          VBase4)
 from panda3d.direct import SmoothMover
-from direct.fsm import FSM
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
 from direct.distributed.ClockDelta import globalClockDelta
-from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import FSM
 from direct.gui.DirectGui import DGG, DirectButton, DirectLabel, DirectWaitBar
-from direct.interval.IntervalGlobal import Sequence, Wait, ActorInterval, Parallel, Func, LerpPosInterval, LerpHprInterval, ProjectileInterval, LerpScaleInterval, SoundInterval
+from direct.interval.IntervalGlobal import (ActorInterval, Func, LerpHprInterval, LerpPosInterval, LerpScaleInterval,
+                                            Parallel, ProjectileInterval, Sequence, SoundInterval, Wait)
 from direct.showbase import PythonUtil
 from direct.task import Task
+
 from toontown.golf import GolfGlobals
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGolfSpot')
@@ -728,8 +733,8 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
                 pass
 
     def getFlyBallSplatInterval(self, x, y, z, flyBallCode, throwerId):
-        from toontown.toonbase import ToontownBattleGlobals
         from toontown.battle import BattleProps
+        from toontown.toonbase import ToontownBattleGlobals
         splatName = 'dust'
         splat = BattleProps.globalPropPool.getProp(splatName)
         splat.setBillboardPointWorld(2)

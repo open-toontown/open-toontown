@@ -1,19 +1,19 @@
-from direct.interval.IntervalGlobal import *
-from .BattleProps import *
-from .BattleSounds import *
-from .BattleBase import *
-from direct.directnotify import DirectNotifyGlobal
-from . import MovieCamera
 import random
-from . import MovieUtil
-from . import BattleParticles
-from . import HealJokes
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
+from direct.task import Task
+
+from toontown.effects import Splash
+from toontown.toon import NPCToons
 from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToontownBattleGlobals import AvPropDamage
-from toontown.toon import NPCToons
-from . import MovieNPCSOS
-from toontown.effects import Splash
-from direct.task import Task
+
+from . import BattleParticles, HealJokes, MovieCamera, MovieNPCSOS, MovieUtil
+from .BattleBase import *
+from .BattleProps import *
+from .BattleSounds import *
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieHeal')
 soundFiles = ('AA_heal_tickle.ogg', 'AA_heal_telljoke.ogg', 'AA_heal_smooch.ogg', 'AA_heal_happydance.ogg', 'AA_heal_pixiedust.ogg', 'AA_heal_juggle.ogg', 'AA_heal_High_Dive.ogg')
 healPos = Point3(0, 0, 0)

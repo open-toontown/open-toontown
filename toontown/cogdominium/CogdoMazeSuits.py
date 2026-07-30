@@ -1,13 +1,18 @@
-from panda3d.core import Point3, VBase4
-from direct.fsm.FSM import FSM
-from direct.interval.IntervalGlobal import Sequence, Parallel, ActorInterval, Func, Wait, ParticleInterval, Track, LerpColorScaleInterval, LerpScaleInterval, LerpHprInterval
-from direct.task.Task import Task
-from toontown.battle import BattleParticles
-from toontown.battle import MovieUtil
-from toontown.minigame.MazeSuit import MazeSuit
-from .CogdoMazeGameObjects import CogdoMazeSplattable
-from . import CogdoMazeGameGlobals as Globals
 import random
+
+from panda3d.core import Point3, VBase4
+
+from direct.fsm.FSM import FSM
+from direct.interval.IntervalGlobal import (ActorInterval, Func, LerpColorScaleInterval, LerpHprInterval,
+                                            LerpScaleInterval, Parallel, ParticleInterval, Sequence, Track, Wait)
+from direct.task.Task import Task
+
+from toontown.battle import BattleParticles, MovieUtil
+from toontown.minigame.MazeSuit import MazeSuit
+
+from . import CogdoMazeGameGlobals as Globals
+from .CogdoMazeGameObjects import CogdoMazeSplattable
+
 
 class CogdoMazeSuit(MazeSuit, FSM, CogdoMazeSplattable):
     GagHitEventName = 'CogdoMazeSuit_GagHit'

@@ -1,5 +1,6 @@
-from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+
 
 class CatalogManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('CatalogManager')

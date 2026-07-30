@@ -1,21 +1,24 @@
+import math
+import random
+import time
+
 from panda3d.toontown import *
-from otp.ai.AIBaseGlobal import *
-from direct.distributed import DistributedObjectAI
-from . import SuitPlannerBase, DistributedSuitAI
-from toontown.battle import BattleManagerAI
-from direct.task import Task
+
 from direct.directnotify import DirectNotifyGlobal
-from . import SuitDNA
-from toontown.battle import SuitBattleGlobals
-from . import SuitTimings
-from toontown.toon import NPCToons
-from toontown.building import HQBuildingAI
-from toontown.hood import ZoneUtil
-from toontown.building import SuitBuildingGlobals
+from direct.distributed import DistributedObjectAI
+from direct.task import Task
+
+from otp.ai.AIBaseGlobal import *
+
+from toontown.battle import BattleManagerAI, SuitBattleGlobals
+from toontown.building import HQBuildingAI, SuitBuildingGlobals
 from toontown.building.DistributedBuildingAI import DistributedBuildingAI
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toonbase import ToontownGlobals
-import math, time, random
+from toontown.hood import ZoneUtil
+from toontown.toon import NPCToons
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
+
+from . import DistributedSuitAI, SuitDNA, SuitPlannerBase, SuitTimings
+
 
 class DistributedSuitPlannerAI(DistributedObjectAI.DistributedObjectAI, SuitPlannerBase.SuitPlannerBase):
     CogdoPopFactor = config.GetFloat('cogdo-pop-factor', 1.5)

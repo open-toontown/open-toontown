@@ -1,11 +1,14 @@
-from panda3d.core import CollisionSphere, CollisionNode
-from panda3d.core import NodePath, BitMask32
-from direct.showbase.DirectObject import DirectObject
-from direct.interval.MetaInterval import Sequence
+from panda3d.core import BitMask32, CollisionNode, CollisionSphere, NodePath
+
 from direct.interval.FunctionInterval import Func, Wait
 from direct.interval.IntervalGlobal import LerpFunc
+from direct.interval.MetaInterval import Sequence
+from direct.showbase.DirectObject import DirectObject
+
 from toontown.toonbase import ToontownGlobals
+
 from . import CogdoUtil
+
 
 class CogdoGameGatherable(NodePath, DirectObject):
     EnterEventName = 'CogdoGameGatherable_Enter'

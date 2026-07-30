@@ -1,6 +1,9 @@
 from panda3d.core import *
+
 from direct.interval.IntervalGlobal import *
+
 from toontown.battle.BattleProps import globalPropPool
+
 
 class Ripples(NodePath):
     rippleCount = 0

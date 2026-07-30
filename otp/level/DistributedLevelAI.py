@@ -1,11 +1,14 @@
 from panda3d.core import *
-from otp.ai.AIBaseGlobal import *
-from direct.distributed.ClockDelta import *
-from direct.distributed import DistributedObjectAI
-from . import Level
+
 from direct.directnotify import DirectNotifyGlobal
-from . import EntityCreatorAI
+from direct.distributed import DistributedObjectAI
+from direct.distributed.ClockDelta import *
 from direct.showbase.PythonUtil import Functor, weightedChoice
+
+from otp.ai.AIBaseGlobal import *
+
+from . import EntityCreatorAI, Level
+
 
 class DistributedLevelAI(DistributedObjectAI.DistributedObjectAI, Level.Level):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLevelAI')

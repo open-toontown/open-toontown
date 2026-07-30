@@ -1,8 +1,11 @@
-import string
 import random
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPLocalizer
+import string
+
 from otp.chat import ChatGarbler
+from otp.otpbase import OTPLocalizer
+
+from toontown.toonbase import TTLocalizer
+
 
 class ToonChatGarbler(ChatGarbler.ChatGarbler):
     animalSounds = {'dog': TTLocalizer.ChatGarblerDog,

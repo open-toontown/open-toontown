@@ -1,10 +1,13 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.showbase.ShowBase import *
-from toontown.toonbase import TTLocalizer
 import string
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import StateData
+from direct.showbase.ShowBase import *
+
+from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToontownBattleGlobals import gagIsPaidOnly
 from toontown.toontowngui.TeaserPanel import TeaserPanel
+
 
 class PlantTreeGUI(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('PlantTreeGUI')

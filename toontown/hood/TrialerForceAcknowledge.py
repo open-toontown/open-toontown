@@ -1,8 +1,10 @@
 from panda3d.core import *
-from toontown.toonbase import TTLocalizer
-from . import ZoneUtil
-from toontown.toonbase import ToontownGlobals
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toontowngui import TeaserPanel
+
+from . import ZoneUtil
+
 
 class TrialerForceAcknowledge:
 

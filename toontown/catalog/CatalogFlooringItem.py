@@ -1,4 +1,5 @@
 from .CatalogSurfaceItem import *
+
 FTTextureName = 0
 FTColor = 1
 FTBasePrice = 2

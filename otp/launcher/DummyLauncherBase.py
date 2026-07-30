@@ -1,7 +1,9 @@
 from panda3d.core import *
+
 from direct.showbase.MessengerGlobal import *
-from direct.task.TaskManagerGlobal import *
 from direct.task.Task import Task
+from direct.task.TaskManagerGlobal import *
+
 
 class DummyLauncherBase:
 

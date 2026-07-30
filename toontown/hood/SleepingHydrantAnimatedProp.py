@@ -1,7 +1,10 @@
-from . import AnimatedProp
+import math
+
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
-import math
+
+from . import AnimatedProp
+
 
 class SleepingHydrantAnimatedProp(AnimatedProp.AnimatedProp):
 

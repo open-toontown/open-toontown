@@ -1,17 +1,18 @@
 from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
 from direct.interval.IntervalGlobal import *
+
+from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toontowngui import TTDialog
+
+from . import DistributedElevator, DistributedElevatorExt
 from .ElevatorConstants import *
 from .ElevatorUtils import *
-from . import DistributedElevator
-from . import DistributedElevatorExt
-from toontown.toonbase import ToontownGlobals
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from toontown.hood import ZoneUtil
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
+
 
 class DistributedBossElevator(DistributedElevatorExt.DistributedElevatorExt):
 

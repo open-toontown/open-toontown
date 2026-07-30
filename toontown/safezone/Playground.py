@@ -17,8 +17,7 @@ from toontown.toon.DeathForceAcknowledge import DeathForceAcknowledge
 from toontown.toon.HealthForceAcknowledge import HealthForceAcknowledge
 from toontown.toon.NPCForceAcknowledge import NPCForceAcknowledge
 from toontown.toon.Toon import teleportDebug
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import base
 from toontown.toontowngui import TTDialog
 from toontown.trolley.Trolley import Trolley

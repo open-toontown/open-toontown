@@ -1,17 +1,19 @@
-from panda3d.core import Point3, CollisionSphere, CollisionNode, BitMask32, Vec3, NodePath, TextNode, Vec4
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
-from direct.interval.IntervalGlobal import Sequence, Parallel, SoundInterval
-from direct.interval.FunctionInterval import Wait
-from direct.distributed import DistributedObject
+from panda3d.core import BitMask32, CollisionNode, CollisionSphere, NodePath, Point3, TextNode, Vec3, Vec4
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
 from direct.gui import DirectLabel
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.parties.ServerTimeGui import ServerTimeGui
-from toontown.parties.PublicPartyGui import PublicPartyGui
+from direct.interval.FunctionInterval import Wait
+from direct.interval.IntervalGlobal import Parallel, Sequence, SoundInterval
+
+from otp.otpbase import OTPGlobals, OTPLocalizer
+
 from toontown.parties import PartyGlobals
+from toontown.parties.PublicPartyGui import PublicPartyGui
+from toontown.parties.ServerTimeGui import ServerTimeGui
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toontowngui import TTDialog
+
 
 class DistributedPartyGate(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyGate')

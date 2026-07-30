@@ -1,18 +1,22 @@
-from direct.gui.DirectGui import *
+import random
+
 from panda3d.core import *
 from panda3d.direct import SmoothMover
-from direct.interval.IntervalGlobal import *
+
+from direct.distributed import DistributedObject
 from direct.distributed.ClockDelta import *
 from direct.fsm import FSM
-from direct.distributed import DistributedObject
-from direct.showutil import Rope
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
 from direct.showbase import PythonUtil
+from direct.showutil import Rope
 from direct.task import Task
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+
 from otp.otpbase import OTPGlobals
+
 from toontown.cogdominium import CogdoCraneGameConsts as GameConsts
-import random
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class DistCogdoCrane(DistributedObject.DistributedObject, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistCogdoCrane')

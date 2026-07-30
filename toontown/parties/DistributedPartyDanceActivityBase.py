@@ -1,22 +1,23 @@
 import random
+from enum import IntEnum
+
 from panda3d.core import *
-from direct.interval.FunctionInterval import Wait, Func
-from direct.interval.MetaInterval import Sequence, Parallel
+
 from direct.fsm import FSM
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from direct.interval.FunctionInterval import Func, Wait
+from direct.interval.MetaInterval import Parallel, Sequence
+
 from toontown.minigame.OrthoDrive import OrthoDrive
 from toontown.minigame.OrthoWalk import OrthoWalk
+from toontown.parties import PartyGlobals
 from toontown.parties.activityFSMs import DanceActivityFSM
-from toontown.parties.PartyGlobals import ActivityIds, ActivityTypes
-from toontown.parties.PartyGlobals import DancePatternToAnims, DanceAnimToName
 from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
-from toontown.parties.PartyDanceActivityToonFSM import PartyDanceActivityToonFSM
-from toontown.parties.PartyDanceActivityToonFSM import ToonDancingStates
 from toontown.parties.KeyCodes import KeyCodes
 from toontown.parties.KeyCodesGui import KeyCodesGui
-from toontown.parties import PartyGlobals
-from enum import IntEnum
+from toontown.parties.PartyDanceActivityToonFSM import PartyDanceActivityToonFSM, ToonDancingStates
+from toontown.parties.PartyGlobals import ActivityIds, ActivityTypes, DanceAnimToName, DancePatternToAnims
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 DANCE_FLOOR_COLLISION = 'danceFloor_collision'
 DanceViews = IntEnum('DanceViews', ('Normal', 'Dancing', 'Isometric'), start=0)
 

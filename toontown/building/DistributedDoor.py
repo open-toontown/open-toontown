@@ -6,31 +6,17 @@ from direct.distributed.ClockDelta import globalClockDelta
 from direct.distributed.DistributedObject import DistributedObject
 from direct.fsm.ClassicFSM import ClassicFSM
 from direct.fsm.State import State
-from direct.interval.IntervalGlobal import (
-    ActorInterval,
-    Func,
-    HprInterval,
-    LerpHprInterval,
-    LerpPosHprInterval,
-    LerpPosInterval,
-    Parallel,
-    PosHprInterval,
-    Sequence,
-    SoundInterval,
-    Wait
-)
-
+from direct.interval.IntervalGlobal import (ActorInterval, Func, HprInterval, LerpHprInterval, LerpPosHprInterval,
+                                            LerpPosInterval, Parallel, PosHprInterval, Sequence, SoundInterval, Wait)
 from direct.showbase.MessengerGlobal import messenger
 from direct.task.TaskManagerGlobal import taskMgr
 
-from toontown.building import DoorTypes
-from toontown.building import FADoorCodes
+from toontown.building import DoorTypes, FADoorCodes
 from toontown.distributed.DelayDeletable import DelayDeletable
 from toontown.distributed.DelayDelete import DelayDelete, cleanupDelayDeletes
 from toontown.hood import ZoneUtil
 from toontown.suit.Suit import Suit
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import base
 from toontown.toontowngui import TTDialog
 from toontown.toontowngui.TeaserPanel import TeaserPanel

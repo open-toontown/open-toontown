@@ -1,5 +1,6 @@
 from toontown.toonbase import ToontownGlobals
 
+
 def calcPropType(node):
     propType = ToontownGlobals.AnimPropTypes.Unknown
     fullString = str(node)

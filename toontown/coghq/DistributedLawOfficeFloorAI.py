@@ -1,17 +1,15 @@
-from otp.level import DistributedLevelAI
 from direct.directnotify import DirectNotifyGlobal
-from toontown.coghq import LevelSuitPlannerAI, LawOfficeBase
-from direct.task import Task
-from toontown.coghq import FactoryEntityCreatorAI, FactorySpecs
-from otp.level import LevelSpec
-from toontown.coghq import CogDisguiseGlobals
-from toontown.suit import DistributedFactorySuitAI
-from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
-from toontown.coghq import DistributedBattleFactoryAI
-from toontown.coghq import LawOfficeLayout
-from toontown.coghq import DistributedLawOfficeElevatorIntAI
 from direct.distributed import DistributedObjectAI
+from direct.task import Task
+
+from otp.level import DistributedLevelAI, LevelSpec
+
 from toontown.ai.ToonBarrier import *
+from toontown.coghq import (CogDisguiseGlobals, DistributedBattleFactoryAI, DistributedLawOfficeElevatorIntAI,
+                            FactoryEntityCreatorAI, FactorySpecs, LawOfficeBase, LawOfficeLayout, LevelSuitPlannerAI)
+from toontown.suit import DistributedFactorySuitAI
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
+
 
 class DistributedLawOfficeFloorAI(DistributedLevelAI.DistributedLevelAI, LawOfficeBase.LawOfficeBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawOfficeAI')

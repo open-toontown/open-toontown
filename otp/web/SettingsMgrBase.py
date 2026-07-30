@@ -1,5 +1,6 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
 
+
 class SettingsMgrBase:
     notify = directNotify.newCategory('SettingsMgrBase')
 

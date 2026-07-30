@@ -1,8 +1,10 @@
 from direct.showbase import PythonUtil
+
+from otp.otpbase import OTPLocalizer
 from otp.speedchat.SCMenu import SCMenu
 from otp.speedchat.SCMenuHolder import SCMenuHolder
 from otp.speedchat.SCStaticTextTerminal import SCStaticTextTerminal
-from otp.otpbase import OTPLocalizer
+
 GolfMenuGuide = [(OTPLocalizer.GolfMenuSections[1], [4100,
    4101,
    4102,

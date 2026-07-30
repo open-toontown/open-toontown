@@ -1,21 +1,19 @@
-import random, math
+import math
+import random
+
 from panda3d.core import Point3
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import globalClockDelta
 from direct.fsm import FSM
 from direct.interval.IntervalGlobal import LerpPosInterval
-from toontown.coghq import DistributedFoodBeltAI
-from toontown.coghq import DistributedBanquetTableAI
-from toontown.coghq import DistributedGolfSpotAI
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.suit import DistributedBossCogAI
-from toontown.suit import DistributedSuitAI
-from toontown.suit import SuitDNA
+
+from toontown.battle import BattleExperienceAI, DistributedBattleDinersAI, DistributedBattleWaitersAI
 from toontown.building import SuitBuildingGlobals
-from toontown.battle import DistributedBattleWaitersAI
-from toontown.battle import DistributedBattleDinersAI
-from toontown.battle import BattleExperienceAI
-from direct.distributed.ClockDelta import globalClockDelta
+from toontown.coghq import DistributedBanquetTableAI, DistributedFoodBeltAI, DistributedGolfSpotAI
+from toontown.suit import DistributedBossCogAI, DistributedSuitAI, SuitDNA
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
+
 
 class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBossbotBossAI')
@@ -885,7 +883,7 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
     def toggleMove(self):
         self.moveAttackAllowed = not self.moveAttackAllowed
         return self.moveAttackAllowed
-    
+
     def getNextState(self):
         currState = self.getCurrentOrNextState()
         if currState == "Elevator":
@@ -909,5 +907,5 @@ class DistributedBossbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FS
         # Do not skip Victory, weird stuff may happen, like not collecting their rewards.
         elif currState == "Reward":
             return "Epilogue"
-        
+
         return None

@@ -1,18 +1,20 @@
 from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.hood import Place
+from direct.fsm import ClassicFSM, State, StateData
 from direct.showbase import DirectObject
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from toontown.town import TownBattle
-from toontown.suit import Suit
-from . import Elevator
 from direct.task.Task import Task
+
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
+
+from toontown.hood import Place
+from toontown.suit import Suit
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.town import TownBattle
+
+from . import Elevator
+
 
 class SuitInterior(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('SuitInterior')

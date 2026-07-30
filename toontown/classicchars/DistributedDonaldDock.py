@@ -1,14 +1,14 @@
 from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from . import DistributedCCharBase
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from toontown.toonbase import ToontownGlobals
-from . import CharStateDatas
-from direct.fsm import StateData
+from direct.fsm import ClassicFSM, State, StateData
+from direct.interval.IntervalGlobal import *
 from direct.task import Task
-from toontown.toonbase import TTLocalizer
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CharStateDatas, DistributedCCharBase
+
 
 class DistributedDonaldDock(DistributedCCharBase.DistributedCCharBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedDonaldDock')

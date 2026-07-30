@@ -1,11 +1,13 @@
 from panda3d.core import *
+
 from direct.distributed.ClockDelta import *
-from direct.interval.IntervalGlobal import *
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from direct.fsm import FSM
 from direct.distributed.DistributedSmoothNode import DistributedSmoothNode
+from direct.fsm import FSM
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
+
 from otp.avatar.ShadowCaster import ShadowCaster
+
 
 class DistributedProjectile(DistributedSmoothNode, ShadowCaster, NodePath):
 

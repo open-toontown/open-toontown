@@ -1,17 +1,17 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import StateData
-from . import CogHQLoader
-from toontown.toonbase import ToontownGlobals
-from direct.gui import DirectGui
-from toontown.toonbase import TTLocalizer
-from toontown.toon import Toon
-from direct.fsm import State
-from toontown.coghq import BossbotHQExterior
-from toontown.coghq import BossbotHQBossBattle
-from toontown.coghq import BossbotOfficeExterior
-from toontown.coghq import CountryClubInterior
-from panda3d.core import DecalEffect, TextEncoder
 import random
+
+from panda3d.core import DecalEffect, TextEncoder
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import State, StateData
+from direct.gui import DirectGui
+
+from toontown.coghq import BossbotHQBossBattle, BossbotHQExterior, BossbotOfficeExterior, CountryClubInterior
+from toontown.toon import Toon
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CogHQLoader
+
 aspectSF = 0.7227
 
 class BossbotCogHQLoader(CogHQLoader.CogHQLoader):

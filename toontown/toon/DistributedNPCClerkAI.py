@@ -1,7 +1,11 @@
-from otp.ai.AIBaseGlobal import *
-from direct.task.Task import Task
 from panda3d.core import *
+
+from direct.task.Task import Task
+
+from otp.ai.AIBaseGlobal import *
+
 from .DistributedNPCToonBaseAI import *
+
 
 class DistributedNPCClerkAI(DistributedNPCToonBaseAI):
 

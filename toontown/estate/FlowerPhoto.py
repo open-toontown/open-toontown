@@ -1,9 +1,13 @@
-from direct.directnotify import DirectNotifyGlobal
 from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from toontown.fishing import FishGlobals
-from . import GardenGlobals
+
 from direct.actor import Actor
+from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
+
+from toontown.fishing import FishGlobals
+
+from . import GardenGlobals
+
 
 class DirectRegion(NodePath):
     notify = DirectNotifyGlobal.directNotify.newCategory('DirectRegion')

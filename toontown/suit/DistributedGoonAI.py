@@ -1,12 +1,17 @@
-from otp.ai.AIBaseGlobal import *
-from .GoonGlobals import *
+import random
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import ClockDelta
+from direct.task import Task
+
+from otp.ai.AIBaseGlobal import *
+
 from toontown.battle import SuitBattleGlobals
 from toontown.coghq import DistributedCrushableEntityAI
+
 from . import GoonPathData
-from direct.distributed import ClockDelta
-import random
-from direct.task import Task
+from .GoonGlobals import *
+
 
 class DistributedGoonAI(DistributedCrushableEntityAI.DistributedCrushableEntityAI):
     UPDATE_TIMESTAMP_INTERVAL = 180.0

@@ -1,10 +1,15 @@
-from panda3d.core import Vec3, NodePath
+from panda3d.core import NodePath, Vec3
+
 from direct.distributed.ClockDelta import globalClockDelta
+
 from otp.avatar.SpeedMonitor import SpeedMonitor
+
 from toontown.cogdominium.CogdoMaze import CogdoMazeFactory
 from toontown.cogdominium.DistCogdoMazeGameBase import DistCogdoMazeGameBase
-from .DistCogdoGameAI import DistCogdoGameAI
+
 from . import CogdoMazeGameGlobals as Globals
+from .DistCogdoGameAI import DistCogdoGameAI
+
 cogdoMazeTimeScoreRatio = 0.5
 cogdoMazePerfectTime = 90
 cogdoMazeMaxTime = 210

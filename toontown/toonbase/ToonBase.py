@@ -1,22 +1,23 @@
-from otp.otpbase import OTPBase
-from otp.otpbase import OTPLauncherGlobals
-from otp.otpbase import OTPGlobals
-from otp.settings.Settings import Settings
-from direct.showbase.PythonUtil import *
-from . import ToontownGlobals
-from direct.directnotify import DirectNotifyGlobal
-from . import ToontownLoader
-from direct.gui import DirectGuiGlobals
-from direct.gui.DirectGui import *
+import math
+import os
+import sys
+
 from panda3d.core import *
 from panda3d.otp import *
-import sys
-import os
-import math
-from toontown.toonbase import ToontownAccess
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.gui import DirectGuiGlobals
+from direct.gui.DirectGui import *
+from direct.showbase.PythonUtil import *
+
+from otp.otpbase import OTPBase, OTPGlobals, OTPLauncherGlobals
+from otp.settings.Settings import Settings
+
 from toontown.launcher import ToontownDownloadWatcher
+from toontown.toonbase import ToontownAccess, ToontownBattleGlobals, TTLocalizer
+
+from . import ToontownGlobals, ToontownLoader
+
 
 class ToonBase(OTPBase.OTPBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonBase')

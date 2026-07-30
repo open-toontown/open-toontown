@@ -1,8 +1,11 @@
 from panda3d.core import *
-from direct.distributed.MsgTypes import *
+
 from direct.directnotify import DirectNotifyGlobal
-from . import LoginBase
+from direct.distributed.MsgTypes import *
 from direct.distributed.PyDatagram import PyDatagram
+
+from . import LoginBase
+
 
 class LoginGoAccount(LoginBase.LoginBase):
 

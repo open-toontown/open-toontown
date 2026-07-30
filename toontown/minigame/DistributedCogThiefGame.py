@@ -1,23 +1,21 @@
-from panda3d.core import Point3, CollisionSphere, CollisionNode, CollisionHandlerEvent, NodePath, TextNode
+from panda3d.core import CollisionHandlerEvent, CollisionNode, CollisionSphere, NodePath, Point3, TextNode
+
 from direct.distributed.ClockDelta import globalClockDelta
-from direct.interval.IntervalGlobal import Wait, LerpFunctionInterval, LerpHprInterval, Sequence, Parallel, Func, SoundInterval, ActorInterval, ProjectileInterval, Track, LerpScaleInterval, WaitInterval, LerpPosHprInterval
+from direct.fsm import ClassicFSM, State
 from direct.gui.DirectGui import DirectLabel
-from direct.fsm import ClassicFSM
-from direct.fsm import State
+from direct.interval.IntervalGlobal import (ActorInterval, Func, LerpFunctionInterval, LerpHprInterval,
+                                            LerpPosHprInterval, LerpScaleInterval, Parallel, ProjectileInterval,
+                                            Sequence, SoundInterval, Track, Wait, WaitInterval)
 from direct.showbase import RandomNumGen
 from direct.task import Task
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownTimer
-from toontown.minigame import CogThiefGameToonSD
+
+from toontown.minigame import (CogThief, CogThiefGameGlobals, CogThiefGameToonSD, CogThiefWalk, MinigameGlobals,
+                               Trajectory)
+from toontown.minigame.DistributedMinigame import DistributedMinigame
 from toontown.minigame.OrthoDrive import OrthoDrive
 from toontown.minigame.OrthoWalk import OrthoWalk
-from toontown.minigame import CogThiefGameGlobals
-from toontown.minigame import CogThief
-from toontown.minigame.DistributedMinigame import DistributedMinigame
-from toontown.minigame import Trajectory
-from toontown.minigame import MinigameGlobals
-from toontown.minigame import CogThiefWalk
+from toontown.toonbase import ToontownGlobals, ToontownTimer, TTLocalizer
+
 CTGG = CogThiefGameGlobals
 
 class DistributedCogThiefGame(DistributedMinigame):
@@ -692,8 +690,8 @@ class DistributedCogThiefGame(DistributedMinigame):
             self.toonPieTracks[avId] = pieTrack
 
     def getTossPieInterval(self, toon, x, y, z, h, p, r, power, beginFlyIval = Sequence()):
-        from toontown.toonbase import ToontownBattleGlobals
         from toontown.battle import BattleProps
+        from toontown.toonbase import ToontownBattleGlobals
         pie = toon.getPieModel()
         pie.setScale(0.9)
         flyPie = pie.copyTo(NodePath('a'))

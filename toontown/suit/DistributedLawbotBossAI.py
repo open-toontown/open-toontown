@@ -1,24 +1,19 @@
-from otp.ai.AIBaseGlobal import *
-from direct.distributed.ClockDelta import *
-from toontown.suit import DistributedBossCogAI
-from direct.directnotify import DirectNotifyGlobal
-from otp.avatar import DistributedAvatarAI
-from toontown.suit import DistributedSuitAI
-from toontown.battle import BattleExperienceAI
-from direct.fsm import FSM
-from toontown.toonbase import ToontownGlobals
-from toontown.toon import InventoryBase
-from toontown.toonbase import TTLocalizer
-from toontown.battle import BattleBase
-from toontown.toon import NPCToons
-from toontown.building import SuitBuildingGlobals
-from toontown.suit import SuitDNA
 import random
-from toontown.coghq import DistributedLawbotBossGavelAI
-from toontown.suit import DistributedLawbotBossSuitAI
-from toontown.coghq import DistributedLawbotCannonAI
-from toontown.coghq import DistributedLawbotChairAI
-from toontown.toonbase import ToontownBattleGlobals
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import *
+from direct.fsm import FSM
+
+from otp.ai.AIBaseGlobal import *
+from otp.avatar import DistributedAvatarAI
+
+from toontown.battle import BattleBase, BattleExperienceAI
+from toontown.building import SuitBuildingGlobals
+from toontown.coghq import DistributedLawbotBossGavelAI, DistributedLawbotCannonAI, DistributedLawbotChairAI
+from toontown.suit import DistributedBossCogAI, DistributedLawbotBossSuitAI, DistributedSuitAI, SuitDNA
+from toontown.toon import InventoryBase, NPCToons
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
+
 
 class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotBossAI')
@@ -168,7 +163,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
     def doNextAttack(self, task):
         for lawyer in self.lawyers:
             lawyer.doNextAttack(self)
-            
+
         self.waitForNextAttack(ToontownGlobals.LawbotBossLawyerCycleTime)
         timeSinceLastAttack = globalClock.getFrameTime() - self.lastAreaAttackTime
         allowedByTime = 15 < timeSinceLastAttack or self.lastAreaAttackTime == 0
@@ -194,7 +189,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
              ToontownGlobals.BossCogDirectedAttack,
              ToontownGlobals.BossCogDirectedAttack,
              ToontownGlobals.BossCogDirectedAttack])
-        if attackCode == ToontownGlobals.BossCogAreaAttack: 
+        if attackCode == ToontownGlobals.BossCogAreaAttack:
             self.__doAreaAttack()
         elif attackCode == ToontownGlobals.BossCogDirectedAttack:
             self.__doDirectedAttack()
@@ -264,7 +259,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
     def makeBattleOneBattles(self):
         self.postBattleState = 'RollToBattleTwo'
         self.initializeBattles(1, ToontownGlobals.LawbotBossBattleOnePosHpr)
-    
+
     @staticmethod
     def getEndOfBattleMovieDuration():
         return 5
@@ -860,7 +855,7 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         if battleDifficulty >= numDifficultyLevels:
             battleDifficulty = numDifficultyLevels - 1
         self.b_setBattleDifficulty(battleDifficulty)
-    
+
     def getNextState(self):
         currState = self.getCurrentOrNextState()
         if currState == "Elevator":
@@ -878,5 +873,5 @@ class DistributedLawbotBossAI(DistributedBossCogAI.DistributedBossCogAI, FSM.FSM
         # Do not skip Victory, weird stuff may happen, like not collecting their rewards.
         elif currState == "Reward":
             return "Epilogue"
-        
+
         return None

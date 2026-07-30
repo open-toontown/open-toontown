@@ -1,6 +1,9 @@
 from panda3d.core import *
-from otp.level import BasicEntities
+
 from direct.directnotify import DirectNotifyGlobal
+
+from otp.level import BasicEntities
+
 
 class ActiveCell(BasicEntities.DistributedNodePathEntity):
     notify = DirectNotifyGlobal.directNotify.newCategory('ActiveCell')

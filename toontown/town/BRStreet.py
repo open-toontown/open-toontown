@@ -1,5 +1,6 @@
 from . import Street
 
+
 class BRStreet(Street.Street):
 
     def __init__(self, loader, parentFSM, doneEvent):

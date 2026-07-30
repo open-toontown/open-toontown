@@ -9,6 +9,9 @@
 # Email: belloqzafarian@gmail.com
 ##################################################
 
+import json
+import os
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
 
@@ -16,9 +19,6 @@ from otp.avatar.DistributedPlayerAI import DistributedPlayerAI
 
 from toontown.spellbook.MagicWordConfig import *
 from toontown.spellbook.MagicWordIndex import *
-
-import json
-import os
 
 # All of the data regarding our Magic Words
 MagicWordIndex = magicWordIndex.copy()
@@ -304,6 +304,6 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
         # Execute the Magic Word on the client, because it's a client-sided Magic Word
         self.sendUpdateToAvatarId(avId, "executeMagicWord", [word, commandName, targetIds, parsedArgList, affectRange,
                                                              affectType, affectExtra, lastClickedAvId])
-    
+
     def sendTeleportResponse(self, avId, loaderId, whereId, how, hoodId, zoneId, targetAvId):
         self.sendUpdateToAvatarId(avId, "teleportResponse", [loaderId, whereId, how, hoodId, zoneId, targetAvId])

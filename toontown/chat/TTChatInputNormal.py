@@ -1,8 +1,10 @@
-from direct.gui.DirectGui import *
 from panda3d.core import *
+
+from direct.gui.DirectGui import *
+
 from otp.chat import ChatInputNormal
-from otp.otpbase import OTPLocalizer
-from otp.otpbase import OTPGlobals
+from otp.otpbase import OTPGlobals, OTPLocalizer
+
 
 class TTChatInputNormal(ChatInputNormal.ChatInputNormal):
 

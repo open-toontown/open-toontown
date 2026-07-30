@@ -1,5 +1,6 @@
 from .ColorSpace import *
 
+
 class SCColorScheme:
 
     def __init__(self, arrowColor = (0.5, 0.5, 1), rolloverColor = (0.53, 0.9, 0.53), frameColor = None, pressedColor = None, menuHolderActiveColor = None, emoteIconColor = None, textColor = (0, 0, 0), emoteIconDisabledColor = (0.5, 0.5, 0.5), textDisabledColor = (0.4, 0.4, 0.4), alpha = 0.95):

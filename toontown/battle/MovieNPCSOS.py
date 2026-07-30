@@ -1,16 +1,17 @@
+import random
+
 from panda3d.otp import *
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
+
+from toontown.toon import NPCToons
+from toontown.toonbase import ToontownBattleGlobals, TTLocalizer
+
+from . import BattleParticles, HealJokes, MovieCamera, MovieUtil
 from .BattleProps import *
 from .BattleSounds import *
-from direct.directnotify import DirectNotifyGlobal
-from . import MovieCamera
-import random
-from . import MovieUtil
-from . import BattleParticles
-from . import HealJokes
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.toon import NPCToons
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieNPCSOS')
 soundFiles = ('AA_heal_tickle.ogg', 'AA_heal_telljoke.ogg', 'AA_heal_smooch.ogg', 'AA_heal_happydance.ogg', 'AA_heal_pixiedust.ogg', 'AA_heal_juggle.ogg')
 offset = Point3(0, 4.0, 0)

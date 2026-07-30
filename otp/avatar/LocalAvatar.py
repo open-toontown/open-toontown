@@ -1,23 +1,27 @@
-from panda3d.core import *
-from panda3d.otp import Nametag, WhisperPopup
-from direct.gui.DirectGui import *
-from direct.showbase.PythonUtil import *
-from direct.interval.IntervalGlobal import *
-from direct.showbase.InputStateGlobal import inputState
-from direct.controls import ControlManager
-from . import DistributedAvatar
-from direct.task import Task
-from otp.otpbase import OTPGlobals
 import math
 import random
-from direct.directnotify import DirectNotifyGlobal
-from direct.distributed import DistributedSmoothNode
-from otp.otpbase import OTPLocalizer
+
+from panda3d.core import *
+from panda3d.otp import Nametag, WhisperPopup
+
+from direct.controls import ControlManager
 from direct.controls.GhostWalker import GhostWalker
 from direct.controls.GravityWalker import GravityWalker
 from direct.controls.ObserverWalker import ObserverWalker
 from direct.controls.SwimWalker import SwimWalker
 from direct.controls.TwoDWalker import TwoDWalker
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedSmoothNode
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
+from direct.showbase.InputStateGlobal import inputState
+from direct.showbase.PythonUtil import *
+from direct.task import Task
+
+from otp.otpbase import OTPGlobals, OTPLocalizer
+
+from . import DistributedAvatar
+
 
 class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.DistributedSmoothNode):
     notify = DirectNotifyGlobal.directNotify.newCategory('LocalAvatar')

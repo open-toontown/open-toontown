@@ -1,8 +1,9 @@
-from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
+
+from otp.otpbase import OTPGlobals, OTPLocalizer
 from otp.uberdog.RejectCode import RejectCode
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
+
 
 class AvatarFriendsManager(DistributedObjectGlobal):
     notify = directNotify.newCategory('AvatarFriendsManager')

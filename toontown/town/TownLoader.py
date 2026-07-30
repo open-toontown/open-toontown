@@ -1,25 +1,24 @@
 from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM, State, StateData
+from direct.gui.DirectGui import cleanupDialog
+from direct.interval.IntervalGlobal import *
+from direct.showbase import DirectObject
+from direct.task import Task
+
+from toontown.battle import BattleParticles
 from toontown.battle.BattleProps import *
 from toontown.battle.BattleSounds import *
+from toontown.building import ToonInterior
 from toontown.distributed.ToontownMsgTypes import *
-from toontown.toonbase.ToontownGlobals import *
-from direct.gui.DirectGui import cleanupDialog
-from direct.directnotify import DirectNotifyGlobal
-from toontown.hood import Place
-from direct.showbase import DirectObject
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from direct.task import Task
-from . import TownBattle
+from toontown.hood import Place, QuietZoneState, ZoneUtil
 from toontown.toon import Toon
 from toontown.toon.Toon import teleportDebug
-from toontown.battle import BattleParticles
-from direct.fsm import StateData
-from toontown.building import ToonInterior
-from toontown.hood import QuietZoneState
-from toontown.hood import ZoneUtil
-from direct.interval.IntervalGlobal import *
+from toontown.toonbase.ToontownGlobals import *
+
+from . import TownBattle
+
 
 class TownLoader(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('TownLoader')

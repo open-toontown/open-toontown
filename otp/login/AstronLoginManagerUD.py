@@ -1,21 +1,15 @@
 import json
-import time
 import os
+import time
 from datetime import datetime
 
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.DistributedObjectGlobalUD import DistributedObjectGlobalUD
+from direct.distributed.MsgTypes import (CLIENTAGENT_ADD_POST_REMOVE, CLIENTAGENT_CLEAR_POST_REMOVES,
+                                         CLIENTAGENT_CLOSE_CHANNEL, CLIENTAGENT_EJECT, CLIENTAGENT_OPEN_CHANNEL,
+                                         CLIENTAGENT_REMOVE_SESSION_OBJECT, CLIENTAGENT_SET_CLIENT_ID,
+                                         STATESERVER_OBJECT_DELETE_RAM)
 from direct.distributed.PyDatagram import PyDatagram
-from direct.distributed.MsgTypes import (
-    CLIENTAGENT_ADD_POST_REMOVE,
-    CLIENTAGENT_CLEAR_POST_REMOVES,
-    CLIENTAGENT_CLOSE_CHANNEL,
-    CLIENTAGENT_EJECT,
-    CLIENTAGENT_OPEN_CHANNEL,
-    CLIENTAGENT_REMOVE_SESSION_OBJECT,
-    CLIENTAGENT_SET_CLIENT_ID,
-    STATESERVER_OBJECT_DELETE_RAM
-)
 
 from otp.otpbase import OTPGlobals
 

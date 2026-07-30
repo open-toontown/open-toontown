@@ -1,13 +1,14 @@
 import os
-from panda3d.core import VirtualFileSystem, Filename, DSearchPath
-from panda3d.core import Texture, CardMaker, PNMImage, TextureStage
-from panda3d.core import NodePath
-from panda3d.core import Point2
-from direct.showbase import DirectObject
-from direct.gui.DirectGui import DirectFrame, DirectButton, DGG, DirectLabel
+
+from panda3d.core import (CardMaker, DSearchPath, Filename, NodePath, PNMImage, Point2, Texture, TextureStage,
+                          VirtualFileSystem)
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from direct.gui.DirectGui import DGG, DirectButton, DirectFrame, DirectLabel
+from direct.showbase import DirectObject
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 WEB_WIDTH_PIXELS = 784
 WEB_HEIGHT_PIXELS = 451
 WEB_WIDTH = 1024

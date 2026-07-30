@@ -1,6 +1,9 @@
-from panda3d.core import *
-from toontown.toonbase import ToontownGlobals
 from enum import IntEnum
+
+from panda3d.core import *
+
+from toontown.toonbase import ToontownGlobals
+
 OurPetsMoodChangedKey = 'OurPetsMoodChanged'
 ThinkPeriod = 1.5
 MoodDriftPeriod = 300.0

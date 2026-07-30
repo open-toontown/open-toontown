@@ -1,6 +1,8 @@
-from . import AnimatedProp
 from direct.actor import Actor
 from direct.interval.IntervalGlobal import *
+
+from . import AnimatedProp
+
 
 class HQPeriscopeAnimatedProp(AnimatedProp.AnimatedProp):
 

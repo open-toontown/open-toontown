@@ -1,7 +1,10 @@
 import random
+
 from direct.distributed.ClockDelta import globalClockDelta
-from .DistCogdoGameAI import DistCogdoGameAI
+
 from . import CogdoFlyingGameGlobals as Globals
+from .DistCogdoGameAI import DistCogdoGameAI
+
 
 class DistCogdoFlyingGameAI(DistCogdoGameAI):
     notify = directNotify.newCategory('DistCogdoFlyingGameAI')

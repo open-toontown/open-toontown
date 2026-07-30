@@ -1,5 +1,7 @@
-from otp.level import DistributedEntityAI
 from direct.directnotify import DirectNotifyGlobal
+
+from otp.level import DistributedEntityAI
+
 
 class ActiveCellAI(DistributedEntityAI.DistributedEntityAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('ActiveCellAI')

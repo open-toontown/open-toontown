@@ -1,18 +1,18 @@
-from direct.gui.DirectGui import *
 from panda3d.core import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase.ToonBaseGlobal import *
-from panda3d.core import *
-from direct.interval.IntervalGlobal import *
+
 from direct.distributed.ClockDelta import *
-from toontown.toonbase import ToontownGlobals
-from . import DistributedFurnitureItem
-from toontown.toonbase import TTLocalizer
-from . import BankGUI
-from .BankGlobals import *
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
+
+from toontown.catalog.CatalogFurnitureItem import FTScale, FurnitureTypes
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToontownGlobals import *
 from toontown.toontowngui import TTDialog
-from toontown.catalog.CatalogFurnitureItem import FurnitureTypes
-from toontown.catalog.CatalogFurnitureItem import FTScale
+
+from . import BankGUI, DistributedFurnitureItem
+from .BankGlobals import *
+
 
 class DistributedBank(DistributedFurnitureItem.DistributedFurnitureItem):
     notify = directNotify.newCategory('DistributedBank')

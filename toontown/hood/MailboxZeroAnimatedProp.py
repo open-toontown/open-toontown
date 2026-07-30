@@ -1,6 +1,8 @@
+from direct.directnotify import DirectNotifyGlobal
+
 from toontown.hood import ZeroAnimatedProp
 from toontown.toonbase import ToontownGlobals
-from direct.directnotify import DirectNotifyGlobal
+
 
 class MailboxZeroAnimatedProp(ZeroAnimatedProp.ZeroAnimatedProp):
     notify = DirectNotifyGlobal.directNotify.newCategory('MailboxZeroAnimatedProp')

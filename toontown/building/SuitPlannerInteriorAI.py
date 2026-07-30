@@ -1,9 +1,13 @@
-from otp.ai.AIBaseGlobal import *
-import random, functools
-from toontown.suit import SuitDNA
+import functools
+import random
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.suit import DistributedSuitAI
+
+from otp.ai.AIBaseGlobal import *
+
 from toontown.building import SuitBuildingGlobals
+from toontown.suit import DistributedSuitAI, SuitDNA
+
 
 class SuitPlannerInteriorAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('SuitPlannerInteriorAI')

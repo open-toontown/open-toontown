@@ -1,24 +1,24 @@
-from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from direct.distributed.ClockDelta import *
-from toontown.toonbase import ToontownGlobals
-from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from . import MinigameRulesPanel
-from direct.task.Task import Task
-from toontown.toon import Toon
-from direct.showbase import RandomNumGen
-from toontown.toonbase import TTLocalizer
 import random
-from . import MinigameGlobals
-from direct.showbase import PythonUtil
-from toontown.toon import TTEmote
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+from direct.gui.DirectGui import *
+from direct.showbase import PythonUtil, RandomNumGen
+from direct.task.Task import Task
+
 from otp.avatar import Emote
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
+
+from toontown.toon import Toon, TTEmote
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToonBaseGlobal import *
+
+from . import MinigameGlobals, MinigameRulesPanel
+
 
 class DistributedMinigame(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMinigame')

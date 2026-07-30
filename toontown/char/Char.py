@@ -1,10 +1,13 @@
-from otp.avatar import Avatar
+import random
+
 from panda3d.core import *
 from panda3d.otp import *
-from direct.task import Task
-import random
-from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.task import Task
+
+from otp.avatar import Avatar
+
 AnimDict = {'mk': (('walk', 'walk', 3),
         ('run', 'run', 3),
         ('neutral', 'wait', 3),

@@ -1,15 +1,18 @@
-from panda3d.core import *
-from . import ShtikerPage
-from direct.task.Task import Task
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from toontown.toonbase import TTLocalizer
-from direct.directnotify import DirectNotifyGlobal
-from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals
-from toontown.distributed import ToontownDistrictStats
-from toontown.toontowngui import TTDialog
 import functools
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.gui.DirectGui import *
+from direct.task.Task import Task
+
+from toontown.distributed import ToontownDistrictStats
+from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toontowngui import TTDialog
+
+from . import ShtikerPage
+
 POP_COLORS_NTT = (Vec4(0.0, 1.0, 0.0, 1.0), Vec4(1.0, 1.0, 0.0, 1.0), Vec4(1.0, 0.0, 0.0, 1.0))
 POP_COLORS = (Vec4(0.4, 0.4, 1.0, 1.0), Vec4(0.4, 1.0, 0.4, 1.0), Vec4(1.0, 0.4, 0.4, 1.0))
 

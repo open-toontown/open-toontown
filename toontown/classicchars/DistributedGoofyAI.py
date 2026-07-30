@@ -1,13 +1,15 @@
-from otp.ai.AIBaseGlobal import *
-from . import DistributedCCharBaseAI
+import random
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
 from direct.task import Task
-import random
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from . import CharStateDatasAI
+
+from otp.ai.AIBaseGlobal import *
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CharStateDatasAI, DistributedCCharBaseAI
+
 
 class DistributedGoofyAI(DistributedCCharBaseAI.DistributedCCharBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedGoofyAI')

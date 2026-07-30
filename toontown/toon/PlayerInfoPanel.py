@@ -1,18 +1,18 @@
 from panda3d.core import *
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from direct.showbase import DirectObject
-from toontown.friends import FriendHandle
-from otp.avatar import Avatar
-from direct.distributed import DistributedObject
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.friends import ToontownFriendSecret
-from . import ToonAvatarDetailPanel
-from . import AvatarPanelBase
-from . import PlayerDetailPanel
+from direct.distributed import DistributedObject
+from direct.gui.DirectGui import *
+from direct.showbase import DirectObject
+
+from otp.avatar import Avatar
 from otp.otpbase import OTPGlobals
+
+from toontown.friends import FriendHandle, ToontownFriendSecret
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import AvatarPanelBase, PlayerDetailPanel, ToonAvatarDetailPanel
+
 GAME_LOGO_NAMES = {'Default': 'GameLogo_Unknown',
  'Disney XD': 'GameLogo_XD',
  'Toontown': 'GameLogo_Toontown',

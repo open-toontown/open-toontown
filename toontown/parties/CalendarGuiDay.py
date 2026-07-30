@@ -1,15 +1,18 @@
 import datetime
 import functools
 import time
-from panda3d.core import TextNode, Vec3, Vec4, PlaneNode, Plane, Point3
-from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton, DirectScrolledList, DGG
+
+from panda3d.core import Plane, PlaneNode, Point3, TextNode, Vec3, Vec4
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui import DirectGuiGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.parties.PartyInfo import PartyInfo
-from toontown.parties import PartyGlobals
+from direct.gui.DirectGui import DGG, DirectButton, DirectFrame, DirectLabel, DirectScrolledList
+
 from toontown.ai.NewsManager import NewsManager
+from toontown.parties import PartyGlobals
+from toontown.parties.PartyInfo import PartyInfo
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 def myStrftime(myTime):
     result = ''

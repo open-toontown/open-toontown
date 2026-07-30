@@ -1,9 +1,12 @@
-import socket
 import datetime
 import os
-from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
+import socket
+
 from direct.distributed.DistributedObject import DistributedObject
+from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
+
 from toontown.toonbase import ToontownGlobals
+
 
 class DistributedSecurityMgr(DistributedObject):
     notify = directNotify.newCategory('SecurityMgr')

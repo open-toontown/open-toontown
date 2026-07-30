@@ -1,9 +1,14 @@
-from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
-from . import DistributedSZTreasure
-from direct.task.Task import Task
 import math
 import random
+
+from panda3d.core import *
+
+from direct.task.Task import Task
+
+from toontown.toonbase.ToonBaseGlobal import *
+
+from . import DistributedSZTreasure
+
 
 class DistributedEFlyingTreasure(DistributedSZTreasure.DistributedSZTreasure):
 

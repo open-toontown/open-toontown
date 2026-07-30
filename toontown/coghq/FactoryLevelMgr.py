@@ -1,7 +1,11 @@
-from otp.level import LevelMgr
-from . import FactoryUtil
 from direct.showbase.PythonUtil import Functor
+
+from otp.level import LevelMgr
+
 from toontown.toonbase import ToontownGlobals
+
+from . import FactoryUtil
+
 
 class FactoryLevelMgr(LevelMgr.LevelMgr):
     InterestingLocations = [(((-866, -272, -40), -101),

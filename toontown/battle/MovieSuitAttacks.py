@@ -1,19 +1,19 @@
 from panda3d.otp import *
-from toontown.toonbase.ToontownGlobals import *
-from .SuitBattleGlobals import *
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
+from direct.particles import ParticleEffect
+
+from toontown.suit.SuitDNA import *
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToontownGlobals import *
+
+from . import BattleParticles, MovieCamera, MovieUtil
 from .BattleBase import *
 from .BattleProps import *
-from toontown.suit.SuitDNA import *
-from .BattleBase import *
 from .BattleSounds import *
-from . import MovieCamera
-from direct.directnotify import DirectNotifyGlobal
-from . import MovieUtil
-from direct.particles import ParticleEffect
-from . import BattleParticles
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from .SuitBattleGlobals import *
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieSuitAttacks')
 
 def __doDamage(toon, dmg, died):

@@ -1,10 +1,8 @@
+from direct.distributed.ClockDelta import *
 from direct.distributed.DistributedNodeAI import DistributedNodeAI
-from direct.distributed.ClockDelta import *
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from direct.fsm import StateData
-from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State, StateData
 from direct.interval.IntervalGlobal import *
+
 
 class DistributedFindFourAI(DistributedNodeAI):
 

@@ -1,61 +1,45 @@
-import random
 import math
-import time
+import random
 import re
+import time
 import zlib
-from direct.interval.IntervalGlobal import *
-from direct.distributed.ClockDelta import *
-from direct.showbase.PythonUtil import *
-from direct.gui.DirectGui import *
-from direct.task import Task
-from direct.showbase import PythonUtil
-from direct.directnotify import DirectNotifyGlobal
-from direct.gui import DirectGuiGlobals
+
 from panda3d.core import *
 from panda3d.otp import WhisperPopup
-from otp.avatar import LocalAvatar
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import *
+from direct.gui import DirectGuiGlobals
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
+from direct.showbase import PythonUtil
+from direct.showbase.PythonUtil import *
+from direct.task import Task
+
+from otp.avatar import DistributedPlayer, LocalAvatar, PositionExaminer
 from otp.login import LeaveToPayDialog
-from otp.avatar import PositionExaminer
 from otp.otpbase import OTPGlobals
-from otp.avatar import DistributedPlayer
-from toontown.shtiker import ShtikerBook
-from toontown.shtiker import InventoryPage
-from toontown.shtiker import MapPage
-from toontown.shtiker import OptionsPage
-from toontown.shtiker import ShardPage
-from toontown.shtiker import QuestPage
-from toontown.shtiker import TrackPage
-from toontown.shtiker import KartPage
-from toontown.shtiker import GardenPage
-from toontown.shtiker import GolfPage
-from toontown.shtiker import SuitPage
-from toontown.shtiker import DisguisePage
-from toontown.shtiker import PhotoAlbumPage
-from toontown.shtiker import FishPage
-from toontown.shtiker import NPCFriendPage
-from toontown.shtiker import EventsPage
-from toontown.shtiker import TIPPage
-from toontown.quest import Quests
-from toontown.quest import QuestParser
-from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.catalog import CatalogNotifyDialog
-from toontown.chat import ToontownChatManager
-from toontown.chat import TTTalkAssistant
-from toontown.estate import GardenGlobals
-from toontown.battle.BattleSounds import *
+
 from toontown.battle import Fanfare
+from toontown.battle.BattleSounds import *
+from toontown.catalog import CatalogNotifyDialog
+from toontown.chat import ToontownChatManager, TTTalkAssistant
+from toontown.estate import GardenGlobals
 from toontown.parties import PartyGlobals
-from toontown.toon import ElevatorNotifier
-from toontown.toon import ToonDNA
-from . import DistributedToon
-from . import Toon
-from . import LaffMeter
-from toontown.quest import QuestMap
+from toontown.quest import QuestMap, QuestParser, Quests
+from toontown.shtiker import (DisguisePage, EventsPage, FishPage, GardenPage, GolfPage, InventoryPage, KartPage,
+                              MapPage, NPCFriendPage, OptionsPage, PhotoAlbumPage, QuestPage, ShardPage, ShtikerBook,
+                              SuitPage, TIPPage, TrackPage)
+from toontown.toon import ElevatorNotifier, ToonDNA
 from toontown.toon.DistributedNPCToonBase import DistributedNPCToonBase
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToontownGlobals import *
+
+from . import DistributedToon, LaffMeter, Toon
+
 WantNewsPage = base.config.GetBool('want-news-page', ToontownGlobals.DefaultWantNewsPageSetting)
 from toontown.toontowngui import NewsPageButtonManager
+
 if WantNewsPage:
     from toontown.shtiker import NewsPage
 AdjustmentForNewsButton = -0.275
@@ -659,8 +643,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         return
 
     def localPresentPie(self, time):
-        from . import TTEmote
         from otp.avatar import Emote
+
+        from . import TTEmote
         self.__stopPresentPie()
         if self.tossTrack:
             tossTrack = self.tossTrack
@@ -695,8 +680,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
 
     def __stopPresentPie(self):
         if self.__presentingPie:
-            from . import TTEmote
             from otp.avatar import Emote
+
+            from . import TTEmote
             Emote.globalEmote.releaseBody(self)
             messenger.send('end-pie')
             self.__presentingPie = 0
@@ -836,7 +822,7 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.updatePieButton()
 
     def makePiePowerMeter(self):
-        from direct.gui.DirectGui import DirectWaitBar, DGG
+        from direct.gui.DirectGui import DGG, DirectWaitBar
         if self.__piePowerMeter == None:
             self.__piePowerMeter = DirectWaitBar(frameSize=(-0.2,
              0.2,
@@ -846,8 +832,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         return
 
     def updatePieButton(self):
+        from direct.gui.DirectGui import DGG, DirectButton
+
         from toontown.toonbase import ToontownBattleGlobals
-        from direct.gui.DirectGui import DirectButton, DGG
         wantButton = 0
         if self.allowPies and self.numPies > 0:
             wantButton = 1

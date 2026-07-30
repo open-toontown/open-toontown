@@ -1,7 +1,9 @@
 from direct.directnotify.DirectNotifyGlobal import directNotify
+
+from toontown.cogdominium import CogdoBoardroomGameConsts as Consts
 from toontown.cogdominium.CogdoBoardroomGameBase import CogdoBoardroomGameBase
 from toontown.cogdominium.DistCogdoLevelGameAI import DistCogdoLevelGameAI
-from toontown.cogdominium import CogdoBoardroomGameConsts as Consts
+
 
 class DistCogdoBoardroomGameAI(CogdoBoardroomGameBase, DistCogdoLevelGameAI):
     notify = directNotify.newCategory('DistCogdoBoardroomGameAI')

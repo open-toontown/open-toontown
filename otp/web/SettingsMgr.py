@@ -1,6 +1,8 @@
-from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
+
 from otp.web.SettingsMgrBase import SettingsMgrBase
+
 
 class SettingsMgr(DistributedObjectGlobal, SettingsMgrBase):
     notify = directNotify.newCategory('SettingsMgr')

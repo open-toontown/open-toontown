@@ -1,12 +1,15 @@
-from direct.distributed import DistributedObjectAI
-from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from otp.otpbase.PythonUtil import nonRepeatingRandomList
-from toontown.racing import DistributedGagAI, DistributedProjectileAI
-from direct.task import Task
 import random
-from toontown.racing import Racer, RaceGlobals
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObjectAI
 from direct.distributed.ClockDelta import *
+from direct.task import Task
+
+from otp.otpbase.PythonUtil import nonRepeatingRandomList
+
+from toontown.racing import DistributedGagAI, DistributedProjectileAI, RaceGlobals, Racer
+from toontown.toonbase import ToontownGlobals
+
 
 class DistributedRaceAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedRaceAI')

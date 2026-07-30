@@ -1,4 +1,5 @@
 from .QuestPoster import *
+
 IMAGE_SCALE_LARGE = 0.15
 IMAGE_SCALE_SMALL = 0.1
 POSTER_WIDTH = 0.7

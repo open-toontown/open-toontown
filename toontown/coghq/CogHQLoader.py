@@ -1,13 +1,14 @@
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from . import CogHQLobby
-from toontown.hood import QuietZoneState
-from toontown.hood import ZoneUtil
-from toontown.town import TownBattle
-from toontown.suit import Suit
 from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM, State, StateData
+
+from toontown.hood import QuietZoneState, ZoneUtil
+from toontown.suit import Suit
+from toontown.town import TownBattle
+
+from . import CogHQLobby
+
 
 class CogHQLoader(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogHQLoader')
@@ -149,7 +150,7 @@ class CogHQLoader(StateData.StateData):
         self.exitPlace()
         self.placeClass = None
         return
-    
+
     if __astron__:
         @staticmethod
         def genDNAFileName(zoneId):

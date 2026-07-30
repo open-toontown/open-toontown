@@ -1,14 +1,11 @@
 from direct.showbase.PythonUtil import invertDict
+
+from toontown.coghq import (LawbotOfficeBoilerRoom_Battle00_Cogs, LawbotOfficeBoilerRoom_Trap00_Cogs,
+                            LawbotOfficeDiamondRoom_Battle00_Cogs, LawbotOfficeDiamondRoom_Trap00_Cogs,
+                            LawbotOfficeGearRoom_Battle00_Cogs, LawbotOfficeLobby_Trap00_Cogs,
+                            LawbotOfficeOilRoom_Battle00_Cogs, LawbotOfficeOilRoom_Battle01_Cogs, NullCogs)
 from toontown.toonbase import ToontownGlobals
-from toontown.coghq import NullCogs
-from toontown.coghq import LawbotOfficeOilRoom_Battle00_Cogs
-from toontown.coghq import LawbotOfficeOilRoom_Battle01_Cogs
-from toontown.coghq import LawbotOfficeBoilerRoom_Battle00_Cogs
-from toontown.coghq import LawbotOfficeBoilerRoom_Trap00_Cogs
-from toontown.coghq import LawbotOfficeLobby_Trap00_Cogs
-from toontown.coghq import LawbotOfficeDiamondRoom_Trap00_Cogs
-from toontown.coghq import LawbotOfficeDiamondRoom_Battle00_Cogs
-from toontown.coghq import LawbotOfficeGearRoom_Battle00_Cogs
+
 
 def getStageRoomSpecModule(roomId):
     return CashbotStageSpecModules[roomId]

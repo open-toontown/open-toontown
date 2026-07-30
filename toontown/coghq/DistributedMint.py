@@ -1,12 +1,16 @@
 from panda3d.core import *
-from direct.distributed.ClockDelta import *
-from direct.distributed import DistributedObject
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+from direct.distributed.ClockDelta import *
 from direct.showbase import BulletinBoardWatcher
+
 from otp.otpbase import OTPGlobals
-from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase import TTLocalizer
+
 from toontown.coghq import DistributedMintRoom, MintLayout, MintRoom
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase.ToontownGlobals import *
+
 
 class DistributedMint(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMint')

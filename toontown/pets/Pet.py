@@ -1,18 +1,25 @@
+import random
+from enum import IntEnum
+
 from panda3d.core import *
+
+from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
-from direct.interval.IntervalGlobal import *
+from direct.distributed.ClockDelta import globalClockDelta
 from direct.fsm.ClassicFSM import *
 from direct.fsm.State import *
-from direct.distributed.ClockDelta import globalClockDelta
-from otp.avatar import Avatar
-from direct.actor import Actor
+from direct.interval.IntervalGlobal import *
 from direct.task import Task
+
+from otp.avatar import Avatar
+
 from toontown.pets import PetDNA
-from .PetDNA import HeadParts, EarParts, NoseParts, TailParts, BodyTypes, BodyTextures, AllPetColors, getColors, ColorScales, PetEyeColors, EarTextures, TailTextures, getFootTexture, getEarTexture, GiraffeTail, LeopardTail, PetGenders
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from enum import IntEnum
-import random
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from .PetDNA import (AllPetColors, BodyTextures, BodyTypes, ColorScales, EarParts, EarTextures, GiraffeTail, HeadParts,
+                     LeopardTail, NoseParts, PetEyeColors, PetGenders, TailParts, TailTextures, getColors,
+                     getEarTexture, getFootTexture)
+
 Component2IconDict = {'boredom': 'Bored',
  'restlessness': None,
  'playfulness': 'Play',

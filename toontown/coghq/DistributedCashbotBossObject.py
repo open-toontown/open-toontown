@@ -1,12 +1,16 @@
 from panda3d.core import *
 from panda3d.physics import *
-from direct.interval.IntervalGlobal import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedSmoothNode
-from toontown.toonbase import ToontownGlobals
-from otp.otpbase import OTPGlobals
 from direct.fsm import FSM
+from direct.interval.IntervalGlobal import *
 from direct.task import Task
+
+from otp.otpbase import OTPGlobals
+
+from toontown.toonbase import ToontownGlobals
+
 smileyDoId = 1
 
 class DistributedCashbotBossObject(DistributedSmoothNode.DistributedSmoothNode, FSM.FSM):

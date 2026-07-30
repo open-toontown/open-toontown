@@ -1,7 +1,9 @@
-from panda3d.core import NodePath, BillboardEffect, Vec3, Point3, TextureStage, TransparencyAttrib, DecalEffect, VBase4
+from panda3d.core import BillboardEffect, DecalEffect, NodePath, Point3, TextureStage, TransparencyAttrib, VBase4, Vec3
+
 from direct.fsm import FSM
-from direct.gui.DirectGui import DirectFrame, DGG
-from direct.interval.IntervalGlobal import LerpScaleInterval, LerpColorScaleInterval, Parallel, Sequence, Wait
+from direct.gui.DirectGui import DGG, DirectFrame
+from direct.interval.IntervalGlobal import LerpColorScaleInterval, LerpScaleInterval, Parallel, Sequence, Wait
+
 
 class DinerStatusIndicator(NodePath, FSM.FSM):
 

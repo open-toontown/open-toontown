@@ -1,19 +1,8 @@
-from . import CutScene
-from . import EntityCreatorBase
-from . import BasicEntities
 from direct.directnotify import DirectNotifyGlobal
-from . import EditMgr
-from . import EntrancePoint
-from . import LevelMgr
-from . import LogicGate
-from . import ZoneEntity
-from . import ModelEntity
-from . import PathEntity
-from . import VisibilityExtender
-from . import PropSpinner
-from . import AmbientSound
-from . import LocatorEntity
-from . import CollisionSolidEntity
+
+from . import (AmbientSound, BasicEntities, CollisionSolidEntity, CutScene, EditMgr, EntityCreatorBase, EntrancePoint,
+               LevelMgr, LocatorEntity, LogicGate, ModelEntity, PathEntity, PropSpinner, VisibilityExtender, ZoneEntity)
+
 
 def nothing(*args):
     return 'nothing'

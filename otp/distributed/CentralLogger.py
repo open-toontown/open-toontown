@@ -1,4 +1,5 @@
 from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
+
 REPORT_PLAYER = 'REPORT_PLAYER'
 ReportFoulLanguage = 'MODERATION_FOUL_LANGUAGE'
 ReportPersonalInfo = 'MODERATION_PERSONAL_INFO'

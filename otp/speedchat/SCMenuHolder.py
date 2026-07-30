@@ -1,9 +1,13 @@
+import types
+
 from panda3d.core import *
+
 from direct.gui.DirectGui import *
-from .SCObject import SCObject
+
 from .SCElement import SCElement
 from .SCMenu import SCMenu
-import types
+from .SCObject import SCObject
+
 
 class SCMenuHolder(SCElement):
     N = 0.9

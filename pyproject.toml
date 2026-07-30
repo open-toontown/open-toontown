@@ -1,0 +1,14 @@
+[tool.isort]
+    # Limit length of import statements
+    line_length = 120
+
+    # Import order
+    # Import from low level on top (Python) all the way down to high level on bottom (Toontown)
+    known_panda = ['panda3d']
+    known_direct = ['direct']
+    known_otp = ['otp']
+    known_toontown = ['toontown']
+    sections = ['FUTURE', 'STDLIB', 'PANDA', 'DIRECT', 'THIRDPARTY', 'OTP', 'TOONTOWN', 'LOCALFOLDER']
+
+    # Put any files here which may have custom import orders to skip
+    skip = ['toontown/ai/HolidayManagerAI.py']

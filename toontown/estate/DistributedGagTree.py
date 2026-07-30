@@ -1,17 +1,19 @@
-from toontown.estate import DistributedPlantBase
-from direct.interval.IntervalGlobal import *
+from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
 from direct.showbase import PythonUtil
-from toontown.toonbase import ToontownBattleGlobals
+from direct.task import Task
+
+from otp.otpbase import OTPGlobals
+
+from toontown.estate import DistributedLawnDecor, DistributedPlantBase
+from toontown.toonbase import ToontownBattleGlobals, TTLocalizer
 from toontown.toontowngui import TTDialog
 from toontown.toontowngui.TeaserPanel import TeaserPanel
-from toontown.toonbase import TTLocalizer
-from . import GardenGlobals
-from . import HouseGlobals
-from direct.task import Task
-from panda3d.core import *
-from otp.otpbase import OTPGlobals
-from toontown.estate import DistributedLawnDecor
+
+from . import GardenGlobals, HouseGlobals
+
 DIRT_AS_WATER_INDICATOR = True
 
 class DistributedGagTree(DistributedPlantBase.DistributedPlantBase):

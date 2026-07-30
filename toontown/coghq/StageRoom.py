@@ -1,9 +1,13 @@
-from panda3d.core import *
-from direct.showbase import DirectObject
-from direct.fsm import ClassicFSM, State
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import StageRoomSpecs
 import random
+
+from panda3d.core import *
+
+from direct.fsm import ClassicFSM, State
+from direct.showbase import DirectObject
+
+from toontown.coghq import StageRoomSpecs
+from toontown.toonbase import ToontownGlobals
+
 
 class StageRoom(DirectObject.DirectObject):
     FloorCollPrefix = 'stageFloorColl'

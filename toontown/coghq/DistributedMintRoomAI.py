@@ -1,12 +1,13 @@
-from otp.level import DistributedLevelAI, LevelSpec
 from direct.directnotify import DirectNotifyGlobal
 from direct.task import Task
-from otp.level import LevelSpec
-from toontown.toonbase import ToontownGlobals, ToontownBattleGlobals
-from toontown.coghq import FactoryEntityCreatorAI, MintRoomSpecs
-from toontown.coghq import MintRoomBase, LevelSuitPlannerAI
-from toontown.coghq import DistributedMintBattleAI
+
+from otp.level import DistributedLevelAI, LevelSpec
+
+from toontown.coghq import (DistributedMintBattleAI, FactoryEntityCreatorAI, LevelSuitPlannerAI, MintRoomBase,
+                            MintRoomSpecs)
 from toontown.suit import DistributedMintSuitAI
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals
+
 
 class DistributedMintRoomAI(DistributedLevelAI.DistributedLevelAI, MintRoomBase.MintRoomBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedMintRoomAI')

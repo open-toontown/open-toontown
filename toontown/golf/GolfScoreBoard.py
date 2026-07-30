@@ -1,13 +1,17 @@
+from math import *
+
 from panda3d.core import *
-from toontown.toonbase import TTLocalizer, ToontownGlobals
+from panda3d.core import LineSegs
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import *
 from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
 from direct.task import Task
-from math import *
-from direct.distributed.ClockDelta import *
+
 from toontown.golf import GolfGlobals
-from panda3d.core import LineSegs
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 AUTO_HIDE_TIMEOUT = 3
 
 class GolfScoreBoard:

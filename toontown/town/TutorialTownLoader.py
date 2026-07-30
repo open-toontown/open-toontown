@@ -1,9 +1,9 @@
-from . import TownLoader
-from . import TTTownLoader
-from . import TutorialStreet
+from toontown.hood import ZoneUtil
 from toontown.suit import Suit
 from toontown.toon import Toon
-from toontown.hood import ZoneUtil
+
+from . import TownLoader, TTTownLoader, TutorialStreet
+
 
 class TutorialTownLoader(TTTownLoader.TTTownLoader):
 

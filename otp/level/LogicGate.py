@@ -1,6 +1,8 @@
-from direct.showbase import DirectObject
 from direct.directnotify import DirectNotifyGlobal
+from direct.showbase import DirectObject
+
 from . import Entity
+
 
 def andTest(self, a, b):
     if b:

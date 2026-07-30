@@ -1,28 +1,28 @@
-from panda3d.core import Vec3, Point3, Point4, TextNode, NodePath
-from panda3d.core import CollisionHandlerEvent, CollisionNode, CollisionSphere
+from panda3d.core import CollisionHandlerEvent, CollisionNode, CollisionSphere, NodePath, Point3, Point4, TextNode, Vec3
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedSmoothNode
 from direct.distributed.ClockDelta import globalClockDelta
-from direct.interval.IntervalGlobal import Sequence, Parallel
-from direct.interval.IntervalGlobal import LerpScaleInterval, LerpFunctionInterval, LerpColorScaleInterval, LerpPosInterval
-from direct.interval.IntervalGlobal import SoundInterval, WaitInterval
-from direct.showbase.PythonUtil import Functor, bound, lerp, SerialNumGen
+from direct.interval.FunctionInterval import Func, Wait
+from direct.interval.IntervalGlobal import (LerpColorScaleInterval, LerpFunctionInterval, LerpPosInterval,
+                                            LerpScaleInterval, Parallel, Sequence, SoundInterval, WaitInterval)
+from direct.showbase.PythonUtil import Functor, SerialNumGen, bound, lerp
 from direct.showbase.RandomNumGen import RandomNumGen
 from direct.task.Task import Task
-from direct.distributed import DistributedSmoothNode
-from direct.directnotify import DirectNotifyGlobal
-from direct.interval.FunctionInterval import Wait, Func
-from toontown.toonbase import TTLocalizer
-from toontown.toon import Toon
-from toontown.toonbase import ToontownGlobals
-from toontown.minigame.Trajectory import Trajectory
+
+from toontown.minigame.DropPlacer import PartyRegionDropPlacer
 from toontown.minigame.OrthoDrive import OrthoDrive
 from toontown.minigame.OrthoWalk import OrthoWalk
-from toontown.minigame.DropPlacer import PartyRegionDropPlacer
+from toontown.minigame.Trajectory import Trajectory
 from toontown.parties import PartyGlobals
-from toontown.parties.PartyCatchActivityToonSD import PartyCatchActivityToonSD
-from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
-from toontown.parties.DistributedPartyCatchActivityBase import DistributedPartyCatchActivityBase
-from toontown.parties.DistributedPartyCannonActivity import DistributedPartyCannonActivity
 from toontown.parties.activityFSMs import CatchActivityFSM
+from toontown.parties.DistributedPartyActivity import DistributedPartyActivity
+from toontown.parties.DistributedPartyCannonActivity import DistributedPartyCannonActivity
+from toontown.parties.DistributedPartyCatchActivityBase import DistributedPartyCatchActivityBase
+from toontown.parties.PartyCatchActivityToonSD import PartyCatchActivityToonSD
+from toontown.toon import Toon
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class DistributedPartyCatchActivity(DistributedPartyActivity, DistributedPartyCatchActivityBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyCatchActivity')

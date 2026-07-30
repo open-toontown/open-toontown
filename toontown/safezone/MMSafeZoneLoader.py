@@ -1,7 +1,9 @@
 from panda3d.core import *
-from . import SafeZoneLoader
-from . import MMPlayground
+
 from toontown.toonbase import ToontownGlobals
+
+from . import MMPlayground, SafeZoneLoader
+
 
 class MMSafeZoneLoader(SafeZoneLoader.SafeZoneLoader):
 

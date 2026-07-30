@@ -1,10 +1,12 @@
-from toontown.toonbase import ToontownGlobals
+from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from panda3d.core import *
-from toontown.toonbase import TTLocalizer
-from . import FlowerSpeciesPanel
-from . import GardenGlobals
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import FlowerSpeciesPanel, GardenGlobals
+
 
 class FlowerBrowser(DirectScrolledList):
     notify = DirectNotifyGlobal.directNotify.newCategory('FlowerBrowser')

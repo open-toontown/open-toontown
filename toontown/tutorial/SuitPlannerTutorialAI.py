@@ -2,11 +2,14 @@
     which handles management of the suit you will fight during the
     tutorial."""
 
+from direct.directnotify import DirectNotifyGlobal
+
 from otp.ai.AIBaseGlobal import *
 
-from direct.directnotify import DirectNotifyGlobal
 from toontown.suit import DistributedTutorialSuitAI
+
 from . import TutorialBattleManagerAI
+
 
 class SuitPlannerTutorialAI:
     """
@@ -50,7 +53,7 @@ class SuitPlannerTutorialAI:
             battleMgr = self.battle.battleMgr
             if cellId in battleMgr.cellId2battle:
                 battleMgr.destroy(self.battle)
-            
+
             self.battle = None
 
     def getDoId(self):

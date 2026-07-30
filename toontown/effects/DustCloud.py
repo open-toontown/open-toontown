@@ -1,8 +1,12 @@
-from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from toontown.battle.BattleProps import globalPropPool
-from direct.directnotify import DirectNotifyGlobal
 from enum import IntEnum
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
+
+from toontown.battle.BattleProps import globalPropPool
+
 SFX = IntEnum('SFX', ('poof', 'magic'), start=0)
 SFXPATHS = {SFX.poof: 'phase_4/audio/sfx/firework_distance_02.ogg',
  SFX.magic: 'phase_4/audio/sfx/SZ_DD_treasure.ogg'}

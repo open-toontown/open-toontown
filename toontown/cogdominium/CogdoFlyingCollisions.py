@@ -1,7 +1,12 @@
+from panda3d.core import (BitMask32, CollisionHandlerEvent, CollisionHandlerFluidPusher, CollisionHandlerGravity,
+                          CollisionHandlerPusher, CollisionNode, CollisionRay, CollisionSphere)
+
 from direct.controls.GravityWalker import GravityWalker
-from panda3d.core import CollisionSphere, CollisionNode, BitMask32, CollisionHandlerEvent, CollisionRay, CollisionHandlerGravity, CollisionHandlerFluidPusher, CollisionHandlerPusher
-from toontown.toonbase import ToontownGlobals
+
 from otp.otpbase import OTPGlobals
+
+from toontown.toonbase import ToontownGlobals
+
 
 class CogdoFlyingCollisions(GravityWalker):
     wantFloorSphere = 0

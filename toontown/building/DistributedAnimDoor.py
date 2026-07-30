@@ -1,8 +1,10 @@
 from panda3d.core import NodePath, VBase3
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.interval.IntervalGlobal import Parallel, Sequence, Wait, HprInterval, LerpHprInterval, SoundInterval
-from toontown.building import DistributedDoor
-from toontown.building import DoorTypes
+from direct.interval.IntervalGlobal import HprInterval, LerpHprInterval, Parallel, Sequence, SoundInterval, Wait
+
+from toontown.building import DistributedDoor, DoorTypes
+
 if (__debug__):
     import pdb
 

@@ -1,31 +1,29 @@
 import math
 import random
-from panda3d.core import VBase3, CollisionPlane, CollisionNode, CollisionSphere, CollisionTube, NodePath, Plane, Vec3, Vec2, Point3, BitMask32, CollisionHandlerEvent, TextureStage, VBase4, BoundingSphere
-from panda3d.otp import NametagGroup, CFSpeech
-from direct.interval.IntervalGlobal import Sequence, Wait, Func, LerpHprInterval, Parallel, LerpPosInterval, Track, ActorInterval, ParallelEndTogether, LerpFunctionInterval, LerpScaleInterval, LerpPosHprInterval, SoundInterval
-from direct.task import Task
-from direct.fsm import FSM
+
+from panda3d.core import (BitMask32, BoundingSphere, CollisionHandlerEvent, CollisionNode, CollisionPlane,
+                          CollisionSphere, CollisionTube, NodePath, Plane, Point3, TextureStage, VBase3, VBase4, Vec2,
+                          Vec3)
+from panda3d.otp import CFSpeech, NametagGroup
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import globalClockDelta
+from direct.fsm import FSM
+from direct.interval.IntervalGlobal import (ActorInterval, Func, LerpFunctionInterval, LerpHprInterval,
+                                            LerpPosHprInterval, LerpPosInterval, LerpScaleInterval, Parallel,
+                                            ParallelEndTogether, Sequence, SoundInterval, Track, Wait)
 from direct.showbase import PythonUtil
 from direct.task import Task
-from toontown.distributed import DelayDelete
-from toontown.toonbase import ToontownGlobals
-from toontown.suit import DistributedBossCog
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
-from toontown.suit import SuitDNA
-from toontown.toon import Toon
-from toontown.toon import ToonDNA
+
+from toontown.battle import MovieToonVictory, RewardPanel
 from toontown.building import ElevatorConstants
-from toontown.toonbase import ToontownTimer
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.battle import RewardPanel
-from toontown.battle import MovieToonVictory
 from toontown.coghq import CogDisguiseGlobals
-from toontown.suit import Suit
-from toontown.suit import SuitDNA
+from toontown.distributed import DelayDelete
 from toontown.effects import DustCloud
+from toontown.suit import DistributedBossCog, Suit, SuitDNA
+from toontown.toon import Toon, ToonDNA
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, ToontownTimer, TTLocalizer
+
 OneBossCog = None
 TTL = TTLocalizer
 

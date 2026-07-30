@@ -1,7 +1,9 @@
-from otp.otpbase import OTPGlobals
 from otp.ai import BanManagerAI
-from toontown.toonbase import ToontownGlobals
+from otp.otpbase import OTPGlobals
+
 from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownGlobals
+
 
 def canAccess(avatarId, zoneId, function = ''):
     avatar = simbase.air.doId2do.get(avatarId)

@@ -1,8 +1,10 @@
 from panda3d.core import *
-from direct.distributed.ClockDelta import *
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObject
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+
 
 class DistributedAnimatedProp(DistributedObject.DistributedObject):
 

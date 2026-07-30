@@ -1,9 +1,12 @@
-from .SCElement import SCElement
-from .SCObject import SCObject
-from .SCMenu import SCMenu
-from direct.fsm.StatePush import StateVar, FunctionCall
+from direct.fsm.StatePush import FunctionCall, StateVar
 from direct.showbase.DirectObject import DirectObject
+
 from otp.avatar import Emote
+
+from .SCElement import SCElement
+from .SCMenu import SCMenu
+from .SCObject import SCObject
+
 SCTerminalSelectedEvent = 'SCTerminalSelected'
 SCTerminalLinkedEmoteEvent = 'SCTerminalLinkedEmoteEvent'
 SCWhisperModeChangeEvent = 'SCWhisperModeChange'

@@ -1,9 +1,14 @@
-from panda3d.core import *
-from . import Playground
 import random
-from direct.fsm import ClassicFSM, State
+
+from panda3d.core import *
+
 from direct.actor import Actor
+from direct.fsm import ClassicFSM, State
+
 from toontown.toonbase import ToontownGlobals
+
+from . import Playground
+
 
 class MMPlayground(Playground.Playground):
 

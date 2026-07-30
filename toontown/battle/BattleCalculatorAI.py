@@ -1,12 +1,15 @@
-from .BattleBase import *
-from .DistributedBattleAI import *
-from toontown.toonbase.ToontownBattleGlobals import *
 import random
-from toontown.suit import DistributedSuitBaseAI
-from . import SuitBattleGlobals, BattleExperienceAI
-from toontown.toon import NPCToons
-from toontown.pets import PetTricks, DistributedPetProxyAI
+
 from direct.showbase.PythonUtil import lerp
+
+from toontown.pets import DistributedPetProxyAI, PetTricks
+from toontown.suit import DistributedSuitBaseAI
+from toontown.toon import NPCToons
+from toontown.toonbase.ToontownBattleGlobals import *
+
+from . import BattleExperienceAI, SuitBattleGlobals
+from .BattleBase import *
+
 
 class BattleCalculatorAI:
     AccuracyBonuses = [
@@ -166,7 +169,7 @@ class BattleCalculatorAI:
             prevAtkId = self.toonAtkOrder[currAtk - 1]
             prevAttack = self.battle.toonAttacks[prevAtkId]
             prevAtkTrack = self.__getActualTrack(prevAttack)
-            lure = atkTrack == LURE and (not attackAffectsGroup(atkTrack, atkLevel, 
+            lure = atkTrack == LURE and (not attackAffectsGroup(atkTrack, atkLevel,
              attack[TOON_TRACK_COL]) and attack[TOON_TGT_COL] in self.successfulLures or attackAffectsGroup(atkTrack, atkLevel, attack[TOON_TRACK_COL]))
             if atkTrack == prevAtkTrack and (attack[TOON_TGT_COL] == prevAttack[TOON_TGT_COL] or lure):
                 if prevAttack[TOON_ACCBONUS_COL] == 1:

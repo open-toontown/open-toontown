@@ -1,6 +1,8 @@
+import datetime
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObject
-import datetime
+
 
 class DistributedPhaseEventMgr(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPhaseEventMgr')

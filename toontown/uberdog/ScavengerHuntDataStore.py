@@ -1,5 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
+
 from toontown.uberdog.DataStore import *
+
 
 class ScavengerHuntDataStore(DataStore):
     QueryTypes = DataStore.addQueryTypes(['GetGoals', 'AddGoal'])

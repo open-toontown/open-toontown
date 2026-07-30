@@ -1,6 +1,8 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownBattleGlobals
+
 from toontown.suit import SuitDNA
+from toontown.toonbase import ToontownBattleGlobals
+
 BattleExperienceAINotify = DirectNotifyGlobal.directNotify.newCategory('BattleExprienceAI')
 
 def getSkillGained(toonSkillPtsGained, toonId, track):

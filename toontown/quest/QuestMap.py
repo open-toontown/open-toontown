@@ -1,13 +1,18 @@
 import math
+
 from panda3d.core import CardMaker, TextNode
-from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton
+
+from direct.gui.DirectGui import DirectButton, DirectFrame, DirectLabel
 from direct.task import Task
-from toontown.toon import NPCToons
+
 from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals
 from toontown.quest import Quests
 from toontown.suit import SuitPlannerBase
+from toontown.toon import NPCToons
+from toontown.toonbase import ToontownGlobals
+
 from . import QuestMapGlobals
+
 
 class QuestMap(DirectFrame):
 

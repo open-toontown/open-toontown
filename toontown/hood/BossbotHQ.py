@@ -1,7 +1,9 @@
-from . import CogHood
-from toontown.toonbase import ToontownGlobals
 from toontown.coghq import BossbotCogHQLoader
 from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownGlobals
+
+from . import CogHood
+
 
 class BossbotHQ(CogHood.CogHood):
 

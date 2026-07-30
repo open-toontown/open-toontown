@@ -1,9 +1,13 @@
-from direct.directnotify import DirectNotifyGlobal
-from . import DistributedCountryClubAI
-from toontown.toonbase import ToontownGlobals
-from toontown.coghq import CountryClubLayout
-from direct.showbase import DirectObject
 import random
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.showbase import DirectObject
+
+from toontown.coghq import CountryClubLayout
+from toontown.toonbase import ToontownGlobals
+
+from . import DistributedCountryClubAI
+
 CountryClubId2Layouts = {ToontownGlobals.BossbotCountryClubIntA: (0, 1, 2), ToontownGlobals.BossbotCountryClubIntB: (3, 4, 5), ToontownGlobals.BossbotCountryClubIntC: (6, 7, 8)}
 
 class CountryClubManagerAI(DirectObject.DirectObject):

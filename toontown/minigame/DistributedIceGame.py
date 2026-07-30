@@ -1,17 +1,18 @@
-import math
-from panda3d.core import Vec3, deg2Rad, Point3, NodePath, VBase4, CollisionHandlerEvent, CollisionNode, CollisionSphere
-from direct.fsm import ClassicFSM, State
-from direct.distributed.ClockDelta import globalClockDelta
-from direct.gui.DirectGui import DirectLabel
-from direct.interval.IntervalGlobal import Sequence, LerpScaleInterval, LerpFunctionInterval, Func, Parallel, LerpPosInterval, Wait, SoundInterval, LerpColorScaleInterval
-from toontown.toonbase import ToontownGlobals, TTLocalizer, ToontownTimer
-from toontown.minigame import ArrowKeys
-from toontown.minigame import DistributedMinigame
-from toontown.minigame import DistributedIceWorld
-from toontown.minigame import IceGameGlobals
-from toontown.minigame import MinigameAvatarScorePanel
-from toontown.minigame import IceTreasure
 import functools
+import math
+
+from panda3d.core import CollisionHandlerEvent, CollisionNode, CollisionSphere, NodePath, Point3, VBase4, Vec3, deg2Rad
+
+from direct.distributed.ClockDelta import globalClockDelta
+from direct.fsm import ClassicFSM, State
+from direct.gui.DirectGui import DirectLabel
+from direct.interval.IntervalGlobal import (Func, LerpColorScaleInterval, LerpFunctionInterval, LerpPosInterval,
+                                            LerpScaleInterval, Parallel, Sequence, SoundInterval, Wait)
+
+from toontown.minigame import (ArrowKeys, DistributedIceWorld, DistributedMinigame, IceGameGlobals, IceTreasure,
+                               MinigameAvatarScorePanel)
+from toontown.toonbase import ToontownGlobals, ToontownTimer, TTLocalizer
+
 
 class DistributedIceGame(DistributedMinigame.DistributedMinigame, DistributedIceWorld.DistributedIceWorld):
     notify = directNotify.newCategory('DistributedIceGame')

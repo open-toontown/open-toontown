@@ -1,10 +1,14 @@
-from direct.showbase.DirectObject import DirectObject
-from toontown.toonbase.ToontownGlobals import *
+import random
+
+from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
-from direct.actor import Actor
-import random
+from direct.showbase.DirectObject import DirectObject
+
+from toontown.toonbase.ToontownGlobals import *
+
 from . import DivingGameGlobals
+
 
 class DivingFishSpawn(DirectObject):
     RADIUS = 0.7

@@ -1,19 +1,22 @@
 if __name__ == '__main__':
     from direct.directbase import DirectStart
+
+from enum import IntEnum
+
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from direct.showbase import DirectObject
-from toontown.toonbase import ToontownGlobals, TTLocalizer
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownTimer
-from .KartShopGlobals import *
+
 from toontown.racing.Kart import Kart
 from toontown.shtiker.KartPage import KartViewer
-from .KartDNA import *
+from toontown.toonbase import ToontownGlobals, ToontownTimer, TTLocalizer
 from toontown.toontowngui.TeaserPanel import TeaserPanel
-from enum import IntEnum
+
+from .KartDNA import *
+from .KartShopGlobals import *
+
 if (__debug__):
     import pdb
 MENUS = IntEnum('MENUS', ('MainMenu, BuyKart, BuyAccessory, ReturnKart, ConfirmBuyAccessory, ConfirmBuyKart, BoughtKart, BoughtAccessory, TeaserPanel'), start=0)

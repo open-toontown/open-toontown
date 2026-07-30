@@ -1,8 +1,10 @@
 from panda3d.core import *
+
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from direct.interval.IntervalGlobal import *
+
 from otp.avatar import ShadowCaster
+
 
 class DroppedGag(NodePath, ShadowCaster.ShadowCaster):
 

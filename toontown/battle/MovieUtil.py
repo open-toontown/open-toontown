@@ -1,12 +1,15 @@
+import random
+
+from direct.directnotify import DirectNotifyGlobal
 from direct.interval.IntervalGlobal import *
+from direct.particles import ParticleEffect
+
+from toontown.toonbase import TTLocalizer
+
+from . import BattleParticles, BattleProps
 from .BattleBase import *
 from .BattleProps import *
-from direct.directnotify import DirectNotifyGlobal
-import random
-from direct.particles import ParticleEffect
-from . import BattleParticles
-from . import BattleProps
-from toontown.toonbase import TTLocalizer
+
 notify = DirectNotifyGlobal.directNotify.newCategory('MovieUtil')
 SUIT_LOSE_DURATION = 6.0
 SUIT_LURE_DISTANCE = 2.6

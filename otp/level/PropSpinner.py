@@ -1,6 +1,9 @@
-from direct.interval.IntervalGlobal import *
-from .Entity import Entity
 from panda3d.core import Vec3
+
+from direct.interval.IntervalGlobal import *
+
+from .Entity import Entity
+
 
 class PropSpinner(Entity):
 

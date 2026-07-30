@@ -1,9 +1,12 @@
-from . import CatalogItem
-from toontown.pets import PetTricks
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPLocalizer
 from direct.interval.IntervalGlobal import *
+
+from otp.otpbase import OTPLocalizer
+
+from toontown.pets import PetTricks
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CatalogItem
+
 
 class CatalogPetTrickItem(CatalogItem.CatalogItem):
     sequenceNumber = 0
@@ -42,7 +45,7 @@ class CatalogPetTrickItem(CatalogItem.CatalogItem):
         return ToontownGlobals.P_ItemAvailable
 
     def getPicture(self, avatar):
-        from toontown.pets import PetDNA, Pet
+        from toontown.pets import Pet, PetDNA
         pet = Pet.Pet(forGui=1)
         dna = avatar.petDNA
         if dna == None:

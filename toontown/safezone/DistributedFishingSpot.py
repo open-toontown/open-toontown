@@ -1,31 +1,26 @@
+import math
+import random
+
 from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from direct.gui.DirectGui import *
-from panda3d.core import *
+
+from direct.actor import Actor
+from direct.directnotify import DirectNotifyGlobal
 from direct.directtools.DirectGeometry import LineNodePath
 from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from toontown.fishing import FishGlobals
-from toontown.shtiker import FishPage
-from toontown.toonbase import TTLocalizer
-from toontown.quest import Quests
-from direct.actor import Actor
-from direct.showutil import Rope
-import math
-from direct.task.Task import Task
-import random
-import random
-from toontown.fishing import FishingTargetGlobals
-from toontown.fishing import FishBase
-from toontown.fishing import FishPanel
-from toontown.effects import Ripples
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import ToontownTimer
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
+from direct.showutil import Rope
+from direct.task.Task import Task
+
+from toontown.effects import Ripples
+from toontown.fishing import FishBase, FishGlobals, FishingTargetGlobals, FishPanel
 from toontown.hood import ZoneUtil
-from toontown.toontowngui import TeaserPanel
+from toontown.quest import Quests
+from toontown.shtiker import FishPage
+from toontown.toonbase import ToontownGlobals, ToontownTimer, TTLocalizer
+from toontown.toontowngui import TeaserPanel, TTDialog
+
 
 class DistributedFishingSpot(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFishingSpot')

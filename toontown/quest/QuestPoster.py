@@ -1,21 +1,23 @@
-from direct.gui.DirectGui import *
+import string
+import types
+
 from panda3d.core import *
-from . import Quests
-from toontown.toon import NPCToons
-from toontown.toon import ToonHead
-from toontown.toon import ToonDNA
-from toontown.suit import SuitDNA
-from toontown.suit import Suit
-from toontown.hood import ZoneUtil
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-import string, types
-from toontown.toon import LaffMeter
-from toontown.toonbase.ToontownBattleGlobals import AvPropsNew
-from toontown.toontowngui.TeaserPanel import TeaserPanel
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toontowngui import TTDialog
+from direct.gui.DirectGui import *
+
 from otp.otpbase import OTPLocalizer
+
+from toontown.hood import ZoneUtil
+from toontown.suit import Suit, SuitDNA
+from toontown.toon import LaffMeter, NPCToons, ToonDNA, ToonHead
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToontownBattleGlobals import AvPropsNew
+from toontown.toontowngui import TTDialog
+from toontown.toontowngui.TeaserPanel import TeaserPanel
+
+from . import Quests
+
 IMAGE_SCALE_LARGE = 0.2
 IMAGE_SCALE_SMALL = 0.15
 POSTER_WIDTH = 0.7

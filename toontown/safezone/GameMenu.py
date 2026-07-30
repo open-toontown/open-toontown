@@ -1,11 +1,14 @@
 from panda3d.core import *
+
 from direct.distributed.ClockDelta import *
-from direct.task.Task import Task
-from direct.interval.IntervalGlobal import *
-from .TrolleyConstants import *
 from direct.gui.DirectGui import *
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownGlobals
+from direct.interval.IntervalGlobal import *
+from direct.task.Task import Task
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from .TrolleyConstants import *
+
 
 class GameMenu(DirectFrame):
 

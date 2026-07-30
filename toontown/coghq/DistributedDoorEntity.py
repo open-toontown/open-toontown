@@ -1,17 +1,17 @@
 from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from panda3d.direct import ShowInterval, HideInterval
-from direct.distributed.ClockDelta import *
-from toontown.toonbase import ToontownGlobals
+from panda3d.direct import HideInterval, ShowInterval
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, FourState, State
+from direct.interval.IntervalGlobal import *
+
+from otp.level import BasicEntities, DistributedEntity, VisibilityBlocker
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 from . import DistributedDoorEntityBase
-from direct.fsm import FourState
-from direct.fsm import ClassicFSM
-from otp.level import DistributedEntity
-from toontown.toonbase import TTLocalizer
-from otp.level import BasicEntities
-from direct.fsm import State
-from otp.level import VisibilityBlocker
+
 
 class DistributedDoorEntityLock(DistributedDoorEntityBase.LockBase, FourState.FourState):
     slideLeft = Vec3(-7.5, 0.0, 0.0)

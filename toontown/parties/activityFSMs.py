@@ -1,14 +1,9 @@
 from direct.directnotify import DirectNotifyGlobal
+
+from .activityFSMMixins import (ActiveMixin, ConclusionMixin, DisabledMixin, IdleMixin, RulesMixin,
+                                WaitClientsReadyMixin, WaitForEnoughMixin, WaitForServerMixin, WaitToStartMixin)
 from .BaseActivityFSM import BaseActivityFSM
-from .activityFSMMixins import IdleMixin
-from .activityFSMMixins import RulesMixin
-from .activityFSMMixins import ActiveMixin
-from .activityFSMMixins import DisabledMixin
-from .activityFSMMixins import ConclusionMixin
-from .activityFSMMixins import WaitForEnoughMixin
-from .activityFSMMixins import WaitToStartMixin
-from .activityFSMMixins import WaitClientsReadyMixin
-from .activityFSMMixins import WaitForServerMixin
+
 
 class FireworksActivityFSM(BaseActivityFSM, IdleMixin, ActiveMixin, DisabledMixin):
     notify = DirectNotifyGlobal.directNotify.newCategory('FireworksActivityFSM')

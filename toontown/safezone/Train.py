@@ -1,16 +1,18 @@
-from panda3d.core import *
-from direct.showbase.DirectObject import DirectObject
-from direct.interval.IntervalGlobal import *
-from direct.distributed.ClockDelta import globalClockDelta
-from direct.distributed.ClockDelta import NetworkTimePrecision
 import random
-from direct.task.Task import Task
-from direct.directnotify.DirectNotifyGlobal import directNotify
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from direct.directutil import Mopath
-from toontown.toonbase import ToontownGlobals
+
+from panda3d.core import *
+
 from direct.actor import Actor
+from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.directutil import Mopath
+from direct.distributed.ClockDelta import NetworkTimePrecision, globalClockDelta
+from direct.fsm import ClassicFSM, State
+from direct.interval.IntervalGlobal import *
+from direct.showbase.DirectObject import DirectObject
+from direct.task.Task import Task
+
+from toontown.toonbase import ToontownGlobals
+
 
 class Train(DirectObject):
     notify = directNotify.newCategory('Train')

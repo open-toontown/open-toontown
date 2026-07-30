@@ -1,6 +1,7 @@
-from . import TownLoader
-from . import MMStreet
 from toontown.suit import Suit
+
+from . import MMStreet, TownLoader
+
 
 class MMTownLoader(TownLoader.TownLoader):
 

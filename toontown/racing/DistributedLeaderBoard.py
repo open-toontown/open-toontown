@@ -1,13 +1,12 @@
+import pickle
+
 from panda3d.core import NodePath, TextNode
 
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.DistributedObject import DistributedObject
 
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import base
-
-import pickle
 
 
 class DistributedLeaderBoard(DistributedObject):

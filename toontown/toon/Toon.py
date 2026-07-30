@@ -1,29 +1,29 @@
-from otp.avatar import Avatar
-from otp.avatar.Avatar import teleportNotify
-from . import ToonDNA
-from direct.task.Task import Task
-from toontown.suit import SuitDNA
-from direct.actor import Actor
-from .ToonHead import *
-from panda3d.core import *
-from panda3d.otp import *
-from direct.interval.IntervalGlobal import *
-from panda3d.direct import ShowInterval, HideInterval
-from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import ToontownGlobals
-from otp.otpbase import OTPLocalizer
-from toontown.toonbase import TTLocalizer
-from toontown.effects import Wake
-from otp.avatar import Emote
-from . import Motion
-from toontown.hood import ZoneUtil
-from toontown.battle import SuitBattleGlobals
-from otp.otpbase import OTPGlobals
-from toontown.effects import DustCloud
-from toontown.distributed import DelayDelete
-from . import AccessoryGlobals
-import importlib
 import functools
+import importlib
+
+from panda3d.core import *
+from panda3d.direct import HideInterval, ShowInterval
+from panda3d.otp import *
+
+from direct.actor import Actor
+from direct.directnotify import DirectNotifyGlobal
+from direct.interval.IntervalGlobal import *
+from direct.task.Task import Task
+
+from otp.avatar import Avatar, Emote
+from otp.avatar.Avatar import teleportNotify
+from otp.otpbase import OTPGlobals, OTPLocalizer
+
+from toontown.battle import SuitBattleGlobals
+from toontown.distributed import DelayDelete
+from toontown.effects import DustCloud, Wake
+from toontown.hood import ZoneUtil
+from toontown.suit import SuitDNA
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import AccessoryGlobals, Motion, ToonDNA
+from .ToonHead import *
+
 
 def teleportDebug(requestStatus, msg, onlyIfToAv = True):
     if teleportNotify.getDebug():
@@ -2844,8 +2844,8 @@ class Toon(Avatar.Avatar, ToonHead):
         self.suit.makeWaiter(self.suitGeom)
 
     def getPieModel(self):
-        from toontown.toonbase import ToontownBattleGlobals
         from toontown.battle import BattleProps
+        from toontown.toonbase import ToontownBattleGlobals
         if self.pieModel != None and self.__pieModelType != self.pieType:
             self.pieModel.detachNode()
             self.pieModel = None
@@ -2857,9 +2857,8 @@ class Toon(Avatar.Avatar, ToonHead):
         return self.pieModel
 
     def getPresentPieInterval(self, x, y, z, h, p, r):
+        from toontown.battle import BattleProps, MovieUtil
         from toontown.toonbase import ToontownBattleGlobals
-        from toontown.battle import BattleProps
-        from toontown.battle import MovieUtil
         pie = self.getPieModel()
         pieName = ToontownBattleGlobals.pieNames[self.pieType]
         pieType = BattleProps.globalPropPool.getPropType(pieName)
@@ -2872,8 +2871,8 @@ class Toon(Avatar.Avatar, ToonHead):
         return track
 
     def getTossPieInterval(self, x, y, z, h, p, r, power, beginFlyIval = Sequence()):
-        from toontown.toonbase import ToontownBattleGlobals
         from toontown.battle import BattleProps
+        from toontown.toonbase import ToontownBattleGlobals
         pie = self.getPieModel()
         flyPie = pie.copyTo(NodePath('a'))
         pieName = ToontownBattleGlobals.pieNames[self.pieType]
@@ -2896,8 +2895,8 @@ class Toon(Avatar.Avatar, ToonHead):
         return (toss, fly, flyPie)
 
     def getPieSplatInterval(self, x, y, z, pieCode):
-        from toontown.toonbase import ToontownBattleGlobals
         from toontown.battle import BattleProps
+        from toontown.toonbase import ToontownBattleGlobals
         pieName = ToontownBattleGlobals.pieNames[self.pieType]
         splatName = 'splat-%s' % pieName
         if pieName == 'lawbook':

@@ -1,10 +1,13 @@
-from otp.ai.AIBase import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.racing.KartDNA import *
-from direct.distributed.ClockDelta import *
 from direct.distributed import DistributedSmoothNodeAI
+from direct.distributed.ClockDelta import *
 from direct.fsm import FSM
 from direct.task import Task
+
+from otp.ai.AIBase import *
+
+from toontown.racing.KartDNA import *
+from toontown.toonbase.ToontownGlobals import *
+
 if (__debug__):
     import pdb
 

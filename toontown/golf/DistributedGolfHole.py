@@ -1,26 +1,29 @@
 import math
 import random
 import time
-from panda3d.core import TextNode, BitMask32, Point3, Vec3, Vec4, deg2Rad, Mat3, NodePath, VBase4, CollisionTraverser, CollisionSegment, CollisionNode, CollisionHandlerQueue
+
+from panda3d.core import (BitMask32, CollisionHandlerQueue, CollisionNode, CollisionSegment, CollisionTraverser, Mat3,
+                          NodePath, Point3, TextNode, VBase4, Vec3, Vec4, deg2Rad)
 from panda3d.ode import OdeRayGeom
-from direct.distributed import DistributedObject
-from direct.directnotify import DirectNotifyGlobal
-from otp.otpbase import OTPGlobals
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import ToontownTimer
-from direct.gui.DirectGui import DirectWaitBar, DGG, DirectLabel
-from direct.task import Task
-from direct.fsm.FSM import FSM
-from toontown.minigame import ArrowKeys
-from direct.showbase import PythonUtil
-from toontown.golf import BuildGeometry
-from toontown.golf import DistributedPhysicsWorld
-from toontown.golf import GolfGlobals
-from direct.interval.IntervalGlobal import Sequence, Parallel, LerpScaleInterval, LerpFunctionInterval, Func, Wait, SoundInterval, ParallelEndTogether, LerpPosInterval, ActorInterval, LerpPosHprInterval, LerpColorScaleInterval, WaitInterval
+
 from direct.actor import Actor
-from toontown.golf import GolfHoleBase
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+from direct.fsm.FSM import FSM
+from direct.gui.DirectGui import DGG, DirectLabel, DirectWaitBar
+from direct.interval.IntervalGlobal import (ActorInterval, Func, LerpColorScaleInterval, LerpFunctionInterval,
+                                            LerpPosHprInterval, LerpPosInterval, LerpScaleInterval, Parallel,
+                                            ParallelEndTogether, Sequence, SoundInterval, Wait, WaitInterval)
+from direct.showbase import PythonUtil
+from direct.task import Task
+
+from otp.otpbase import OTPGlobals
+
 from toontown.distributed import DelayDelete
+from toontown.golf import BuildGeometry, DistributedPhysicsWorld, GolfGlobals, GolfHoleBase
+from toontown.minigame import ArrowKeys
+from toontown.toonbase import ToontownGlobals, ToontownTimer, TTLocalizer
+
 
 class DistributedGolfHole(DistributedPhysicsWorld.DistributedPhysicsWorld, FSM, GolfHoleBase.GolfHoleBase):
     defaultTransitions = {'Off': ['Cleanup', 'ChooseTee', 'WatchTee'],

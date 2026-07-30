@@ -1,5 +1,7 @@
-from . import ActiveCell
 from direct.directnotify import DirectNotifyGlobal
+
+from . import ActiveCell
+
 
 class DirectionalCell(ActiveCell.ActiveCell):
     notify = DirectNotifyGlobal.directNotify.newCategory('DirectionalCell')

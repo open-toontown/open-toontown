@@ -1,27 +1,25 @@
+from direct.actor import Actor
+from direct.distributed import DistributedObject, DistributedSmoothNode
 from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+from direct.fsm.FSM import FSM
+from direct.gui import DirectGui
 from direct.interval.IntervalGlobal import *
+from direct.showbase import PythonUtil
+
+from toontown.building import DistributedElevator, DistributedElevatorExt
 from toontown.building.ElevatorConstants import *
 from toontown.building.ElevatorUtils import *
-from toontown.building import DistributedElevatorExt
-from toontown.building import DistributedElevator
-from toontown.toonbase import ToontownGlobals
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from direct.gui import DirectGui
 from toontown.hood import ZoneUtil
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
-from direct.distributed import DistributedObject
-from direct.distributed import DistributedSmoothNode
-from direct.actor import Actor
-from direct.fsm.FSM import FSM
-from direct.showbase import PythonUtil
-from toontown.toonbase.ToontownTimer import ToontownTimer
+from toontown.racing import RaceGlobals
 from toontown.racing.Kart import Kart
 from toontown.racing.KartShopGlobals import KartGlobals
-from toontown.racing import RaceGlobals
-from toontown.toontowngui.TTDialog import TTGlobalDialog
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toonbase.ToontownTimer import ToontownTimer
+from toontown.toontowngui import TTDialog
 from toontown.toontowngui.TeaserPanel import TeaserPanel
+from toontown.toontowngui.TTDialog import TTGlobalDialog
+
 if (__debug__):
     import pdb
 

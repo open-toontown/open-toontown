@@ -1,27 +1,27 @@
+import random
+
 from panda3d.core import *
 from panda3d.otp import *
-from direct.interval.IntervalGlobal import *
-from direct.distributed.ClockDelta import *
+
+from direct.controls.ControlManager import CollisionHandlerRayStart
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import *
+from direct.interval.IntervalGlobal import *
+from direct.showbase import PythonUtil, Transitions
+
 from otp.avatar import DistributedAvatar
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
-from toontown.battle import BattleExperience
-from toontown.battle import BattleBase
-from . import BossCog
-from . import SuitDNA
+
+from toontown.battle import BattleBase, BattleExperience
+from toontown.building import ElevatorConstants, ElevatorUtils
 from toontown.coghq import CogDisguiseGlobals
-from direct.showbase import Transitions
-from toontown.hood import ZoneUtil
-from toontown.building import ElevatorUtils
-from toontown.building import ElevatorConstants
 from toontown.distributed import DelayDelete
 from toontown.effects import DustCloud
-from toontown.toonbase import TTLocalizer
 from toontown.friends import FriendsListManager
-from direct.controls.ControlManager import CollisionHandlerRayStart
-from direct.showbase import PythonUtil
-import random
+from toontown.hood import ZoneUtil
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
+
+from . import BossCog, SuitDNA
+
 
 class DistributedBossCog(DistributedAvatar.DistributedAvatar, BossCog.BossCog):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedBossCog')

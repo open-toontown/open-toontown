@@ -1,16 +1,20 @@
 from panda3d.core import *
-from toontown.toonbase.ToonBaseGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.distributed.ToontownMsgTypes import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from toontown.minigame import Purchase
+
 from otp.avatar import DistributedAvatar
-from . import Hood
+
 from toontown.building import SuitInterior
 from toontown.cogdominium import CogdoInterior
+from toontown.distributed.ToontownMsgTypes import *
+from toontown.minigame import Purchase
 from toontown.toon.Toon import teleportDebug
+from toontown.toonbase.ToonBaseGlobal import *
+from toontown.toonbase.ToontownGlobals import *
+
+from . import Hood
+
 
 class ToonHood(Hood.Hood):
     notify = DirectNotifyGlobal.directNotify.newCategory('ToonHood')

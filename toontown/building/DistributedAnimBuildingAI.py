@@ -1,7 +1,7 @@
 from direct.directnotify import DirectNotifyGlobal
-from toontown.building import DistributedBuildingAI
-from toontown.building import DistributedAnimDoorAI
-from toontown.building import DoorTypes
+
+from toontown.building import DistributedAnimDoorAI, DistributedBuildingAI, DoorTypes
+
 
 class DistributedAnimBuildingAI(DistributedBuildingAI.DistributedBuildingAI):
 

@@ -1,5 +1,6 @@
-from .MazeBase import MazeBase
 from . import MazeData
+from .MazeBase import MazeBase
+
 
 class Maze(MazeBase):
 

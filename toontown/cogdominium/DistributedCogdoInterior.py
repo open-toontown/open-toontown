@@ -1,27 +1,28 @@
 import random
-from direct.interval.IntervalGlobal import *
-from direct.distributed.ClockDelta import *
-from toontown.building.ElevatorConstants import *
-from toontown.toon import NPCToons
+
 from panda3d.core import NodePath
 from panda3d.otp import *
-from toontown.building import ElevatorUtils
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import ToontownBattleGlobals
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM, State
 from direct.distributed import DistributedObject
-from direct.fsm import State
-from direct.fsm.StatePush import StateVar, FunctionCall
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+from direct.fsm.StatePush import FunctionCall, StateVar
+from direct.interval.IntervalGlobal import *
+
 from toontown.battle import BattleBase
-from toontown.hood import ZoneUtil
+from toontown.building import ElevatorUtils
+from toontown.building.ElevatorConstants import *
+from toontown.cogdominium import CogdoBarrelRoom, CogdoBarrelRoomConsts, CogdoGameConsts
 from toontown.cogdominium.CogdoLayout import CogdoLayout
-from toontown.cogdominium import CogdoGameConsts
-from toontown.cogdominium import CogdoBarrelRoom, CogdoBarrelRoomConsts
 from toontown.distributed import DelayDelete
-from toontown.toonbase import TTLocalizer
-from .CogdoExecutiveSuiteMovies import CogdoExecutiveSuiteIntro
+from toontown.hood import ZoneUtil
+from toontown.toon import NPCToons
+from toontown.toonbase import ToontownBattleGlobals, ToontownGlobals, TTLocalizer
+
 from .CogdoElevatorMovie import CogdoElevatorMovie
+from .CogdoExecutiveSuiteMovies import CogdoExecutiveSuiteIntro
+
 PAINTING_DICT = {'s': 'tt_m_ara_crg_paintingMoverShaker',
  'l': 'tt_m_ara_crg_paintingLegalEagle',
  'm': 'tt_m_ara_crg_paintingMoverShaker',

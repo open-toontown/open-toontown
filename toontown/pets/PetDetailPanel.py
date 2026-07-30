@@ -1,13 +1,16 @@
 from panda3d.core import *
-from toontown.toonbase.ToontownGlobals import *
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from direct.showbase import DirectObject
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
-from toontown.pets import PetTricks
-from otp.otpbase import OTPLocalizer
+from direct.gui.DirectGui import *
+from direct.showbase import DirectObject
 from direct.showbase.PythonUtil import lerp
+
+from otp.otpbase import OTPLocalizer
+
+from toontown.pets import PetTricks
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase.ToontownGlobals import *
+
 FUDGE_FACTOR = 0.01
 
 class PetDetailPanel(DirectFrame):

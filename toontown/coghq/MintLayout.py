@@ -1,9 +1,11 @@
+import random
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase.PythonUtil import invertDictLossless
+from direct.showbase.PythonUtil import invertDictLossless, lerp, normalDistrib
+
 from toontown.coghq import MintRoomSpecs
 from toontown.toonbase import ToontownGlobals
-from direct.showbase.PythonUtil import normalDistrib, lerp
-import random
+
 
 def printAllCashbotInfo():
     print('roomId: roomName')

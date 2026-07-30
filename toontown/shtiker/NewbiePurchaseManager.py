@@ -1,6 +1,8 @@
-from . import PurchaseManager
 from toontown.quest import QuestParser
 from toontown.toon import NPCToons
+
+from . import PurchaseManager
+
 
 class NewbiePurchaseManager(PurchaseManager.PurchaseManager):
 

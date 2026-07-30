@@ -1,5 +1,6 @@
 from otp.avatar.AvatarHandle import AvatarHandle
 
+
 class TalkHandle(AvatarHandle):
 
     def __init__(self, doId, message):

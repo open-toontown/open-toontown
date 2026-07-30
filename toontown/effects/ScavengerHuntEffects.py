@@ -1,9 +1,11 @@
 from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
+
 from direct.gui.DirectFrame import DirectFrame
 from direct.gui.DirectLabel import DirectLabel
+from direct.interval.IntervalGlobal import *
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class ScavengerHuntEffect:
     images = None

@@ -1,7 +1,10 @@
-from direct.showbase.PythonUtil import bound as clamp
-from . import CogdoMazeGameGlobals as Globals
 import math
 import random
+
+from direct.showbase.PythonUtil import bound as clamp
+
+from . import CogdoMazeGameGlobals as Globals
+
 
 class CogdoMazeCameraManager:
     toonJumpSpeed = 30.0

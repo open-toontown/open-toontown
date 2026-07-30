@@ -1,6 +1,7 @@
 from toontown.hood import ZoneUtil
 from toontown.toonbase import ToontownGlobals
 
+
 class ToontownAccess:
 
     def canAccess(self, zoneId = None):

@@ -1,22 +1,25 @@
-from panda3d.core import Point3, Vec3, VBase3
-from direct.tkwidgets.AppShell import *
-from direct.showbase.TkGlobal import *
-from direct.tkwidgets.Tree import *
-from direct.tkwidgets import Slider, Floater
-from tkinter.simpledialog import askstring
-from tkinter.messagebox import showwarning, askyesno
-from tkinter import *
-from direct.showbase.PythonUtil import Functor, list2dict
-from direct.gui.DirectGui import DGG
-import tkinter.filedialog
-from direct.showbase import DirectObject
 import math
 import operator
-from direct.tkwidgets import Valuator
-from direct.tkwidgets import VectorWidgets
-from otp.level import LevelConstants
+import tkinter.filedialog
+from tkinter import *
+from tkinter.messagebox import askyesno, showwarning
+from tkinter.simpledialog import askstring
+
+from panda3d.core import Point3, VBase3, Vec3
+
 from direct.directtools import DirectSession
+from direct.gui.DirectGui import DGG
+from direct.showbase import DirectObject
+from direct.showbase.PythonUtil import Functor, list2dict
+from direct.showbase.TkGlobal import *
+from direct.tkwidgets import Floater, Slider, Valuator, VectorWidgets
+from direct.tkwidgets.AppShell import *
+from direct.tkwidgets.Tree import *
+
 import Pmw
+
+from otp.level import LevelConstants
+
 
 class InGameEditor(AppShell):
     appname = 'In-Game Editor'

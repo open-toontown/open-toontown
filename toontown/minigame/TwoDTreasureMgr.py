@@ -1,9 +1,12 @@
+import random
+
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.DirectObject import DirectObject
-from toontown.minigame import ToonBlitzGlobals
-from toontown.minigame import TwoDTreasure
-import random
+
+from toontown.minigame import ToonBlitzGlobals, TwoDTreasure
+
 
 class TwoDTreasureMgr(DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('TwoDTreasureMgr')

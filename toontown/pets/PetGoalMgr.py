@@ -1,9 +1,13 @@
+import random
+
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase import DirectObject
-from direct.showbase.PythonUtil import randFloat, lerp
+from direct.showbase.PythonUtil import lerp, randFloat
+
 from toontown.pets import PetConstants
-import random
+
 
 class PetGoalMgr(DirectObject.DirectObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('PetGoalMgr')

@@ -1,13 +1,11 @@
 from direct.showbase.PythonUtil import invertDict
+
+from toontown.coghq import (BossbotCountryClubFairwayRoom_Battle00_Cogs, BossbotCountryClubKartRoom_Battle00_Cogs,
+                            BossbotCountryClubMazeRoom_Battle00_Cogs, BossbotCountryClubMazeRoom_Battle01_Cogs,
+                            BossbotCountryClubMazeRoom_Battle02_Cogs, BossbotCountryClubMazeRoom_Battle03_Cogs,
+                            BossbotCountryClubPresidentRoom_Battle00_Cogs, NullCogs)
 from toontown.toonbase import ToontownGlobals
-from toontown.coghq import BossbotCountryClubFairwayRoom_Battle00_Cogs
-from toontown.coghq import BossbotCountryClubMazeRoom_Battle00_Cogs
-from toontown.coghq import BossbotCountryClubMazeRoom_Battle01_Cogs
-from toontown.coghq import BossbotCountryClubMazeRoom_Battle02_Cogs
-from toontown.coghq import BossbotCountryClubMazeRoom_Battle03_Cogs
-from toontown.coghq import NullCogs
-from toontown.coghq import BossbotCountryClubKartRoom_Battle00_Cogs
-from toontown.coghq import BossbotCountryClubPresidentRoom_Battle00_Cogs
+
 
 def getCountryClubRoomSpecModule(roomId):
     return CashbotMintSpecModules[roomId]

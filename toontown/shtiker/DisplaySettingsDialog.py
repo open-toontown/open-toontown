@@ -1,12 +1,14 @@
-from direct.gui.DirectGui import *
 from panda3d.core import *
-from direct.task.Task import Task
-from direct.fsm import StateData
+
 from direct.directnotify import DirectNotifyGlobal
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import ToontownGlobals
+from direct.fsm import StateData
+from direct.gui.DirectGui import *
+from direct.task.Task import Task
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
 from toontown.toonbase.DisplayOptions import DisplayOptions
+from toontown.toontowngui import TTDialog
+
 
 class DisplaySettingsDialog(DirectFrame, StateData.StateData):
     ApplyTimeoutSeconds = 15

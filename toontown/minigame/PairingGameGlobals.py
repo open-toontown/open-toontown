@@ -1,4 +1,5 @@
 from . import PlayingCardDeck
+
 EasiestGameDuration = 120
 HardestGameDuration = 90
 EndlessGame = config.GetBool('endless-pairing-game', 0)

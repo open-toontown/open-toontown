@@ -1,21 +1,22 @@
-from toontown.toonbase import ToontownGlobals
-from . import PhoneGlobals
-from toontown.catalog import CatalogScreen
-from toontown.catalog import CatalogItem
-from toontown.toontowngui import TTDialog
-from toontown.toonbase import TTLocalizer
-from . import DistributedHouseInterior
+import string
+
+from panda3d.core import *
+
 from direct.actor import Actor
-from . import DistributedFurnitureItem
+from direct.directnotify.DirectNotifyGlobal import *
 from direct.distributed import ClockDelta
+from direct.interval.IntervalGlobal import *
 from direct.showbase import PythonUtil
 from direct.showutil import Rope
-from direct.directnotify.DirectNotifyGlobal import *
-from panda3d.core import *
-from direct.interval.IntervalGlobal import *
-import string
-from toontown.quest import Quests
 from direct.task import Task
+
+from toontown.catalog import CatalogItem, CatalogScreen
+from toontown.quest import Quests
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+from toontown.toontowngui import TTDialog
+
+from . import DistributedFurnitureItem, DistributedHouseInterior, PhoneGlobals
+
 
 class DistributedPhone(DistributedFurnitureItem.DistributedFurnitureItem):
     notify = directNotify.newCategory('DistributedPhone')

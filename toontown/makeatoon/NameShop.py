@@ -1,30 +1,32 @@
+import random
+import re
+
 from panda3d.core import *
-from toontown.toonbase.ToontownGlobals import *
-from direct.task.TaskManagerGlobal import *
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from toontown.distributed.ToontownMsgTypes import *
+from panda3d.core import TextEncoder
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.PyDatagram import PyDatagram
+from direct.fsm import ClassicFSM, State, StateData
 from direct.gui import OnscreenText
+from direct.gui.DirectGui import *
+from direct.showbase import PythonUtil
+from direct.task import Task
+from direct.task.TaskManagerGlobal import *
+
 from otp.avatar import Avatar
 from otp.chat import ChatManager
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from toontown.toontowngui import TTDialog
-import re
-from toontown.toonbase import TTLocalizer
-from . import NameGenerator
-import random
 from otp.distributed import PotentialAvatar
 from otp.namepanel import NameCheck
-from toontown.toontowngui import TeaserPanel
-from direct.distributed.PyDatagram import PyDatagram
-from direct.showbase import PythonUtil
-from toontown.toon import NPCToons
-from direct.task import Task
+
+from toontown.distributed.ToontownMsgTypes import *
 from toontown.makeatoon.TTPickANamePattern import TTPickANamePattern
-from panda3d.core import TextEncoder
+from toontown.toon import NPCToons
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase.ToontownGlobals import *
+from toontown.toontowngui import TeaserPanel, TTDialog
+
+from . import NameGenerator
+
 MAX_NAME_WIDTH = TTLocalizer.NSmaxNameWidth
 ServerDialogTimeout = 3.0
 

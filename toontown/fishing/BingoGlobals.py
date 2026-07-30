@@ -1,4 +1,5 @@
 from toontown.toonbase import TTLocalizer
+
 NORMAL_CARD = 0
 FOURCORNER_CARD = 1
 DIAGONAL_CARD = 2

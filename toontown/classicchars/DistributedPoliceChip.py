@@ -1,12 +1,11 @@
-from direct.showbase.ShowBaseGlobal import *
-from . import DistributedCCharBase
 from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM
-from direct.fsm import State
-from . import CharStateDatas
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from . import DistributedChip
+from direct.fsm import ClassicFSM, State
+from direct.showbase.ShowBaseGlobal import *
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CharStateDatas, DistributedCCharBase, DistributedChip
+
 
 class DistributedPoliceChip(DistributedChip.DistributedChip):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPoliceChip')

@@ -1,9 +1,13 @@
 from panda3d.core import *
-from .PurchaseManagerConstants import *
-from direct.distributed.ClockDelta import *
-from direct.distributed import DistributedObject
+
 from direct.directnotify import DirectNotifyGlobal
+from direct.distributed import DistributedObject
+from direct.distributed.ClockDelta import *
+
 from toontown.minigame import TravelGameGlobals
+
+from .PurchaseManagerConstants import *
+
 
 class PurchaseManager(DistributedObject.DistributedObject):
     notify = DirectNotifyGlobal.directNotify.newCategory('PurchaseManager')

@@ -1,7 +1,10 @@
-from toontown.coghq import LaserGameBase
+import random
+
 from direct.distributed import ClockDelta
 from direct.task import Task
-import random
+
+from toontown.coghq import LaserGameBase
+
 
 class LaserGameMineSweeper(LaserGameBase.LaserGameBase):
 

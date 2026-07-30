@@ -1,12 +1,15 @@
 from panda3d.core import *
+
 from direct.distributed.DistributedObject import DistributedObject
 from direct.task.Task import Task
+
 from toontown.minigame import CannonGameGlobals
 from toontown.minigame.CannonGameGlobals import *
+from toontown.parties import PartyGlobals
 from toontown.parties.Cannon import Cannon
 from toontown.parties.CannonGui import CannonGui
-from toontown.parties import PartyGlobals
 from toontown.parties.DistributedPartyCannonActivity import DistributedPartyCannonActivity
+
 LAND_TIME = 2
 WORLD_SCALE = 2.0
 GROUND_SCALE = 1.4 * WORLD_SCALE

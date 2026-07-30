@@ -1,10 +1,9 @@
-from .DistributedMinigameAI import *
 from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from . import PatternGameGlobals
 from direct.task.Task import Task
-from . import MazeGameGlobals
-from . import MazeData
+
+from . import MazeData, MazeGameGlobals, PatternGameGlobals
+from .DistributedMinigameAI import *
+
 
 class DistributedMazeGameAI(DistributedMinigameAI):
 

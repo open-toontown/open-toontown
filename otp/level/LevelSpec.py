@@ -1,10 +1,14 @@
+import importlib
+import string
+import types
+
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.PythonUtil import list2dict, uniqueElements
-import string
+
 from . import LevelConstants
-import types
-import importlib
+
 if __dev__:
     import os
 
@@ -35,8 +39,7 @@ class LevelSpec:
         self.setScenario(scenario)
         if __dev__:
             if newSpec:
-                from . import EntityTypes
-                from . import EntityTypeRegistry
+                from . import EntityTypeRegistry, EntityTypes
                 etr = EntityTypeRegistry.EntityTypeRegistry(EntityTypes)
                 self.setEntityTypeReg(etr)
                 entId = LevelConstants.UberZoneEntId

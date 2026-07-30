@@ -1,43 +1,36 @@
 from panda3d.core import *
+
 from direct.distributed.ClockDelta import *
-from direct.gui.DirectGui import *
-from direct.interval.IntervalGlobal import ivalMgr
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
 from direct.fsm import State
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import ivalMgr
 from direct.showbase.PythonUtil import Functor, ScratchPad
+
 from otp.avatar import Avatar
-from otp.distributed import OTPClientRepository
-from otp.distributed import PotentialAvatar
-from otp.distributed.OtpDoGlobals import *
-from otp.distributed import OtpDoGlobals
-from otp.otpbase import OTPGlobals
-from otp.otpbase import OTPLocalizer
-from otp.otpbase import OTPLauncherGlobals
 from otp.avatar.Avatar import teleportNotify
+from otp.distributed import OTPClientRepository, OtpDoGlobals, PotentialAvatar
+from otp.distributed.OtpDoGlobals import *
+from otp.otpbase import OTPGlobals, OTPLauncherGlobals, OTPLocalizer
+
+from toontown.distributed import DelayDelete, ToontownDistrictStats
+from toontown.friends import FriendHandle, FriendsListPanel, ToontownFriendSecret
+from toontown.hood import StreetSign
+from toontown.launcher.DownloadForceAcknowledge import *
+from toontown.login import AvatarChooser, DateObject
+from toontown.makeatoon import MakeAToon
+from toontown.parties import ToontownTimeManager
+from toontown.pets import DistributedPet, PetDetail, PetHandle
+from toontown.toon import DistributedToon, LocalToon, Toon, ToonDNA
+from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
-from toontown.launcher.DownloadForceAcknowledge import *
-from toontown.distributed import DelayDelete
-from toontown.friends import FriendHandle
-from toontown.friends import FriendsListPanel
-from toontown.friends import ToontownFriendSecret
-from toontown.login import DateObject
-from toontown.login import AvatarChooser
-from toontown.makeatoon import MakeAToon
-from toontown.pets import DistributedPet, PetDetail, PetHandle
-from toontown.toonbase import TTLocalizer
-from toontown.toontowngui import TTDialog
-from toontown.toon import LocalToon
-from toontown.toon import ToonDNA
-from toontown.distributed import ToontownDistrictStats
-from toontown.parties import ToontownTimeManager
-from toontown.toon import Toon, DistributedToon
+from toontown.toontowngui import ToontownLoadingBlocker, TTDialog
+
+from . import HoodMgr, PlayGame
 from .ToontownMsgTypes import *
-from . import HoodMgr
-from . import PlayGame
-from toontown.toontowngui import ToontownLoadingBlocker
-from toontown.hood import StreetSign
+
 
 class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
     SupportTutorial = 1
@@ -461,7 +454,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
          base.localAvatar.defaultZone,
          -1])
         self._userLoggingOut = False
-        
+
         if self.wantStreetSign and not self.streetSign:
             self.streetSign = StreetSign.StreetSign()
         return

@@ -1,9 +1,14 @@
 import datetime
+
 from panda3d.core import *
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.showbase.DirectObject import DirectObject
+
 from otp.chat.WhiteList import WhiteList
+
 from toontown.toonbase import TTLocalizer
+
 
 class TTWhiteList(WhiteList, DirectObject):
     RedownloadTaskName = 'RedownloadWhitelistTask'

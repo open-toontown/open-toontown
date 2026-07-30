@@ -1,19 +1,19 @@
 from panda3d.core import *
+
 from direct.directnotify.DirectNotifyGlobal import *
+from direct.distributed import DistributedObject
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from direct.showbase import DirectObject
 from direct.showbase.PythonUtil import Functor
 from direct.task.Task import Task
-from direct.distributed import DistributedObject
+
 from otp.avatar import Avatar, AvatarPanel
-from toontown.toon import ToonHead
-from toontown.toon import LaffMeter
-from toontown.toon import ToonAvatarDetailPanel
+
 from toontown.friends import FriendHandle
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
 from toontown.pets import Pet, PetConstants, PetDetailPanel
+from toontown.toon import LaffMeter, ToonAvatarDetailPanel, ToonHead
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
 
 class PetAvatarPanel(AvatarPanel.AvatarPanel):
     notify = directNotify.newCategory('PetAvatarPanel')

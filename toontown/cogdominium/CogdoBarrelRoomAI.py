@@ -1,12 +1,14 @@
 import random
+
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
 from direct.showbase import PythonUtil
 from direct.task import Timer
 from direct.task.Task import Task
+
+from toontown.cogdominium import CogdoBarrelRoomConsts, DistributedCogdoBarrelAI
 from toontown.toonbase import ToontownGlobals
-from toontown.cogdominium import CogdoBarrelRoomConsts
-from toontown.cogdominium import DistributedCogdoBarrelAI
+
 
 class CogdoBarrelRoomAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedCogdoBarrelRoomAI')

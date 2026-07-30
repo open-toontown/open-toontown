@@ -1,22 +1,26 @@
+import random
+
 from panda3d.core import *
+
+from direct.controls.GravityWalker import GravityWalker
+from direct.directnotify import DirectNotifyGlobal
+from direct.distributed.ClockDelta import *
+from direct.fsm import ClassicFSM, State
+from direct.gui.DirectGui import *
 from direct.interval.IntervalGlobal import *
+from direct.showbase import PythonUtil
+from direct.task.Task import Task
+
+from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs, TLNull
+
+from toontown.hood import Place, SkyUtil
+from toontown.pets import PetTutorial
+from toontown.toonbase import TTLocalizer
 from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
-from direct.gui.DirectGui import *
-from direct.distributed.ClockDelta import *
-from toontown.hood import Place
-from direct.directnotify import DirectNotifyGlobal
-from direct.fsm import ClassicFSM, State
-from direct.task.Task import Task
-from toontown.toonbase import TTLocalizer
-import random
-from direct.showbase import PythonUtil
-from toontown.hood import Place
-from toontown.hood import SkyUtil
-from toontown.pets import PetTutorial
-from direct.controls.GravityWalker import GravityWalker
-from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs, TLNull
+
 from . import HouseGlobals
+
 
 class Estate(Place.Place):
     notify = DirectNotifyGlobal.directNotify.newCategory('Estate')

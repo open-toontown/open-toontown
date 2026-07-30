@@ -1,15 +1,18 @@
 from panda3d.core import *
 from panda3d.physics import *
+
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.task.Task import Task
+
 from otp.level import LevelConstants
 from otp.otpbase import OTPGlobals
-from toontown.cogdominium.DistCogdoLevelGame import DistCogdoLevelGame
+
 from toontown.cogdominium import CogdoCraneGameConsts as GameConsts
 from toontown.cogdominium.CogdoCraneGameBase import CogdoCraneGameBase
-from toontown.toonbase import ToontownTimer
+from toontown.cogdominium.DistCogdoLevelGame import DistCogdoLevelGame
+from toontown.toonbase import ToontownGlobals, ToontownTimer
 from toontown.toonbase import TTLocalizer as TTL
-from toontown.toonbase import ToontownGlobals
+
 
 class DistCogdoCraneGame(CogdoCraneGameBase, DistCogdoLevelGame):
     notify = directNotify.newCategory('DistCogdoCraneGame')

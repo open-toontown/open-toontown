@@ -1,6 +1,9 @@
-from toontown.battle import BattleManagerAI
 from direct.directnotify import DirectNotifyGlobal
+
+from toontown.battle import BattleManagerAI
+
 from . import DistributedBattleTutorialAI
+
 
 class TutorialBattleManagerAI(BattleManagerAI.BattleManagerAI):
 

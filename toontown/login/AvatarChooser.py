@@ -1,17 +1,17 @@
-from panda3d.core import *
-from toontown.toonbase import ToontownGlobals
-from . import AvatarChoice
-from direct.fsm import StateData
-from direct.fsm import ClassicFSM, State
-from direct.fsm import State
-from toontown.launcher import DownloadForceAcknowledge
-from direct.gui.DirectGui import *
-from panda3d.core import *
-from toontown.toonbase import TTLocalizer
-from toontown.toonbase import DisplayOptions
-from direct.directnotify import DirectNotifyGlobal
-from direct.interval.IntervalGlobal import *
 import random
+
+from panda3d.core import *
+
+from direct.directnotify import DirectNotifyGlobal
+from direct.fsm import ClassicFSM, State, StateData
+from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
+
+from toontown.launcher import DownloadForceAcknowledge
+from toontown.toonbase import DisplayOptions, ToontownGlobals, TTLocalizer
+
+from . import AvatarChoice
+
 MAX_AVATARS = 6
 POSITIONS = (Vec3(-0.840167, 0, 0.359333),
  Vec3(0.00933349, 0, 0.306533),

@@ -1,13 +1,16 @@
 from direct.directnotify import DirectNotifyGlobal
 from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase import TTLocalizer
-from toontown.parties import PartyGlobals
-from . import Fireworks
-from . import FireworkShows
-from .FireworkGlobals import skyTransitionDuration, preShowPauseDuration, postShowPauseDuration, preNormalMusicPauseDuration
+
 from toontown.effects.FireworkShow import FireworkShow
+from toontown.parties import PartyGlobals
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase.ToontownGlobals import *
+
+from . import Fireworks, FireworkShows
+from .FireworkGlobals import (postShowPauseDuration, preNormalMusicPauseDuration, preShowPauseDuration,
+                              skyTransitionDuration)
+
 
 class FireworkShowMixin:
     notify = DirectNotifyGlobal.directNotify.newCategory('FireworkShowMixin')
@@ -134,7 +137,7 @@ class FireworkShowMixin:
 
     def restoreCameraLens(self):
         hood = self.getHood()
-        from toontown.hood import OZHood, GSHood
+        from toontown.hood import GSHood, OZHood
         if isinstance(hood, OZHood.OZHood):
             base.camLens.setFar(SpeedwayCameraFar)
         elif isinstance(hood, GSHood.GSHood):
@@ -176,7 +179,7 @@ class FireworkShowMixin:
             self.fireworkShow.begin(timeStamp)
             self.fireworkShow.reparentTo(root)
             hood = self.getHood()
-            from toontown.hood import TTHood, BRHood, MMHood, DGHood, DLHood, GSHood, DDHood, OZHood, PartyHood
+            from toontown.hood import BRHood, DDHood, DGHood, DLHood, GSHood, MMHood, OZHood, PartyHood, TTHood
             if isinstance(hood, TTHood.TTHood):
                 self.fireworkShow.setPos(150, 0, 80)
                 self.fireworkShow.setHpr(90, 0, 0)

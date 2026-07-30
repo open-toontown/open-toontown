@@ -1,12 +1,15 @@
-from direct.directnotify import DirectNotifyGlobal
-from . import ZoneUtil
-from toontown.building import DistributedBuildingMgrAI
-from toontown.suit import DistributedSuitPlannerAI
-from toontown.safezone import ButterflyGlobals
-from toontown.safezone import DistributedButterflyAI
 from panda3d.core import *
 from panda3d.toontown import *
+
+from direct.directnotify import DirectNotifyGlobal
+
+from toontown.building import DistributedBuildingMgrAI
+from toontown.safezone import ButterflyGlobals, DistributedButterflyAI
+from toontown.suit import DistributedSuitPlannerAI
 from toontown.toon import NPCToons
+
+from . import ZoneUtil
+
 
 class HoodDataAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('HoodDataAI')

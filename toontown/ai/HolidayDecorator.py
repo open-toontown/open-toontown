@@ -1,7 +1,10 @@
-from toontown.toonbase import ToontownGlobals
-from direct.interval.IntervalGlobal import Parallel, Sequence, Func, Wait
-from panda3d.core import Vec4, CSDefault, TransformState, NodePath, TransparencyAttrib
+from panda3d.core import CSDefault, NodePath, TransformState, TransparencyAttrib, Vec4
 from panda3d.toontown import loadDNAFile
+
+from direct.interval.IntervalGlobal import Func, Parallel, Sequence, Wait
+
+from toontown.toonbase import ToontownGlobals
+
 
 class HolidayDecorator:
 

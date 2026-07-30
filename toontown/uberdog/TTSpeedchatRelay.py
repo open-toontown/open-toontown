@@ -1,8 +1,10 @@
-from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
 from direct.directnotify.DirectNotifyGlobal import directNotify
+from direct.distributed.DistributedObjectGlobal import DistributedObjectGlobal
+
 from otp.otpbase import OTPGlobals
-from otp.uberdog.SpeedchatRelay import SpeedchatRelay
 from otp.uberdog import SpeedchatRelayGlobals
+from otp.uberdog.SpeedchatRelay import SpeedchatRelay
+
 
 class TTSpeedchatRelay(SpeedchatRelay):
 

@@ -1,9 +1,12 @@
-from . import CatalogItem
-from toontown.toonbase import ToontownGlobals
-from toontown.toonbase import TTLocalizer
-from otp.otpbase import OTPLocalizer
-from direct.interval.IntervalGlobal import *
 from direct.gui.DirectGui import *
+from direct.interval.IntervalGlobal import *
+
+from otp.otpbase import OTPLocalizer
+
+from toontown.toonbase import ToontownGlobals, TTLocalizer
+
+from . import CatalogItem
+
 
 class CatalogNametagItem(CatalogItem.CatalogItem):
     sequenceNumber = 0

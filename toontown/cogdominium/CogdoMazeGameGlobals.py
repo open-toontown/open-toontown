@@ -1,5 +1,7 @@
-from panda3d.core import VBase4
 from enum import IntEnum
+
+from panda3d.core import VBase4
+
 GameActions = IntEnum('GameActions', ('EnterDoor',
  'RevealDoor',
  'OpenDoor',

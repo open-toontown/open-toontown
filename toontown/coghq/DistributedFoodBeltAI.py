@@ -1,7 +1,9 @@
+from direct.directnotify import DirectNotifyGlobal
 from direct.distributed import DistributedObjectAI
 from direct.fsm import FSM
-from direct.directnotify import DirectNotifyGlobal
+
 from toontown.coghq import FoodBeltBase
+
 
 class DistributedFoodBeltAI(DistributedObjectAI.DistributedObjectAI, FSM.FSM, FoodBeltBase.FoodBeltBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFoodBeltAI')

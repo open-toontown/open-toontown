@@ -1,8 +1,11 @@
 import math
+from functools import reduce
+
 from direct.directnotify import DirectNotifyGlobal
+
 from toontown.minigame.DropScheduler import ThreePhaseDropScheduler
 from toontown.parties import PartyGlobals
-from functools import reduce
+
 
 class DistributedPartyCatchActivityBase:
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedPartyCatchActivityBase')

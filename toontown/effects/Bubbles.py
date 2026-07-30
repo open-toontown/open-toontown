@@ -1,10 +1,11 @@
+import random
+
 from panda3d.core import *
 from panda3d.physics import *
+
 from direct.interval.IntervalGlobal import *
-from direct.particles import ParticleEffect
-from direct.particles import Particles
-from direct.particles import ForceGroup
-import random
+from direct.particles import ForceGroup, ParticleEffect, Particles
+
 
 class Bubbles(NodePath):
 

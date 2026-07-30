@@ -1,4 +1,5 @@
 from .CatalogFurnitureItem import *
+
 FTAnimRate = 6
 AnimatedFurnitureItemKeys = (10020, 270, 990, 460, 470, 480, 490, 491, 492)
 

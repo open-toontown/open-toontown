@@ -1,16 +1,20 @@
-from panda3d.core import NodePath, Point3, Plane, PlaneNode, TextNode
-from direct.interval.IntervalGlobal import *
+from panda3d.core import NodePath, Plane, PlaneNode, Point3, TextNode
+
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase.RandomNumGen import RandomNumGen
-from direct.interval.MetaInterval import Sequence, Parallel
-from direct.interval.FunctionInterval import Func, Wait
 from direct.gui.DirectGui import *
-from toontown.toonbase.ToontownGlobals import *
-from toontown.toonbase import TTLocalizer
+from direct.interval.FunctionInterval import Func, Wait
+from direct.interval.IntervalGlobal import *
+from direct.interval.MetaInterval import Parallel, Sequence
+from direct.showbase.RandomNumGen import RandomNumGen
+
 from toontown.suit import Suit, SuitDNA
-from toontown.toon import Toon, ToonHead, ToonDNA
-from .CogdoUtil import CogdoGameMovie
+from toontown.toon import Toon, ToonDNA, ToonHead
+from toontown.toonbase import TTLocalizer
+from toontown.toonbase.ToontownGlobals import *
+
 from . import CogdoUtil
+from .CogdoUtil import CogdoGameMovie
+
 
 class CogdoElevatorMovie(CogdoGameMovie):
     notify = DirectNotifyGlobal.directNotify.newCategory('CogdoElevatorMovie')

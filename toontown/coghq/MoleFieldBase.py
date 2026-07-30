@@ -1,4 +1,5 @@
 import random
+
 HILL_MOLE = 0
 HILL_BOMB = 1
 HILL_WHACKED = 2

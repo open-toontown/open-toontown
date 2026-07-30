@@ -1,8 +1,12 @@
-from . import CatalogItem
+import functools
+
 from panda3d.core import *
+
 from direct.distributed.PyDatagram import PyDatagram
 from direct.distributed.PyDatagramIterator import PyDatagramIterator
-import functools
+
+from . import CatalogItem
+
 
 class CatalogItemList:
 

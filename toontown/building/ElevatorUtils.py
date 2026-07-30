@@ -1,6 +1,9 @@
 from panda3d.core import *
+
 from direct.interval.IntervalGlobal import *
+
 from .ElevatorConstants import *
+
 
 def getLeftClosePoint(type):
     width = ElevatorData[type]['width']

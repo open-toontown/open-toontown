@@ -1,9 +1,14 @@
-from panda3d.core import *
-from . import Playground
-from direct.task.Task import Task
 import random
+
+from panda3d.core import *
+
+from direct.task.Task import Task
+
 from toontown.hood import Place
 from toontown.toonbase import ToontownGlobals
+
+from . import Playground
+
 
 class BRPlayground(Playground.Playground):
     STILL = 1
