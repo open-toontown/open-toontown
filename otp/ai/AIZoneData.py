@@ -85,7 +85,7 @@ class AIZoneDataObj:
     def getRender(self):
         if not hasattr(self, '_render'):
             self._render = NodePath('render-%s-%s' % (self._parentId, self._zoneId))
-            if config.GetBool('leak-scene-graph', 0):
+            if ConfigVariableBool('leak-scene-graph', 0).getValue():
                 self._renderLeakDetector = LeakDetectors.SceneGraphLeakDetector(self._render)
         return self._render
 

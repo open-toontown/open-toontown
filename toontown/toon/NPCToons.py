@@ -11481,10 +11481,6 @@ NPCToonDict = {20000: (-1,
         'm',
         0,
         NPC_REGULAR)}
-try:
-    config = simbase.config
-except:
-    config = base.config
 
 if ConfigVariableBool('want-new-toonhall', 1).value:
     NPCToonDict[2001] = (2513,

@@ -29,10 +29,10 @@ class LoginGSAccount(LoginBase.LoginBase):
         return 1
 
     def sendLoginMsg(self):
-        DISLID = config.GetInt('fake-DISL-PlayerAccountId', 0)
+        DISLID = ConfigVariableInt('fake-DISL-PlayerAccountId', 0).getValue()
         if not DISLID:
             NameStringId = 'DISLID_%s' % self.loginName
-            DISLID = config.GetInt(NameStringId, 0)
+            DISLID = ConfigVariableInt(NameStringId, 0).getValue()
         cr = self.cr
         datagram = PyDatagram()
         datagram.addUint16(CLIENT_LOGIN)
@@ -49,7 +49,7 @@ class LoginGSAccount(LoginBase.LoginBase):
         datagram.addString(cr.validateDownload)
         datagram.addString(cr.wantMagicWords)
         datagram.addUint32(DISLID)
-        datagram.addString(config.GetString('otp-whitelist', 'YES'))
+        datagram.addString(ConfigVariableString('otp-whitelist', 'YES').getValue())
         cr.send(datagram)
 
     def resendPlayToken(self):

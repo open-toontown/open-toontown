@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableDouble
 from direct.distributed.ClockDelta import globalClockDelta
 from toontown.toonbase import TTLocalizer
 from toontown.parties import PartyGlobals
@@ -19,7 +20,7 @@ class DistributedPartyTeamActivity(DistributedPartyActivity):
         self._maxPlayersPerTeam = 0
         self._minPlayersPerTeam = 0
         self._duration = 0
-        self._startDelay = base.config.GetFloat('party-team-activity-start-delay', startDelay)
+        self._startDelay = ConfigVariableDouble('party-team-activity-start-delay', startDelay).getValue()
         self._willBalanceTeams = balanceTeams
         self._currentStatus = ''
         return

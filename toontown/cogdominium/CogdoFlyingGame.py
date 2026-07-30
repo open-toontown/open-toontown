@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.showbase.DirectObject import DirectObject
 from direct.task.Task import Task
 from direct.showbase.RandomNumGen import RandomNumGen
@@ -160,7 +161,7 @@ class CogdoFlyingGame(DirectObject):
         self.acceptOnce(CogdoFlyingLocalPlayer.RanOutOfTimeEventName, self.handleLocalPlayerRanOutOfTime)
         self.__startUpdateTask()
         self.isGameComplete = False
-        if __debug__ and base.config.GetBool('schellgames-dev', True):
+        if __debug__ and ConfigVariableBool('schellgames-dev', True).getValue():
             self.acceptOnce('end', self.guiMgr.forceTimerDone)
 
             def toggleFog():
@@ -192,7 +193,7 @@ class CogdoFlyingGame(DirectObject):
         self.ignore(CogdoFlyingLegalEagle.RequestAddTargetAgainEventName)
         self.ignore(CogdoFlyingLegalEagle.RequestRemoveTargetEventName)
         self.ignore(CogdoFlyingLocalPlayer.PlayWaitingMusicEventName)
-        if __debug__ and base.config.GetBool('schellgames-dev', True):
+        if __debug__ and ConfigVariableBool('schellgames-dev', True).getValue():
             self.ignore('end')
             self.ignore('home')
         self.level.update(0.0)

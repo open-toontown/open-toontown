@@ -1,7 +1,6 @@
 from panda3d.core import *
 from toontown.toonbase.ToonBaseGlobal import *
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
@@ -156,7 +155,7 @@ class Trolley(StateData.StateData):
         return None
 
     def enterBoarded(self):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: RIDETHETROLLEY: Ride the Trolley')
         self.enableExitButton()
         return None

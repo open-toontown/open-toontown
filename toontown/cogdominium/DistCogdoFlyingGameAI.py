@@ -1,4 +1,5 @@
 import random
+from panda3d.core import ConfigVariableBool
 from direct.distributed.ClockDelta import globalClockDelta
 from .DistCogdoGameAI import DistCogdoGameAI
 from . import CogdoFlyingGameGlobals as Globals
@@ -20,7 +21,7 @@ class DistCogdoFlyingGameAI(DistCogdoGameAI):
         self.broadcastedGotoWinState = False
         self.broadcastedGameFinished = False
         self._gameState = False
-        if __debug__ and simbase.config.GetBool('schellgames-dev', True):
+        if __debug__ and ConfigVariableBool('schellgames-dev', True).getValue():
             self.accept('onCodeReload', self._DistCogdoFlyingGameAI__sgOnCodeReload)
 
     def getLegalEagleAttackRoundTime(self, fromCooldown = False):

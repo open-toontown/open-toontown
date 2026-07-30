@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.directnotify import DirectNotifyGlobal
 from . import HoodDataAI
 from toontown.toonbase import ToontownGlobals
@@ -35,11 +36,11 @@ class CSHoodDataAI(HoodDataAI.HoodDataAI):
         self.lobbyElevator = DistributedVPElevatorAI.DistributedVPElevatorAI(self.air, self.lobbyMgr, ToontownGlobals.SellbotLobby, antiShuffle=1)
         self.lobbyElevator.generateWithRequired(ToontownGlobals.SellbotLobby)
         self.addDistObj(self.lobbyElevator)
-        if simbase.config.GetBool('want-boarding-groups', 1):
+        if ConfigVariableBool('want-boarding-groups', 1).getValue():
             self.boardingParty = DistributedBoardingPartyAI.DistributedBoardingPartyAI(self.air, [self.lobbyElevator.doId], 8)
             self.boardingParty.generateWithRequired(ToontownGlobals.SellbotLobby)
         factoryIdList = [self.testElev0.doId, self.testElev1.doId]
-        if simbase.config.GetBool('want-boarding-groups', 1):
+        if ConfigVariableBool('want-boarding-groups', 1).getValue():
             self.factoryBoardingParty = DistributedBoardingPartyAI.DistributedBoardingPartyAI(self.air, factoryIdList, 4)
             self.factoryBoardingParty.generateWithRequired(ToontownGlobals.SellbotFactoryExt)
         destinationZone = ToontownGlobals.SellbotLobby

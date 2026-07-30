@@ -1,7 +1,8 @@
+from panda3d.core import BitMask32, ConfigVariableBool
 from toontown.toonbase import ToontownGlobals
-from panda3d.core import BitMask32
+
 ShowScoresDuration = 4.0
-EndlessGame = config.GetBool('endless-2d-game', 0)
+EndlessGame = ConfigVariableBool('endless-2d-game', 0).getValue()
 ScoreToJellyBeansMultiplier = 5
 ScoreGainPerTreasure = 1
 ToonStartingPosition = (-39, 0, 13.59)

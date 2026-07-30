@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.distributed.ClockDelta import globalClockDelta
 from toontown.toonbase import TTLocalizer
 from .DistCogdoGame import DistCogdoGame
@@ -14,7 +15,7 @@ class DistCogdoMazeGame(DistCogdoGame, DistCogdoMazeGameBase):
         DistCogdoGame.__init__(self, cr)
         self.game = CogdoMazeGame(self)
         self._numSuits = (0, 0, 0)
-        if __debug__ and base.config.GetBool('schellgames-dev', True):
+        if __debug__ and ConfigVariableBool('schellgames-dev', True).getValue():
             self.accept('onCodeReload', self.__sgOnCodeReload)
 
     def delete(self):

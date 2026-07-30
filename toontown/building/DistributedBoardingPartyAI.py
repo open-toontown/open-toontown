@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from otp.otpbase import OTPGlobals
 from otp.ai.AIBase import *
 from toontown.toonbase import ToontownGlobals
@@ -94,7 +95,7 @@ class DistributedBoardingPartyAI(DistributedObjectAI.DistributedObjectAI, Boardi
             reason = BoardingPartyBase.BOARDCODE_NOT_PAID
             self.sendUpdateToAvatarId(inviterId, 'postInviteNotQualify', [inviteeId, reason, 0])
             simbase.air.writeServerEvent('suspicious', inviterId, 'User with rights: %s tried to invite someone to a boarding group' % inviter.getGameAccess())
-            if simbase.config.GetBool('want-ban-boardingparty', True):
+            if ConfigVariableBool('want-ban-boardingparty', True).getValue():
                 commentStr = 'User with rights: %s tried to invite someone to a boarding group' % inviter.getGameAccess()
                 dislId = inviter.DISLid
                 simbase.air.banManager.ban(inviterId, dislId, commentStr)

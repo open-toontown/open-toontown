@@ -11,7 +11,7 @@ from toontown.toonbase import ToontownGlobals
 
 class TTChatInputWhiteList(ChatInputWhiteListFrame):
     notify = DirectNotifyGlobal.directNotify.newCategory('TTChatInputWhiteList')
-    TFToggleKey = base.config.GetString('true-friend-toggle-key', 'alt')
+    TFToggleKey = ConfigVariableString('true-friend-toggle-key', 'alt').getValue()
     TFToggleKeyUp = TFToggleKey + '-up'
 
     def __init__(self, parent = None, **kw):
@@ -53,7 +53,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
         self.chatEntry.bind(DGG.OVERFLOW, self.chatOverflow)
         self.chatEntry.bind(DGG.TYPE, self.typeCallback)
         self.trueFriendChat = 0
-        if base.config.GetBool('whisper-to-nearby-true-friends', 1):
+        if ConfigVariableBool('whisper-to-nearby-true-friends', 1).getValue():
             self.accept(self.TFToggleKey, self.shiftPressed)
         return
 
@@ -178,7 +178,7 @@ class TTChatInputWhiteList(ChatInputWhiteListFrame):
         prefixes = []
         if base.cr.magicWordManager and base.cr.wantMagicWords:
             prefixes.append(base.cr.magicWordManager.chatPrefix)
-        if config.GetBool('exec-chat', 0):
+        if ConfigVariableBool('exec-chat', 0).getValue():
             prefixes.append('>')
         if len(text) > 0 and text[0] in prefixes:
             self.okayToSubmit = True

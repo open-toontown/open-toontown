@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from . import AnimatedProp
 from direct.actor import Actor
 from direct.interval.IntervalGlobal import *
@@ -112,7 +113,7 @@ class GenericAnimatedProp(AnimatedProp.AnimatedProp):
         if theSound:
             soundDur = theSound.length()
             if maximumDuration < soundDur:
-                if base.config.GetBool('interactive-prop-info', False):
+                if ConfigVariableBool('interactive-prop-info', False).getValue():
                     if self.visId == localAvatar.zoneId and origAnimName != 'tt_a_ara_dga_hydrant_idleIntoFight':
                         self.notify.warning('anim %s had duration of %s while sound  has duration of %s' % (origAnimName, maximumDuration, soundDur))
                 soundDur = maximumDuration

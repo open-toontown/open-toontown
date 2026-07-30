@@ -47,7 +47,7 @@ class InventoryNew(InventoryBase.InventoryBase, DirectFrame):
         self.gagTutMode = 0
         self.showSuperGags = ShowSuperGags
         self.clickSuperGags = 1
-        self.propAndOrganicBonusStack = base.config.GetBool('prop-and-organic-bonus-stack', 0)
+        self.propAndOrganicBonusStack = ConfigVariableBool('prop-and-organic-bonus-stack', 0).getValue()
         self.propBonusIval = Parallel()
         self.activateMode = 'book'
         self.load()

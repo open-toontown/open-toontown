@@ -472,7 +472,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if fromAV in self.ignoreList:
             self.d_setWhisperIgnored(fromAV)
             return
-        if base.config.GetBool('want-sleep-reply-on-regular-chat', 0):
+        if ConfigVariableBool('want-sleep-reply-on-regular-chat', 0).getValue():
             if base.localAvatar.sleepFlag == 1:
                 self.sendUpdate('setSleepAutoReply', [base.localAvatar.doId], fromAV)
         newText, scrubbed = self.scrubTalk(chat, mods)
@@ -493,7 +493,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
         if fromAV in self.ignoreList:
             self.d_setWhisperIgnored(fromAV)
             return
-        if base.config.GetBool('ignore-whispers', 0):
+        if ConfigVariableBool('ignore-whispers', 0).getValue():
             return
         if base.localAvatar.sleepFlag == 1:
             if not base.cr.identifyAvatar(fromAV) == base.localAvatar:
@@ -840,7 +840,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
             ts = 0.0
         else:
             ts = globalClockDelta.localElapsedTime(timestamp)
-        if base.config.GetBool('check-invalid-anims', True):
+        if ConfigVariableBool('check-invalid-anims', True).getValue():
             if animMultiplier > 1.0 and animName in ['neutral']:
                 animMultiplier = 1.0
         if self.animFSM.getStateNamed(animName):
@@ -2108,7 +2108,7 @@ class DistributedToon(DistributedPlayer.DistributedPlayer, Toon.Toon, Distribute
     def setNametagStyle(self, nametagStyle):
         if hasattr(self, 'gmToonLockStyle') and self.gmToonLockStyle:
             return
-        if base.config.GetBool('want-nametag-avids', 0):
+        if ConfigVariableBool('want-nametag-avids', 0).getValue():
             nametagStyle = 0
         self.nametagStyle = nametagStyle
         self.setDisplayName(self.getName())

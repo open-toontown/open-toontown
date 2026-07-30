@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from otp.ai.AIBaseGlobal import *
 from direct.distributed.ClockDelta import *
 from otp.avatar import DistributedAvatarAI
@@ -20,7 +21,7 @@ class DistributedCCharBaseAI(DistributedAvatarAI.DistributedAvatarAI):
 
     def generate(self):
         DistributedAvatarAI.DistributedAvatarAI.generate(self)
-        if config.GetBool('classic-char-client-spam', 0):
+        if ConfigVariableBool('classic-char-client-spam', 0).getValue():
             self._ccharSpamTask = taskMgr.add(self._simSpam, 'cchar-spam-%s' % serialNum())
 
     def _simSpam(self, task):

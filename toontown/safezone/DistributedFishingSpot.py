@@ -1,7 +1,6 @@
 from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from direct.directtools.DirectGeometry import LineNodePath
 from direct.distributed import DistributedObject
 from direct.directnotify import DirectNotifyGlobal
@@ -14,7 +13,6 @@ from direct.actor import Actor
 from direct.showutil import Rope
 import math
 from direct.task.Task import Task
-import random
 import random
 from toontown.fishing import FishingTargetGlobals
 from toontown.fishing import FishBase
@@ -578,7 +576,7 @@ class DistributedFishingSpot(DistributedObject.DistributedObject):
         self.itemGui.detachNode()
 
     def __makeGui(self):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: FISHING: ZoneId: %s' % self.pond.getArea())
         if self.madeGui:
             return
@@ -862,7 +860,7 @@ class DistributedFishingSpot(DistributedObject.DistributedObject):
         self.initMouseX = self.mouseX
         self.initMouseY = self.mouseY
         self.__hideBob()
-        if config.GetBool('fishing-independent-axes', 0):
+        if ConfigVariableBool('fishing-independent-axes', 0).getValue():
             taskMgr.add(self.localAdjustingCastTaskIndAxes, self.taskName('adjustCastTask'))
         else:
             taskMgr.add(self.localAdjustingCastTask, self.taskName('adjustCastTask'))

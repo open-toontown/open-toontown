@@ -20,14 +20,14 @@ class TimeManager(DistributedObject.DistributedObject):
 
     def __init__(self, cr):
         DistributedObject.DistributedObject.__init__(self, cr)
-        self.updateFreq = base.config.GetFloat('time-manager-freq', 1800)
-        self.minWait = base.config.GetFloat('time-manager-min-wait', 10)
-        self.maxUncertainty = base.config.GetFloat('time-manager-max-uncertainty', 1)
-        self.maxAttempts = base.config.GetInt('time-manager-max-attempts', 5)
-        self.extraSkew = base.config.GetInt('time-manager-extra-skew', 0)
+        self.updateFreq = ConfigVariableDouble('time-manager-freq', 1800).getValue()
+        self.minWait = ConfigVariableDouble('time-manager-min-wait', 10).getValue()
+        self.maxUncertainty = ConfigVariableDouble('time-manager-max-uncertainty', 1).getValue()
+        self.maxAttempts = ConfigVariableInt('time-manager-max-attempts', 5).getValue()
+        self.extraSkew = ConfigVariableInt('time-manager-extra-skew', 0).getValue()
         if self.extraSkew != 0:
             self.notify.info('Simulating clock skew of %0.3f s' % self.extraSkew)
-        self.reportFrameRateInterval = base.config.GetDouble('report-frame-rate-interval', 300.0)
+        self.reportFrameRateInterval = ConfigVariableDouble('report-frame-rate-interval', 300.0).getValue()
         self.talkResult = 0
         self.thisContext = -1
         self.nextContext = 0
@@ -45,7 +45,7 @@ class TimeManager(DistributedObject.DistributedObject):
         DistributedObject.DistributedObject.generate(self)
         self.accept(OTPGlobals.SynchronizeHotkey, self.handleHotkey)
         self.accept('clock_error', self.handleClockError)
-        if __dev__ and base.config.GetBool('enable-garbage-hotkey', 0):
+        if __dev__ and ConfigVariableBool('enable-garbage-hotkey', 0).getValue():
             self.accept(OTPGlobals.DetectGarbageHotkey, self.handleDetectGarbageHotkey)
         if self.updateFreq > 0:
             self.startTask()
@@ -206,7 +206,7 @@ class TimeManager(DistributedObject.DistributedObject):
         if frameRateInterval == 0:
             return
         if not base.frameRateMeter:
-            maxFrameRateInterval = base.config.GetDouble('max-frame-rate-interval', 30.0)
+            maxFrameRateInterval = ConfigVariableDouble('max-frame-rate-interval', 30.0).getValue()
             globalClock.setAverageFrameRateInterval(min(frameRateInterval, maxFrameRateInterval))
         taskMgr.remove('frameRateMonitor')
         taskMgr.doMethodLater(frameRateInterval, self.frameRateMonitor, 'frameRateMonitor')

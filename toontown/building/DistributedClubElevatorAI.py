@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from otp.ai.AIBase import *
 from toontown.toonbase import ToontownGlobals
 from direct.distributed.ClockDelta import *
@@ -11,7 +12,7 @@ class DistributedClubElevatorAI(DistributedElevatorFSMAI.DistributedElevatorFSMA
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedElevatorFloorAI')
     defaultTransitions = {'Off': ['Opening', 'Closed'], 'Opening': ['WaitEmpty', 'WaitCountdown', 'Opening', 'Closing'], 'WaitEmpty': ['WaitCountdown', 'Closing', 'WaitEmpty'], 'WaitCountdown': ['WaitEmpty', 'AllAboard', 'Closing', 'WaitCountdown'], 'AllAboard': ['WaitEmpty', 'Closing'], 'Closing': ['Closed', 'WaitEmpty', 'Closing', 'Opening'], 'Closed': ['Opening']}
     id = 0
-    DoBlockedRoomCheck = simbase.config.GetBool('elevator-blocked-rooms-check', 1)
+    DoBlockedRoomCheck = ConfigVariableBool('elevator-blocked-rooms-check', 1).getValue()
 
     def __init__(self, air, lawOfficeId, bldg, avIds, markerId=None, numSeats=4, antiShuffle=0, minLaff=0):
         DistributedElevatorFSMAI.DistributedElevatorFSMAI.__init__(self, air, bldg, numSeats, antiShuffle=antiShuffle, minLaff=minLaff)

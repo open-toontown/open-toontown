@@ -1151,7 +1151,7 @@ class ObjectManager(NodePath, DirectObject):
         return
 
     def sendItemToAttic(self):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: ESTATE:  Send Item to Attic')
         messenger.send('wakeup')
         if self.selectedObject:
@@ -1253,7 +1253,7 @@ class ObjectManager(NodePath, DirectObject):
         return
 
     def bringItemFromAttic(self, item, itemIndex):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: ESTATE: Place Item in Room')
         messenger.send('wakeup')
         self.__enableItemButtons(0)
@@ -1471,7 +1471,7 @@ class ObjectManager(NodePath, DirectObject):
         return
 
     def __handleVerifyDeleteOK(self):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: ESTATE:  Send Item to Trash')
         deleteFunction = self.verifyItems[0]
         deleteFunctionArgs = self.verifyItems[1:]
@@ -1582,7 +1582,7 @@ class ObjectManager(NodePath, DirectObject):
         self.verifyItems = (item, itemIndex)
 
     def __handleVerifyReturnFromTrashOK(self):
-        if base.config.GetBool('want-qa-regression', 0):
+        if ConfigVariableBool('want-qa-regression', 0).getValue():
             self.notify.info('QA-REGRESSION: ESTATE:  Send Item to Attic')
         item, itemIndex = self.verifyItems
         self.__cleanupVerifyDelete()

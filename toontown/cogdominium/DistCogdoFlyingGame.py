@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.distributed.ClockDelta import globalClockDelta
 from toontown.toonbase import TTLocalizer
 from .CogdoFlyingGame import CogdoFlyingGame
@@ -10,7 +11,7 @@ class DistCogdoFlyingGame(DistCogdoGame):
 
     def __init__(self, cr):
         DistCogdoGame.__init__(self, cr)
-        if __debug__ and base.config.GetBool('schellgames-dev', True):
+        if __debug__ and ConfigVariableBool('schellgames-dev', True).getValue():
             self.accept('onCodeReload', self.__sgOnCodeReload)
         self.game = CogdoFlyingGame(self)
 

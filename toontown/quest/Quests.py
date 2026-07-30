@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from otp.otpbase import OTPGlobals
 from toontown.toonbase import ToontownBattleGlobals
 from toontown.toonbase import ToontownGlobals
@@ -1743,7 +1744,7 @@ class TrackChoiceQuest(Quest):
 
 class FriendQuest(Quest):
     def filterFunc(avatar):
-        if not config.GetBool('skip-friend-quest', False) and len(avatar.getFriendsList()) == 0:
+        if not ConfigVariableBool('skip-friend-quest', False).getValue() and len(avatar.getFriendsList()) == 0:
             return 1
         else:
             return 0
@@ -1889,7 +1890,7 @@ class MailboxQuest(Quest):
 
 class PhoneQuest(Quest):
     def filterFunc(avatar):
-        if not config.GetBool('skip-phone-quest', False):
+        if not ConfigVariableBool('skip-phone-quest', False).getValue():
             return 1
         else:
             return 0

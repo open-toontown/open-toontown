@@ -10,7 +10,7 @@ from . import FactoryExterior
 from . import FactoryInterior
 from . import SellbotHQExterior
 from . import SellbotHQBossBattle
-from panda3d.core import DecalEffect
+from panda3d.core import ConfigVariableBool, DecalEffect
 aspectSF = 0.7227
 
 class SellbotCogHQLoader(CogHQLoader.CogHQLoader):
@@ -119,7 +119,7 @@ class SellbotCogHQLoader(CogHQLoader.CogHQLoader):
             sdText = DirectGui.OnscreenText(text=TTLocalizer.SellbotSideEntrance, font=ToontownGlobals.getSuitFont(), pos=(0, -0.34), scale=0.1, mayChange=False, parent=sdSign)
             sdText.setDepthWrite(0)
         elif zoneId == ToontownGlobals.SellbotLobby:
-            if base.config.GetBool('want-qa-regression', 0):
+            if ConfigVariableBool('want-qa-regression', 0).getValue():
                 self.notify.info('QA-REGRESSION: COGHQ: Visit SellbotLobby')
             self.geom = loader.loadModel(self.cogHQLobbyModelPath)
             front = self.geom.find('**/frontWall')

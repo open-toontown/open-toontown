@@ -1,6 +1,5 @@
 from panda3d.core import *
 from direct.gui.DirectGui import *
-from panda3d.core import *
 from direct.interval.IntervalGlobal import *
 from toontown.toonbase import ToontownBattleGlobals
 from . import BattleBase
@@ -643,7 +642,7 @@ class RewardPanel(DirectFrame):
                         else:
                             num = quest.doesCogCount(avId, cogDict, zoneId, toonShortList)
                         if num:
-                            if base.config.GetBool('battle-passing-no-credit', True):
+                            if ConfigVariableBool('battle-passing-no-credit', True).getValue():
                                 if avId in helpfulToonsList:
                                     earned += num
                                 else:

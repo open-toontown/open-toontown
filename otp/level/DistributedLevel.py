@@ -17,7 +17,7 @@ import random
 
 class DistributedLevel(DistributedObject.DistributedObject, Level.Level):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLevel')
-    WantVisibility = config.GetBool('level-visibility', 1)
+    WantVisibility = ConfigVariableBool('level-visibility', 1).getValue()
     ColorZonesAllDOs = 0
     FloorCollPrefix = 'zoneFloor'
     OuchTaskName = 'ouchTask'

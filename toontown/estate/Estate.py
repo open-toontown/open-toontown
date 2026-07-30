@@ -106,7 +106,7 @@ class Estate(Place.Place):
         hoodId = requestStatus['hoodId']
         zoneId = requestStatus['zoneId']
         newsManager = base.cr.newsManager
-        if config.GetBool('want-estate-telemetry-limiter', 1):
+        if ConfigVariableBool('want-estate-telemetry-limiter', 1).getValue():
             limiter = TLGatherAllAvs('Estate', RotationLimitToH)
         else:
             limiter = TLNull()
@@ -355,7 +355,7 @@ class Estate(Place.Place):
         self.notify.debug('continuing in __submergeToon')
         if hasattr(self, 'loader') and self.loader:
             base.playSfx(self.loader.submergeSound)
-        if base.config.GetBool('disable-flying-glitch') == 0:
+        if ConfigVariableBool('disable-flying-glitch').getValue() == 0:
             self.fsm.request('walk')
         self.walkStateData.fsm.request('swimming', [self.loader.swimSound])
         pos = base.localAvatar.getPos(render)

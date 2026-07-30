@@ -1,4 +1,4 @@
-from panda3d.core import Point3
+from panda3d.core import ConfigVariableBool, Point3
 from direct.directnotify import DirectNotifyGlobal
 from . import HoodDataAI
 from toontown.toonbase import ToontownGlobals
@@ -40,7 +40,7 @@ class BossbotHQDataAI(HoodDataAI.HoodDataAI):
         self.lobbyElevator = DistributedBBElevatorAI.DistributedBBElevatorAI(self.air, self.lobbyMgr, ToontownGlobals.BossbotLobby, antiShuffle=1)
         self.lobbyElevator.generateWithRequired(ToontownGlobals.BossbotLobby)
         self.addDistObj(self.lobbyElevator)
-        if simbase.config.GetBool('want-boarding-groups', 1):
+        if ConfigVariableBool('want-boarding-groups', 1).getValue():
             self.boardingParty = DistributedBoardingPartyAI.DistributedBoardingPartyAI(self.air, [self.lobbyElevator.doId], 8)
             self.boardingParty.generateWithRequired(ToontownGlobals.BossbotLobby)
 
@@ -59,7 +59,7 @@ class BossbotHQDataAI(HoodDataAI.HoodDataAI):
 
         makeDoor(ToontownGlobals.BossbotLobby, 0, 0, FADoorCodes.BB_DISGUISE_INCOMPLETE)
         kartIdList = self.createCogKarts()
-        if simbase.config.GetBool('want-boarding-groups', 1):
+        if ConfigVariableBool('want-boarding-groups', 1).getValue():
             self.courseBoardingParty = DistributedBoardingPartyAI.DistributedBoardingPartyAI(self.air, kartIdList, 4)
             self.courseBoardingParty.generateWithRequired(self.zoneId)
 

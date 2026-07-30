@@ -32,7 +32,7 @@ class LoginTTSpecificDevAccount(LoginTTAccount.LoginTTAccount):
     def sendLoginMsg(self):
         cr = self.cr
         tokenString = ''
-        access = base.config.GetString('force-paid-status', '')
+        access = ConfigVariableString('force-paid-status', '').getValue()
         if access == '':
             access = 'FULL'
         elif access == 'paid':
@@ -46,7 +46,7 @@ class LoginTTSpecificDevAccount(LoginTTAccount.LoginTTAccount):
         tokenString += 'TOONTOWN_ACCESS=%s&' % access
         tokenString += 'TOONTOWN_GAME_KEY=%s&' % self.loginName
         wlChatEnabled = 'YES'
-        if base.config.GetString('otp-whitelist', 'YES') == 'NO':
+        if ConfigVariableString('otp-whitelist', 'YES').getValue() == 'NO':
             wlChatEnabled = 'NO'
         tokenString += 'WL_CHAT_ENABLED=%s &' % wlChatEnabled
         openChatEnabled = 'NO'
@@ -59,22 +59,22 @@ class LoginTTSpecificDevAccount(LoginTTAccount.LoginTTAccount):
         tokenString += 'CREATE_FRIENDS_WITH_CHAT=%s&' % createFriendsWithChat
         chatCodeCreationRule = 'No'
         if cr.allowSecretChat:
-            if base.config.GetBool('secret-chat-needs-parent-password', 0):
+            if ConfigVariableBool('secret-chat-needs-parent-password', 0).getValue():
                 chatCodeCreationRule = 'PARENT'
             else:
                 chatCodeCreationRule = 'YES'
         tokenString += 'CHAT_CODE_CREATION_RULE=%s&' % chatCodeCreationRule
-        DISLID = config.GetInt('fake-DISL-PlayerAccountId', 0)
+        DISLID = ConfigVariableInt('fake-DISL-PlayerAccountId', 0).getValue()
         if not DISLID:
             NameStringId = 'DISLID_%s' % self.loginName
-            DISLID = config.GetInt(NameStringId, 0)
+            DISLID = ConfigVariableInt(NameStringId, 0).getValue()
         tokenString += 'ACCOUNT_NUMBER=%d&' % DISLID
         tokenString += 'ACCOUNT_NAME=%s&' % self.loginName
         tokenString += 'GAME_USERNAME=%s&' % self.loginName
         tokenString += 'ACCOUNT_NAME_APPROVED=TRUE&'
         tokenString += 'FAMILY_NUMBER=&'
         tokenString += 'Deployment=US&'
-        withParentAccount = base.config.GetBool('dev-with-parent-account', 0)
+        withParentAccount = ConfigVariableBool('dev-with-parent-account', 0).getValue()
         if withParentAccount:
             tokenString += 'TOON_ACCOUNT_TYPE=WITH_PARENT_ACCOUNT&'
         else:
@@ -88,7 +88,7 @@ class LoginTTSpecificDevAccount(LoginTTAccount.LoginTTAccount):
         datagram.addString('dev')
         datagram.addUint32(cr.hashVal)
         datagram.addUint32(4)
-        magicWords = base.config.GetString('want-magic-words', '')
+        magicWords = ConfigVariableString('want-magic-words', '').getValue()
         datagram.addString(magicWords)
         cr.send(datagram)
 

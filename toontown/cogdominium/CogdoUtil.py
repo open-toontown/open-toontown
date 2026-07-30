@@ -1,4 +1,4 @@
-from panda3d.core import ColorBlendAttrib
+from panda3d.core import ColorBlendAttrib, ConfigVariableBool
 ModelPhase = 5
 ModelTypes = {'animation': 'a',
  'model': 'm',
@@ -39,7 +39,7 @@ class VariableContainer:
 class DevVariableContainer:
 
     def __init__(self, name):
-        self.__dict__['_enabled'] = config.GetBool('%s-dev' % name, False)
+        self.__dict__['_enabled'] = ConfigVariableBool('%s-dev' % name, False).getValue()
 
     def __setattr__(self, name, value):
         self.__dict__[name] = self._enabled and value

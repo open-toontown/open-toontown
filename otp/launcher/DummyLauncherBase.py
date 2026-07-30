@@ -30,7 +30,7 @@ class DummyLauncherBase:
         return
 
     def isTestServer(self):
-        return base.config.GetBool('is-test-server', 0)
+        return ConfigVariableBool('is-test-server', 0).getValue()
 
     def setPhaseComplete(self, phase, percent):
         self.phaseComplete[phase] = percent

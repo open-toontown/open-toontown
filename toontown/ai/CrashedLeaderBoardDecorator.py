@@ -3,7 +3,7 @@ from direct.distributed.ClockDelta import *
 from direct.interval.IntervalGlobal import *
 from . import HolidayDecorator
 from toontown.toonbase import ToontownGlobals
-from panda3d.core import Vec4, CSDefault, TransformState, NodePath, TransparencyAttrib
+from panda3d.core import Vec4, CSDefault, TransformState, NodePath, TransparencyAttrib, ConfigVariableBool
 from panda3d.toontown import loadDNAFile
 from toontown.hood import GSHood
 
@@ -21,7 +21,7 @@ class CrashedLeaderBoardDecorator(HolidayDecorator.HolidayDecorator):
         holidayIds = base.cr.newsManager.getDecorationHolidayId()
         if ToontownGlobals.CRASHED_LEADERBOARD not in holidayIds:
             return
-        if base.config.GetBool('want-crashedLeaderBoard-Smoke', 1):
+        if ConfigVariableBool('want-crashedLeaderBoard-Smoke', 1).getValue():
             self.startSmokeEffect()
 
     def startSmokeEffect(self):
@@ -33,7 +33,7 @@ class CrashedLeaderBoardDecorator(HolidayDecorator.HolidayDecorator):
             base.cr.playGame.getPlace().loader.stopSmokeEffect()
 
     def undecorate(self):
-        if base.config.GetBool('want-crashedLeaderBoard-Smoke', 1):
+        if ConfigVariableBool('want-crashedLeaderBoard-Smoke', 1).getValue():
             self.stopSmokeEffect()
         holidayIds = base.cr.newsManager.getDecorationHolidayId()
         if len(holidayIds) > 0:

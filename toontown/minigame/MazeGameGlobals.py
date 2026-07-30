@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.showbase import RandomNumGen
 
 def getMazeName(gameDoId, numPlayers, mazeNames):
@@ -8,7 +9,7 @@ def getMazeName(gameDoId, numPlayers, mazeNames):
         return names[RandomNumGen.randHash(gameDoId) % len(names)]
 
 
-ENDLESS_GAME = config.GetBool('endless-maze-game', 0)
+ENDLESS_GAME = ConfigVariableBool('endless-maze-game', 0).getValue()
 GAME_DURATION = 60.0
 SHOWSCORES_DURATION = 2.0
 SUIT_TIC_FREQ = int(256)

@@ -1,14 +1,14 @@
 import urllib.request, urllib.parse, urllib.error
 import os
-from panda3d.core import HTTPClient, Ramfile
+from panda3d.core import ConfigVariableBool, ConfigVariableString, HTTPClient, Ramfile
 from direct.directnotify import DirectNotifyGlobal
 
 class BanManagerAI:
     notify = DirectNotifyGlobal.directNotify.newCategory('BanManagerAI')
-    BanUrl = simbase.config.GetString('ban-base-url', 'http://vapps.disl.starwave.com:8005/dis-hold/action/event')
-    App = simbase.config.GetString('ban-app-name', 'TTWorldAI')
-    Product = simbase.config.GetString('ban-product', 'Toontown')
-    EventName = simbase.config.GetString('ban-event-name', 'tthackattempt')
+    BanUrl = ConfigVariableString('ban-base-url', 'http://vapps.disl.starwave.com:8005/dis-hold/action/event').getValue()
+    App = ConfigVariableString('ban-app-name', 'TTWorldAI').getValue()
+    Product = ConfigVariableString('ban-product', 'Toontown').getValue()
+    EventName = ConfigVariableString('ban-event-name', 'tthackattempt').getValue()
 
     def __init__(self):
         self.curBanRequestNum = 0
@@ -34,7 +34,7 @@ class BanManagerAI:
          comment,
          fullUrl))
         simbase.air.writeServerEvent('ban_request', avatarId, '%s|%s|%s' % (dislid, comment, fullUrl))
-        if simbase.config.GetBool('do-actual-ban', True):
+        if ConfigVariableBool('do-actual-ban', True).getValue():
             newTaskName = 'ban-task-%d' % self.curBanRequestNum
             newTask = taskMgr.add(self.doBanUrlTask, newTaskName)
             newTask.banRequestNum = self.curBanRequestNum

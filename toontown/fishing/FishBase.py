@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from . import FishGlobals
 from toontown.toonbase import TTLocalizer
 from direct.directnotify import DirectNotifyGlobal
@@ -56,7 +57,7 @@ class FishBase:
         loop = None
         delay = None
         playRate = None
-        if base.config.GetBool('want-fish-audio', 1):
+        if ConfigVariableBool('want-fish-audio', 1).getValue():
             soundDict = FishGlobals.FishAudioFileDict
             fileInfo = soundDict.get(self.genus, None)
             if fileInfo:

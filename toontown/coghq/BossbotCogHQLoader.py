@@ -10,7 +10,7 @@ from toontown.coghq import BossbotHQExterior
 from toontown.coghq import BossbotHQBossBattle
 from toontown.coghq import BossbotOfficeExterior
 from toontown.coghq import CountryClubInterior
-from panda3d.core import DecalEffect, TextEncoder
+from panda3d.core import ConfigVariableBool, DecalEffect, TextEncoder
 import random
 aspectSF = 0.7227
 
@@ -55,7 +55,7 @@ class BossbotCogHQLoader(CogHQLoader.CogHQLoader):
             origin = top.find('**/tunnel_origin')
             origin.setH(-33.33)
         elif zoneId == ToontownGlobals.BossbotLobby:
-            if base.config.GetBool('want-qa-regression', 0):
+            if ConfigVariableBool('want-qa-regression', 0).getValue():
                 self.notify.info('QA-REGRESSION: COGHQ: Visit BossbotLobby')
             self.notify.debug('cogHQLobbyModelPath = %s' % self.cogHQLobbyModelPath)
             self.geom = loader.loadModel(self.cogHQLobbyModelPath)

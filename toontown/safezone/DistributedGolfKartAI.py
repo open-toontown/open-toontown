@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableDouble
 from otp.ai.AIBase import *
 from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
@@ -35,7 +36,7 @@ class DistributedGolfKartAI(DistributedObjectAI.DistributedObjectAI):
                 self.color = (
                  self.color[0], 255, self.color[2])
         self.accepting = 0
-        self.trolleyCountdownTime = simbase.config.GetFloat('trolley-countdown-time', TROLLEY_COUNTDOWN_TIME)
+        self.trolleyCountdownTime = ConfigVariableDouble('trolley-countdown-time', TROLLEY_COUNTDOWN_TIME).getValue()
         self.fsm = ClassicFSM.ClassicFSM('DistributedGolfKartAI', [
          State.State('off', self.enterOff, self.exitOff, [
           'entering']),

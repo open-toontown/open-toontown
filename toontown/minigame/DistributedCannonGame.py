@@ -1,4 +1,4 @@
-from panda3d.core import Point3, Quat, rad2Deg, Vec3
+from panda3d.core import ConfigVariableBool, Point3, Quat, rad2Deg, Vec3
 from panda3d.otp import Nametag, NametagFloat3d
 
 from direct.directnotify.DirectNotifyGlobal import directNotify
@@ -377,7 +377,7 @@ class DistributedCannonGame(DistributedMinigame):
         DistributedMinigame.setGameStart(self, timestamp)
         self.__stopIntro()
         self.__putCameraBehindCannon()
-        if not base.config.GetBool('endless-cannon-game', 0):
+        if not ConfigVariableBool('endless-cannon-game', 0).getValue():
             self.timer.show()
             self.timer.countdown(CannonGameGlobals.GameTime, self.__gameTimerExpired)
 

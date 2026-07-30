@@ -1,5 +1,5 @@
 import math
-from panda3d.core import CardMaker, TextNode
+from panda3d.core import CardMaker, ConfigVariableBool, TextNode
 from direct.gui.DirectGui import DirectFrame, DirectLabel, DirectButton
 from direct.task import Task
 from toontown.toon import NPCToons
@@ -31,7 +31,7 @@ class QuestMap(DirectFrame):
         self.buildingMarkers = []
         self.av = av
         self.wantToggle = False
-        if base.config.GetBool('want-toggle-quest-map', True):
+        if ConfigVariableBool('want-toggle-quest-map', True).getValue():
             self.wantToggle = True
         self.updateMarker = True
         self.cornerPosInfo = None

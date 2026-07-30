@@ -7,8 +7,8 @@ from toontown.ai import DatabaseObject
 from toontown.estate import ClosetGlobals
 
 class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
-    freeClothes = simbase.config.GetBool('free-clothes', 0)
-    housingEnabled = simbase.config.GetBool('want-housing', 1)
+    freeClothes = ConfigVariableBool('free-clothes', 0).getValue()
+    housingEnabled = ConfigVariableBool('want-housing', 1).getValue()
 
     def __init__(self, air, npcId):
         DistributedNPCToonBaseAI.__init__(self, air, npcId)

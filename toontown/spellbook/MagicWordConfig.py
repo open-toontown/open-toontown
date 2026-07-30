@@ -8,6 +8,7 @@
 # Version: 1.0.0
 # Email: belloqzafarian@gmail.com
 ##################################################
+from panda3d.core import ConfigVariableBool
 
 OUTGOING_CHAT_MESSAGE_NAME = 'magicWord'
 CLICKED_NAMETAG_MESSAGE_NAME = 'clickedNametag'
@@ -15,7 +16,7 @@ FOCUS_OUT_MESSAGE_NAME = 'focusOut'
 
 PREFIX_DEFAULT = '~'
 PREFIX_ALLOWED = ['~', '?', '/', '<', ':', ';']
-if config.GetBool('exec-chat', False):
+if ConfigVariableBool('exec-chat', False).getValue():
     PREFIX_ALLOWED.append('>')
 
 WIZARD_DEFAULT = 'Spellbook'

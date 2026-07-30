@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.distributed.DistributedNodeAI import DistributedNodeAI
 from direct.distributed.ClockDelta import *
 from direct.fsm import ClassicFSM, State
@@ -135,18 +136,18 @@ class DistributedPicnicTableAI(DistributedNodeAI):
                 x += 1
 
         if gameNum == 1:
-            if simbase.config.GetBool('want-chinese', 0):
+            if ConfigVariableBool('want-chinese', 0).getValue():
                 self.game = DistributedChineseCheckersAI.DistributedChineseCheckersAI(self.air, self.doId, 'chinese', self.getX(), self.getY(), self.getZ() + 2.83, self.getH(), self.getP(), self.getR())
                 self.sendUpdate('setZone', [self.game.zoneId])
         else:
             if gameNum == 2:
                 if x <= 2:
-                    if simbase.config.GetBool('want-checkers', 0):
+                    if ConfigVariableBool('want-checkers', 0).getValue():
                         self.game = DistributedCheckersAI.DistributedCheckersAI(self.air, self.doId, 'checkers', self.getX(), self.getY(), self.getZ() + 2.83, self.getH(), self.getP(), self.getR())
                         self.sendUpdate('setZone', [self.game.zoneId])
             else:
                 if x <= 2:
-                    if simbase.config.GetBool('want-findfour', 0):
+                    if ConfigVariableBool('want-findfour', 0).getValue():
                         self.game = DistributedFindFourAI.DistributedFindFourAI(self.air, self.doId, 'findFour', self.getX(), self.getY(), self.getZ() + 2.83, self.getH(), self.getP(), self.getR())
                         self.sendUpdate('setZone', [self.game.zoneId])
         return

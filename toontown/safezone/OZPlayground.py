@@ -92,7 +92,7 @@ class OZPlayground(Playground.Playground):
         if self.toonSubmerged == 1:
             return
         base.playSfx(self.loader.submergeSound)
-        if base.config.GetBool('disable-flying-glitch') == 0:
+        if ConfigVariableBool('disable-flying-glitch').getValue() == 0:
             self.fsm.request('walk')
         self.walkStateData.fsm.request('swimming', [self.loader.swimSound])
         pos = base.localAvatar.getPos(render)

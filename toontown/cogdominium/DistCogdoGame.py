@@ -1,4 +1,4 @@
-from panda3d.core import VBase4
+from panda3d.core import ConfigVariableBool, VBase4
 from direct.gui.DirectGui import DirectLabel
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from direct.distributed.ClockDelta import globalClockDelta
@@ -11,7 +11,7 @@ from toontown.minigame.MinigameRulesPanel import MinigameRulesPanel
 from toontown.cogdominium.CogdoGameRulesPanel import CogdoGameRulesPanel
 from toontown.minigame import MinigameGlobals
 from toontown.toonbase import TTLocalizer as TTL
-SCHELLGAMES_DEV = __debug__ and base.config.GetBool('schellgames-dev', False)
+SCHELLGAMES_DEV = __debug__ and ConfigVariableBool('schellgames-dev', False).getValue()
 
 class DistCogdoGame(DistCogdoGameBase, DistributedObject):
     notify = directNotify.newCategory('DistCogdoGame')

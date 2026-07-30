@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool, ConfigVariableDouble
 from otp.ai.AIBase import *
 from toontown.toonbase.ToontownGlobals import *
 from direct.distributed.ClockDelta import *
@@ -21,7 +22,7 @@ class DistributedTrolleyAI(DistributedObjectAI.DistributedObjectAI):
         self.seats = [
          None, None, None, None]
         self.accepting = 0
-        self.trolleyCountdownTime = simbase.config.GetFloat('trolley-countdown-time', TROLLEY_COUNTDOWN_TIME)
+        self.trolleyCountdownTime = ConfigVariableDouble('trolley-countdown-time', TROLLEY_COUNTDOWN_TIME).getValue()
         self.fsm = ClassicFSM.ClassicFSM('DistributedTrolleyAI', [
          State.State('off', self.enterOff, self.exitOff, [
           'entering']),
@@ -298,12 +299,12 @@ class DistributedTrolleyAI(DistributedObjectAI.DistributedObjectAI):
 
             startingVotes = None
             metagameRound = -1
-            trolleyGoesToMetagame = simbase.config.GetBool('trolley-goes-to-metagame', 0)
+            trolleyGoesToMetagame = ConfigVariableBool('trolley-goes-to-metagame', 0).getValue()
             trolleyHoliday = bboard.get(TrolleyHolidayMgrAI.TrolleyHolidayMgrAI.PostName)
             trolleyWeekend = bboard.get(TrolleyWeekendMgrAI.TrolleyWeekendMgrAI.PostName)
             if trolleyGoesToMetagame or trolleyHoliday or trolleyWeekend:
                 metagameRound = 0
-                if simbase.config.GetBool('metagame-min-2-players', 1) and len(playerArray) == 1:
+                if ConfigVariableBool('metagame-min-2-players', 1).getValue() and len(playerArray) == 1:
                     metagameRound = -1
             mgDict = MinigameCreatorAI.createMinigame(self.air, playerArray, self.zoneId, newbieIds=newbieIds, startingVotes=startingVotes, metagameRound=metagameRound)
             minigameZone = mgDict['minigameZone']

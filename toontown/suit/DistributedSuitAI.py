@@ -14,8 +14,8 @@ from toontown.hood import ZoneUtil
 import random
 
 class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
-    SUIT_BUILDINGS = simbase.config.GetBool('want-suit-buildings', 1)
-    DEBUG_SUIT_POSITIONS = simbase.config.GetBool('debug-suit-positions', 0)
+    SUIT_BUILDINGS = ConfigVariableBool('want-suit-buildings', 1).getValue()
+    DEBUG_SUIT_POSITIONS = ConfigVariableBool('debug-suit-positions', 0).getValue()
     UPDATE_TIMESTAMP_INTERVAL = 180.0
     myId = 0
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSuitAI')

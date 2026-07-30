@@ -75,10 +75,10 @@ class DistributedHouse(DistributedObject.DistributedObject):
         self.notify.debug('load')
         if not self.house_loaded:
             if self.housePosInd == 1:
-                houseModelIndex = base.config.GetInt('want-custom-house', HouseGlobals.HOUSE_DEFAULT)
+                houseModelIndex = ConfigVariableInt('want-custom-house', HouseGlobals.HOUSE_DEFAULT).getValue()
             else:
                 houseModelIndex = HouseGlobals.HOUSE_DEFAULT
-            houseModelIndex = base.config.GetInt('want-custom-house-all', houseModelIndex)
+            houseModelIndex = ConfigVariableInt('want-custom-house-all', houseModelIndex).getValue()
             houseModel = self.cr.playGame.hood.loader.houseModels[houseModelIndex]
             self.house = houseModel.copyTo(self.cr.playGame.hood.loader.houseNode[self.housePosInd])
             self.house_loaded = 1

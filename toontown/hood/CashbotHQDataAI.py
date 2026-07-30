@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableBool
 from direct.directnotify import DirectNotifyGlobal
 from . import HoodDataAI
 from toontown.toonbase import ToontownGlobals
@@ -38,7 +39,7 @@ class CashbotHQDataAI(HoodDataAI.HoodDataAI):
         self.lobbyElevator = DistributedCFOElevatorAI.DistributedCFOElevatorAI(self.air, self.lobbyMgr, ToontownGlobals.CashbotLobby, antiShuffle=1)
         self.lobbyElevator.generateWithRequired(ToontownGlobals.CashbotLobby)
         self.addDistObj(self.lobbyElevator)
-        if simbase.config.GetBool('want-boarding-groups', 1):
+        if ConfigVariableBool('want-boarding-groups', 1).getValue():
             self.boardingParty = DistributedBoardingPartyAI.DistributedBoardingPartyAI(self.air, [self.lobbyElevator.doId], 8)
             self.boardingParty.generateWithRequired(ToontownGlobals.CashbotLobby)
         destinationZone = ToontownGlobals.CashbotLobby
@@ -50,7 +51,7 @@ class CashbotHQDataAI(HoodDataAI.HoodDataAI):
         intDoor0.zoneId = ToontownGlobals.CashbotLobby
         mintIdList = [
          self.testElev0.doId, self.testElev1.doId, self.testElev2.doId]
-        if simbase.config.GetBool('want-boarding-groups', 1):
+        if ConfigVariableBool('want-boarding-groups', 1).getValue():
             self.mintBoardingParty = DistributedBoardingPartyAI.DistributedBoardingPartyAI(self.air, mintIdList, 4)
             self.mintBoardingParty.generateWithRequired(self.zoneId)
         for extDoor in extDoorList:

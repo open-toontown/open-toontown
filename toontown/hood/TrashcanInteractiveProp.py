@@ -1,3 +1,4 @@
+from panda3d.core import ConfigVariableDouble
 from direct.actor import Actor
 from direct.directnotify import DirectNotifyGlobal
 from toontown.hood import InteractiveAnimatedProp
@@ -178,7 +179,7 @@ class TrashcanInteractiveProp(InteractiveAnimatedProp.InteractiveAnimatedProp):
                                          'tt_a_ara_mml_trashcan_fightIdle'),
      ToontownGlobals.TheBrrrgh: ('tt_a_ara_tbr_trashcan_fightBoost', 'tt_a_ara_tbr_trashcan_fightCheer', 'tt_a_ara_tbr_trashcan_fightIdle'),
      ToontownGlobals.DonaldsDreamland: ('tt_a_ara_ddl_trashcan_fightBoost', 'tt_a_ara_ddl_trashcan_fightCheer', 'tt_a_ara_ddl_trashcan_fightIdle')}
-    IdlePauseTime = base.config.GetFloat('prop-idle-pause-time', 0.0)
+    IdlePauseTime = ConfigVariableDouble('prop-idle-pause-time', 0.0).getValue()
 
     def __init__(self, node):
         InteractiveAnimatedProp.InteractiveAnimatedProp.__init__(self, node, ToontownGlobals.TRASHCANS_BUFF_BATTLES)

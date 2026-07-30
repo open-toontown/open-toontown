@@ -43,7 +43,7 @@ class OTPBase(ShowBase):
         return
 
     def setTaskChainNetThreaded(self):
-        if base.config.GetBool('want-threaded-network', 0):
+        if ConfigVariableBool('want-threaded-network', 0).getValue():
             taskMgr.setupTaskChain('net', numThreads=1, frameBudget=0.001, threadPriority=TPLow)
 
     def setTaskChainNetNonthreaded(self):
@@ -135,7 +135,7 @@ class OTPBase(ShowBase):
         self.pixelZoomCamHistory = 2.0
         self.pixelZoomCamMovedList = []
         self.pixelZoomStarted = None
-        flag = self.config.GetBool('enable-pixel-zoom', True)
+        flag = ConfigVariableBool('enable-pixel-zoom', True).getValue()
         self.enablePixelZoom(flag)
         return
 
