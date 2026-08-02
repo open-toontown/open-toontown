@@ -30,13 +30,20 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         self.__isOpen = 0
         self.hide()
         self.setPos(0, 0, 0.1)
+        # Order of pages in the ShtikerBook - every page added via addPage()
+        # must be listed here or it will be rejected. Note that the old
+        # 'CheckPageTitle' / 'LocationPageTitle' pages were removed from the
+        # localizer, and the modern pages (Shard, Track, Photo, TIP) take
+        # their place.
         self.pageOrder = [TTLocalizer.OptionsPageTitle,
-         TTLocalizer.CheckPageTitle,
-         TTLocalizer.LocationPageTitle,
+         TTLocalizer.ShardPageTitle,
          TTLocalizer.MapPageTitle,
          TTLocalizer.InventoryPageTitle,
          TTLocalizer.QuestPageToonTasks,
+         TTLocalizer.TrackPageShortTitle,
          TTLocalizer.SuitPageTitle,
+         TTLocalizer.SpellbookPageTitle,
+         TTLocalizer.PhotoPageTitle,
          TTLocalizer.FishPageTitle,
          TTLocalizer.KartPageTitle,
          TTLocalizer.DisguisePageTitle,
@@ -46,7 +53,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
          TTLocalizer.EventsPageName,
          TTLocalizer.AutoerPageTitle,
          TTLocalizer.NewsPageName,
-         TTLocalizer.SpellbookPageTitle]
+         TTLocalizer.TIPPageTitle]
         return
 
     def setSafeMode(self, setting):
@@ -208,18 +215,9 @@ class ShtikerBook(DirectFrame, StateData.StateData):
         extraArgs = []
         if pageName == TTLocalizer.OptionsPageTitle:
             iconModels = loader.loadModel('phase_3.5/models/gui/sos_textures')
-            iconGeom = iconModels.find('**/switch1')
+            iconGeom = iconModels.find('**/switch')
             iconModels.detachNode()
         elif pageName == TTLocalizer.ShardPageTitle:
-            iconModels = loader.loadModel('phase_3.5/models/gui/sos_textures')
-            iconGeom = iconModels.find('**/district')
-            iconModels.detachNode()
-        elif pageName == TTLocalizer.CheckPageTitle:
-            iconModels = loader.loadModel('phase_4/models/parties/schtickerbookHostingGUI')
-            iconGeom = iconModels.find('**/checkmark')
-            iconScale = 25
-            iconModels.detachNode()
-        elif pageName == TTLocalizer.LocationPageTitle:
             iconModels = loader.loadModel('phase_3.5/models/gui/sos_textures')
             iconGeom = iconModels.find('**/district')
             iconModels.detachNode()
@@ -293,9 +291,21 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             buttonPressedCommand = self.goToNewsPage
             extraArgs = [page]
         elif pageName == TTLocalizer.SpellbookPageTitle:
-            iconModels = loader.loadModel('phase_3.5/models/gui/sos_textures')
-            iconGeom = iconModels.find('**/spellbookIcon')
+            # The sos_textures model has no 'spellbookIcon' node; use the
+            # scroll/note icon from stickerbook_gui for the magic-words page.
+            iconModels = loader.loadModel('phase_3.5/models/gui/stickerbook_gui')
+            iconGeom = iconModels.find('**/paper_note')
+            iconScale = 0.9
             iconModels.detachNode()
+        # Guard against missing icon nodes: an empty NodePath would crash
+        # DirectButton (AssertionError: !is_empty()), so fall back to a
+        # text-only tab if an icon can't be found in the model.
+        if iconGeom is not None and iconGeom.isEmpty():
+            self.notify.warning('Icon node not found for page tab %s; using text-only tab.' % pageName)
+            iconGeom = None
+        if iconImage is not None and iconImage.isEmpty():
+            self.notify.warning('Icon image not found for page tab %s; using text-only tab.' % pageName)
+            iconImage = None
         if pageName == TTLocalizer.OptionsPageTitle:
             pageName = TTLocalizer.OptionsTabTitle
         elif pageName == TTLocalizer.AutoerPageTitle:

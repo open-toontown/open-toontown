@@ -71,6 +71,7 @@ ConfigVariableBool('garbage-collect-states').setValue(0)
 ConfigVariableBool('support-threads').setValue(1)
 # Texture and Model pools are managed automatically by Panda3D
 
+
 # Modern launcher/loading overlay (best-effort).
 try:
     from toontown.toontowngui.ModernLoadingScreen import ModernLoadingScreen
@@ -98,9 +99,16 @@ if not (_modern and _modern.enabled()):
     backgroundNode = tempLoader.loadSync(Filename('phase_3/models/gui/loading-background'))
     backgroundNodePath = aspect2d.attachNewNode(backgroundNode, 0)
     backgroundNodePath.setPos(0.0, 0.0, 0.0)
-    backgroundNodePath.setScale(render2d, VBase3(1))
+    # Widescreen: stretch the 4:3 loading background to cover widescreen displays.
+    backgroundGuiXScale = 1.0
+    try:
+        backgroundGuiXScale = base.getWidescreenGUIXScale()
+    except Exception:
+        pass
+    backgroundNodePath.setScale(render2d, VBase3(backgroundGuiXScale, 1.0, 1.0))
     backgroundNodePath.find('**/fg').setBin('fixed', 20)
     backgroundNodePath.find('**/bg').setBin('fixed', 10)
+
 base.graphicsEngine.renderFrame()
 
 # Optional: auto-start local servers (Astron/UberDOG/AI) before connecting.
@@ -187,7 +195,14 @@ else:
 from direct.gui.DirectGui import OnscreenText
 serverVersion = ConfigVariableString('server-version', 'no_version_set').value
 print('ToontownStart: serverVersion: ', serverVersion)
-version = OnscreenText(serverVersion, pos=(-1.3, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
+
+# Pin the version text to the left edge of the screen (works in any aspect ratio)
+versionX = -1.3
+try:
+    versionX = base.a2dLeft + 0.033  # same distance from the left edge as -1.3 at 4:3
+except Exception:
+    pass
+version = OnscreenText(serverVersion, pos=(versionX, -0.975), scale=0.06, fg=Vec4(0, 0, 1, 0.6), align=TextNode.ALeft)
 try:
     if getattr(base, 'modernLoading', None):
         base.modernLoading.set_status('Loading client repository…')
@@ -197,6 +212,7 @@ except Exception:
     pass
 # Progress range: six `loader.loadModel` calls in initNametagGlobals (ToonBase).
 loader.beginBulkLoad('init', TTLocalizer.LoaderLabel, 6, 0, TTLocalizer.TIP_NONE)
+
 from toontown.distributed.ToontownClientRepository import ToontownClientRepository
 cr = ToontownClientRepository(serverVersion, launcher)
 cr.music = music

@@ -230,7 +230,7 @@ class DistributedDivingGame(DistributedMinigame):
         camera.setZ(36)
         camera.setH(0)
         camera.setX(0)
-        base.camLens.setFov(45)
+        base.camLens.setFov(base.getAdjustedFov(45))
         camera.setY(-54)
         base.camLens.setFar(1500)
         self.introMovie = self.getIntroMovie()
@@ -274,7 +274,8 @@ class DistributedDivingGame(DistributedMinigame):
         self.mapModel.reparentTo(aspect2d)
         self.mapModel.setScale(1.0 / self.mapScaleRatio)
         self.mapModel.setTransparency(1)
-        self.mapModel.setPos(1.15, -0.5, -0.125)
+        # Widescreen-aware: pin the map to the right edge of the screen
+        self.mapModel.setPos(base.getWidescreenXOffset(1.15, 'right') if hasattr(base, 'getWidescreenXOffset') else 1.15, -0.5, -0.125)
         self.mapModel.setColorScale(1, 1, 1, 0.7)
         self.mapModel.hide()
         if None != self.sndAmbience:
@@ -294,7 +295,7 @@ class DistributedDivingGame(DistributedMinigame):
             self.toonSDs[avId].exit()
 
         base.camLens.setFar(ToontownGlobals.DefaultCameraFar)
-        base.camLens.setFov(ToontownGlobals.DefaultCameraFov)
+        base.camLens.setFov(base.getAdjustedFov(ToontownGlobals.DefaultCameraFov))
         base.setBackgroundColor(ToontownGlobals.DefaultBackgroundColor)
         self.arrowKeys.destroy()
         del self.arrowKeys
@@ -528,7 +529,8 @@ class DistributedDivingGame(DistributedMinigame):
         DistributedMinigame.setGameStart(self, timestamp)
         self.notify.debug('setGameStart')
         self.treasurePanel = TreasureScorePanel.TreasureScorePanel()
-        self.treasurePanel.setPos(-1.19, 0, 0.75)
+        # Widescreen-aware: pin the score panel to the left edge of the screen
+        self.treasurePanel.setPos(base.getWidescreenXOffset(-1.19, 'left') if hasattr(base, 'getWidescreenXOffset') else -1.19, 0, 0.75)
         self.treasurePanel.makeTransparent(0.7)
         self.introMovie.finish()
         self.gameFSM.request('swim')

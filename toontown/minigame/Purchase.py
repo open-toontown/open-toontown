@@ -278,7 +278,7 @@ class Purchase(PurchaseBase):
         self.counters = []
         self.totalCounters = []
         camera.reparentTo(render)
-        base.camLens.setFov(ToontownGlobals.DefaultCameraFov)
+        base.camLens.setFov(base.getAdjustedFov(ToontownGlobals.DefaultCameraFov))
         camera.setPos(0, 16.0, 2.0)
         camera.lookAt(0, 0, 0.75)
         base.transitions.irisIn(0.4)

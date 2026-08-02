@@ -106,7 +106,7 @@ class DistributedFindFour(DistributedNode.DistributedNode):
         self.downButton = self.buttonModels.find('**/InventoryButtonDown')
         self.rolloverButton = self.buttonModels.find('**/InventoryButtonRollover')
         self.clockNode = ToontownTimer()
-        self.clockNode.setPos(1.16, 0, -0.83)
+        self.clockNode.setPos(base.getWidescreenXOffset(1.16, 'right') if hasattr(base, 'getWidescreenXOffset') else 1.16, 0, -0.83)
         self.clockNode.setScale(0.3)
         self.clockNode.hide()
         self.tintConstant = Vec4(0.25, 0.25, 0.25, 0)
@@ -250,7 +250,7 @@ class DistributedFindFour(DistributedNode.DistributedNode):
             if timeLeft > 0 and timerEnd != 0:
                 if timeLeft > 60:
                     timeLeft = 60
-                self.clockNode.setPos(1.16, 0, -0.83)
+                self.clockNode.setPos(base.getWidescreenXOffset(1.16, 'right') if hasattr(base, 'getWidescreenXOffset') else 1.16, 0, -0.83)
                 self.clockNode.countdown(timeLeft, self.startButtonPushed)
                 self.clockNode.show()
             else:
@@ -264,7 +264,7 @@ class DistributedFindFour(DistributedNode.DistributedNode):
             time = globalClockDelta.networkToLocalTime(turnEnd)
             timeLeft = int(time - globalClock.getRealTime())
             if timeLeft > 0:
-                self.clockNode.setPos(0.64, 0, -0.27)
+                self.clockNode.setPos(base.getWidescreenXOffset(0.64, 'right') if hasattr(base, 'getWidescreenXOffset') else 0.64, 0, -0.27)
                 self.clockNode.countdown(timeLeft, self.doRandomMove)
                 self.clockNode.show()
         return
@@ -356,7 +356,7 @@ class DistributedFindFour(DistributedNode.DistributedNode):
         self.clockNode.reset()
 
     def enableExitButton(self):
-        self.exitButton = DirectButton(relief=None, text=TTLocalizer.ChineseCheckersGetUpButton, text_fg=(1, 1, 0.65, 1), text_pos=(0, -.23), text_scale=0.8, image=(self.upButton, self.downButton, self.rolloverButton), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=(0.92, 0, 0.8), scale=0.15, command=lambda self = self: self.exitButtonPushed())
+        self.exitButton = DirectButton(relief=None, text=TTLocalizer.ChineseCheckersGetUpButton, text_fg=(1, 1, 0.65, 1), text_pos=(0, -.23), text_scale=0.8, image=(self.upButton, self.downButton, self.rolloverButton), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=(base.getWidescreenXOffset(0.92, 'right') if hasattr(base, 'getWidescreenXOffset') else 0.92, 0, 0.8), scale=0.15, command=lambda self = self: self.exitButtonPushed())
         return
 
     def enableScreenText(self):
@@ -373,11 +373,11 @@ class DistributedFindFour(DistributedNode.DistributedNode):
         self.screenText = OnscreenText(text=message, pos=defaultPos, scale=0.1, fg=color, align=TextNode.ACenter, mayChange=1)
 
     def enableStartButton(self):
-        self.startButton = DirectButton(relief=None, text=TTLocalizer.ChineseCheckersStartButton, text_fg=(1, 1, 0.65, 1), text_pos=(0, -.23), text_scale=0.6, image=(self.upButton, self.downButton, self.rolloverButton), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=(0.92, 0, 0.57), scale=0.15, command=lambda self = self: self.startButtonPushed())
+        self.startButton = DirectButton(relief=None, text=TTLocalizer.ChineseCheckersStartButton, text_fg=(1, 1, 0.65, 1), text_pos=(0, -.23), text_scale=0.6, image=(self.upButton, self.downButton, self.rolloverButton), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=(base.getWidescreenXOffset(0.92, 'right') if hasattr(base, 'getWidescreenXOffset') else 0.92, 0, 0.57), scale=0.15, command=lambda self = self: self.startButtonPushed())
         return
 
     def enableLeaveButton(self):
-        self.leaveButton = DirectButton(relief=None, text=TTLocalizer.ChineseCheckersQuitButton, text_fg=(1, 1, 0.65, 1), text_pos=(0, -.13), text_scale=0.5, image=(self.upButton, self.downButton, self.rolloverButton), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=(0.92, 0, 0.8), scale=0.15, command=lambda self = self: self.exitButtonPushed())
+        self.leaveButton = DirectButton(relief=None, text=TTLocalizer.ChineseCheckersQuitButton, text_fg=(1, 1, 0.65, 1), text_pos=(0, -.13), text_scale=0.5, image=(self.upButton, self.downButton, self.rolloverButton), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=(base.getWidescreenXOffset(0.92, 'right') if hasattr(base, 'getWidescreenXOffset') else 0.92, 0, 0.8), scale=0.15, command=lambda self = self: self.exitButtonPushed())
         return
 
     def enableTurnScreenText(self, player):

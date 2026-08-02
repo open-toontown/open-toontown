@@ -496,6 +496,39 @@ class DropdownScrolledFrame(ToontownScrolledFrame):
         super().destroy()
 
 
+def _getPossibleScreenSizes():
+    """Return the resolutions offered by the Video > Resolution dropdown.
+
+    Uses the same standard list as DisplaySettingsDialog, plus any display modes
+    supported by the current graphics pipe. Values are [width, height] lists to
+    match the JSON 'resolution' setting format in Settings.py.
+    """
+    sizes = [
+        [640, 480],    # 4:3
+        [800, 600],    # 4:3
+        [1024, 768],   # 4:3
+        [1280, 720],   # 16:9 HD
+        [1280, 800],   # 16:10
+        [1280, 1024],  # 5:4
+        [1366, 768],   # 16:9
+        [1600, 900],   # 16:9
+        [1600, 1200],  # 4:3
+        [1920, 1080],  # 16:9 Full HD
+        [1920, 1200],  # 16:10
+        [2560, 1440],  # 16:9 QHD
+        [3840, 2160],  # 16:9 4K
+    ]
+    try:
+        displayInfo = base.pipe.getDisplayInformation()
+        for i in range(displayInfo.getTotalDisplayModes()):
+            size = [displayInfo.getDisplayModeWidth(i), displayInfo.getDisplayModeHeight(i)]
+            if size not in sizes:
+                sizes.append(size)
+    except Exception:
+        pass
+    return sorted(sizes)
+
+
 class OptionElement(DirectFrame):
     """
     Option types:
@@ -517,7 +550,7 @@ class OptionElement(DirectFrame):
             optionOptions[option] = ["Hold", "Toggle"]
 
     optionOptions.update({
-        "resolution": base.possibleScreenSizes,
+        "resolution": _getPossibleScreenSizes(),
         "anisotropic-filter": list(TTLocalizer.OptionAnisotropic),
         "anti-aliasing": list(TTLocalizer.OptionAntiAlias),
         "fps-limit": list(TTLocalizer.OptionFPSLimit),

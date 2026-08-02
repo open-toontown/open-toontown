@@ -686,7 +686,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         if self.cameraTrack:
             self.cameraTrack.pause()
         cameraZoomIn = Parallel(LerpPosInterval(camera, 2, newCameraPos), LerpFunc(base.camLens.setFov, fromData=startFov, toData=newCameraFov, duration=2))
-        cameraToNormal = Parallel(LerpPosInterval(camera, 1, Point3(0, -33, 16), newCameraPos), LerpFunc(base.camLens.setFov, fromData=newCameraFov, toData=ToontownGlobals.DefaultCameraFov, duration=1))
+        cameraToNormal = Parallel(LerpPosInterval(camera, 1, Point3(0, -33, 16), newCameraPos), LerpFunc(base.camLens.setFov, fromData=newCameraFov, toData=base.getAdjustedFov(ToontownGlobals.DefaultCameraFov), duration=1))
         self.cameraTrack = Sequence(Func(self.turboStartSfx.play), cameraZoomIn, Func(lambda : self.setTurbo(True)), Wait(turboDuration), Func(self.__stopTurbo), cameraToNormal)
         self.cameraTrack.start()
 
@@ -1098,7 +1098,7 @@ class DistributedVehicle(DistributedSmoothNode.DistributedSmoothNode, Kart.Kart,
         self.imHitMult = level
         if hasattr(self, 'cameraTrack') and self.cameraTrack:
             self.cameraTrack.pause()
-            cameraToNormal = Parallel(LerpPosInterval(camera, 0.05, Point3(0, -33, 16), startPos=camera.getPos()), LerpFunc(base.camLens.setFov, fromData=base.camLens.getFov()[0], toData=ToontownGlobals.DefaultCameraFov, duration=0.05))
+            cameraToNormal = Parallel(LerpPosInterval(camera, 0.05, Point3(0, -33, 16), startPos=camera.getPos()), LerpFunc(base.camLens.setFov, fromData=base.camLens.getFov()[0], toData=base.getAdjustedFov(ToontownGlobals.DefaultCameraFov), duration=0.05))
             cameraToNormal.start()
         self.__stopTurbo()
         self.stopped = True

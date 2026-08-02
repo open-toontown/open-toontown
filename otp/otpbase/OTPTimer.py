@@ -35,13 +35,27 @@ class OTPTimer(DirectFrame):
         return OTPTimer.ClockImage
 
     def posInTopRightCorner(self):
-        self.setPos(1.16, 0, 0.83)
+        # Widescreen-aware: keep the clock pinned to the top-right corner of the
+        # screen regardless of aspect ratio (1.16 was the 4:3 position).
+        try:
+            from toontown.toonbase.ToonBaseGlobal import base
+            self.setPos(base.a2dRight - 0.173, 0, 0.83)
+        except Exception:
+            self.setPos(1.16, 0, 0.83)
 
     def posBelowTopRightCorner(self):
-        self.setPos(1.16, 0, 0.58)
+        try:
+            from toontown.toonbase.ToonBaseGlobal import base
+            self.setPos(base.a2dRight - 0.173, 0, 0.58)
+        except Exception:
+            self.setPos(1.16, 0, 0.58)
 
     def posAboveShtikerBook(self):
-        self.setPos(1.16, 0, -.63)
+        try:
+            from toontown.toonbase.ToonBaseGlobal import base
+            self.setPos(base.a2dRight - 0.173, 0, -0.63)
+        except Exception:
+            self.setPos(1.16, 0, -.63)
 
     def setTime(self, time):
         time = bound(time, 0, 999)

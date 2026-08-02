@@ -144,7 +144,11 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
 
     def loadGUI(self):
         self.gui = loader.loadModel('phase_13/models/parties/trampolineGUI')
-        self.gui.setX(-1.15)
+        # Widescreen-aware: pin the GUI to the left edge of the screen
+        try:
+            self.gui.setX(base.a2dLeft + 0.183)
+        except Exception:
+            self.gui.setX(-1.15)
         self.gui.reparentTo(self.screenPlaneElements)
         self.toonIndicator = self.gui.find('**/trampolineGUI_MovingBar')
         jumpLineLocator = self.gui.find('**/jumpLine_locator')
@@ -167,7 +171,12 @@ class DistributedPartyTrampolineActivity(DistributedPartyActivity):
         quitEarlyUp = self.quitEarlyButtonModels.find('**//InventoryButtonUp')
         quitEarlyDown = self.quitEarlyButtonModels.find('**/InventoryButtonDown')
         quitEarlyRollover = self.quitEarlyButtonModels.find('**/InventoryButtonRollover')
-        self.quitEarlyButton = DirectButton(parent=self.screenPlaneElements, relief=None, text=TTLocalizer.PartyTrampolineQuitEarlyButton, text_fg=(1, 1, 0.65, 1), text_pos=(0, -0.23), text_scale=0.7, image=(quitEarlyUp, quitEarlyDown, quitEarlyRollover), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=(1.15, 0, 0.6), scale=0.09, command=self.leaveTrampoline)
+        # Widescreen-aware: pin the quit button to the right edge of the screen
+        try:
+            quitEarlyPos = (base.a2dRight - 0.183, 0, 0.6)
+        except Exception:
+            quitEarlyPos = (1.15, 0, 0.6)
+        self.quitEarlyButton = DirectButton(parent=self.screenPlaneElements, relief=None, text=TTLocalizer.PartyTrampolineQuitEarlyButton, text_fg=(1, 1, 0.65, 1), text_pos=(0, -0.23), text_scale=0.7, image=(quitEarlyUp, quitEarlyDown, quitEarlyRollover), image_color=(1, 0, 0, 1), image_scale=(20, 1, 11), pos=quitEarlyPos, scale=0.09, command=self.leaveTrampoline)
         self.quitEarlyButton.stash()
         self.flashText = OnscreenText(text='', pos=(0.0, -0.45), scale=0.2, fg=(1.0, 1.0, 0.65, 1.0), align=TextNode.ACenter, font=ToontownGlobals.getSignFont(), mayChange=True)
         self.timer = PartyUtils.getNewToontownTimer()
