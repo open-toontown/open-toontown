@@ -1,7 +1,7 @@
 from otp.otpbase import OTPBase
 from otp.otpbase import OTPLauncherGlobals
 from otp.otpbase import OTPGlobals
-from otp.settings.Settings import Settings
+from toontown.settings.Settings import Settings
 from direct.showbase.PythonUtil import *
 from . import ToontownGlobals
 from direct.directnotify import DirectNotifyGlobal
@@ -235,6 +235,85 @@ class ToonBase(OTPBase.OTPBase):
         else:  # center
             # For centered elements, no adjustment needed (aspect2d handles it)
             return baseX
+    
+    def getWidescreenYOffset(self, baseY, alignment='top'):
+        """Calculate proper Y position for GUI elements in widescreen.
+        
+        Args:
+            baseY: The original Y position designed for 4:3 (1.333 aspect)
+            alignment: 'top', 'bottom', or 'center' - which edge the element aligns to
+        
+        Returns:
+            Adjusted Y position that maintains distance from screen edge
+        """
+        # Base aspect2d boundaries for 4:3 reference
+        base4x3Top = 1.0
+        base4x3Bottom = -1.0
+        
+        # Current aspect2d boundaries
+        currentTop = base.a2dTop
+        currentBottom = base.a2dBottom
+        
+        if alignment == 'top':
+            offsetFrom4x3Top = baseY - base4x3Top
+            return currentTop + offsetFrom4x3Top
+        elif alignment == 'bottom':
+            offsetFrom4x3Bottom = baseY - base4x3Bottom
+            return currentBottom + offsetFrom4x3Bottom
+        else:  # center
+            return baseY
+    
+    def getA2dEdgePosition(self, edge='right', offset=0.3):
+        """Get a position relative to aspect2d edges with proper offset.
+        
+        This is the recommended way to position GUI elements at screen edges.
+        
+        Args:
+            edge: 'left', 'right', 'top', or 'bottom'
+            offset: Distance from the edge in aspect2d units
+        
+        Returns:
+            A Point3 position suitable for DirectGui pos parameter
+        """
+        if edge == 'right':
+            return Point3(base.a2dRight - offset, 0, 0)
+        elif edge == 'left':
+            return Point3(base.a2dLeft + offset, 0, 0)
+        elif edge == 'top':
+            return Point3(0, 0, base.a2dTop - offset)
+        elif edge == 'bottom':
+            return Point3(0, 0, base.a2dBottom + offset)
+        else:
+            return Point3(0, 0, 0)
+    
+    def getGUIEdgePos(self, edge='right', xOffset=0.3, yOffset=0):
+        """Get full 3D position for GUI elements aligned to screen edges.
+        
+        More flexible version that allows both X and Y offsets.
+        
+        Args:
+            edge: 'left', 'right', 'top', or 'bottom'
+            xOffset: Horizontal offset from the edge
+            yOffset: Vertical offset (positive = up, negative = down)
+        
+        Returns:
+            Point3 position for DirectGui
+        """
+        if edge == 'right':
+            x = base.a2dRight - xOffset
+        elif edge == 'left':
+            x = base.a2dLeft + xOffset
+        else:
+            x = 0
+        
+        if edge == 'top':
+            z = base.a2dTop - yOffset
+        elif edge == 'bottom':
+            z = base.a2dBottom + yOffset
+        else:
+            z = yOffset
+        
+        return Point3(x, 0, z)
 
     def windowEvent(self, win):
         OTPBase.OTPBase.windowEvent(self, win)

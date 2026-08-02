@@ -1,53 +1,64 @@
-// Water surface vertex shader.
-// Passes world-space position, surface normal, texture coords and clip-space
-// position to the fragment stage.  Gentle vertex-displacement is applied to
-// break up the perfectly flat water surface and sell the wave motion.
-//
-// Uniforms (set by OutdoorLighting._setupWaterNode):
-//   osl_Time      – seconds since scene start (drives wave animation)
-//   osl_WaveScale – UV tiling scale for procedural waves
-//   osl_WaveSpeed – wave animation speed multiplier
-#version 130
+#version 120
 
-uniform mat4  p3d_ModelViewProjectionMatrix;
-uniform mat4  p3d_ModelMatrix;
-uniform float osl_Time;
-uniform float osl_WaveScale;
-uniform float osl_WaveSpeed;
+// Water vertex shader with wave animation
 
-in vec4 p3d_Vertex;
-in vec3 p3d_Normal;
-in vec2 p3d_MultiTexCoord0;
+attribute vec4 p3d_Vertex;
+attribute vec3 p3d_Normal;
+attribute vec2 p3d_MultiTexCoord0;
 
-out vec2 vTexCoord;
-out vec3 vWorldPos;
-out vec3 vWorldNormal;
-out vec4 vClipPos;
+uniform mat4 p3d_ModelViewProjectionMatrix;
+uniform mat4 p3d_ModelMatrix;
+uniform mat3 p3d_NormalMatrix;
 
-// Minimal cheap hash for vertex-level displacement (not the same as the
-// higher-quality noise used in the fragment stage).
-float vhash(vec2 p) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+uniform float time;
+uniform float waveHeight;
+uniform float waveSpeed;
+uniform vec4 waterColor;
+uniform sampler2D reflectionTex;
+
+varying vec3 normal;
+varying vec3 worldPos;
+varying vec2 texcoord;
+varying vec4 reflectionColor;
+varying float depth;
+
+// Simple sine wave function
+float wave(vec2 position, float frequency, float speed) {
+    return sin(dot(position, vec2(frequency, frequency * 1.7)) + time * speed);
 }
 
 void main() {
-    float t    = osl_Time * osl_WaveSpeed;
-    float scale = osl_WaveScale;
-
-    // Two-layer vertex displacement along the surface normal.
-    // Kept intentionally small (~0.15 u max) so the geometry stays close
-    // to the water plane and shadow/reflection cameras are not confused.
-    vec2 uv   = p3d_MultiTexCoord0 * scale;
-    float d1  = sin(uv.x * 6.28 + t * 1.1) * cos(uv.y * 4.71 + t * 0.9) * 0.08;
-    float d2  = sin(uv.x * 3.14 - t * 0.7) * sin(uv.y * 7.85 + t * 1.3) * 0.06;
-    float disp = d1 + d2;
-
-    vec4 displaced = p3d_Vertex + vec4(p3d_Normal * disp, 0.0);
-
-    vec4 worldPos4 = p3d_ModelMatrix * displaced;
-    vWorldPos      = worldPos4.xyz;
-    vWorldNormal   = normalize(mat3(p3d_ModelMatrix) * p3d_Normal);
-    vTexCoord      = p3d_MultiTexCoord0;
-    vClipPos       = p3d_ModelViewProjectionMatrix * displaced;
-    gl_Position    = vClipPos;
+    vec4 vertex = p3d_Vertex;
+    
+    // Generate wave displacement
+    vec2 pos = vertex.xz;
+    float height = 0.0;
+    
+    // Multiple octaves for realistic waves
+    height += wave(pos, 0.1, waveSpeed) * 0.5;
+    height += wave(pos, 0.2, waveSpeed * 1.3) * 0.25;
+    height += wave(pos, 0.4, waveSpeed * 1.7) * 0.125;
+    height += wave(pos, 0.8, waveSpeed * 2.1) * 0.0625;
+    
+    // Apply wave height
+    vertex.y += height * waveHeight;
+    
+    // Calculate normals from wave function derivatives
+    vec3 waveNormal = vec3(
+        -waveHeight * 0.1 * cos(dot(pos, vec2(0.1, 0.17)) + time * waveSpeed),
+        1.0,
+        -waveHeight * 0.1 * cos(dot(pos, vec2(0.17, 0.1)) + time * waveSpeed * 1.3)
+    );
+    waveNormal = normalize(waveNormal);
+    
+    // Transform vertex
+    gl_Position = p3d_ModelViewProjectionMatrix * vertex;
+    
+    // Pass data to fragment shader
+    normal = normalize(p3d_NormalMatrix * waveNormal);
+    worldPos = (p3d_ModelMatrix * vertex).xyz;
+    texcoord = p3d_MultiTexCoord0;
+    
+    // Simple depth calculation
+    depth = gl_Position.z / gl_Position.w;
 }

@@ -1,12 +1,14 @@
-// Fullscreen pass-through vertex shader used for god-ray and atmospheric
-// overlay effects rendered on a fullscreen CardMaker quad in render2dp.
-#version 130
+#version 120
 
-in vec4 p3d_Vertex;
-in vec2 p3d_MultiTexCoord0;
-out vec2 uv;
+// Simple sunrays vertex shader
+// Renders full-screen quad for sun shaft effect
+
+attribute vec4 p3d_Vertex;
+attribute vec2 p3d_MultiTexCoord0;
+
+varying vec2 texcoord;
 
 void main() {
     gl_Position = p3d_Vertex;
-    uv = p3d_MultiTexCoord0;
+    texcoord = p3d_MultiTexCoord0;
 }

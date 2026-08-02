@@ -3,7 +3,7 @@ title Open Toontown - UberDOG Server
 cd /d %~dp0..
 
 rem Read the contents of PPYTHON_PATH into %PPYTHON_PATH%:
-set /P PPYTHON_PATH=<PPYTHON_PATH
+for /f "usebackq delims=" %%i in ("PPYTHON_PATH") do set "PPYTHON_PATH=%%i"
 
 "%PPYTHON_PATH%" -m toontown.uberdog.UDStart --base-channel 1000000 ^
                --max-channels 999999 --stateserver 4002 ^

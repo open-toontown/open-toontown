@@ -58,9 +58,15 @@ from panda3d.core import (
 from direct.showbase.ShowBaseGlobal import globalClock
 from direct.task.TaskManagerGlobal import taskMgr
 
-from toontown.toonbase.ToonBaseGlobal import base
+import builtins
+base = getattr(builtins, 'base', None)
 
-_SHADER_DIR = os.path.join(os.path.dirname(__file__), '..', 'shaders')
+_SHADER_DIR_CANDIDATES = (
+    os.path.join(os.path.dirname(__file__), '..', 'shaders'),
+    os.path.join(os.path.dirname(__file__), 'shaders'),
+    os.path.join(os.path.dirname(__file__), '..', '..', 'shaders'),
+)
+_SHADER_DIR = next((d for d in _SHADER_DIR_CANDIDATES if os.path.exists(d)), _SHADER_DIR_CANDIDATES[0])
 _SKY_VERT   = os.path.join(_SHADER_DIR, 'sky.vert.glsl')
 _SKY_FRAG   = os.path.join(_SHADER_DIR, 'sky.frag.glsl')
 
@@ -74,16 +80,31 @@ def _loadSkyShader() -> Shader | None:
     global _sky_shader
     if _sky_shader is not None:
         return _sky_shader
+    print(f"[DEBUG VideoSettings] _loadSkyShader: starting...")
     try:
-        from toontown.hood import OutdoorLighting as osl
-        if getattr(osl, '_OUTDOOR_SHADER_BISECT_LEVEL', 0) < 1:
+        try:
+            from toontown.hood import OutdoorLighting as osl
+            print(f"[DEBUG VideoSettings] _loadSkyShader: imported from toontown.hood")
+        except ImportError:
+            import OutdoorLighting as osl
+            print(f"[DEBUG VideoSettings] _loadSkyShader: imported from root")
+        bisect_level = getattr(osl, '_OUTDOOR_SHADER_BISECT_LEVEL', 0)
+        print(f"[DEBUG VideoSettings] _loadSkyShader: osl._OUTDOOR_SHADER_BISECT_LEVEL={bisect_level}")
+        if bisect_level < 1:
+            print(f"[DEBUG VideoSettings] _loadSkyShader: bisect level < 1, returning None")
             return None
-    except Exception:
+    except Exception as e:
+        print(f"[DEBUG VideoSettings] _loadSkyShader: exception in osl import/check: {e!r}")
         pass
     try:
         vp_os = os.path.normpath(_SKY_VERT)
         fp_os = os.path.normpath(_SKY_FRAG)
-        if not (os.path.isfile(vp_os) and os.path.isfile(fp_os)):
+        print(f"[DEBUG VideoSettings] _loadSkyShader: vp_os={vp_os}, fp_os={fp_os}")
+        vp_exists = os.path.isfile(vp_os)
+        fp_exists = os.path.isfile(fp_os)
+        print(f"[DEBUG VideoSettings] _loadSkyShader: vp_exists={vp_exists}, fp_exists={fp_exists}")
+        if not (vp_exists and fp_exists):
+            print(f"[DEBUG VideoSettings] _loadSkyShader: file missing, returning None")
             return None
         # On Windows, Panda3D's shader loader expects Panda-style paths (eg
         # `/c/Users/...`) rather than raw OS paths with backslashes.
@@ -94,9 +115,14 @@ def _loadSkyShader() -> Shader | None:
             fp.makeTrueCase()
         except Exception:
             pass
+        print(f"[DEBUG VideoSettings] _loadSkyShader: loading shader...")
         _sky_shader = Shader.load(Shader.SL_GLSL, vp, fp)
+        print(f"[DEBUG VideoSettings] _loadSkyShader: load returned {_sky_shader}")
         return _sky_shader
-    except Exception:
+    except Exception as e:
+        print(f"[DEBUG VideoSettings] _loadSkyShader: exception: {e!r}")
+        import traceback; traceback.print_exc()
+        _sky_shader = None
         return None
 
 

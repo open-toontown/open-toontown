@@ -1,4 +1,5 @@
 from direct.distributed import DistributedObject
+from direct.directnotify.DirectNotifyGlobal import directNotify
 from toontown.effects.FireworkShowMixin import FireworkShowMixin
 
 class DistributedFireworkShow(DistributedObject.DistributedObject, FireworkShowMixin):
