@@ -61,13 +61,14 @@ Target: `C:\Users\Shadow\Desktop\ttbtn`
 - [x] Implemented `ZonePrefetchCatalog.py`: Catalog mapping all hood zone IDs (TTC, DD, DG, MML, TB, DD, Speedway, Cog HQs, Estate) with async background preloading (`ZonePrefetchManager`).
 - [x] Integrated `ToontownLoader.py` & `ToontownLoadingScreen.py`: Automatic asset callback forwarding, heartbeat keepalive, and fallback support.
 - [x] Expanded `AssetCache.py`: Instant preloading of common Phase 3, 3.5, 4, 5 GUI models, chatboxes, shadows, and logos.
-- [x] Submitted Pull Request #9 to GitHub repository (`feature/modern-loading-system`).
+- [x] Ported updated `OutdoorLighting.py` (212 KB engine) and `ProceduralSky.py` into `toontown/hood/` with multi-threading guards and GSG depth-pass safety.
+- [x] Ported GLSL shaders (`sky`, `sunrays`, `water`) into `toontown/shaders/` and added dynamic `_SHADER_DIR` resolution.
+- [x] Ported `LegacyQuestDict.py` (15,29 procedural quest chains) and updated `toontown/quest/Quests.py` with `WANT_LEGACY_QUESTS` flag and `questExists()` helper.
+- [x] Ported `QuestParser.py` into `toontown/quest/` and integrated `libotp` nametag/speech library dependencies.
+- [x] Submitted Pull Request #9 (`feature/modern-loading-system`) and Pull Request #10 (`feature/outdoor-lighting-and-procedural-quests`) to GitHub repository.
 
 # TODO List for Future AI Instances
-- [ ] Port updated `OutdoorLighting.py` (212 KB engine) and `ProceduralSky.py` into `toontown/hood/`.
-- [ ] Port GLSL shaders (`sky`, `sunrays`, `water`) into `toontown/shaders/`.
-- [ ] Port `LegacyQuestDict.py` and update `toontown/quest/Quests.py` with procedural quest chains.
-- [ ] Port `QuestParser.py` into `toontown/quest/`.
-- [ ] Verify `TaskAutoer.py` quest automation compatibility with the procedural quest dict.
+- [ ] Merge and review PR #9 and PR #10 into `develop`.
+- [ ] Verify `TaskAutoer.py` quest automation compatibility with the procedural quest dict during live server sessions.
 - [ ] Validate server stability with Astron local launcher under heavy zone switching.
 
