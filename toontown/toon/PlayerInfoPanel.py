@@ -65,10 +65,12 @@ class PlayerInfoPanel(AvatarPanelBase.AvatarPanelBase):
         base.localAvatar.obscureFriendsListButton(1)
         gui = loader.loadModel('phase_3.5/models/gui/avatar_panel_gui')
         from toontown.toonbase.ToonBaseGlobal import base
+        # Use widescreen-aware positioning for proper edge alignment
+        framePos = base.getGUIEdgePos(edge='right', xOffset=0.3, yOffset=-0.525) if hasattr(base, 'getGUIEdgePos') else Point3(base.a2dRight - 0.3, 100, 0.525)
         self.frame = DirectFrame(
             image=gui.find('**/avatar_panel'),
             relief=None,
-            pos=(base.a2dRight - 0.3, 100, 0.525))
+            pos=framePos)
         disabledImageColor = Vec4(1, 1, 1, 0.4)
         text0Color = Vec4(1, 1, 1, 1)
         text1Color = Vec4(0.5, 1, 0.5, 1)
