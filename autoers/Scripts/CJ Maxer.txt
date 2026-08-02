@@ -1,0 +1,40 @@
+#This will not work unless you have Toon Bot running on your toontown
+#If you do not have Toon Bot you can download it at youtube.com/toontowninjecting
+
+script={
+
+    'name':'CJ Maxer',\
+    
+    'description':"The CJ maxer is a script used to max your Lawbot suit. It does a DA office \
+(A different one depending on notices needed) when it needs notices and does a CJ when it has all \
+the notices it needs. Full credit to all the functions used in the script can be found on my \
+channel (ToontownInjecting).",
+                   
+    'author': 'Freshollie',\
+    
+    'version': '1',\
+    
+    'unload':'cjMaxer.revert()',\
+    
+    'start':'cjMaxer.otherFunctions.start()',\
+    
+    'stop':'cjMaxer.otherFunctions.setStop()',\
+    
+    'close':'cjMaxer.autoerGui.hideAll()',\
+    
+    'open':'cjMaxer.autoerGui.showAll()',\
+    
+    'options':{
+        'Only Do DA':{
+            'command':'cjMaxer.otherFunctions.onlyDoDA',\
+            'pos':(0,0)\
+            },
+            
+        'Do Both':{
+            'command':'cjMaxer.otherFunctions.doBoth',\
+            'pos':(0,1)
+            }  
+        },\
+    'location':'http://raw.githubusercontent.com/freshollie/ToontownAutoers/master/CJMaxer.py'}
+
+toonBot.addScript(script)

@@ -1,0 +1,39 @@
+#This will not work unless you have Toon Bot running on your toontown
+#If you do not have Toon Bot you can download it at youtube.com/toontowninjecting
+
+script={
+
+    'name':'Fish Autoer',\
+    
+    'description':"The Fishing autoer is a script designed to either get you max jelly beans \
+or max your fishing trophies (Depending on what is set up in the options). Fill credit to the \
+functions used can be found on my channel (ToontownInjecting).",
+                   
+    'author': 'Freshollie',\
+    
+    'version': '1',\
+    
+    'unload':'fishingAutoer.revertFunctions()',\
+    
+    'start':'fishingAutoer.start()',\
+    
+    'stop':'fishingAutoer.setStop()',\
+    
+    'close':'fishingAutoer.autoerGui.hideAll()',\
+    
+    'open':'fishingAutoer.autoerGui.showAll()',\
+    
+    'options':{
+        'Stop At Max Jbs':{
+            'command':'fishingAutoer.stopOnMax',\
+            'pos':(0,0)\
+            },
+            
+        'Continue To Fish':{
+            'command':'fishingAutoer.continueFishing',\
+            'pos':(0,1)
+            }
+        },\
+    'location':'http://raw.githubusercontent.com/freshollie/ToontownAutoers/master/FishAutoer.py'}
+
+toonBot.addScript(script)
