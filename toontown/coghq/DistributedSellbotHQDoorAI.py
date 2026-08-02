@@ -9,7 +9,7 @@ from otp.otpbase import OTPGlobals
 class DistributedSellbotHQDoorAI(DistributedCogHQDoorAI.DistributedCogHQDoorAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSellbotHQDoorAI')
 
-    def __init__(self, air, blockNumber, doorType, destinationZone, doorIndex = 0, lockValue = FADoorCodes.SB_DISGUISE_INCOMPLETE, swing = 3):
+    def __init__(self, air, blockNumber=0, doorType=0, destinationZone=0, doorIndex=0, lockValue=FADoorCodes.SB_DISGUISE_INCOMPLETE, swing=3):
         self.notify.debugStateCall(self)
         DistributedCogHQDoorAI.DistributedCogHQDoorAI.__init__(self, air, blockNumber, doorType, destinationZone, doorIndex, lockValue, swing)
 

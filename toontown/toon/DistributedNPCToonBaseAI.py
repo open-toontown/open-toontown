@@ -11,10 +11,12 @@ from toontown.quest import Quests
 
 class DistributedNPCToonBaseAI(DistributedToonAI.DistributedToonAI):
 
-    def __init__(self, air, npcId, questCallback = None):
+    def __init__(self, air, npcId=None, questCallback = None):
         DistributedToonAI.DistributedToonAI.__init__(self, air)
         self.air = air
-        self.npcId = npcId
+        # AstronInternalRepository instantiates distributed AI objects with only `air`.
+        # npcId comes in via required fields afterwards, so allow a safe default.
+        self.npcId = 0 if npcId is None else npcId
         self.busy = 0
         self.questCallback = questCallback
         self.givesQuests = 1

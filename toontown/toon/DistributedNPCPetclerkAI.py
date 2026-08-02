@@ -8,7 +8,7 @@ from toontown.pets import PetUtil, PetDNA, PetConstants
 
 class DistributedNPCPetclerkAI(DistributedNPCToonBaseAI):
 
-    def __init__(self, air, npcId):
+    def __init__(self, air, npcId=None):
         DistributedNPCToonBaseAI.__init__(self, air, npcId)
         self.givesQuests = 0
         self.busy = 0

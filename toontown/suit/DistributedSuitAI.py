@@ -20,8 +20,9 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
     myId = 0
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSuitAI')
 
-    def __init__(self, air, suitPlanner):
+    def __init__(self, air, suitPlanner=None):
         DistributedSuitBaseAI.DistributedSuitBaseAI.__init__(self, air, suitPlanner)
+        self.spDoId = 0
         self.bldgTrack = None
         self.branchId = None
         if suitPlanner:
@@ -32,9 +33,14 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         self.maxPathLen = 0
         self.pathPositionIndex = 0
         self.pathPositionTimestamp = 0.0
+        # These fields can be set via required updates before we have enough
+        # information to build a legList. Initialize them defensively so
+        # required-field ordering can't crash the AI process.
         self.pathState = 0
+        self.pathStartTime = 0.0
         self.currentLeg = 0
         self.legType = SuitLeg.TOff
+        self.legList = None
         self.flyInSuit = 0
         self.buildingSuit = 0
         self.attemptingTakeover = 0
@@ -43,19 +49,71 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         self.buildingDestinationIsCogdo = False
         return
 
+    # DC required field initializer (see etc/toon.dc: DistributedSuit.setSPDoId)
+    def setSPDoId(self, doId):
+        self.spDoId = doId
+        self.sp = self.air.doId2do.get(doId, None)
+        if self.sp is None and doId != 0:
+            taskMgr.doMethodLater(0.25, self.__retryResolveSuitPlanner, self.taskName('resolveSuitPlanner'))
+        else:
+            taskMgr.remove(self.taskName('resolveSuitPlanner'))
+            self.__maybeStartMovingAfterPlannerResolved()
+
+    def __retryResolveSuitPlanner(self, task):
+        if self.spDoId == 0 or self.isDeleted():
+            return Task.done
+        self.sp = self.air.doId2do.get(self.spDoId, None)
+        if self.sp is None:
+            return task.again
+        self.__maybeStartMovingAfterPlannerResolved()
+        return Task.done
+
+    def __maybeStartMovingAfterPlannerResolved(self):
+        # If we were put onto a path before required fields finished arriving,
+        # try again now that we have a suit planner reference.
+        if self.pathState == 1 and not getattr(self, 'legList', None):
+            try:
+                self.initializePath()
+            except Exception:
+                return
+        if self.pathState == 1 and getattr(self, 'legList', None):
+            try:
+                self.moveToNextLeg(None)
+            except Exception:
+                pass
+
+    def taskName(self, taskString):
+        """
+        DistributedObjectAI.taskName assumes self.doId exists.
+        During early lifecycle (before generateWithRequired), some code paths
+        may still schedule/clear tasks (eg. failed suit creation cleanup).
+        Use a stable fallback so delete/cleanup can't crash the AI process.
+        """
+        doId = getattr(self, 'doId', None)
+        if doId is None:
+            return '%s-tmp-%s' % (taskString, id(self))
+        return '%s-%s' % (taskString, doId)
+
     def stopTasks(self):
+        # If we were never generated, we may not have a doId. taskName() handles that.
         taskMgr.remove(self.taskName('flyAwayNow'))
         taskMgr.remove(self.taskName('danceNowFlyAwayLater'))
         taskMgr.remove(self.taskName('move'))
+        taskMgr.remove(self.taskName('resolveSuitPlanner'))
+
+    def delete(self):
+        self.stopTasks()
+        DistributedSuitBaseAI.DistributedSuitBaseAI.delete(self)
 
     def pointInMyPath(self, point, elapsedTime):
         if self.pathState != 1:
             return 0
+        if not getattr(self, 'legList', None) or not self.sp:
+            return 0
         then = globalClock.getFrameTime() + elapsedTime
         elapsed = then - self.pathStartTime
-        if not self.sp:
-            pass
-        return self.legList.isPointInRange(point, elapsed - self.sp.PATH_COLLISION_BUFFER, elapsed + self.sp.PATH_COLLISION_BUFFER)
+        buf = getattr(self.sp, 'PATH_COLLISION_BUFFER', 5)
+        return self.legList.isPointInRange(point, elapsed - buf, elapsed + buf)
 
     def requestBattle(self, x, y, z, h, p, r):
         toonId = self.air.getAvatarIdFromSender()
@@ -171,7 +229,20 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
             if state == 0:
                 self.stopPathNow()
             elif state == 1:
-                self.moveToNextLeg(None)
+                # When this arrives as a required field, other required fields
+                # (path endpoints, dna, etc.) may not have been processed yet.
+                # Only start moving once we have a valid legList.
+                try:
+                    if not getattr(self, 'legList', None):
+                        # Only attempt path init if endpoints are set.
+                        if getattr(self, 'pathEndpointStart', None) is not None and getattr(self, 'pathEndpointEnd', None) is not None:
+                            self.initializePath()
+                    if getattr(self, 'legList', None):
+                        self.moveToNextLeg(None)
+                except Exception:
+                    # If we can't initialize yet, stay in pathState=1 and wait
+                    # for subsequent required updates to fill in what we need.
+                    pass
             elif state == 2:
                 self.stopPathNow()
             elif state == 3:
@@ -211,8 +282,16 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         self.b_setPathPosition(self.currentLeg, self.pathStartTime + self.legList.getStartTime(self.currentLeg))
 
     def moveToNextLeg(self, task):
+        if self.isDeleted() or self.air is None:
+            return Task.done
+        if not getattr(self, 'legList', None):
+            return Task.done
         now = globalClock.getFrameTime()
-        elapsed = now - self.pathStartTime
+        try:
+            elapsed = now - self.pathStartTime
+        except Exception:
+            self.pathStartTime = now
+            elapsed = 0.0
         nextLeg = self.legList.getLegIndexAtTime(elapsed, self.currentLeg)
         numLegs = self.legList.getNumLegs()
         if self.currentLeg != nextLeg:
@@ -249,12 +328,16 @@ class DistributedSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
         taskMgr.remove(self.taskName('move'))
 
     def __enterZone(self, zoneId):
+        if self.air is None:
+            return
         if zoneId != self.zoneId:
-            self.sp.zoneChange(self, self.zoneId, zoneId)
+            if self.sp:
+                self.sp.zoneChange(self, self.zoneId, zoneId)
             self.air.sendSetZone(self, zoneId)
             self.zoneId = zoneId
             if self.pathState == 1:
-                self.sp.checkForBattle(zoneId, self)
+                if self.sp:
+                    self.sp.checkForBattle(zoneId, self)
 
     def __beginLegType(self, legType):
         self.legType = legType

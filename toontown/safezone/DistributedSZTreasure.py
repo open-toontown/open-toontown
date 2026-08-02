@@ -27,6 +27,10 @@ class DistributedSZTreasure(DistributedTreasure.DistributedTreasure):
 
     def setHolidayModelPath(self):
         self.defaultModelPath = self.modelPath
+        # newsManager can be missing during early zone load or misconfigured servers.
+        # Fall back to default treasure model rather than crashing the client.
+        if not getattr(base, 'cr', None) or not getattr(base.cr, 'newsManager', None):
+            return
         holidayIds = base.cr.newsManager.getHolidayIdList()
         if ToontownGlobals.VALENTINES_DAY in holidayIds:
             self.modelPath = 'phase_4/models/props/tt_m_ara_ext_heart'
@@ -72,6 +76,8 @@ class DistributedSZTreasure(DistributedTreasure.DistributedTreasure):
         return
 
     def startAnimation(self):
+        if not getattr(base, 'cr', None) or not getattr(base.cr, 'newsManager', None):
+            return
         holidayIds = base.cr.newsManager.getHolidayIdList()
         if ToontownGlobals.VALENTINES_DAY in holidayIds:
             originalScale = self.nodePath.getScale()

@@ -7,7 +7,7 @@ from direct.showbase.PythonUtil import StackTrace
 class DistributedFactorySuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedFactorySuitAI')
 
-    def __init__(self, air, suitPlanner):
+    def __init__(self, air, suitPlanner=None):
         DistributedSuitBaseAI.DistributedSuitBaseAI.__init__(self, air, suitPlanner)
         self.blocker = None
         self.battleCellIndex = None

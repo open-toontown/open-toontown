@@ -365,23 +365,16 @@ class TownBattle(StateData.StateData):
                     response['target'] = self.target
                     messenger.send(self.battleEvent, [response])
                     self.fsm.request('AttackWait')
-                elif self.numToons == 3 or self.numToons == 4:
-                    self.fsm.request('ChooseToon')
-                elif self.numToons == 2:
+                elif self.numToons == 1:
                     response = {}
                     response['mode'] = 'Attack'
                     response['track'] = self.track
                     response['level'] = self.level
-                    if self.localNum == 0:
-                        response['target'] = 1
-                    elif self.localNum == 1:
-                        response['target'] = 0
-                    else:
-                        self.notify.error('Bad localNum value: %s' % self.localNum)
+                    response['target'] = 0
                     messenger.send(self.battleEvent, [response])
                     self.fsm.request('AttackWait')
                 else:
-                    self.notify.error('Heal was chosen when number of toons is %s' % self.numToons)
+                    self.fsm.request('ChooseToon')
             elif self.__isCogChoiceNecessary():
                 self.notify.debug('choice needed')
                 self.fsm.request('ChooseCog')
@@ -425,14 +418,11 @@ class TownBattle(StateData.StateData):
         else:
             canTrap = 1
         if len(self.luredIndices) == self.numCogs:
-            canLure = 0
+            canLure = 1
             canTrap = 0
         else:
             canLure = 1
-        if self.numToons == 1:
-            canHeal = 0
-        else:
-            canHeal = 1
+        canHeal = 1
         return (canHeal, canTrap, canLure)
 
     def adjustCogsAndToons(self, cogs, luredIndices, trappedIndices, toons):

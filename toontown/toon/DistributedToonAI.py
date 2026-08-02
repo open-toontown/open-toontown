@@ -214,8 +214,19 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
         DistributedPlayerAI.DistributedPlayerAI.announceGenerate(self)
         DistributedSmoothNodeAI.DistributedSmoothNodeAI.announceGenerate(self)
         if self.isPlayerControlled():
+            # Grant global teleport access immediately on login.
+            # This sets both the teleport destinations and the "visited hoods"
+            # list so the ShtikerBook map can offer teleports everywhere.
+            try:
+                allHoods = list(ToontownGlobals.HoodsForTeleportAll)
+                self.b_setTeleportAccess(allHoods)
+                self.b_setHoodsVisited(allHoods)
+            except Exception:
+                self.notify.warning('Failed to grant global teleport access on login.')
+            self.grantFullGagUnlock()
             if self.WantOldGMNameBan:
                 self._checkOldGMName()
+            self.maybeMigrateLegacyTutorialQuestState()
             messenger.send('avatarEntered', [self])
             if __astron__:
                 self.sendUpdate('setDefaultShard', [self.air.districtId])
@@ -1672,10 +1683,6 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.air.writeServerEvent('suspicious', self.doId, "Toon tried to delete quest they don't have %s" % str(questDesc))
             self.notify.warning("%s.requestDeleteQuest(%s) -- Toon doesn't have that quest" % (self, str(questDesc)))
             return
-        if not Quests.isQuestJustForFun(questId, rewardId):
-            self.air.writeServerEvent('suspicious', self.doId, 'Toon tried to delete non-Just For Fun quest %s' % str(questDesc))
-            self.notify.warning('%s.requestDeleteQuest(%s) -- Tried to cancel non-Just For Fun quest' % (self, str(questDesc)))
-            return
         removedStatus = self.removeAllTracesOfQuest(questId, rewardId)
         if 0 in removedStatus:
             self.notify.warning('%s.requestDeleteQuest(%s) -- Failed to remove quest, status=%s' % (self, str(questDesc), removedStatus))
@@ -1979,6 +1986,49 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
     def getRewardTier(self):
         return self.rewardTier
 
+    def grantFullGagUnlock(self):
+        if not ToontownGlobals.WantUnlimitedGags:
+            return
+        self.b_setTrackAccess([1, 1, 1, 1, 1, 1, 1])
+        self.b_setMaxCarry(ToontownGlobals.MaxCarryLimit)
+        if self.experience:
+            self.experience.maxOutExp()
+            self.b_setExperience(self.getExperience())
+        if self.inventory:
+            self.inventory.zeroInv()
+            self.inventory.maxOutInv(0, 0)
+            self.d_setInventory(self.getInventory())
+
+    def maybeMigrateLegacyTutorialQuestState(self):
+        """Players who finished the tutorial under old rules may still have carry
+        limit 1 and/or legacy bootstrap quests (101/110). Clean that up on login."""
+        if not self.isPlayerControlled():
+            return
+        if not self.getTutorialAck():
+            return
+        limit = ToontownGlobals.MaxQuestCarryLimit
+        legacy = Quests.LegacyTutorialQuestIds
+        changed = 0
+        newQuests = [q for q in self.quests if q[0] not in legacy]
+        if len(newQuests) != len(self.quests):
+            self.notify.info(
+                'maybeMigrateLegacyTutorialQuestState: removed legacy tutorial quests for avatar %s'
+                % self.doId)
+            self.b_setQuests(newQuests)
+            changed = 1
+        newHist = [qid for qid in self.questHistory if qid not in legacy]
+        if len(newHist) != len(self.questHistory):
+            self.b_setQuestHistory(newHist)
+            changed = 1
+        if self.questCarryLimit != limit:
+            self.notify.info(
+                'maybeMigrateLegacyTutorialQuestState: questCarryLimit %s -> %s for avatar %s'
+                % (self.questCarryLimit, limit, self.doId))
+            self.b_setQuestCarryLimit(limit)
+            changed = 1
+        if changed:
+            self.air.writeServerEvent('legacyTutorialQuestMigrate', self.doId, '')
+
     def fixAvatar(self):
         anyChanged = 0
         qrc = QuestRewardCounter.QuestRewardCounter()
@@ -1990,42 +2040,43 @@ class DistributedToonAI(DistributedPlayerAI.DistributedPlayerAI, DistributedSmoo
             self.b_setHp(self.maxHp)
             anyChanged = 1
         inventoryChanged = 0
-        carry = self.maxCarry
-        for track in range(len(ToontownBattleGlobals.Tracks)):
-            if not self.hasTrackAccess(track):
-                for level in range(len(ToontownBattleGlobals.Levels[track])):
-                    count = self.inventory.inventory[track][level]
-                    if count != 0:
-                        self.notify.info('Changed avatar %d to throw away %d items in track %d level %d; no access to track.' % (self.doId,
-                         count,
-                         track,
-                         level))
-                        self.inventory.inventory[track][level] = 0
-                        inventoryChanged = 1
-
-            else:
-                curSkill = self.experience.getExp(track)
-                for level in range(len(ToontownBattleGlobals.Levels[track])):
-                    count = self.inventory.inventory[track][level]
-                    if curSkill < ToontownBattleGlobals.Levels[track][level]:
+        if not ToontownGlobals.WantUnlimitedGags:
+            carry = self.maxCarry
+            for track in range(len(ToontownBattleGlobals.Tracks)):
+                if not self.hasTrackAccess(track):
+                    for level in range(len(ToontownBattleGlobals.Levels[track])):
+                        count = self.inventory.inventory[track][level]
                         if count != 0:
-                            self.notify.info('Changed avatar %d to throw away %d items in track %d level %d; no access to level.' % (self.doId,
+                            self.notify.info('Changed avatar %d to throw away %d items in track %d level %d; no access to track.' % (self.doId,
                              count,
                              track,
                              level))
                             self.inventory.inventory[track][level] = 0
                             inventoryChanged = 1
-                    else:
-                        newCount = min(count, carry)
-                        newCount = min(count, self.inventory.getMax(track, level))
-                        if count != newCount:
-                            self.notify.info('Changed avatar %d to throw away %d items in track %d level %d; too many gags.' % (self.doId,
-                             count - newCount,
-                             track,
-                             level))
-                            self.inventory.inventory[track][level] = newCount
-                            inventoryChanged = 1
-                        carry -= newCount
+
+                else:
+                    curSkill = self.experience.getExp(track)
+                    for level in range(len(ToontownBattleGlobals.Levels[track])):
+                        count = self.inventory.inventory[track][level]
+                        if curSkill < ToontownBattleGlobals.Levels[track][level]:
+                            if count != 0:
+                                self.notify.info('Changed avatar %d to throw away %d items in track %d level %d; no access to level.' % (self.doId,
+                                 count,
+                                 track,
+                                 level))
+                                self.inventory.inventory[track][level] = 0
+                                inventoryChanged = 1
+                        else:
+                            newCount = min(count, carry)
+                            newCount = min(count, self.inventory.getMax(track, level))
+                            if count != newCount:
+                                self.notify.info('Changed avatar %d to throw away %d items in track %d level %d; too many gags.' % (self.doId,
+                                 count - newCount,
+                                 track,
+                                 level))
+                                self.inventory.inventory[track][level] = newCount
+                                inventoryChanged = 1
+                            carry -= newCount
 
         self.inventory.calcTotalProps()
         if inventoryChanged:

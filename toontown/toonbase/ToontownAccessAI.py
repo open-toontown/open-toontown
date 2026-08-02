@@ -33,7 +33,13 @@ def openToAll(zoneId, avatar):
         for zone in simbase.air.estateMgr.getEstateZones(ownerId):
             specialZones.append(zone)
 
-    if canonicalZoneId in allowedZones or avatar.isInEstate():
+    # If the avatar is actively in the tutorial flow (or hasn't acknowledged it yet),
+    # don't restrict access. This makes travel unrestricted for "stuck" existing toons too.
+    if not avatar.getTutorialAck():
+        allowed = True
+    elif hasattr(simbase.air, 'tutorialManager') and avatar.doId in simbase.air.tutorialManager.playerDict:
+        allowed = True
+    elif canonicalZoneId in allowedZones or avatar.isInEstate():
         allowed = True
     elif zoneId in specialZones:
         allowed = True

@@ -5,7 +5,7 @@ from toontown.building import DoorTypes
 
 class DistributedAnimBuildingAI(DistributedBuildingAI.DistributedBuildingAI):
 
-    def __init__(self, air, blockNumber, zoneId, trophyMgr):
+    def __init__(self, air, blockNumber=None, zoneId=None, trophyMgr=None):
         DistributedBuildingAI.DistributedBuildingAI.__init__(self, air, blockNumber, zoneId, trophyMgr)
 
     def createExteriorDoor(self):

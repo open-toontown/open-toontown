@@ -5,7 +5,7 @@ from .DistributedNPCToonBaseAI import *
 
 class DistributedNPCClerkAI(DistributedNPCToonBaseAI):
 
-    def __init__(self, air, npcId):
+    def __init__(self, air, npcId=None):
         DistributedNPCToonBaseAI.__init__(self, air, npcId)
         self.timedOut = 0
 

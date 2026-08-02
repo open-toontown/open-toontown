@@ -42,11 +42,10 @@ class ChatManager(DirectObject.DirectObject):
     def __init__(self, cr, localAvatar):
         self.cr = cr
         self.localAvatar = localAvatar
-        # Check settings for T-key only chat option
-        # When T-key only is enabled, we still want to accept the T key specifically
-        # backgroundFocus controls whether any key activates chat (False = T-key only)
-        tKeyOnlyEnabled = base.settings.getSetting('tKeyOnlyChat', False)
-        self.wantBackgroundFocus = not tKeyOnlyEnabled
+        # Chat activation policy:
+        # - Fully disable "press any key to chat"
+        # - Only the 't' key should bring up the typed chat interface
+        self.wantBackgroundFocus = False
         self.__scObscured = 0
         self.__normalObscured = 0
         self.openChatWarning = None
@@ -217,8 +216,10 @@ class ChatManager(DirectObject.DirectObject):
     def enterMainMenu(self):
         self.checkObscurred()
         if self.localAvatar.canChat() or self.cr.wantMagicWords:
-            if self.wantBackgroundFocus:
-                self.chatInputNormal.chatEntry['backgroundFocus'] = 1
+            # Ensure chat does NOT steal focus from gameplay on random keypresses.
+            # Typed chat is explicitly opened via the 't' hotkey.
+            self.chatInputNormal.chatEntry['backgroundFocus'] = 0
+            self.acceptOnce('t', self.fsm.request, ['normalChat'])
             self.acceptOnce('enterNormalChat', self.fsm.request, ['normalChat'])
 
     def checkObscurred(self):
@@ -230,9 +231,9 @@ class ChatManager(DirectObject.DirectObject):
     def exitMainMenu(self):
         self.scButton.hide()
         self.normalButton.hide()
+        self.ignore('t')
         self.ignore('enterNormalChat')
-        if self.wantBackgroundFocus:
-            self.chatInputNormal.chatEntry['backgroundFocus'] = 0
+        self.chatInputNormal.chatEntry['backgroundFocus'] = 0
 
     def whisperTo(self, avatarName, avatarId, playerId = None):
         self.fsm.request('whisper', [avatarName, avatarId, playerId])

@@ -10,7 +10,7 @@ class DistributedNPCTailorAI(DistributedNPCToonBaseAI):
     freeClothes = simbase.config.GetBool('free-clothes', 0)
     housingEnabled = simbase.config.GetBool('want-housing', 1)
 
-    def __init__(self, air, npcId):
+    def __init__(self, air, npcId=None):
         DistributedNPCToonBaseAI.__init__(self, air, npcId)
         self.timedOut = 0
         self.givesQuests = 0

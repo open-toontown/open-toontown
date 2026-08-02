@@ -80,13 +80,51 @@ class DistributedCashbotBossCrane(DistributedObject.DistributedObject, FSM.FSM):
         self.magnetSoundInterval = Parallel(SoundInterval(self.magnetOnSfx), Sequence(Wait(0.5), Func(base.playSfx, self.magnetLoopSfx, looping=1)))
         self.craneMoveSfx = base.loader.loadSfx('phase_9/audio/sfx/CHQ_FACT_elevator_up_down.ogg')
         self.fadeTrack = None
+        self._bossRequest = None
+        self._craneAnnounceCompleted = False
+        self.bossCogId = None
         return
 
-    def announceGenerate(self):
-        DistributedObject.DistributedObject.announceGenerate(self)
+    def _abortBossRequest(self):
+        req = getattr(self, '_bossRequest', None)
+        if not req:
+            return
+        try:
+            self.cr.relatedObjectMgr.abortRequest(req)
+        except Exception:
+            pass
+        self._bossRequest = None
+
+    def _bindBoss(self, boss):
+        self.boss = boss
+        self._completeCraneAnnounceIfReady()
+
+    def _bossResolved(self, objects):
+        self._bossRequest = None
+        boss = objects[0] if objects else None
+        if boss is None:
+            self.notify.warning('Crane %s: boss %s missing from repository' % (self.doId, self.bossCogId))
+            return
+        self._bindBoss(boss)
+
+    def _resolveBossReference(self):
+        if not self.bossCogId:
+            return
+        if self.bossCogId in self.cr.doId2do:
+            self._bindBoss(self.cr.doId2do[self.bossCogId])
+            return
+        self._abortBossRequest()
+        self._bossRequest = self.cr.relatedObjectMgr.requestObjects([self.bossCogId], allCallback=self._bossResolved)
+
+    def _completeCraneAnnounceIfReady(self):
+        if self._craneAnnounceCompleted:
+            return
+        if self.boss is None or self.index is None:
+            return
+        self._craneAnnounceCompleted = True
         self.name = 'crane-%s' % self.doId
         self.root.setName(self.name)
-        self.root.setPosHpr(*ToontownGlobals.CashbotBossCranePosHprs[self.index])
+        self.root.setPosHpr(*self._craneArenaPosHpr())
         self.rotateLinkName = self.uniqueName('rotateLink')
         self.snifferEvent = self.uniqueName('sniffer')
         self.triggerName = self.uniqueName('trigger')
@@ -130,15 +168,33 @@ class DistributedCashbotBossCrane(DistributedObject.DistributedObject, FSM.FSM):
         arm = self.boss.craneArm.copyTo(self.crane)
         self.boss.cranes[self.index] = self
 
+    def _craneArenaPosHpr(self):
+        if self.boss and getattr(self.boss, 'ttcCraneSandbox', False):
+            return ToontownGlobals.TTCCraneSandboxCranePosHprs[self.index]
+        return ToontownGlobals.CashbotBossCranePosHprs[self.index]
+
+    def announceGenerate(self):
+        DistributedObject.DistributedObject.announceGenerate(self)
+        self._completeCraneAnnounceIfReady()
+
     def disable(self):
+        self._abortBossRequest()
+        if self.boss is not None and self.index is not None:
+            try:
+                cranes = getattr(self.boss, 'cranes', None)
+                if cranes is not None and cranes.get(self.index) == self:
+                    del cranes[self.index]
+            except Exception:
+                pass
         DistributedObject.DistributedObject.disable(self)
-        del self.boss.cranes[self.index]
         self.cleanup()
 
     def cleanup(self):
         if self.state != 'Off':
             self.demand('Off')
+        self._abortBossRequest()
         self.boss = None
+        self._craneAnnounceCompleted = False
         return
 
     def accomodateToon(self, toon):
@@ -670,10 +726,11 @@ class DistributedCashbotBossCrane(DistributedObject.DistributedObject, FSM.FSM):
 
     def setBossCogId(self, bossCogId):
         self.bossCogId = bossCogId
-        self.boss = base.cr.doId2do[bossCogId]
+        self._resolveBossReference()
 
     def setIndex(self, index):
         self.index = index
+        self._completeCraneAnnounceIfReady()
 
     def setState(self, state, avId):
         if state == 'C':

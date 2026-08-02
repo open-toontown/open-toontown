@@ -11,18 +11,37 @@ from toontown.toon.ToonDNA import ToonDNA
 
 class DistributedToonInteriorAI(DistributedObjectAI.DistributedObjectAI):
 
-    def __init__(self, block, air, zoneId, building):
+    def __init__(self, *args):
+        """
+        Astron constructs AI-side distributed objects with only (air).
+        Game code also constructs this object manually as (block, air, zoneId, building).
+        Support both.
+        """
+        if len(args) == 1:
+            air = args[0]
+            block = 0
+            zoneId = 0
+            building = None
+        else:
+            block, air, zoneId, building = args[:4]
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.block = block
         self.zoneId = zoneId
         self.building = building
-        self.npcs = NPCToons.createNpcsInZone(air, zoneId)
+        self.npcs = NPCToons.createNpcsInZone(air, zoneId) if zoneId else []
         self.fsm = ClassicFSM.ClassicFSM('DistributedToonInteriorAI', [
          State.State('toon', self.enterToon, self.exitToon, [
           'beingTakenOver']),
          State.State('beingTakenOver', self.enterBeingTakenOver, self.exitBeingTakenOver, []),
          State.State('off', self.enterOff, self.exitOff, [])], 'toon', 'off')
         self.fsm.enterInitialState()
+
+    # DC required field initializer (see etc/toon.dc: DistributedToonInterior.setZoneIdAndBlock)
+    def setZoneIdAndBlock(self, zoneId, block):
+        self.zoneId = zoneId
+        self.block = block
+        if not getattr(self, 'npcs', None):
+            self.npcs = NPCToons.createNpcsInZone(self.air, zoneId) if zoneId else []
 
     def delete(self):
         self.ignoreAll()
@@ -52,7 +71,8 @@ class DistributedToonInteriorAI(DistributedObjectAI.DistributedObjectAI):
          self.fsm.getCurrentState().getName(), globalClockDelta.getRealNetworkTime()]
         return r
 
-    def setState(self, state):
+    def setState(self, state, timestamp=0):
+        # Timestamp is supplied by the DC field signature; AI doesn't need it.
         self.sendUpdate('setState', [state, globalClockDelta.getRealNetworkTime()])
         self.fsm.request(state)
 

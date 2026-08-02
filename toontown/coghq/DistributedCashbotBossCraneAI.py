@@ -15,7 +15,10 @@ class DistributedCashbotBossCraneAI(DistributedObjectAI.DistributedObjectAI, FSM
         cs = CollisionSphere(0, -6, 0, 6)
         cn.addSolid(cs)
         self.goonShield = NodePath(cn)
-        self.goonShield.setPosHpr(*ToontownGlobals.CashbotBossCranePosHprs[self.index])
+        if getattr(boss, 'craneSandbox', False):
+            self.goonShield.setPosHpr(*ToontownGlobals.TTCCraneSandboxCranePosHprs[self.index])
+        else:
+            self.goonShield.setPosHpr(*ToontownGlobals.CashbotBossCranePosHprs[self.index])
         self.avId = 0
         self.objectId = 0
 
@@ -30,7 +33,8 @@ class DistributedCashbotBossCraneAI(DistributedObjectAI.DistributedObjectAI, FSM
 
     def requestControl(self):
         avId = self.air.getAvatarIdFromSender()
-        if avId in self.boss.involvedToons and self.avId == 0:
+        allowed = getattr(self.boss, 'craneSandbox', False) or avId in self.boss.involvedToons
+        if allowed and self.avId == 0:
             craneId = self.__getCraneId(avId)
             if craneId == 0:
                 self.request('Controlled', avId)

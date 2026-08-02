@@ -3,6 +3,7 @@ from toontown.battle import BattlePlace
 from direct.fsm import ClassicFSM, State
 from direct.fsm import State
 from toontown.toonbase import ToontownGlobals
+from toontown.hood import OutdoorLighting
 from toontown.hood import ZoneUtil
 from panda3d.core import *
 from panda3d.otp import *
@@ -68,6 +69,7 @@ class CogHQExterior(BattlePlace.BattlePlace):
         self.fsm.enterInitialState()
         base.playMusic(self.loader.music, looping=1, volume=0.8)
         self.loader.geom.reparentTo(render)
+        OutdoorLighting.begin(self.loader.geom, 'cog')
         self.nodeList = [self.loader.geom]
         self._telemLimiter = TLGatherAllAvs('CogHQExterior', RotationLimitToH)
         self.accept('doorDoneEvent', self.handleDoorDoneEvent)
@@ -88,6 +90,7 @@ class CogHQExterior(BattlePlace.BattlePlace):
         del self.tunnelOriginList
         if self.loader.geom:
             self.loader.geom.reparentTo(hidden)
+            OutdoorLighting.end(self.loader.geom)
         self.ignoreAll()
         BattlePlace.BattlePlace.exit(self)
 

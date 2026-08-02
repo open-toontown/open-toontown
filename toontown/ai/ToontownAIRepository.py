@@ -236,11 +236,13 @@ class ToontownAIRepository(ToontownInternalRepository):
         # Bossbot HQ doesn't use DNA, so we skip over that.
         if zoneId != ToontownGlobals.BossbotHQ:
             self.dnaStoreMap[zoneId] = DNAStorage()
-            self.dnaDataMap[zoneId] = loadDNAFileAI(self.dnaStoreMap[zoneId], self.genDNAFileName(zoneId))
+            hoodDna = self.lookupDNAFileName(self.genDNAFileName(zoneId)) or self.genDNAFileName(zoneId)
+            self.dnaDataMap[zoneId] = loadDNAFileAI(self.dnaStoreMap[zoneId], hoodDna)
             if zoneId in ToontownGlobals.HoodHierarchy:
                 for streetId in ToontownGlobals.HoodHierarchy[zoneId]:
                     self.dnaStoreMap[streetId] = DNAStorage()
-                    self.dnaDataMap[streetId] = loadDNAFileAI(self.dnaStoreMap[streetId], self.genDNAFileName(streetId))
+                    streetDna = self.lookupDNAFileName(self.genDNAFileName(streetId)) or self.genDNAFileName(streetId)
+                    self.dnaDataMap[streetId] = loadDNAFileAI(self.dnaStoreMap[streetId], streetDna)
 
         hood = hoodConstructor(self, zoneId)
         hood.startup()
@@ -357,6 +359,14 @@ class ToontownAIRepository(ToontownInternalRepository):
         return 'phase_%s/dna/%s_%s.dna' % (phase, hood, canonicalZoneId)
 
     def lookupDNAFileName(self, dnaFileName):
+        # In this project, DNA lives under resources/phase_*/dna, and callers
+        # typically pass "phase_X/dna/foo.dna". Resolve that relative to resources/.
+        rel = dnaFileName.replace('\\', '/')
+        candidate = os.path.join('resources', rel)
+        if os.path.exists(candidate):
+            return candidate
+
+        # Fallback: older callsites might pass just the basename.
         searchPath = DSearchPath()
         searchPath.appendDirectory(Filename('resources/phase_3.5/dna'))
         searchPath.appendDirectory(Filename('resources/phase_4/dna'))
@@ -369,13 +379,12 @@ class ToontownAIRepository(ToontownInternalRepository):
         searchPath.appendDirectory(Filename('resources/phase_11/dna'))
         searchPath.appendDirectory(Filename('resources/phase_12/dna'))
         searchPath.appendDirectory(Filename('resources/phase_13/dna'))
-        filename = Filename(dnaFileName)
+        filename = Filename(os.path.basename(rel))
         found = vfs.resolveFilename(filename, searchPath)
         if not found:
-            self.notify.warning('lookupDNAFileName - %s not found on:' % dnaFileName)
-            print(searchPath)
-        else:
-            return filename.getFullpath()
+            self.notify.warning('lookupDNAFileName - %s not found.' % dnaFileName)
+            return None
+        return filename.getFullpath()
 
     def loadDNAFileAI(self, dnaStore, dnaFileName):
         return loadDNAFileAI(dnaStore, dnaFileName)

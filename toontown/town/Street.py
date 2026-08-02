@@ -8,13 +8,63 @@ from direct.directnotify import DirectNotifyGlobal
 from toontown.battle import BattlePlace
 from direct.fsm import ClassicFSM, State
 from direct.task import Task
+import time
+import traceback
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs
 from toontown.building import Elevator
+from toontown.hood import OutdoorLighting
 from toontown.hood import ZoneUtil
 from toontown.toonbase import ToontownGlobals
 from toontown.toon.Toon import teleportDebug
 from direct.interval.IntervalGlobal import *
 visualizeZones = ConfigVariableBool('visualize-zones', 0).value
+wholeStreetLoading = ConfigVariableBool('street-load-whole', 1).value
+streetWholeStaggerProps = ConfigVariableBool('street-load-whole-stagger-props', 1)
+streetWholeVisgroupsPerFrame = ConfigVariableInt('street-load-whole-visgroups-per-frame', 2)
+streetPerfDebug = ConfigVariableBool('street-debug-perf', 0)
+streetPerfDebugIntervalFrames = ConfigVariableInt('street-debug-perf-interval-frames', 60)
+streetPerfDebugThresholdMs = ConfigVariableInt('street-debug-perf-threshold-ms', 8)
+streetPerfDebugTrace = ConfigVariableBool('street-debug-perf-trace', 0)
+streetPerfDebugTopN = ConfigVariableInt('street-debug-perf-topn', 8)
+
+
+class _PerfAgg(object):
+
+    def __init__(self, notify, prefix):
+        self.notify = notify
+        self.prefix = prefix
+        self.frame = 0
+        self._lastFlushFrame = 0
+        self._stats = {}
+
+    def add(self, name, dt):
+        s = self._stats.get(name)
+        if s is None:
+            self._stats[name] = [dt, dt, dt, 1]
+        else:
+            s[0] += dt
+            if dt < s[1]:
+                s[1] = dt
+            if dt > s[2]:
+                s[2] = dt
+            s[3] += 1
+
+    def maybeFlush(self, intervalFrames, topN):
+        if intervalFrames <= 0:
+            return
+        if (self.frame - self._lastFlushFrame) < intervalFrames:
+            return
+        self._lastFlushFrame = self.frame
+        if not self._stats:
+            return
+        items = sorted(self._stats.items(), key=lambda kv: kv[1][0], reverse=True)
+        lines = []
+        for name, s in items[:max(1, topN)]:
+            total, mn, mx, cnt = s
+            avg = total / float(max(1, cnt))
+            lines.append('%s: total=%.2fms avg=%.2fms min=%.2fms max=%.2fms n=%d' % (name, total * 1000.0, avg * 1000.0, mn * 1000.0, mx * 1000.0, cnt))
+        self.notify.info('%s perf (last %d frames):\n  %s' % (self.prefix, intervalFrames, '\n  '.join(lines)))
+        self._stats.clear()
 
 class Street(BattlePlace.BattlePlace):
     notify = DirectNotifyGlobal.directNotify.newCategory('Street')
@@ -91,13 +141,18 @@ class Street(BattlePlace.BattlePlace):
         self.tunnelOriginList = []
         self.elevatorDoneEvent = 'elevatorDone'
         self.halloweenLights = []
+        self._wholeStreetPropTaskName = None
+        self._perfAgg = None
 
     def enter(self, requestStatus, visibilityFlag = 1, arrowsOn = 1):
         teleportDebug(requestStatus, 'Street.enter(%s)' % (requestStatus,))
         self._ttfToken = None
+        self._spawnStreetZoneId = requestStatus.get('zoneId') if wholeStreetLoading else None
         self.fsm.enterInitialState()
         base.playMusic(self.loader.music, looping=1, volume=0.8)
         self.loader.geom.reparentTo(render)
+        _hoodId = getattr(getattr(self.loader, 'hood', None), 'id', None)
+        OutdoorLighting.begin(self.loader.geom, 'playground', hoodId=_hoodId)
         if visibilityFlag:
             self.visibilityOn()
         base.localAvatar.setGeom(self.loader.geom)
@@ -134,12 +189,15 @@ class Street(BattlePlace.BattlePlace):
         self.fsm.request(requestStatus['how'], [requestStatus])
         if base.cr.wantStreetSign:
             self.replaceStreetSignTextures()
+        if hasattr(self, '_spawnStreetZoneId'):
+            del self._spawnStreetZoneId
         return
 
     def exit(self, visibilityFlag = 1):
         if visibilityFlag:
             self.visibilityOff()
         self.loader.geom.reparentTo(hidden)
+        OutdoorLighting.end(self.loader.geom)
         self._telemLimiter.destroy()
         del self._telemLimiter
 
@@ -159,6 +217,8 @@ class Street(BattlePlace.BattlePlace):
         self.parentFSM.getStateNamed('street').addChild(self.fsm)
 
     def unload(self):
+        self._cancelWholeStreetPropTask()
+        self._perfAgg = None
         self.parentFSM.getStateNamed('street').removeChild(self.fsm)
         del self.parentFSM
         del self.fsm
@@ -310,15 +370,178 @@ class Street(BattlePlace.BattlePlace):
         for i in self.loader.nodeList:
             i.unstash()
 
+    def _refreshStreetHolidayLights(self):
+        geom = base.cr.playGame.getPlace().loader.geom
+        self.halloweenLights = geom.findAllMatches('**/*light*')
+        self.halloweenLights += geom.findAllMatches('**/*lamp*')
+        self.halloweenLights += geom.findAllMatches('**/prop_snow_tree*')
+        for light in self.halloweenLights:
+            light.setColorScaleOff(1)
+
+    def _cancelWholeStreetPropTask(self):
+        if self._wholeStreetPropTaskName:
+            taskMgr.remove(self._wholeStreetPropTaskName)
+            self._wholeStreetPropTaskName = None
+        if hasattr(self, '_wholeStreetPropNodes'):
+            del self._wholeStreetPropNodes
+        if hasattr(self, '_wholeStreetPropIndex'):
+            del self._wholeStreetPropIndex
+
+    def _orderedWholeStreetVisgroups(self):
+        nodes = list(self.loader.nodeList)
+        zid = getattr(self, '_spawnStreetZoneId', None)
+        if zid is not None:
+            zn = self.loader.zoneDict.get(zid)
+            if zn is not None:
+                try:
+                    nodes.remove(zn)
+                except ValueError:
+                    pass
+                else:
+                    nodes.insert(0, zn)
+        return nodes
+
+    def _wholeStreetPropStep(self, task):
+        if not getattr(self, 'loader', None) or not hasattr(self, '_wholeStreetPropNodes'):
+            self._wholeStreetPropTaskName = None
+            return task.done
+        perfOn = streetPerfDebug.getValue()
+        threshold = max(0, streetPerfDebugThresholdMs.getValue()) / 1000.0
+        topN = streetPerfDebugTopN.getValue()
+        if perfOn and self._perfAgg is None:
+            self._perfAgg = _PerfAgg(self.notify, 'Street(%s)' % (getattr(self, 'zoneId', '?'),))
+        t0 = time.perf_counter() if perfOn else None
+        nodes = self._wholeStreetPropNodes
+        per = max(1, streetWholeVisgroupsPerFrame.getValue())
+        i = self._wholeStreetPropIndex
+        end = min(i + per, len(nodes))
+        for j in range(i, end):
+            if perfOn:
+                t1 = time.perf_counter()
+                self.loader.enterAnimatedProps(nodes[j])
+                dt = time.perf_counter() - t1
+                self._perfAgg.add('enterAnimatedProps', dt)
+                if dt >= threshold:
+                    self.notify.warning('street perf hitch: enterAnimatedProps visgroup=%s dt=%.2fms' % (nodes[j].getName(), dt * 1000.0))
+                    if streetPerfDebugTrace.getValue():
+                        self.notify.warning('street perf trace (enterAnimatedProps):\n%s' % ''.join(traceback.format_stack(limit=20)))
+            else:
+                self.loader.enterAnimatedProps(nodes[j])
+        if end >= len(nodes):
+            self._wholeStreetPropTaskName = None
+            del self._wholeStreetPropNodes
+            del self._wholeStreetPropIndex
+            return task.done
+        self._wholeStreetPropIndex = end
+        if perfOn:
+            self._perfAgg.frame += 1
+            dt = time.perf_counter() - t0
+            self._perfAgg.add('_wholeStreetPropStep', dt)
+            if dt >= threshold:
+                self.notify.warning('street perf hitch: _wholeStreetPropStep dt=%.2fms per=%d (%d->%d of %d)' % (dt * 1000.0, per, i, end, len(nodes)))
+                if streetPerfDebugTrace.getValue():
+                    self.notify.warning('street perf trace (_wholeStreetPropStep):\n%s' % ''.join(traceback.format_stack(limit=20)))
+            self._perfAgg.maybeFlush(streetPerfDebugIntervalFrames.getValue(), topN)
+        return task.cont
+
     def visibilityOn(self):
-        self.hideAllVisibles()
-        self.accept('on-floor', self.enterZone)
+        if wholeStreetLoading:
+            self._cancelWholeStreetPropTask()
+            perfOn = streetPerfDebug.getValue()
+            threshold = max(0, streetPerfDebugThresholdMs.getValue()) / 1000.0
+            topN = streetPerfDebugTopN.getValue()
+            if perfOn and self._perfAgg is None:
+                self._perfAgg = _PerfAgg(self.notify, 'Street(%s)' % (getattr(self, 'zoneId', '?'),))
+            if perfOn:
+                t0 = time.perf_counter()
+                self.showAllVisibles()
+                dt = time.perf_counter() - t0
+                self._perfAgg.add('showAllVisibles', dt)
+                if dt >= threshold:
+                    self.notify.warning('street perf hitch: showAllVisibles dt=%.2fms nodeList=%d' % (dt * 1000.0, len(getattr(self.loader, 'nodeList', ()) or ())))  # noqa: E501
+                    if streetPerfDebugTrace.getValue():
+                        self.notify.warning('street perf trace (showAllVisibles):\n%s' % ''.join(traceback.format_stack(limit=20)))
+                self._perfAgg.maybeFlush(streetPerfDebugIntervalFrames.getValue(), topN)
+            else:
+                self.showAllVisibles()
+            if streetWholeStaggerProps.getValue() and self.loader.nodeList:
+                self._wholeStreetPropTaskName = uniqueName('wholeStreetProps')
+                self._wholeStreetPropNodes = self._orderedWholeStreetVisgroups()
+                self._wholeStreetPropIndex = 0
+                taskMgr.add(self._wholeStreetPropStep, self._wholeStreetPropTaskName)
+            else:
+                for node in self._orderedWholeStreetVisgroups():
+                    if perfOn:
+                        t1 = time.perf_counter()
+                        self.loader.enterAnimatedProps(node)
+                        dt = time.perf_counter() - t1
+                        self._perfAgg.add('enterAnimatedProps', dt)
+                        if dt >= threshold:
+                            self.notify.warning('street perf hitch: enterAnimatedProps visgroup=%s dt=%.2fms' % (node.getName(), dt * 1000.0))
+                            if streetPerfDebugTrace.getValue():
+                                self.notify.warning('street perf trace (enterAnimatedProps):\n%s' % ''.join(traceback.format_stack(limit=20)))
+                    else:
+                        self.loader.enterAnimatedProps(node)
+                if perfOn:
+                    self._perfAgg.maybeFlush(streetPerfDebugIntervalFrames.getValue(), topN)
+            # Still track the local avatar's zone transitions for gameplay logic,
+            # but keep visibility/network interest for the whole street.
+            self.accept('on-floor', self.enterZone)
+        else:
+            self.hideAllVisibles()
+            self.accept('on-floor', self.enterZone)
 
     def visibilityOff(self):
+        self._cancelWholeStreetPropTask()
         self.ignore('on-floor')
         self.showAllVisibles()
 
     def doEnterZone(self, newZoneId):
+        if wholeStreetLoading:
+            perfOn = streetPerfDebug.getValue()
+            threshold = max(0, streetPerfDebugThresholdMs.getValue()) / 1000.0
+            topN = streetPerfDebugTopN.getValue()
+            if perfOn and self._perfAgg is None:
+                self._perfAgg = _PerfAgg(self.notify, 'Street(%s)' % (getattr(self, 'zoneId', '?'),))
+            if newZoneId != self.zoneId:
+                if newZoneId is not None:
+                    if perfOn:
+                        t0 = time.perf_counter()
+                    if not __astron__:
+                        base.cr.sendSetZoneMsg(newZoneId)
+                    else:
+                        # Request interest in all visgroups for this street, not just the adjacency list.
+                        tSet0 = time.perf_counter() if perfOn else None
+                        allZones = set(self.loader.zoneDict.keys())
+                        allZones.add(ZoneUtil.getBranchZone(newZoneId))
+                        allZones.add(newZoneId)
+                        if perfOn:
+                            dtSet = time.perf_counter() - tSet0
+                            self._perfAgg.add('buildAllZonesInterestSet', dtSet)
+                            if dtSet >= threshold:
+                                self.notify.warning('street perf hitch: buildAllZonesInterestSet dt=%.2fms size=%d' % (dtSet * 1000.0, len(allZones)))
+                        base.cr.sendSetZoneMsg(newZoneId, sorted(allZones))
+                    if perfOn:
+                        dt = time.perf_counter() - t0
+                        self._perfAgg.add('sendSetZoneMsg', dt)
+                        if dt >= threshold:
+                            self.notify.warning('street perf hitch: sendSetZoneMsg newZoneId=%s dt=%.2fms (whole street interests=%d)' % (newZoneId, dt * 1000.0, len(getattr(self.loader, "zoneDict", {}) or {})))  # noqa: E501
+                            if streetPerfDebugTrace.getValue():
+                                self.notify.warning('street perf trace (sendSetZoneMsg):\n%s' % ''.join(traceback.format_stack(limit=20)))
+                    self.notify.debug('Entering Zone %d' % newZoneId)
+                self.zoneId = newZoneId
+                if perfOn:
+                    t1 = time.perf_counter()
+                    self._refreshStreetHolidayLights()
+                    dt = time.perf_counter() - t1
+                    self._perfAgg.add('_refreshStreetHolidayLights', dt)
+                    if dt >= threshold:
+                        self.notify.warning('street perf hitch: _refreshStreetHolidayLights dt=%.2fms' % (dt * 1000.0))
+                    self._perfAgg.maybeFlush(streetPerfDebugIntervalFrames.getValue(), topN)
+                else:
+                    self._refreshStreetHolidayLights()
+            return
+
         if self.zoneId != None:
             for i in self.loader.nodeDict[self.zoneId]:
                 if newZoneId:
@@ -360,12 +583,7 @@ class Street(BattlePlace.BattlePlace):
                     base.cr.sendSetZoneMsg(newZoneId, visZones)
                 self.notify.debug('Entering Zone %d' % newZoneId)
             self.zoneId = newZoneId
-        geom = base.cr.playGame.getPlace().loader.geom
-        self.halloweenLights = geom.findAllMatches('**/*light*')
-        self.halloweenLights += geom.findAllMatches('**/*lamp*')
-        self.halloweenLights += geom.findAllMatches('**/prop_snow_tree*')
-        for light in self.halloweenLights:
-            light.setColorScaleOff(1)
+        self._refreshStreetHolidayLights()
 
         return
 

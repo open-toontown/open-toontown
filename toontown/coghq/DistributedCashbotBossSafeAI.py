@@ -16,7 +16,10 @@ class DistributedCashbotBossSafeAI(DistributedCashbotBossObjectAI.DistributedCas
         self.attachNewNode(cn)
 
     def resetToInitialPosition(self):
-        posHpr = ToontownGlobals.CashbotBossSafePosHprs[self.index]
+        if getattr(self.boss, 'craneSandbox', False):
+            posHpr = ToontownGlobals.TTCCraneSandboxSafePosHprs[self.index]
+        else:
+            posHpr = ToontownGlobals.CashbotBossSafePosHprs[self.index]
         self.setPosHpr(*posHpr)
 
     def getIndex(self):
@@ -25,6 +28,8 @@ class DistributedCashbotBossSafeAI(DistributedCashbotBossObjectAI.DistributedCas
     def hitBoss(self, impact):
         avId = self.air.getAvatarIdFromSender()
         self.validate(avId, impact <= 1.0, 'invalid hitBoss impact %s' % impact)
+        if getattr(self.boss, 'craneSandbox', False):
+            return
         if avId not in self.boss.involvedToons:
             return
         if self.state != 'Dropped' and self.state != 'Grabbed':
@@ -65,7 +70,19 @@ class DistributedCashbotBossSafeAI(DistributedCashbotBossObjectAI.DistributedCas
 
     def exitInitial(self):
         if self.index == 0:
-            self.unstash()
+            # Defensive: during AI cleanup / delete, this NodePath may already be
+            # empty or otherwise invalid. NodePath.unstash() can assert in C++.
+            try:
+                if hasattr(self, 'isEmpty') and self.isEmpty():
+                    return
+                if hasattr(self, 'isSingleton') and self.isSingleton():
+                    return
+            except Exception:
+                return
+            try:
+                self.unstash()
+            except Exception:
+                return
 
     def enterFree(self):
         DistributedCashbotBossObjectAI.DistributedCashbotBossObjectAI.enterFree(self)

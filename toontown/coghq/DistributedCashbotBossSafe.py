@@ -60,7 +60,10 @@ class DistributedCashbotBossSafe(DistributedCashbotBossObject.DistributedCashbot
         goon.b_destroyGoon()
 
     def resetToInitialPosition(self):
-        posHpr = ToontownGlobals.CashbotBossSafePosHprs[self.index]
+        if self.boss and getattr(self.boss, 'ttcCraneSandbox', False):
+            posHpr = ToontownGlobals.TTCCraneSandboxSafePosHprs[self.index]
+        else:
+            posHpr = ToontownGlobals.CashbotBossSafePosHprs[self.index]
         self.setPosHpr(*posHpr)
         self.physicsObject.setVelocity(0, 0, 0)
 

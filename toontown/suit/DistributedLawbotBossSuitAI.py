@@ -11,7 +11,7 @@ from direct.fsm import State
 class DistributedLawbotBossSuitAI(DistributedSuitBaseAI.DistributedSuitBaseAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedLawbotBossSuitAI')
 
-    def __init__(self, air, suitPlanner):
+    def __init__(self, air, suitPlanner=None):
         DistributedSuitBaseAI.DistributedSuitBaseAI.__init__(self, air, suitPlanner)
         self.stunned = False
         self.timeToRelease = 3.15

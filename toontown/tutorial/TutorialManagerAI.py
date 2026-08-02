@@ -10,6 +10,7 @@ from toontown.toonbase import ToontownBattleGlobals
 from toontown.toon import NPCToons
 from toontown.ai import BlackCatHolidayMgrAI
 from toontown.ai import DistributedBlackCatMgrAI
+from toontown.toonbase import ToontownGlobals
 
 class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
     notify = DirectNotifyGlobal.directNotify.newCategory("TutorialManagerAI")
@@ -81,11 +82,11 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
         # Clear out the avatar's quests, hp, inventory, and everything else in case
         # he made it half way through the tutorial last time.
         if av:
-            # No quests
+            # No quests; full carry limit so after the tutorial they only need HQ fills
             av.b_setQuests([])
             av.b_setQuestHistory([])
             av.b_setRewardHistory(0, [])
-            av.b_setQuestCarryLimit(1)
+            av.b_setQuestCarryLimit(ToontownGlobals.MaxQuestCarryLimit)
             # Starting HP
             av.b_setMaxHp(69)
             av.b_setHp(69)
@@ -111,6 +112,9 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
         if av:
             self.air.writeServerEvent('finishedTutorial', avId, '')
             av.b_setTutorialAck(1)
+            av.b_setQuests([])
+            av.b_setQuestHistory([])
+            av.b_setQuestCarryLimit(ToontownGlobals.MaxQuestCarryLimit)
             self.__destroyTutorial(avId)
         else:
             self.notify.warning(
@@ -205,6 +209,10 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
             # Acknowlege that the player has seen a tutorial
             self.air.writeServerEvent('finishedTutorial', avId, '')
             av.b_setTutorialAck(1)
+            av.b_setQuests([])
+            av.b_setQuestHistory([])
+            av.b_setRewardHistory(0, [])
+            av.b_setQuestCarryLimit(ToontownGlobals.MaxQuestCarryLimit)
 
             self.sendUpdateToAvatarId(avId, "skipTutorialResponse", [1])
         else:
@@ -231,27 +239,10 @@ class TutorialManagerAI(DistributedObjectAI.DistributedObjectAI):
             # Acknowlege that the player has seen a tutorial
             self.air.writeServerEvent('skippedTutorial', avId, '')
             av.b_setTutorialAck(1)
-            # these values were taken by running a real tutorial            
-            self.air.questManager.assignQuest(avId,
-                                              20000,
-                                              101,
-                                              100,
-                                              1000,
-                                              1
-                                              )
-            
-            self.air.questManager.completeAllQuestsMagically(av)
-            av.removeQuest(101)
-            self.air.questManager.assignQuest(avId,
-                                              1000,
-                                              110,
-                                              2,
-                                              1000,
-                                              0
-                                              )
-            self.air.questManager.completeAllQuestsMagically(av)
-
-            # do whatever needs to be done to make his quest state good
+            av.b_setQuests([])
+            av.b_setQuestHistory([])
+            av.b_setRewardHistory(0, [])
+            av.b_setQuestCarryLimit(ToontownGlobals.MaxQuestCarryLimit)
         elif av:
             self.notify.debug("%s requestedSkipTutorial, but tutorialAck is 1")
         else:

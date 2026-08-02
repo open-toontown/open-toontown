@@ -7,7 +7,7 @@ from direct.fsm import State
 
 class DistributedAnimatedPropAI(DistributedObjectAI.DistributedObjectAI):
 
-    def __init__(self, air, propId):
+    def __init__(self, air):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.fsm = ClassicFSM.ClassicFSM('DistributedAnimatedPropAI', [
          State.State('off', self.enterOff, self.exitOff, [
@@ -17,8 +17,11 @@ class DistributedAnimatedPropAI(DistributedObjectAI.DistributedObjectAI):
          State.State('playing', self.enterPlaying, self.exitPlaying, [
           'attract'])], 'off', 'off')
         self.fsm.enterInitialState()
-        self.propId = propId
+        self.propId = 0
         self.avatarId = 0
+
+    def setPropId(self, propId):
+        self.propId = propId
 
     def delete(self):
         self.fsm.requestFinalState()

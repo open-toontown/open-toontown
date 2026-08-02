@@ -3,6 +3,9 @@ import time
 import random
 import gc
 import os
+import faulthandler
+import threading
+import traceback
 from panda3d.core import *
 from direct.gui.DirectGui import *
 from otp.distributed.OtpDoGlobals import *
@@ -50,11 +53,46 @@ class OTPClientRepository(ClientRepositoryBase):
      'Rejected'), start=0)
 
     def __init__(self, serverVersion, launcher = None, playGame = None):
-        ClientRepositoryBase.__init__(self)
+        # Force non-threaded net: threaded message handling can touch Panda
+        # objects from a non-main thread on some Win32 builds, causing C++
+        # assertions (eg. threadWin32Impl) and apparent "freezes" with no
+        # Python traceback.
+        ClientRepositoryBase.__init__(self, threadedNet=False)
         self.handler = None
         self.launcher = launcher
         base.launcher = launcher
         self.__currentAvId = 0
+
+        # Hang diagnostics: enable Python-level stack dumping even if the
+        # engine wedges (eg. C++ assertion loops). This writes to stderr,
+        # which is captured by the client log.
+        try:
+            # By default, faulthandler writes to stderr, which is not always
+            # captured by the game's notify log. When shard-debug is enabled,
+            # mirror dumps into a dedicated .log file under ./logs/.
+            self._faultLog = None
+            if ConfigVariableBool('shard-debug', 0).value:
+                try:
+                    os.makedirs('logs', exist_ok=True)
+                    fn = time.strftime('logs/freeze-dump-%y%m%d_%H%M%S.log')
+                    self._faultLog = open(fn, 'w', buffering=1, encoding='utf-8')
+                    faulthandler.enable(file=self._faultLog, all_threads=True)
+                    self.notify.info(f'[ShardDbg] faulthandler enabled -> {fn}')
+                except Exception:
+                    faulthandler.enable()
+            else:
+                faulthandler.enable()
+        except Exception:
+            pass
+
+        self._shardDbg = {
+            'enabled': ConfigVariableBool('shard-debug', 0).value,
+            'lastStep': None,
+            'lastT': 0.0,
+        }
+        if self._shardDbg['enabled']:
+            taskMgr.doMethodLater(5.0, self._shardDebugWatchdog, 'shardDebugWatchdog')
+            self._startPythonHangWatchdog()
         self.productName = ConfigVariableString('product-name', 'DisneyOnline-US').value
         self.createAvatarClass = None
         self.systemMessageSfx = None
@@ -501,6 +539,8 @@ class OTPClientRepository(ClientRepositoryBase):
         self.accept(self.loginDoneEvent, self.__handleLoginDone)
         self.loginScreen.load()
         self.loginScreen.enter()
+        if getattr(self, 'loginInterface', None) and hasattr(self.loginInterface, 'pollPendingLoginResponse'):
+            self.loginInterface.pollPendingLoginResponse()
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def __handleLoginDone(self, doneStatus):
@@ -1422,10 +1462,16 @@ class OTPClientRepository(ClientRepositoryBase):
             shardId = self.distributedDistrict.doId
         else:
             self.distributedDistrict = district
+        self._dbgShardProgress('enterWaitOnEnterResponses.begin',
+                               shardId=shardId, hoodId=hoodId, zoneId=zoneId, avId=avId)
         self.notify.info('Entering shard %s' % shardId)
         localAvatar.setLocation(shardId, zoneId)
         base.localAvatar.defaultShard = shardId
+        self._dbgShardProgress('enterWaitOnEnterResponses.afterSetLocation',
+                               shardId=shardId, zoneId=zoneId)
         self.waitForDatabaseTimeout(requestName='WaitOnEnterResponses')
+        self._dbgShardProgress('enterWaitOnEnterResponses.afterWaitForDatabaseTimeout',
+                               requestName='WaitOnEnterResponses')
         self.handleSetShardComplete()
         return
 
@@ -1449,15 +1495,51 @@ class OTPClientRepository(ClientRepositoryBase):
         hoodId = self.handlerArgs['hoodId']
         zoneId = self.handlerArgs['zoneId']
         avId = self.handlerArgs['avId']
-        self.uberZoneInterest = self.addInterest(base.localAvatar.defaultShard, OTPGlobals.UberZone, 'uberZone', 'uberZoneInterestComplete')
+        self._dbgShardProgress('handleSetShardComplete.begin',
+                               hoodId=hoodId, zoneId=zoneId, avId=avId,
+                               shardId=getattr(base.localAvatar, 'defaultShard', None))
+
+        # If we wedge hard (taskMgr stops), our Task-based watchdog won't run.
+        # faulthandler.dump_traceback_later uses a watchdog thread and can still
+        # dump Python stacks into the log.
+        try:
+            if getattr(self, '_shardDbg', None) and self._shardDbg.get('enabled'):
+                faulthandler.cancel_dump_traceback_later()
+                faulthandler.dump_traceback_later(20.0, repeat=True)
+                self.notify.info('[ShardDbg] armed faulthandler.dump_traceback_later(20s, repeat=True) (writes to freeze-dump log if available)')
+        except Exception:
+            pass
+
+        # Astron/OTP "management"/UberZone objects live under the game's
+        # globals parent (eg. OTP_DO_ID_TOONTOWN) in zone OTP_ZONE_ID_MANAGEMENT (2).
+        # Opening an interest on the district channel will never complete on this stack.
+        self.uberZoneInterest = self.addInterest(self.GameGlobalsId, OTP_ZONE_ID_MANAGEMENT, 'uberZone', 'uberZoneInterestComplete')
+        self._dbgShardProgress('handleSetShardComplete.afterAddInterest',
+                               interest=getattr(self, 'uberZoneInterest', None))
         self.acceptOnce('uberZoneInterestComplete', self.uberZoneInterestComplete)
+        self._dbgShardProgress('handleSetShardComplete.afterAcceptOnce',
+                               event='uberZoneInterestComplete')
+        # Safety net: if the server never sends DONE_INTEREST for the UberZone
+        # interest, the client can get stuck at "Entering shard" forever.
+        # This keeps the client moving and provides a clear warning in logs.
+        timeout = ConfigVariableDouble('uberzone-interest-timeout', 15.0).value
+        taskMgr.doMethodLater(timeout, self._uberZoneInterestTimeout, 'uberZoneInterestTimeout')
         self.waitForDatabaseTimeout(20, requestName='waitingForUberZone')
+        self._dbgShardProgress('handleSetShardComplete.afterWaitForDatabaseTimeout',
+                               requestName='waitingForUberZone')
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def uberZoneInterestComplete(self):
+        self._dbgShardProgress('uberZoneInterestComplete.begin')
+        taskMgr.remove('uberZoneInterestTimeout')
+        try:
+            faulthandler.cancel_dump_traceback_later()
+        except Exception:
+            pass
         self.__gotTimeSync = 0
         self.cleanupWaitingForDatabase()
         if self.timeManager == None:
+            self._dbgShardProgress('uberZoneInterestComplete.noTimeManager')
             self.notify.info('TimeManager is not present.')
             DistributedSmoothNode.globalActivateSmoothing(0, 0)
             self.gotTimeSync()
@@ -1468,6 +1550,7 @@ class OTPClientRepository(ClientRepositoryBase):
             pyc = HashVal()
             if not __dev__:
                 self.hashFiles(pyc)
+            self._dbgShardProgress('uberZoneInterestComplete.beforeTimeManagerSync')
             self.timeManager.d_setSignature(self.userSignature, h.asBin(), pyc.asBin())
             self.timeManager.sendCpuInfo()
             if self.timeManager.synchronize('startup'):
@@ -1477,6 +1560,131 @@ class OTPClientRepository(ClientRepositoryBase):
                 self.notify.info('No sync from TimeManager.')
                 self.gotTimeSync()
         return
+
+    def _uberZoneInterestTimeout(self, task):
+        # If the interest complete event never arrives, force the callback
+        # so we can at least proceed and capture the next failure point.
+        try:
+            self.notify.warning('[ShardDbg] UberZone interest timed out; forcing uberZoneInterestComplete')
+        except Exception:
+            pass
+        try:
+            messenger.send('uberZoneInterestComplete')
+        except Exception:
+            # Last resort: call directly.
+            try:
+                self.uberZoneInterestComplete()
+            except Exception:
+                pass
+        return Task.done
+
+    # Extra instrumentation: log the actual interest wire parameters when
+    # shard-debug is enabled.
+    def addInterest(self, parentId, zoneIdList, description, event = None):
+        try:
+            if getattr(self, '_shardDbg', None) and self._shardDbg.get('enabled'):
+                self.notify.info(f'[ShardDbg] addInterest(parentId={parentId}, zoneIdList={zoneIdList}, desc={description!r}, event={event!r})')
+        except Exception:
+            pass
+        return super().addInterest(parentId, zoneIdList, description, event=event)
+
+    def _dbgShardProgress(self, step, **fields):
+        if not getattr(self, '_shardDbg', None) or not self._shardDbg.get('enabled'):
+            return
+        t = 0.0
+        try:
+            t = globalClock.getRealTime()
+        except Exception:
+            pass
+        self._shardDbg['lastStep'] = step
+        self._shardDbg['lastT'] = t
+        try:
+            details = ', '.join([f'{k}={v!r}' for k, v in fields.items()]) if fields else ''
+            self.notify.info(f'[ShardDbg] step={step} t={t:.3f}' + (f' {details}' if details else ''))
+        except Exception:
+            pass
+
+    def _shardDebugWatchdog(self, task):
+        # If we're "stuck" at the same step for too long, dump all Python thread stacks.
+        try:
+            lastStep = self._shardDbg.get('lastStep')
+            lastT = float(self._shardDbg.get('lastT') or 0.0)
+            now = globalClock.getRealTime()
+            stuckFor = now - lastT
+            # Only trigger if we've started shard flow and haven't progressed.
+            if lastStep and stuckFor >= 15.0:
+                self.notify.warning(f'[ShardDbg] stuck step={lastStep} for {stuckFor:.1f}s; dumping stacks')
+                try:
+                    faulthandler.dump_traceback(all_threads=True)
+                except Exception:
+                    pass
+                # Bump timer so we don't spam every tick.
+                self._shardDbg['lastT'] = now
+        except Exception:
+            pass
+        return Task.again
+
+    def _startPythonHangWatchdog(self):
+        # A pure-Python watchdog thread. Unlike Panda task-based timeouts, this
+        # can still run if the main thread is blocked waiting on a Python lock,
+        # because CPython releases the GIL while waiting.
+        if getattr(self, '_pyHangWatchdogStarted', False):
+            return
+        self._pyHangWatchdogStarted = True
+
+        try:
+            os.makedirs('logs', exist_ok=True)
+            fn = time.strftime('logs/py-hang-watchdog-%y%m%d_%H%M%S.log')
+        except Exception:
+            fn = None
+
+        def _thread_main():
+            out = None
+            try:
+                if fn:
+                    out = open(fn, 'w', buffering=1, encoding='utf-8')
+                    out.write('Python hang watchdog started\n')
+                while True:
+                    time.sleep(10.0)
+                    try:
+                        frames = sys._current_frames()
+                    except Exception:
+                        continue
+                    step = None
+                    try:
+                        step = self._shardDbg.get('lastStep')
+                    except Exception:
+                        pass
+                    header = f'\n=== watchdog tick t={time.time():.3f} lastStep={step!r} ===\n'
+                    try:
+                        if out:
+                            out.write(header)
+                        else:
+                            self.notify.warning(header.strip())
+                    except Exception:
+                        pass
+                    for tid, frame in frames.items():
+                        try:
+                            stack = ''.join(traceback.format_stack(frame))
+                            if out:
+                                out.write(f'\n--- thread {tid} ---\n')
+                                out.write(stack)
+                        except Exception:
+                            pass
+            finally:
+                try:
+                    if out:
+                        out.close()
+                except Exception:
+                    pass
+
+        t = threading.Thread(target=_thread_main, name='PyHangWatchdog', daemon=True)
+        t.start()
+        try:
+            if fn:
+                self.notify.info(f'[ShardDbg] python watchdog -> {fn}')
+        except Exception:
+            pass
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def exitWaitOnEnterResponses(self):
@@ -1561,8 +1769,14 @@ class OTPClientRepository(ClientRepositoryBase):
         self.accept(self.gameDoneEvent, self.handleGameDone)
         base.transitions.noFade()
         self.playGame.load()
+        cr = base.cr
+        if getattr(cr, '_localAvatarPlayGameBulkLoadActive', True):
+            try:
+                loader.endBulkLoad('localAvatarPlayGame')
+            except:
+                pass
         try:
-            loader.endBulkLoad('localAvatarPlayGame')
+            cr._localAvatarPlayGameBulkLoadActive = False
         except:
             pass
 
@@ -1605,6 +1819,7 @@ class OTPClientRepository(ClientRepositoryBase):
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def gotTimeSync(self):
         self.notify.info('gotTimeSync')
+        self._dbgShardProgress('gotTimeSync')
         self.ignore('gotTimeSync')
         self.__gotTimeSync = 1
         self.moveOnFromUberZone()
@@ -1614,6 +1829,7 @@ class OTPClientRepository(ClientRepositoryBase):
         if not self.__gotTimeSync:
             self.notify.info('Waiting for time sync.')
             return
+        self._dbgShardProgress('moveOnFromUberZone')
         hoodId = self.handlerArgs['hoodId']
         zoneId = self.handlerArgs['zoneId']
         avId = self.handlerArgs['avId']
@@ -2016,6 +2232,15 @@ class OTPClientRepository(ClientRepositoryBase):
                     currentGameStateName = 'None'
 
     def gotInterestDoneMessage(self, di):
+        # Extra breadcrumb: confirms whether DONE_INTEREST is arriving at all.
+        try:
+            if getattr(self, '_shardDbg', None) and self._shardDbg.get('enabled'):
+                di2 = DatagramIterator(di.getDatagram(), di.getCurrentIndex())
+                ctx = di2.getUint32()
+                handle = di2.getUint16()
+                self.notify.info(f'[ShardDbg] recv CLIENT_DONE_INTEREST_RESP ctx={ctx} handle={handle}')
+        except Exception:
+            pass
         if self.deferredGenerates:
             dg = Datagram(di.getDatagram())
             di = DatagramIterator(dg, di.getCurrentIndex())

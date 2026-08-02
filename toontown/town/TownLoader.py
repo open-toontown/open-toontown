@@ -20,6 +20,12 @@ from toontown.building import ToonInterior
 from toontown.hood import QuietZoneState
 from toontown.hood import ZoneUtil
 from direct.interval.IntervalGlobal import *
+import time
+import traceback
+
+townPerfDebug = ConfigVariableBool('street-debug-perf', 0)
+townPerfDebugThresholdMs = ConfigVariableInt('street-debug-perf-threshold-ms', 8)
+townPerfDebugTrace = ConfigVariableBool('street-debug-perf-trace', 0)
 
 class TownLoader(StateData.StateData):
     notify = DirectNotifyGlobal.directNotify.newCategory('TownLoader')
@@ -192,22 +198,42 @@ class TownLoader(StateData.StateData):
         pass
 
     def createHood(self, dnaFile, loadStorage = 1):
+        def _cooperative_yield():
+            # Break up long synchronous hood loads into smaller slices so the
+            # game doesn't appear frozen (and so heartbeats can be sent).
+            try:
+                if getattr(base, 'cr', None):
+                    base.cr.considerHeartbeat()
+            except Exception:
+                pass
+            try:
+                time.sleep(0)
+            except Exception:
+                pass
+
         if loadStorage:
             loader.loadDNAFile(self.hood.dnaStore, 'phase_5/dna/storage_town.dna')
             self.notify.debug('done loading %s' % 'phase_5/dna/storage_town.dna')
             loader.loadDNAFile(self.hood.dnaStore, self.townStorageDNAFile)
             self.notify.debug('done loading %s' % self.townStorageDNAFile)
+            _cooperative_yield()
         node = loader.loadDNAFile(self.hood.dnaStore, dnaFile)
         self.notify.debug('done loading %s' % dnaFile)
+        _cooperative_yield()
         if node.getNumParents() == 1:
             self.geom = NodePath(node.getParent(0))
             self.geom.reparentTo(hidden)
         else:
             self.geom = hidden.attachNewNode(node)
-        self.makeDictionaries(self.hood.dnaStore)
+        _cooperative_yield()
+        self.makeDictionaries(self.hood.dnaStore, _yield=_cooperative_yield)
+        _cooperative_yield()
         self.reparentLandmarkBlockNodes()
-        self.renameFloorPolys(self.nodeList)
-        self.createAnimatedProps(self.nodeList)
+        _cooperative_yield()
+        self.renameFloorPolys(self.nodeList, _yield=_cooperative_yield)
+        _cooperative_yield()
+        self.createAnimatedProps(self.nodeList, _yield=_cooperative_yield)
+        _cooperative_yield()
         self.holidayPropTransforms = {}
         npl = self.geom.findAllMatches('**/=DNARoot=holiday_prop')
         for i in range(npl.getNumPaths()):
@@ -217,7 +243,7 @@ class TownLoader(StateData.StateData):
 
         self.notify.info('skipping self.geom.flattenMedium')
         gsg = base.win.getGsg()
-        if gsg:
+        if gsg and base.config.GetBool('dna-want-prepare-scene', True):
             def prepareSceneTask(task, geom=self.geom, gsg=gsg):
                 geom.prepareScene(gsg)
                 return task.done
@@ -236,7 +262,7 @@ class TownLoader(StateData.StateData):
             nodePath = npc.getPath(i)
             nodePath.wrtReparentTo(bucket)
 
-    def makeDictionaries(self, dnaStore):
+    def makeDictionaries(self, dnaStore, _yield=None):
         self.nodeDict = {}
         self.zoneDict = {}
         if __astron__:
@@ -248,6 +274,8 @@ class TownLoader(StateData.StateData):
         a0 = Vec4(1, 1, 1, 0)
         numVisGroups = dnaStore.getNumDNAVisGroups()
         for i in range(numVisGroups):
+            if _yield and i and (i % 10) == 0:
+                _yield()
             groupFullName = dnaStore.getDNAVisGroupName(i)
             groupName = base.cr.hoodMgr.extractGroupName(groupFullName)
             zoneId = int(groupName)
@@ -271,6 +299,8 @@ class TownLoader(StateData.StateData):
             self.fadeInDict[groupNode] = Sequence(Func(groupNode.unstash), Func(groupNode.setTransparency, 1), LerpColorScaleInterval(groupNode, fadeDuration, a1, startColorScale=a0), Func(groupNode.clearColorScale), Func(groupNode.clearTransparency), name='fadeZone-' + str(zoneId), autoPause=1)
 
         for i in range(numVisGroups):
+            if _yield and i and (i % 10) == 0:
+                _yield()
             groupFullName = dnaStore.getDNAVisGroupName(i)
             zoneId = int(base.cr.hoodMgr.extractGroupName(groupFullName))
             zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
@@ -287,9 +317,11 @@ class TownLoader(StateData.StateData):
         self.hood.dnaStore.resetDNAVisGroups()
         self.hood.dnaStore.resetDNAVisGroupsAI()
 
-    def renameFloorPolys(self, nodeList):
+    def renameFloorPolys(self, nodeList, _yield=None):
         # Optimized collision poly renaming - process in batches
-        for i in nodeList:
+        for idx, i in enumerate(nodeList):
+            if _yield and idx and (idx % 8) == 0:
+                _yield()
             collNodePaths = i.findAllMatches('**/+CollisionNode')
             numCollNodePaths = collNodePaths.getNumPaths()
             if numCollNodePaths == 0:
@@ -301,10 +333,12 @@ class TownLoader(StateData.StateData):
                 if bitMask.getBit(1):
                     collNodePath.node().setName(visGroupName)
 
-    def createAnimatedProps(self, nodeList):
+    def createAnimatedProps(self, nodeList, _yield=None):
         self.animPropDict = {}
         self.zoneIdToInteractivePropDict = {}
-        for i in nodeList:
+        for idx, i in enumerate(nodeList):
+            if _yield and idx and (idx % 4) == 0:
+                _yield()
             animPropNodes = i.findAllMatches('**/animated_prop_*')
             numAnimPropNodes = animPropNodes.getNumPaths()
             for j in range(numAnimPropNodes):
@@ -378,8 +412,25 @@ class TownLoader(StateData.StateData):
         del self.animPropDict
 
     def enterAnimatedProps(self, zoneNode):
+        perfOn = townPerfDebug.getValue()
+        threshold = max(0, townPerfDebugThresholdMs.getValue()) / 1000.0
+        if not perfOn:
+            for animProp in self.animPropDict.get(zoneNode, ()):
+                animProp.enter()
+            return
+        vis = None
+        try:
+            vis = zoneNode.getName()
+        except Exception:
+            vis = repr(zoneNode)
         for animProp in self.animPropDict.get(zoneNode, ()):
+            t0 = time.perf_counter()
             animProp.enter()
+            dt = time.perf_counter() - t0
+            if dt >= threshold:
+                self.notify.warning('street perf hitch: animProp.enter visgroup=%s prop=%s dt=%.2fms' % (vis, animProp.__class__.__name__, dt * 1000.0))
+                if townPerfDebugTrace.getValue():
+                    self.notify.warning('street perf trace (animProp.enter):\n%s' % ''.join(traceback.format_stack(limit=20)))
 
     def exitAnimatedProps(self, zoneNode):
         for animProp in self.animPropDict.get(zoneNode, ()):

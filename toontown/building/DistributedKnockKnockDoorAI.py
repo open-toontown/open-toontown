@@ -8,10 +8,9 @@ from direct.fsm import State
 
 class DistributedKnockKnockDoorAI(DistributedAnimatedPropAI.DistributedAnimatedPropAI):
 
-    def __init__(self, air, propId):
-        DistributedAnimatedPropAI.DistributedAnimatedPropAI.__init__(self, air, propId)
+    def __init__(self, air):
+        DistributedAnimatedPropAI.DistributedAnimatedPropAI.__init__(self, air)
         self.fsm.setName('DistributedKnockKnockDoor')
-        self.propId = propId
         self.doLaterTask = None
         return
 

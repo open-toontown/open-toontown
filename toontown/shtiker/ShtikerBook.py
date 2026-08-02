@@ -44,6 +44,7 @@ class ShtikerBook(DirectFrame, StateData.StateData):
          TTLocalizer.GardenPageTitle,
          TTLocalizer.GolfPageTitle,
          TTLocalizer.EventsPageName,
+         TTLocalizer.AutoerPageTitle,
          TTLocalizer.NewsPageName,
          TTLocalizer.SpellbookPageTitle]
         return
@@ -281,6 +282,10 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             iconModels = loader.loadModel('phase_4/models/parties/partyStickerbook')
             iconGeom = iconModels.find('**/Stickerbook_PartyIcon')
             iconModels.detachNode()
+        elif pageName == TTLocalizer.AutoerPageTitle:
+            iconModels = loader.loadModel('phase_3.5/models/gui/sos_textures')
+            iconGeom = iconModels.find('**/gui_gear')
+            iconModels.detachNode()
         elif pageName == TTLocalizer.NewsPageName:
             iconModels = loader.loadModel('phase_3.5/models/gui/sos_textures')
             iconGeom = iconModels.find('**/tt_t_gui_sbk_newsPageTab')
@@ -293,6 +298,8 @@ class ShtikerBook(DirectFrame, StateData.StateData):
             iconModels.detachNode()
         if pageName == TTLocalizer.OptionsPageTitle:
             pageName = TTLocalizer.OptionsTabTitle
+        elif pageName == TTLocalizer.AutoerPageTitle:
+            pageName = TTLocalizer.AutoerPageTabTitle
         pageTab = DirectButton(parent=self.pageTabFrame, relief=DGG.RAISED, frameSize=(-0.575,
          0.575,
          -0.575,

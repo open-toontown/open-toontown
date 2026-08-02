@@ -36,7 +36,7 @@ class TutorialManager(DistributedObject.DistributedObject):
 
     def enterTutorial(self, branchZone, streetZone, shopZone, hqZone):
         base.localAvatar.cantLeaveGame = 1
-        ZoneUtil.overrideOn(branch=branchZone, exteriorList=[streetZone], interiorList=[shopZone, hqZone])
+        # Let tutorial toons travel anywhere; don't restrict ZoneUtil.
         messenger.send('startTutorial', [shopZone])
         self.acceptOnce('stopTutorial', self.__handleStopTutorial)
         self.acceptOnce('toonArrivedTutorial', self.d_toonArrived)

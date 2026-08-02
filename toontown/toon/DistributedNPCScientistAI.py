@@ -5,7 +5,7 @@ from direct.task.Task import Task
 
 class DistributedNPCScientistAI(DistributedNPCToonBaseAI.DistributedNPCToonBaseAI):
 
-    def __init__(self, air, npcId, questCallback = None, hq = 0):
+    def __init__(self, air, npcId=None, questCallback = None, hq = 0):
         DistributedNPCToonBaseAI.DistributedNPCToonBaseAI.__init__(self, air, npcId, questCallback)
         self.scientistFSM = ClassicFSM.ClassicFSM('Scientist', [
             State.State('Neutral',

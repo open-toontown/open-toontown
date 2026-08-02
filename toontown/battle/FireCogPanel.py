@@ -54,7 +54,7 @@ class FireCogPanel(StateData.StateData):
         invalidTargets = []
         if not self.toon:
             if len(luredIndices) > 0:
-                if track == BattleBase.TRAP or track == BattleBase.LURE:
+                if track == BattleBase.TRAP:
                     invalidTargets += luredIndices
             if len(trappedIndices) > 0:
                 if track == BattleBase.TRAP:
@@ -76,7 +76,7 @@ class FireCogPanel(StateData.StateData):
     def adjustCogs(self, numAvatars, luredIndices, trappedIndices, track):
         invalidTargets = []
         if len(luredIndices) > 0:
-            if track == BattleBase.TRAP or track == BattleBase.LURE:
+            if track == BattleBase.TRAP:
                 invalidTargets += luredIndices
         if len(trappedIndices) > 0:
             if track == BattleBase.TRAP:

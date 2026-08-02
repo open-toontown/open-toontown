@@ -3,7 +3,7 @@ from toontown.toonbase.ToonBaseGlobal import *
 from toontown.toonbase.ToontownGlobals import *
 from direct.gui.DirectGui import *
 from direct.distributed.ClockDelta import *
-from toontown.hood import Place
+from toontown.hood import OutdoorLighting, Place
 from direct.directnotify import DirectNotifyGlobal
 from direct.fsm import ClassicFSM, State
 from direct.task.Task import Task
@@ -11,7 +11,6 @@ from toontown.toonbase import TTLocalizer
 import random
 from direct.showbase import PythonUtil
 from otp.distributed.TelemetryLimiter import RotationLimitToH, TLGatherAllAvs, TLNull
-from toontown.hood import Place
 from toontown.hood import SkyUtil
 from toontown.parties import PartyPlanner
 from toontown.parties.DistributedParty import DistributedParty
@@ -109,6 +108,7 @@ class Party(Place.Place):
             self.loader.enterAnimatedProps(i)
 
         self.loader.geom.reparentTo(render)
+        OutdoorLighting.begin(self.loader.geom, 'playground')
         self.fsm.request(requestStatus['how'], [requestStatus])
         self.playMusic()
 
@@ -121,6 +121,7 @@ class Party(Place.Place):
         if hasattr(self, 'fsm'):
             self.fsm.requestFinalState()
         self.loader.geom.reparentTo(hidden)
+        OutdoorLighting.end(self.loader.geom)
         for i in self.loader.nodeList:
             self.loader.exitAnimatedProps(i)
 

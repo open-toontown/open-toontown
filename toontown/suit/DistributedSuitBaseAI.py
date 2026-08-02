@@ -7,7 +7,7 @@ from toontown.battle import SuitBattleGlobals
 class DistributedSuitBaseAI(DistributedAvatarAI.DistributedAvatarAI, SuitBase.SuitBase):
     notify = DirectNotifyGlobal.directNotify.newCategory('DistributedSuitBaseAI')
 
-    def __init__(self, air, suitPlanner):
+    def __init__(self, air, suitPlanner=None):
         DistributedAvatarAI.DistributedAvatarAI.__init__(self, air)
         SuitBase.SuitBase.__init__(self)
         self.sp = suitPlanner

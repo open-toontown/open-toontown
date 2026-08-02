@@ -9,7 +9,7 @@ from toontown.toonbase import ToontownAccessAI
 
 class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
 
-    def __init__(self, air, blockNumber, doorType, doorIndex=0, lockValue=0, swing=3):
+    def __init__(self, air, blockNumber=0, doorType=0, doorIndex=0, lockValue=0, swing=3):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
         self.block = blockNumber
         self.swing = swing
@@ -46,6 +46,22 @@ class DistributedDoorAI(DistributedObjectAI.DistributedObjectAI):
         self.avatarsWhoAreEntering = {}
         self.avatarsWhoAreExiting = {}
         return
+
+    def setZoneIdAndBlock(self, zoneId, block):
+        self.zoneId = zoneId
+        self.block = block
+
+    def setDoorType(self, doorType):
+        self.doorType = doorType
+
+    def setDoorIndex(self, doorIndex):
+        self.doorIndex = doorIndex
+
+    def setState(self, state, timestamp=0):
+        self.fsm.request(state)
+
+    def setExitDoorState(self, state, timestamp=0):
+        self.exitDoorFSM.request(state)
 
     def delete(self):
         taskMgr.remove(self.uniqueName('door_opening-timer'))

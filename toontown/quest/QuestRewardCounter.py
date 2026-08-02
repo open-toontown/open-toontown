@@ -18,7 +18,7 @@ class QuestRewardCounter:
         self.maxHp = 15
         self.maxCarry = 20
         self.maxMoney = 40
-        self.questCarryLimit = 1
+        self.questCarryLimit = 4
         self.teleportAccess = []
         self.trackAccess = [0,
          0,
@@ -125,7 +125,7 @@ class QuestRewardCounter:
             self.notify.info('Changed avatar %d to have maxHp %d instead of %d' % (av.doId, self.maxHp, av.maxHp))
             av.b_setMaxHp(self.maxHp)
             anyChanged = 1
-        if self.maxCarry != av.maxCarry:
+        if not ToontownGlobals.WantUnlimitedGags and self.maxCarry != av.maxCarry:
             self.notify.info('Changed avatar %d to have maxCarry %d instead of %d' % (av.doId, self.maxCarry, av.maxCarry))
             av.b_setMaxCarry(self.maxCarry)
             anyChanged = 1
@@ -141,7 +141,7 @@ class QuestRewardCounter:
             self.notify.info('Changed avatar %d to have teleportAccess %s instead of %s' % (av.doId, self.teleportAccess, av.teleportZoneArray))
             av.b_setTeleportAccess(self.teleportAccess)
             anyChanged = 1
-        if self.trackAccess != av.trackArray:
+        if not ToontownGlobals.WantUnlimitedGags and self.trackAccess != av.trackArray:
             self.notify.info('Changed avatar %d to have trackAccess %s instead of %s' % (av.doId, self.trackAccess, av.trackArray))
             av.b_setTrackAccess(self.trackAccess)
             anyChanged = 1

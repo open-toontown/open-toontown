@@ -1079,7 +1079,7 @@ class DistributedBattleBaseAI(DistributedObjectAI.DistributedObjectAI, BattleBas
                 self.toonAttacks[toonId] = getToonAttack(toonId)
                 return
             if track == HEAL:
-                if self.runningToons.count(av) == 1 or attackAffectsGroup(track, level) and len(self.activeToons) < 2:
+                if self.runningToons.count(av) == 1:
                     self.toonAttacks[toonId] = getToonAttack(toonId, track=UN_ATTACK)
                     validResponse = 0
                 else:

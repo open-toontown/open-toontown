@@ -6,7 +6,7 @@ from direct.task.Task import Task
 
 class DistributedNPCBlockerAI(DistributedNPCToonBaseAI):
 
-    def __init__(self, air, npcId):
+    def __init__(self, air, npcId=None):
         DistributedNPCToonBaseAI.__init__(self, air, npcId)
         self.tutorial = 0
 

@@ -8,6 +8,7 @@ class AstronLoginManager(DistributedObjectGlobal):
     def __init__(self, cr):
         DistributedObjectGlobal.__init__(self, cr)
         self._callback = None
+        self._pendingLoginResponse = None
 
     def handleRequestLogin(self):
         playToken = self.cr.playToken or 'dev'
@@ -17,7 +18,19 @@ class AstronLoginManager(DistributedObjectGlobal):
         self.sendUpdate('requestLogin', [playToken])
 
     def loginResponse(self, responseBlob):
-        self.cr.loginScreen.handleLoginToontownResponse(responseBlob)
+        # The launcher can tear down / transition UI while the login response is in flight.
+        # Buffer until the LoginScreen exists again (or is created).
+        if getattr(self.cr, 'loginScreen', None):
+            self.cr.loginScreen.handleLoginToontownResponse(responseBlob)
+        else:
+            self._pendingLoginResponse = responseBlob
+            self.notify.debug('loginResponse received before loginScreen was ready; buffering.')
+
+    def pollPendingLoginResponse(self):
+        if self._pendingLoginResponse is not None and getattr(self.cr, 'loginScreen', None):
+            blob = self._pendingLoginResponse
+            self._pendingLoginResponse = None
+            self.cr.loginScreen.handleLoginToontownResponse(blob)
 
     def sendRequestAvatarList(self):
         self.sendUpdate('requestAvatarList')

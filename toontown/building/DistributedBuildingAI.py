@@ -18,12 +18,14 @@ from toontown.cogdominium.DistributedCogdoElevatorExtAI import DistributedCogdoE
 class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
     FieldOfficeNumFloors = 1
 
-    def __init__(self, air, blockNumber, zoneId, trophyMgr):
+    def __init__(self, air, blockNumber=None, zoneId=None, trophyMgr=None):
         DistributedObjectAI.DistributedObjectAI.__init__(self, air)
-        self.block = blockNumber
-        self.zoneId = zoneId
-        self.canonicalZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
-        self.trophyMgr = trophyMgr
+        # NOTE: Astron constructs AI-side DistributedObjects with only (air).
+        # Block/zone are provided via the required DC method setBlock().
+        self.block = 0 if blockNumber is None else blockNumber
+        self.zoneId = 0 if zoneId is None else zoneId
+        self.canonicalZoneId = ZoneUtil.getCanonicalZoneId(self.zoneId) if self.zoneId else 0
+        self.trophyMgr = trophyMgr if trophyMgr is not None else getattr(air, 'trophyMgr', None)
         self.victorResponses = None
         self.fsm = ClassicFSM.ClassicFSM('DistributedBuildingAI', [
          State.State('off', self.enterOff, self.exitOff, [
@@ -62,6 +64,14 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         self.suitPlannerExt = None
         self.fSkipElevatorOpening = False
         return
+
+    # DC required field initializer (see etc/toon.dc: DistributedBuilding.setBlock)
+    def setBlock(self, blockNumber, zoneId):
+        self.block = blockNumber
+        self.zoneId = zoneId
+        self.canonicalZoneId = ZoneUtil.getCanonicalZoneId(zoneId)
+        if self.trophyMgr is None:
+            self.trophyMgr = getattr(self.air, 'trophyMgr', None)
 
     def cleanup(self):
         if self.isDeleted():
@@ -196,7 +206,16 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
 
     def getExteriorAndInteriorZoneId(self):
         blockNumber = self.block
-        dnaStore = self.air.dnaStoreMap[self.canonicalZoneId]
+        # DNA block maps are stored per "branch" (street/safezone) zone.
+        # Using the hood DNA store will cause block->zone lookups to fail/spam.
+        canonicalBranchId = ZoneUtil.getCanonicalBranchZone(self.zoneId)
+        dnaStore = self.air.dnaStoreMap.get(canonicalBranchId)
+        if dnaStore is None:
+            # Fallback to hood if branch store is unavailable (should be rare).
+            canonicalHoodId = ZoneUtil.getCanonicalHoodId(self.zoneId)
+            dnaStore = self.air.dnaStoreMap.get(canonicalHoodId)
+        if dnaStore is None:
+            raise KeyError('No DNA store for zoneId=%s (branch=%s)' % (self.zoneId, canonicalBranchId))
         zoneId = dnaStore.getZoneFromBlockNumber(blockNumber)
         zoneId = ZoneUtil.getTrueZoneId(zoneId, self.zoneId)
         interiorZoneId = zoneId - zoneId % 100 + 500 + blockNumber
@@ -291,13 +310,13 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         return None
 
     def updateSavedBy(self, savedBy):
-        if self.savedBy:
+        if self.savedBy and self.trophyMgr is not None:
             for avId, name, dna in self.savedBy:
                 if not ZoneUtil.isWelcomeValley(self.zoneId):
                     self.trophyMgr.removeTrophy(avId, self.numFloors)
 
         self.savedBy = savedBy
-        if self.savedBy:
+        if self.savedBy and self.trophyMgr is not None:
             for avId, name, dna in self.savedBy:
                 if not ZoneUtil.isWelcomeValley(self.zoneId):
                     self.trophyMgr.addTrophy(avId, name, self.numFloors)
@@ -428,7 +447,8 @@ class DistributedBuildingAI(DistributedObjectAI.DistributedObjectAI):
         self.door = door
         self.insideDoor = insideDoor
         self.becameSuitTime = 0
-        self.knockKnock = DistributedKnockKnockDoorAI.DistributedKnockKnockDoorAI(self.air, self.block)
+        self.knockKnock = DistributedKnockKnockDoorAI.DistributedKnockKnockDoorAI(self.air)
+        self.knockKnock.setPropId(self.block)
         self.knockKnock.generateWithRequired(exteriorZoneId)
         self.air.writeServerEvent('building-toon', self.doId, '%s|%s' % (self.zoneId, self.block))
 

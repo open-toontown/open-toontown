@@ -70,6 +70,8 @@ ELDER_TIER = 49
 LOOPING_FINAL_TIER = ELDER_TIER
 VISIT_QUEST_ID = 1000
 TROLLEY_QUEST_ID = 110
+# Old skip-tutorial / bootstrap used these; strip on login migrate for tutorialAck toons.
+LegacyTutorialQuestIds = frozenset((101, TROLLEY_QUEST_ID))
 FIRST_COG_QUEST_ID = 145
 FRIEND_QUEST_ID = 150
 PHONE_QUEST_ID = 175
@@ -78,6 +80,15 @@ SELLBOT_HQ_NEWBIE_HP = 50
 CASHBOT_HQ_NEWBIE_HP = 85
 from toontown.toonbase.ToontownGlobals import FT_FullSuit, FT_Leg, FT_Arm, FT_Torso
 QuestRandGen = random.Random()
+
+
+def wantRandomTaskSystem():
+    try:
+        from otp.ai.AIBaseGlobal import simbase
+        return simbase.config.GetBool('want-random-task-system', True)
+    except Exception:
+        return True
+
 
 def seedRandomGen(npcId, avId, tier, rewardHistory):
     QuestRandGen.seed(npcId * 100 + avId + tier + len(rewardHistory))
@@ -17877,6 +17888,87 @@ def filterQuests(entireQuestPool, currentNpc, av):
     return finalQuestPool
 
 
+def filterQuestsForRandomSystem(entireQuestPool, currentNpc, av):
+    if notify.getDebug():
+        notify.debug('filterQuestsForRandomSystem: entireQuestPool: %s' % entireQuestPool)
+    validQuestPool = dict([ (questId, 1) for questId in entireQuestPool ])
+    if isLoopingFinalTier(av.getRewardTier()):
+        history = [questDesc[0] for questDesc in av.quests]
+    else:
+        history = av.getQuestHistory()
+    currentQuests = av.quests
+    hqBypass = currentNpc.getHq()
+    for questId in entireQuestPool:
+        if questId in history:
+            validQuestPool[questId] = 0
+            continue
+        if not hqBypass:
+            potentialFromNpc = getQuestFromNpcId(questId)
+            if not npcMatches(potentialFromNpc, currentNpc):
+                validQuestPool[questId] = 0
+                continue
+        potentialToNpc = getQuestToNpcId(questId)
+        if currentNpc.getNpcId() == potentialToNpc:
+            validQuestPool[questId] = 0
+            continue
+        if not getQuestClass(questId).filterFunc(av):
+            validQuestPool[questId] = 0
+            continue
+        if not (hqBypass and wantRandomTaskSystem()):
+            for quest in currentQuests:
+                toNpcId = quest[2]
+                if potentialToNpc == toNpcId and toNpcId != ToonHQ:
+                    validQuestPool[questId] = 0
+                    break
+
+    finalQuestPool = [key for key in list(validQuestPool.keys()) if validQuestPool[key]]
+    if notify.getDebug():
+        notify.debug('filterQuestsForRandomSystem: finalQuestPool: %s' % finalQuestPool)
+    return finalQuestPool
+
+
+def chooseRandomQuestOffers(tier, currentNpc, av):
+    seedRandomGen(currentNpc.getNpcId(), av.getDoId(), tier, av.getRewardHistory()[1])
+    entirePool = getStartingQuests()
+    validPool = filterQuestsForRandomSystem(entirePool, currentNpc, av)
+    if not validPool:
+        return []
+    byTier = {}
+    for qid in validPool:
+        t = QuestDict[qid][QuestDictTierIndex]
+        byTier.setdefault(t, []).append(qid)
+    tierCounts = {}
+    for qdesc in av.quests:
+        qid0 = qdesc[0]
+        if qid0 in QuestDict:
+            t0 = QuestDict[qid0][QuestDictTierIndex]
+            tierCounts[t0] = tierCounts.get(t0, 0) + 1
+    bestTiers = []
+    minCount = None
+    for t in byTier.keys():
+        c = tierCounts.get(t, 0)
+        if minCount is None or c < minCount:
+            minCount = c
+            bestTiers = [t]
+        elif c == minCount:
+            bestTiers.append(t)
+    pickTier = random.choice(bestTiers)
+    questId = random.choice(byTier[pickTier])
+    bestQuestToNpcId = getQuestToNpcId(questId)
+    if bestQuestToNpcId == Any:
+        bestQuestToNpcId = 2003
+    elif bestQuestToNpcId == Same:
+        if currentNpc.getHq():
+            bestQuestToNpcId = ToonHQ
+        else:
+            bestQuestToNpcId = currentNpc.getNpcId()
+    elif bestQuestToNpcId == ToonHQ:
+        bestQuestToNpcId = ToonHQ
+    placeholderReward = chooseRandomCompletionReward(av)
+    placeholderReward = transformReward(placeholderReward, av)
+    return [[questId, placeholderReward, bestQuestToNpcId]]
+
+
 def chooseTrackChoiceQuest(tier, av, fixed = 0):
 
     def fixAndCallAgain():
@@ -18013,6 +18105,8 @@ def transformReward(baseRewardId, av):
 
 
 def chooseBestQuests(tier, currentNpc, av):
+    if wantRandomTaskSystem():
+        return chooseRandomQuestOffers(tier, currentNpc, av)
     if isLoopingFinalTier(tier):
         rewardHistory = [questDesc[3] for questDesc in av.quests]
     else:
@@ -19711,6 +19805,134 @@ OptionalRewardTrackDict = {TT_TIER: (),
               2969,
               2970,
               2971)}
+
+
+def chooseRandomCompletionReward(av):
+    pool = []
+    for tier in RequiredRewardTrackDict.keys():
+        pool.extend(list(getRewardsInTier(tier)))
+        pool.extend(list(getOptionalRewardsInTier(tier)))
+    pool = list(set(pool))
+    filtered = []
+    for rid in pool:
+        if rid in (Any,):
+            continue
+        rc = getRewardClass(rid)
+        if rc is None:
+            continue
+        if rc in (ClothingTicketReward, TIPClothingTicketReward):
+            continue
+        if rid == 400:
+            continue
+        rew = getReward(rid)
+        if rew is None:
+            continue
+        if rc == CogSuitPartReward:
+            deptStr = RewardDict.get(rid)[1]
+            cogPart = RewardDict.get(rid)[2]
+            dept = ToontownGlobals.cogDept2index[deptStr]
+            if av.hasCogPart(cogPart, dept):
+                continue
+        filtered.append(rid)
+    if not filtered:
+        return 604
+    return random.choice(filtered)
+
+
+_SPAGHETTI_NPC_POOL = None
+SPAGHETTI_REDIRECT_CHANCE = 0.15
+
+
+def wantSpaghettiTaskRandomizer():
+    try:
+        from otp.ai.AIBaseGlobal import simbase
+        return simbase.config.GetBool('want-spaghetti-tasks', True)
+    except Exception:
+        return True
+
+
+def _getSpaghettiNpcPool():
+    global _SPAGHETTI_NPC_POOL
+    if _SPAGHETTI_NPC_POOL is not None:
+        return _SPAGHETTI_NPC_POOL
+    from toontown.toon import NPCToons
+    pool = []
+    for npcId, desc in list(NPCToons.NPCToonDict.items()):
+        if not isinstance(npcId, int):
+            continue
+        if npcId in (20001,):
+            continue
+        try:
+            ntype = desc[-1]
+        except (IndexError, TypeError):
+            continue
+        if ntype in (NPCToons.NPC_REGULAR, NPCToons.NPC_CLERK, NPCToons.NPC_FISHERMAN, NPCToons.NPC_TAILOR):
+            pool.append(npcId)
+    pool.append(ToonHQ)
+    _SPAGHETTI_NPC_POOL = tuple(pool)
+    return _SPAGHETTI_NPC_POOL
+
+
+def pickRandomSpaghettiNpc(exclude=None):
+    exclude = exclude or frozenset()
+    choices = [n for n in _getSpaghettiNpcPool() if n not in exclude]
+    if not choices:
+        choices = [n for n in _getSpaghettiNpcPool()]
+    return random.choice(choices)
+
+
+def questClassSupportsSpaghettiShuffle(qc):
+    if qc in (VisitQuest, DeliverItemQuest, DeliverGagQuest):
+        return True
+    try:
+        return issubclass(qc, LocationBasedQuest)
+    except TypeError:
+        return False
+
+
+def spaghettiRandomizeNewQuestEndpoints(av, questRow):
+    if not wantRandomTaskSystem() or not wantSpaghettiTaskRandomizer():
+        return
+    qid = questRow[0]
+    qc = getQuestClass(qid)
+    if not questClassSupportsSpaghettiShuffle(qc):
+        return
+    ex = frozenset(x for x in (questRow[1], questRow[2]) if x is not None)
+    questRow[2] = pickRandomSpaghettiNpc(exclude=ex)
+    questRow[3] = transformReward(chooseRandomCompletionReward(av), av)
+
+
+def tryTerminalSpaghettiRedirect(air, av, npc, questId):
+    if not wantRandomTaskSystem() or not wantSpaghettiTaskRandomizer():
+        return False
+    if random.random() >= SPAGHETTI_REDIRECT_CHANCE:
+        return False
+    questDesc = None
+    for q in av.quests:
+        if q[0] == questId:
+            questDesc = q
+            break
+    if not questDesc:
+        return False
+    qc = getQuestClass(questId)
+    if not questClassSupportsSpaghettiShuffle(qc):
+        return False
+    curNpc = npc.getNpcId()
+    exclude = frozenset((curNpc, questDesc[2]))
+    newTo = questDesc[2]
+    for _ in range(12):
+        cand = pickRandomSpaghettiNpc(exclude=exclude)
+        if cand != questDesc[2]:
+            newTo = cand
+            break
+    if newTo == questDesc[2]:
+        return False
+    questDesc[2] = newTo
+    questDesc[3] = transformReward(chooseRandomCompletionReward(av), av)
+    av.b_setQuests(av.quests)
+    air.writeServerEvent('questSpaghettiRedirect', av.getDoId(), '%s|%s|%s' % (questId, curNpc, newTo))
+    return True
+
 
 def isRewardOptional(tier, rewardId):
     return tier in OptionalRewardTrackDict and rewardId in OptionalRewardTrackDict[tier]

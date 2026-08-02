@@ -46,11 +46,17 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.controlManager = ControlManager.ControlManager(True, passMessagesThrough)
         self.initializeCollisions()
         self.initializeSmartCamera()
+        from toontown.toon.OrbitalCamera import OrbitalCamera
+        self.orbitalCamera = OrbitalCamera(self)
         self.cameraPositions = []
         self.animMultiplier = 1.0
         self.runTimeout = 2.5
         self.customMessages = []
         self.chatMgr = chatMgr
+        # Chat hooks can be started from multiple entry points (eg. quiet-zone
+        # completion, hood transitions, teleport flows). Make start/stop
+        # idempotent so we don't stack duplicate accepts and flood the event loop.
+        self._chatStarted = False
         base.talkAssistant = talkAssistant
         self.commonChatFlags = 0
         self.garbleChat = 1
@@ -74,7 +80,7 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.sleepCallback = None
         self.accept('wakeup', self.wakeUp)
         self.jumpLandAnimFixTask = None
-        self.fov = OTPGlobals.DefaultCameraFov
+        self.fov = getattr(base, 'baseFov', OTPGlobals.DefaultCameraFov)
         self.accept('avatarMoving', self.clearPageUpDown)
         self.nametag2dNormalContents = Nametag.CSpeech
         self.showNametag2d()
@@ -336,10 +342,12 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
 
     def attachCamera(self):
         camera.reparentTo(self)
-        base.enableMouse()
-        base.setMouseOnNode(self.node())
+        base.disableMouse()
         self.ignoreMouse = not self.wantMouse
         self.setWalkSpeedNormal()
+
+    def getGeom(self):
+        return getattr(self, '_LocalAvatar__geom', render)
 
     def detachCamera(self):
         base.disableMouse()
@@ -397,8 +405,6 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         return not self.sleepFlag and self.hp > 0
 
     def enableSmartCameraViews(self):
-        self.accept('tab', self.nextCameraPos, [1])
-        self.accept('shift-tab', self.nextCameraPos, [0])
         self.accept('page_up', self.pageUp)
         self.accept('page_down', self.pageDown)
 
@@ -415,6 +421,14 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.avatarControlsEnabled = 1
         self.setupAnimationEvents()
         self.controlManager.enable()
+        # Walk.start enables the orbital camera before controlManager.enable().
+        # setWASDTurn(False) may have no effect until enable() runs; re-apply
+        # here so A/D stay strafe (slide) for orbit cam, not tank turn.
+        if getattr(self, 'orbitalCamera', None) and self.orbitalCamera.isActive():
+            try:
+                self.controlManager.setWASDTurn(False)
+            except Exception:
+                pass
 
     def disableAvatarControls(self):
         if not self.avatarControlsEnabled:
@@ -424,11 +438,21 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.controlManager.disable()
         self.clearPageUpDown()
 
+    def _getWalkSpeedMult(self):
+        try:
+            pct = float(base.settings.getSetting('walk-speed-mult', 100))
+        except (TypeError, ValueError):
+            pct = 100.0
+        pct = max(75.0, min(125.0, pct))
+        return pct / 100.0
+
     def setWalkSpeedNormal(self):
-        self.controlManager.setSpeeds(OTPGlobals.ToonForwardSpeed, OTPGlobals.ToonJumpForce, OTPGlobals.ToonReverseSpeed, OTPGlobals.ToonRotateSpeed)
+        m = self._getWalkSpeedMult()
+        self.controlManager.setSpeeds(OTPGlobals.ToonForwardSpeed * m, OTPGlobals.ToonJumpForce, OTPGlobals.ToonReverseSpeed * m, OTPGlobals.ToonRotateSpeed * m)
 
     def setWalkSpeedSlow(self):
-        self.controlManager.setSpeeds(OTPGlobals.ToonForwardSlowSpeed, OTPGlobals.ToonJumpSlowForce, OTPGlobals.ToonReverseSlowSpeed, OTPGlobals.ToonRotateSlowSpeed)
+        m = self._getWalkSpeedMult()
+        self.controlManager.setSpeeds(OTPGlobals.ToonForwardSlowSpeed * m, OTPGlobals.ToonJumpSlowForce, OTPGlobals.ToonReverseSlowSpeed * m, OTPGlobals.ToonRotateSlowSpeed * m)
 
     def pageUp(self):
         if not self.avatarControlsEnabled:
@@ -696,17 +720,11 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.__disableSmartCam = 0
         self.initializeSmartCameraCollisions()
         self._smartCamEnabled = False
-        
-        # Orbital camera controls
-        self.orbitalCameraEnabled = True
-        self.cameraOrbitH = 0.0
-        self.cameraOrbitP = 0.0
-        self.cameraDistance = 20.0
-        self.lastMouseX = 0
-        self.lastMouseY = 0
-        self.isDraggingCamera = False
 
     def shutdownSmartCamera(self):
+        if getattr(self, 'orbitalCamera', None):
+            self.orbitalCamera.destroy()
+            self.orbitalCamera = None
         self.deleteSmartCameraCollisions()
 
     def setOnLevelGround(self, flag):
@@ -723,106 +741,21 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             LocalAvatar.notify.warning('redundant call to startUpdateSmartCamera')
             return
         self._smartCamEnabled = True
-        self.__floorDetected = 0
-        self.__cameraHasBeenMoved = 0
-        self.recalcCameraSphere()
         self.initCameraPositions()
-        self.setCameraPositionByIndex(self.cameraIndex)
-        self.posCamera(0, 0.0)
-        self.__instantaneousCamPos = camera.getPos()
-        if push:
-            self.cTrav.addCollider(self.ccSphereNodePath, self.camPusher)
-            self.ccTravOnFloor.addCollider(self.ccRay2NodePath, self.camFloorCollisionBroadcaster)
-            self.__disableSmartCam = 0
-        else:
-            self.__disableSmartCam = 1
-        self.__lastPosWrtRender = camera.getPos(render)
-        self.__lastHprWrtRender = camera.getHpr(render)
-        taskName = self.taskName('updateSmartCamera')
-        taskMgr.remove(taskName)
-        taskMgr.add(self.updateSmartCamera, taskName, priority=47)
+        try:
+            self.setCameraPositionByIndex(self.cameraIndex)
+        except Exception:
+            pass
+        self.orbitalCamera.start()
         self.enableSmartCameraViews()
-        
-        # Setup orbital camera controls
-        if self.orbitalCameraEnabled:
-            self.accept('mouse2', self.__startCameraDrag)
-            self.accept('mouse2-up', self.__stopCameraDrag)
-            self.accept('wheel_up', self.__cameraZoomIn)
-            self.accept('wheel_down', self.__cameraZoomOut)
-    
-    def __startCameraDrag(self):
-        """Start dragging camera with right mouse button"""
-        if base.mouseWatcherNode.hasMouse():
-            self.isDraggingCamera = True
-            self.lastMouseX = base.mouseWatcherNode.getMouseX()
-            self.lastMouseY = base.mouseWatcherNode.getMouseY()
-            taskMgr.add(self.__updateCameraDrag, 'updateCameraDrag')
-    
-    def __stopCameraDrag(self):
-        """Stop dragging camera"""
-        self.isDraggingCamera = False
-        taskMgr.remove('updateCameraDrag')
-    
-    def __updateCameraDrag(self, task):
-        """Update camera position while dragging"""
-        if not self.isDraggingCamera or not base.mouseWatcherNode.hasMouse():
-            return task.cont
-        
-        mouseX = base.mouseWatcherNode.getMouseX()
-        mouseY = base.mouseWatcherNode.getMouseY()
-        
-        deltaX = mouseX - self.lastMouseX
-        deltaY = mouseY - self.lastMouseY
-        
-        # Update camera orbit angles
-        self.cameraOrbitH -= deltaX * 100.0  # Horizontal rotation
-        self.cameraOrbitP += deltaY * 50.0   # Vertical rotation
-        
-        # Clamp vertical rotation
-        self.cameraOrbitP = max(-80.0, min(80.0, self.cameraOrbitP))
-        
-        # Apply camera rotation
-        self.__updateOrbitalCamera()
-        
-        self.lastMouseX = mouseX
-        self.lastMouseY = mouseY
-        
-        return task.cont
-    
-    def __cameraZoomIn(self):
-        """Zoom camera closer"""
-        self.cameraDistance = max(5.0, self.cameraDistance - 3.0)
-        self.__updateOrbitalCamera()
-    
-    def __cameraZoomOut(self):
-        """Zoom camera farther"""
-        self.cameraDistance = min(50.0, self.cameraDistance + 3.0)
-        self.__updateOrbitalCamera()
-    
-    def __updateOrbitalCamera(self):
-        """Update camera position based on orbital parameters"""
-        from panda3d.core import Point3
-        import math
-        
-        # Calculate camera position in spherical coordinates
-        h = math.radians(self.cameraOrbitH)
-        p = math.radians(self.cameraOrbitP)
-        
-        x = self.cameraDistance * math.cos(p) * math.sin(h)
-        y = -self.cameraDistance * math.cos(p) * math.cos(h)
-        z = self.cameraDistance * math.sin(p) + self.getHeight()
-        
-        self.setIdealCameraPos(Point3(x, y, z))
 
     def stopUpdateSmartCamera(self):
         if not self._smartCamEnabled:
             LocalAvatar.notify.warning('redundant call to stopUpdateSmartCamera')
             return
         self.disableSmartCameraViews()
-        self.cTrav.removeCollider(self.ccSphereNodePath)
-        self.ccTravOnFloor.removeCollider(self.ccRay2NodePath)
-        if not base.localAvatar.isEmpty():
-            self.putCameraFloorRayOnAvatar()
+        if self.orbitalCamera:
+            self.orbitalCamera.stop()
         taskName = self.taskName('updateSmartCamera')
         taskMgr.remove(taskName)
         self._smartCamEnabled = False
@@ -1181,7 +1114,20 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
                 self.lastNeedH = needH
         else:
             self.lastNeedH = None
-        action = self.setSpeed(speed, rotSpeed)
+        # GravityWalker reports forward/back motion in `speed` and strafing in
+        # `slideSpeed`. Toon animation selection (walk/run) is keyed off the
+        # first argument (forwardSpeed), so we must treat strafing as movement
+        # too or the toon will "neutral" while sliding.
+        #
+        # Preserve reverse intent for backpedal animations when applicable.
+        if abs(speed) > 0.001:
+            animSpeed = speed
+        elif abs(slideSpeed) > 0.001:
+            animSpeed = abs(slideSpeed) * (-1.0 if inputState.isSet('reverse') else 1.0)
+        else:
+            animSpeed = 0.0
+
+        action = self.setSpeed(animSpeed, rotSpeed)
         if action != self.lastAction:
             self.lastAction = action
             if self.emoteTrack:
@@ -1216,6 +1162,9 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
         self.stopSound()
 
     def startChat(self):
+        if getattr(self, '_chatStarted', False):
+            return
+        self._chatStarted = True
         self.chatMgr.start()
         self.accept(OTPGlobals.WhisperIncomingEvent, self.handlePlayerFriendWhisper)
         self.accept(OTPGlobals.ThinkPosHotkey, self.thinkPos)
@@ -1224,6 +1173,9 @@ class LocalAvatar(DistributedAvatar.DistributedAvatar, DistributedSmoothNode.Dis
             self.accept(OTPGlobals.PlaceMarkerHotkey, self.__placeMarker)
 
     def stopChat(self):
+        if not getattr(self, '_chatStarted', False):
+            return
+        self._chatStarted = False
         self.chatMgr.stop()
         self.ignore(OTPGlobals.WhisperIncomingEvent)
         self.ignore(OTPGlobals.ThinkPosHotkey)

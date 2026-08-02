@@ -12,6 +12,13 @@ class NPCForceAcknowledge:
         return
 
     def enter(self):
+        # This class historically enforced the TTC newbie quest sequence by
+        # blocking travel with a popup like "You must ride the trolley before leaving."
+        # This project disables tutorial/newbie travel locking entirely.
+        doneStatus = {'mode': 'complete'}
+        messenger.send(self.doneEvent, [doneStatus])
+        return
+
         doneStatus = {}
         questHistory = base.localAvatar.getQuestHistory()
         imgScale = 0.5
