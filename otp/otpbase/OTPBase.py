@@ -1,5 +1,6 @@
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import Camera, TPLow, VBase4, ColorWriteAttrib, Filename, getModelPath, NodePath, ConfigVariableBool, ConfigVariableDouble
+from direct.task.TaskManagerGlobal import taskMgr
 from . import OTPRender
 import time
 import math
@@ -40,7 +41,61 @@ class OTPBase(ShowBase):
             else:
                 base.cam.node().setCameraMask(OTPRender.MainCameraBitmask | OTPRender.EnviroCameraBitmask)
         taskMgr.setupTaskChain('net')
+        # Some render-to-texture / post-process paths can leave the main window's
+        # DisplayRegions cropped or pixel-zoomed.  Nudge viewports back to full
+        # window shortly after startup (and on demand via repairMainViewports()).
+        try:
+            self._viewportRepairFrames = 0
+            taskMgr.doMethodLater(0.0, self._repairMainViewportsTask, 'otpRepairMainViewports', extraArgs=[], appendTask=True)
+        except Exception:
+            pass
+        try:
+            # Hard fallback for stubborn driver/runtime viewport corruption:
+            # keep forcing full-window DisplayRegions every frame.
+            if ConfigVariableBool('force-full-window-display-region', True).value:
+                taskMgr.remove('otpForceFullWindowDisplayRegions')
+                taskMgr.add(self._forceFullWindowDisplayRegionsTask, 'otpForceFullWindowDisplayRegions', sort=10000)
+        except Exception:
+            pass
         return
+
+    def repairMainViewports(self) -> None:
+        """Force all main-window DisplayRegions to cover the full framebuffer.
+
+        This fixes the common symptom where the scene/GUI only occupies the
+        bottom-left quadrant after a graphics pipeline hiccup.
+        """
+        try:
+            win = base.win
+            if not win:
+                return
+            try:
+                win.setPixelZoom(1)
+            except Exception:
+                pass
+            n = win.getNumDisplayRegions()
+            for i in range(n):
+                try:
+                    dr = win.getDisplayRegion(i)
+                    if not dr:
+                        continue
+                    dr.setDimensions(0.0, 1.0, 0.0, 1.0)
+                    if dr.supportsPixelZoom():
+                        dr.setPixelZoom(1)
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    def _repairMainViewportsTask(self, task):
+        self.repairMainViewports()
+        self._viewportRepairFrames += 1
+        # Run for a handful of frames to survive delayed window reconfiguration.
+        return task.again if self._viewportRepairFrames < 8 else task.done
+
+    def _forceFullWindowDisplayRegionsTask(self, task):
+        self.repairMainViewports()
+        return task.cont
 
     def setTaskChainNetThreaded(self):
         if base.config.GetBool('want-threaded-network', 0):
@@ -135,7 +190,9 @@ class OTPBase(ShowBase):
         self.pixelZoomCamHistory = 2.0
         self.pixelZoomCamMovedList = []
         self.pixelZoomStarted = None
-        flag = self.config.GetBool('enable-pixel-zoom', True)
+        # Pixel zoom shrinks the render into a corner at higher zoom factors.
+        # Default it off for desktop builds unless explicitly enabled.
+        flag = self.config.GetBool('enable-pixel-zoom', False)
         self.enablePixelZoom(flag)
         return
 
