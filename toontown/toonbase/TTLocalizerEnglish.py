@@ -9886,3 +9886,140 @@ InteractivePropTrackBonusTerms = {0: 'Super Toon-Up!',
  5: 'Super Squirt!',
  6: ''}
 PlayingCardUnknown = 'Card Name is unknown'
+
+OptionsPageTabs = {
+    0: "Gameplay",
+    1: "Privacy",
+    2: "Controls",
+    3: "Video",
+    4: "Audio",
+}
+
+OptionNames = {
+    "camSensitivityX": "Camera X Sensitivity",
+    "camSensitivityY": "Camera Y Sensitivity",
+    "movement_mode": "Movement Mode",
+    "sprint_mode": "Sprint Mode",
+    "fovEffects": "Sprinting FOV Effects",
+    "cam-toggle-lock": "Camera Toggle Lock",
+    "speedchat-style": "Speedchat Color",
+    'discord-rich-presence': 'Discord Rich Presence',
+    'boss-alerts': "Cog Boss Attack Alerts",
+    "color-blind-mode": "Colorblind Mode",
+    "want-legacy-models": "Toggle TTO Species Models*",
+    'laff-display': "Toggle Overhead Laff Meter",
+    'battle-speed': "Battle Speed Multiplier",
+    "competitive-boss-scoring": "Want Competitive Boss Scoring",
+    "report-errors": "Report Crash Logs",
+    "JUMP": "Jump",
+    "MOVE_UP": "Move Up",
+    "MOVE_DOWN": "Move Down",
+    "MOVE_LEFT": "Move Left",
+    "MOVE_RIGHT": "Move Right",
+    "SPRINT": "Sprint",
+    "SCREENSHOT": "Screenshot",
+    "MAP_PAGE_HOTKEY": "Map Page Hotkey",
+    "FRIENDS_LIST_HOTKEY": "Friends List Hotkey",
+    "TOGGLE_RUN_HOTKEY": "Toggle Debug Run Speed",
+    "STREET_MAP_HOTKEY": "Street Map Hotkey",
+    "INVENTORY_HOTKEY": "Gag Menu Hotkey",
+    "QUEST_HOTKEY": "ToonTask Hotkey",
+    "GALLERY_HOTKEY": "Cog Gallery Hotkey",
+    "LOCATIONS_HOTKEY": "Location Tracker Hotkey",
+    "ELEVATOR_HOTKEY": "Skip Elevator Timer Hotkey",
+    "CRANE_GRAB_KEY": "Crane Grab Key",
+    "ACTION_BUTTON": "Action Button",
+    "SECONDARY_ACTION": "Secondary Action Button",
+    "CHAT_HOTKEY": "Chat Button",
+    "borderless": "Borderless Window",
+    "resolution": "Window Resolution",
+    "vertical-sync": "Vertical Sync",
+    "anisotropic-filter": "Anisotropic Filtering",
+    "anti-aliasing": "Anti-Aliasing*",
+    "frame-rate-meter": "FPS Meter",
+    "fps-limit": "FPS Limit",
+    "want-modern-outdoor-lighting": "Modern Outdoor Lighting",
+    "dynamic-shadows": "Dynamic Shadows",
+    "shadow-quality": "Shadow Quality",
+    "lighting-bloom-enabled": "Bloom",
+    "lighting-god-rays": "God Rays",
+    "want-procedural-sky": "Procedural Sky",
+    "want-day-night-cycle": "Day/Night Cycle",
+    "want-water-reflections": "Water Reflections",
+    "drop-shadow-strength": "Drop Shadow Strength",
+    "music": "Music",
+    "sfx": "Sound Effects",
+    "music-volume": "Music Volume",
+    "sfx-volume": "Sound Effects Volume",
+    "toon-chat-sounds": "Toon Chat Sounds",
+    "random-music": "Randomize Music",
+    'ap-sounds': "AP Item Sounds",
+    'refresh-audio': "Refresh Audio",
+}
+
+OptionAntiAlias = {
+    0: "Off",
+    4: "4x MSAA",
+    8: "8x MSAA",
+}
+
+OptionBattleSpeed = {
+    1: "1x Speed",
+    2: "2x Speed",
+    3: "3x Speed",
+    4: "4x Speed",
+    5: "5x Speed"
+}
+
+OptionAnisotropic = {
+    0: "Off",
+    2: "Lowest",
+    4: "Low",
+    8: "High",
+    16: "Highest",
+}
+OptionFPSLimit = {
+ 0: "Unlimited",
+ 30: "30 FPS",
+ 60: "60 FPS",
+ 120: "120 FPS",
+ 144: "144 FPS",
+ 165: "165 FPS",
+ 240: "240 FPS",
+ 360: "360 FPS"
+}
+
+OptionEnabled = "Enabled"
+OptionDisabled = "Disabled"
+OptionRefresh = "Refresh"
+WinConditionMet = 'Congratulations, you have completed your goal! You may now talk to Flippy to redeem your reward!'
+RefreshDialogMsg = "Refreshing audio devices..."
+
+SpellbookPageTitle = 'Spellbook'
+WordPageTabTitle = 'Spellbook'
+WordPageHelp = 'This page contains a list of all of the Magic Words that can be used in-game.'
+WordPageSearch = 'Search'
+WordPageActivator = 'Activator: '
+WordPageTotal = 'Total Words: '
+WordPageCurrent = 'Selected: '
+WordPageNA = 'N/A'
+WordPageCopyToChat = 'Copy To Chat'
+WordPageMoreInfo = 'More Info'
+WordPageDescription = 'Description: '
+WordPageExample = 'Example: '
+WordPageAliases = 'Aliases: '
+WordPageAccessLevel = 'Required Access Level: '
+ClothingPageTitle = 'Clothing'
+ClothingPageShirt = 'Shirt IDs'
+ClothingPageSleeve = 'Sleeve IDs'
+ClothingPageShort = 'Shorts IDs'
+AccessoriesPageHeadTab = 'Head\nAccessories'
+AccessoriesPageBodyTab = 'Body\nAccessories'
+AccessoriesPageHead = 'Head Accessories'
+AccessoriesPageBody = 'Body Accessories'
+AccessoriesPageHat = 'Hat IDs'
+AccessoriesPageGlasses = 'Glasses IDs'
+AccessoriesPageBackpack = 'Backpack IDs'
+AccessoriesPageShoes = 'Shoes IDs'
+TeleportGUITitle = 'Teleport'
+TeleportGUITeleport = 'Go!'

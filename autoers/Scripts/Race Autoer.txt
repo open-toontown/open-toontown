@@ -1,0 +1,79 @@
+script={
+
+    'name':'Race Autoer',\
+    
+    'description':"The Race autoer is designed for you to gain tickets and trophies from toontown racing. \
+All races have to be run with another player running the same script but with their toon number set as a different \
+value to the other toon(s). If you do not do this no trophies will be gained.",
+                   
+    'author': 'Freshollie',\
+    
+    'version': '1',\
+    
+    'unload':'raceAutoer.revertFunctions()',\
+    
+    'start':'raceAutoer.start()',\
+    
+    'stop':'raceAutoer.setStop()',\
+    
+    'close':'raceAutoer.autoerGui.hideAll()',\
+    
+    'open':'raceAutoer.autoerGui.showAll()',\
+    
+    'options':{
+        'Toon Number 1':{
+            'command':'raceAutoer.setAccountNum1',\
+            'pos':(0,0)\
+            },
+        'Toon Number 2':{
+            'command':'raceAutoer.setAccountNum2',\
+            'pos':(0,1)
+            },
+        'Toon Number 3':{
+            'command':'raceAutoer.setAccountNum3',\
+            'pos':(1,0)\
+            },
+        'Toon Number 4':{
+            'command':'raceAutoer.setAccountNum4',\
+            'pos':(1,1)
+            } ,
+        'Do speedway':{
+            'command':'raceAutoer.setSpeedway',\
+            'pos':(2,0)\
+            },
+        'Do urban':{
+            'command':'raceAutoer.setUrban',\
+            'pos':(3,0)
+            },
+        'Do rural':{
+            'command':'raceAutoer.setRural',\
+            'pos':(4,0)
+            },
+        'Set Practice':{
+            'command':'raceAutoer.setPractice',\
+            'pos':(2,1)\
+            },
+        'Set ToonBattle':{
+            'command':'raceAutoer.setToonbattle',\
+            'pos':(3,1)
+            },
+        'Set Tournament':{
+            'command':'raceAutoer.setTournament',\
+            'pos':(4,1)
+            },
+        'Make Member':{
+            'command':'raceAutoer.setMember',\
+            'pos':(6,0)
+            },
+        "No Member":{
+            'command':'raceAutoer.unsetMember',\
+            'pos':(6,1)
+            },
+        "Automatic":{
+            'command':'raceAutoer.setAutomatic',\
+            'pos':(5,1)
+            }
+        },\
+    'location':'http://raw.githubusercontent.com/freshollie/ToontownAutoers/master/RaceAutoer.py'}
+
+toonBot.addScript(script)

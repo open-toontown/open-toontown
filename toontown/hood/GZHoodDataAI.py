@@ -151,7 +151,6 @@ class GZHoodDataAI(HoodDataAI.HoodDataAI):
                 self.golfKarts += foundKarts
                 self.golfKartGroups += foundKartGroups
 
-        print(self.golfKarts, self.golfKartGroups)
         for golfKart in self.golfKarts:
             golfKart.start()
             self.addDistObj(golfKart)

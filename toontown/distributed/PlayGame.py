@@ -105,6 +105,7 @@ class PlayGame(StateData.StateData):
         self.hood = None
         self.quietZoneDoneEvent = uniqueName('quietZoneDone')
         self.quietZoneStateData = None
+        self._reusePickAToonTtcHood = False
         return
 
     def enter(self, hoodId, zoneId, avId):
@@ -120,13 +121,26 @@ class PlayGame(StateData.StateData):
         else:
             loaderName = ZoneUtil.getLoaderName(zoneId)
             whereName = ZoneUtil.getToonWhereName(zoneId)
-        self.fsm.request('quietZone', [{'loader': loaderName,
+        requestStatus = {'loader': loaderName,
           'where': whereName,
           'how': 'teleportIn',
           'hoodId': hoodId,
           'zoneId': zoneId,
           'shardId': None,
-          'avId': avId}])
+          'avId': avId}
+
+        # Revamp: when coming from Pick-a-Toon, Toontown Central may already be
+        # loaded and visible behind the GUI. We still must go through quietZone
+        # (FSM/network interest setup), but we can suppress the fade and reuse
+        # the already-loaded TTC hood in handleWaitForSetZoneResponse.
+        try:
+            preHood = getattr(base.cr, '_pickAToonTTCBackdrop', None)
+            if preHood and ZoneUtil.getCanonicalZoneId(hoodId) == ToontownGlobals.ToontownCentral and requestStatus['loader'] == 'safeZoneLoader':
+                requestStatus['noFade'] = True
+        except Exception:
+            pass
+
+        self.fsm.request('quietZone', [requestStatus])
         return
 
     def exit(self):
@@ -244,6 +258,34 @@ class PlayGame(StateData.StateData):
         loaderName = requestStatus['loader']
         avId = requestStatus.get('avId', -1)
         ownerId = requestStatus.get('ownerId', avId)
+
+        # Revamp: if we already preloaded Toontown Central during Pick-a-Toon,
+        # reuse it only when we're actually entering TTC playground. Otherwise
+        # drop the preload first — otherwise the backdrop and the real hood
+        # both load (assertion failures).
+        try:
+            preHood = getattr(base.cr, '_pickAToonTTCBackdrop', None)
+            reusePickAToonTTC = (
+                preHood
+                and canonicalHoodId == ToontownGlobals.ToontownCentral
+                and loaderName == 'safeZoneLoader'
+            )
+            if preHood and not reusePickAToonTTC:
+                base.cr.cleanupPickAToonTTCBackdrop()
+            elif reusePickAToonTTC:
+                self._reusePickAToonTtcHood = True
+                self.hood = preHood
+                base.cr._pickAToonTTCBackdrop = None
+                base.cr._pickAToonTTCBackdropRequestStatus = None
+                try:
+                    if hasattr(self.hood, 'loader') and hasattr(self.hood.loader, 'geom'):
+                        self.hood.loader.geom.reparentTo(render)
+                except Exception:
+                    pass
+                return
+        except Exception:
+            pass
+
         if base.config.GetBool('want-qa-regression', 0):
             self.notify.info('QA-REGRESSION: NEIGHBORHOODS: Visit %s' % hoodName)
         count = ToontownGlobals.hoodCountMap[canonicalHoodId]
@@ -300,7 +342,9 @@ class PlayGame(StateData.StateData):
             self.quietZoneStateData.exit()
             self.quietZoneStateData.unload()
             self.quietZoneStateData = None
-            loader.endBulkLoad('hood')
+            if not getattr(self, '_reusePickAToonTtcHood', False):
+                loader.endBulkLoad('hood')
+            self._reusePickAToonTtcHood = False
         else:
             self.handleLeftQuietZone()
         return

@@ -1,6 +1,3 @@
-"""
-AssetCache - Preloads and caches common assets for instant zone loading
-"""
 from direct.directnotify.DirectNotifyGlobal import directNotify
 from panda3d.core import ModelPool, TexturePool, NodePath
 
@@ -23,41 +20,40 @@ class AssetCache:
         return cls._instance
     
     def initialize(self, loader):
-        """Preload common assets used across all zones"""
         if self._initialized:
             return
             
         self.notify.info('Preloading common assets for faster zone loading...')
         
-        # Common models that are used everywhere
         commonModels = [
+            'phase_3/models/gui/toontown-logo',
+            'phase_3/models/gui/tt_m_gui_ups_logo_noText',
+            'phase_3/models/gui/progress-background',
+            'phase_3/models/gui/dialog_box_gui',
+            'phase_3/models/gui/quit_button',
             'phase_3/models/props/arrow',
             'phase_3/models/props/panel',
             'phase_3/models/props/chatbox',
             'phase_3/models/props/chatbox_noarrow',
             'phase_3/models/gui/chat_button_gui',
             'phase_3/models/misc/sphere',
+            'phase_3.5/models/props/drop_shadow',
+            'phase_3.5/models/gui/inventory_icons',
         ]
         
-        # Preload models asynchronously
         for modelPath in commonModels:
             try:
-                model = loader.loadModel(modelPath)
+                model = loader.loadModel(modelPath, okMissing=True)
                 if model:
                     self.preloadedModels[modelPath] = model
-                    # Keep in model pool
                     ModelPool.addModel(modelPath, model.node())
-            except:
+            except Exception:
                 pass
-        
-        # Texture and Model pools manage their own sizes automatically
-        # Just ensure they're enabled for caching
         
         self._initialized = True
         self.notify.info('Asset preloading complete')
     
     def cleanup(self):
-        """Clean up cached assets"""
         self.preloadedModels.clear()
         self.preloadedTextures.clear()
         self.preloadedSounds.clear()
@@ -65,10 +61,7 @@ class AssetCache:
         self._initialized = False
         
     def getModel(self, modelPath):
-        """Get a preloaded model if available"""
         return self.preloadedModels.get(modelPath)
 
 
-# Global instance
 assetCache = AssetCache.getInstance()
-

@@ -3,14 +3,21 @@ from panda3d.core import *
 from toontown.toonbase import ToontownGlobals
 from toontown.toonbase import TTLocalizer
 import random
+from toontown.toontowngui import ModernLoadingScreen
 
 class ToontownLoadingScreen:
 
     def __init__(self):
         self.__expectedCount = 0
         self.__count = 0
-        self.__updateSkip = 5
+        self.__updateSkip = 1
         self.__updateCounter = 0
+        self.modern = None
+        if ConfigVariableBool('want-modern-launcher-ui', True).value:
+            try:
+                self.modern = ModernLoadingScreen.ModernLoadingScreen()
+            except Exception:
+                self.modern = None
         self.gui = loader.loadModel('phase_3/models/gui/progress-background')
         self.banner = loader.loadModel('phase_3/models/gui/toon_council').find('**/scroll')
         self.banner.reparentTo(self.gui)
@@ -24,6 +31,12 @@ class ToontownLoadingScreen:
         return
 
     def destroy(self):
+        if self.modern:
+            try:
+                self.modern.destroy()
+            except Exception:
+                pass
+            self.modern = None
         self.tip.destroy()
         self.title.destroy()
         self.waitBar.destroy()
@@ -31,14 +44,27 @@ class ToontownLoadingScreen:
         self.gui.removeNode()
 
     def getTip(self, tipCategory):
-        return TTLocalizer.TipTitle + '\n' + random.choice(TTLocalizer.TipDict.get(tipCategory))
+        tips = TTLocalizer.TipDict.get(tipCategory)
+        if tips:
+            return TTLocalizer.TipTitle + '\n' + random.choice(tips)
+        return TTLocalizer.TipTitle
 
     def begin(self, range, label, gui, tipCategory):
+        self.__count = 0
+        self.__expectedCount = max(1, range)
+        tip_text = self.getTip(tipCategory)
+        if self.modern and self.modern.enabled():
+            self.modern.enter_bulk_load('bulk', label, self.__expectedCount)
+            self.modern.set_status(label)
+            self.modern.set_detail(tip_text)
+            self.modern.set_progress(0.0)
+            self.gui.reparentTo(hidden)
+            self.waitBar.reparentTo(hidden)
+            self.title.reparentTo(hidden)
+            return
         self.waitBar['range'] = range
         self.title['text'] = label
-        self.tip['text'] = self.getTip(tipCategory)
-        self.__count = 0
-        self.__expectedCount = range
+        self.tip['text'] = tip_text
         if gui:
             self.waitBar.reparentTo(self.gui)
             self.title.reparentTo(self.gui)
@@ -50,6 +76,10 @@ class ToontownLoadingScreen:
         self.waitBar.update(self.__count)
 
     def end(self):
+        if self.modern and self.modern.enabled():
+            self.modern.set_progress(100.0)
+            self.modern.leave_bulk_load()
+            return (self.__expectedCount, self.__count)
         self.waitBar.finish()
         self.waitBar.reparentTo(self.gui)
         self.title.reparentTo(self.gui)
@@ -57,11 +87,25 @@ class ToontownLoadingScreen:
         return (self.__expectedCount, self.__count)
 
     def abort(self):
+        if self.modern and self.modern.enabled():
+            self.modern.leave_bulk_load()
+            return
         self.gui.reparentTo(hidden)
 
     def tick(self):
-        self.__count = self.__count + 1
+        self.__count += 1
+        if self.modern and self.modern.enabled():
+            pct = (float(self.__count) / float(self.__expectedCount)) * 100.0
+            self.modern.set_progress(pct)
+            return
         self.__updateCounter += 1
         if self.__updateCounter >= self.__updateSkip:
             self.__updateCounter = 0
             self.waitBar.update(self.__count)
+
+    def on_asset_loaded(self, path=None, model=None, texture=None, kind='model'):
+        if self.modern and self.modern.enabled():
+            try:
+                self.modern.on_asset_loaded(path=path, model=model, texture=texture, kind=kind)
+            except Exception:
+                pass

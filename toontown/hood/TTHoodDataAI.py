@@ -6,6 +6,7 @@ from toontown.safezone import TTTreasurePlannerAI
 from toontown.classicchars import DistributedMickeyAI
 from toontown.safezone import ButterflyGlobals
 from direct.task import Task
+from toontown.safezone.DistributedTTCCraneSandboxAI import DistributedTTCCraneSandboxAI
 
 class TTHoodDataAI(HoodDataAI.HoodDataAI):
     notify = DirectNotifyGlobal.directNotify.newCategory('TTHoodDataAI')
@@ -30,6 +31,10 @@ class TTHoodDataAI(HoodDataAI.HoodDataAI):
         self.classicChar.generateWithRequired(self.zoneId)
         self.classicChar.start()
         self.addDistObj(self.classicChar)
+        self.ttcCraneSandbox = DistributedTTCCraneSandboxAI(self.air)
+        self.ttcCraneSandbox.generateWithRequired(self.zoneId)
+        self.addDistObj(self.ttcCraneSandbox)
+        self.ttcCraneSandbox.spawnCranesAndSafes()
         self.createButterflies(ButterflyGlobals.TTC)
         if simbase.blinkTrolley:
             taskMgr.doMethodLater(0.5, self._deleteTrolley, 'deleteTrolley')

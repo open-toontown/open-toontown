@@ -17,7 +17,9 @@ class SuitAvatarPanel(AvatarPanel.AvatarPanel):
         self.avName = avatar.getName()
         gui = loader.loadModel('phase_3.5/models/gui/suit_detail_panel')
         from toontown.toonbase.ToonBaseGlobal import base
-        self.frame = DirectFrame(geom=gui.find('**/avatar_panel'), geom_scale=0.21, geom_pos=(0, 0, 0.02), relief=None, pos=(base.a2dRight - 0.3, 100, 0.525))
+        # Use widescreen-aware positioning for proper edge alignment
+        framePos = base.getGUIEdgePos(edge='right', xOffset=0.3, yOffset=-0.525) if hasattr(base, 'getGUIEdgePos') else Point3(base.a2dRight - 0.3, 100, 0.525)
+        self.frame = DirectFrame(geom=gui.find('**/avatar_panel'), geom_scale=0.21, geom_pos=(0, 0, 0.02), relief=None, pos=framePos)
         disabledImageColor = Vec4(1, 1, 1, 0.4)
         text0Color = Vec4(1, 1, 1, 1)
         text1Color = Vec4(0.5, 1, 0.5, 1)
