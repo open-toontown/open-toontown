@@ -3,9 +3,10 @@ from panda3d.toontown import *
 from direct.directnotify.DirectNotifyGlobal import *
 from direct.showbase import Loader
 from toontown.toontowngui import ToontownLoadingScreen
+from toontown.toontowngui.ZonePrefetchCatalog import zonePrefetchManager
 
 class ToontownLoader(Loader.Loader):
-    TickPeriod = 0.01
+    TickPeriod = 0.005
 
     def __init__(self, base):
         Loader.Loader.__init__(self, base)
@@ -13,12 +14,15 @@ class ToontownLoader(Loader.Loader):
         self.blockName = None
         self.loadingScreen = ToontownLoadingScreen.ToontownLoadingScreen()
         self._tickCounter = 0
-        self._tickSkip = 10
+        self._tickSkip = 1
+        self._lastTickT = 0.0
+        self._loadStartT = 0.0
         return
 
     def destroy(self):
-        self.loadingScreen.destroy()
-        del self.loadingScreen
+        if hasattr(self, 'loadingScreen') and self.loadingScreen:
+            self.loadingScreen.destroy()
+            del self.loadingScreen
         Loader.Loader.destroy(self)
 
     def beginBulkLoad(self, name, label, range, gui, tipCategory):
@@ -31,6 +35,11 @@ class ToontownLoader(Loader.Loader):
         self._lastTickT = globalClock.getRealTime()
         self.blockName = name
         self.loadingScreen.begin(range, label, gui, tipCategory)
+        try:
+            if isinstance(name, int) or (isinstance(name, str) and name.isdigit()):
+                zonePrefetchManager.prefetch_zone(int(name), loader=self)
+        except Exception:
+            pass
         return None
 
     def endBulkLoad(self, name):
@@ -63,21 +72,27 @@ class ToontownLoader(Loader.Loader):
                 self._tickCounter = 0
                 now = globalClock.getRealTime()
                 if now - self._lastTickT > self.TickPeriod:
-                    self._lastTickT += self.TickPeriod
+                    self._lastTickT = now
                     self.loadingScreen.tick()
                     try:
                         base.cr.considerHeartbeat()
-                    except:
+                    except Exception:
                         pass
 
     def loadModel(self, *args, **kw):
         ret = Loader.Loader.loadModel(self, *args, **kw)
         self.tick()
+        if ret and hasattr(self.loadingScreen, 'on_asset_loaded'):
+            path = args[0] if args else None
+            self.loadingScreen.on_asset_loaded(path=path, model=ret, kind='model')
         return ret
 
     def loadFont(self, *args, **kw):
         ret = Loader.Loader.loadFont(self, *args, **kw)
         self.tick()
+        if ret and hasattr(self.loadingScreen, 'on_asset_loaded'):
+            path = args[0] if args else None
+            self.loadingScreen.on_asset_loaded(path=path, kind='font')
         return ret
 
     def loadTexture(self, texturePath, alphaPath = None, okMissing = False):
@@ -85,16 +100,22 @@ class ToontownLoader(Loader.Loader):
         self.tick()
         if alphaPath:
             self.tick()
+        if ret and hasattr(self.loadingScreen, 'on_asset_loaded'):
+            self.loadingScreen.on_asset_loaded(path=texturePath, texture=ret, kind='texture')
         return ret
 
     def loadSfx(self, soundPath):
         ret = Loader.Loader.loadSfx(self, soundPath)
         self.tick()
+        if ret and hasattr(self.loadingScreen, 'on_asset_loaded'):
+            self.loadingScreen.on_asset_loaded(path=soundPath, kind='audio')
         return ret
 
     def loadMusic(self, soundPath):
         ret = Loader.Loader.loadMusic(self, soundPath)
         self.tick()
+        if ret and hasattr(self.loadingScreen, 'on_asset_loaded'):
+            self.loadingScreen.on_asset_loaded(path=soundPath, kind='audio')
         return ret
 
     def loadDNAFileAI(self, dnaStore, dnaFile):
