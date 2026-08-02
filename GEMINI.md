@@ -65,10 +65,13 @@ Target: `C:\Users\Shadow\Desktop\ttbtn`
 - [x] Ported GLSL shaders (`sky`, `sunrays`, `water`) into `toontown/shaders/` and added dynamic `_SHADER_DIR` resolution.
 - [x] Ported `LegacyQuestDict.py` (15,29 procedural quest chains) and updated `toontown/quest/Quests.py` with `WANT_LEGACY_QUESTS` flag and `questExists()` helper.
 - [x] Ported `QuestParser.py` into `toontown/quest/` and integrated `libotp` nametag/speech library dependencies.
-- [x] Submitted Pull Request #9 (`feature/modern-loading-system`) and Pull Request #10 (`feature/outdoor-lighting-and-procedural-quests`) to GitHub repository.
+- [x] Ported `toontown/settings/Settings.py`: Persistent JSON-backed settings manager with controls mapping, graphics/audio defaults, and property getters/setters.
+- [x] Ported revamped `toontown/shtiker/OptionsPage.py` & `OptionsPageGUI.py`: Tabbed options page (Gameplay, Privacy, Controls, Video, Audio) with resolution pickers, anti-aliasing, FPS limiters, and lighting toggles.
+- [x] Integrated `toontown/shtiker/ShtikerBook.py` & `toontown/toontowngui/ToontownScrolledFrame.py` with full OptionsPage support and localizations in `TTLocalizerEnglish.py`.
+- [x] Submitted Pull Request #9 (`feature/modern-loading-system`), Pull Request #10 (`feature/outdoor-lighting-and-procedural-quests`), and Pull Request #11 (`feature/settings-and-shtikerbook-revamp`) to GitHub repository.
 
 # TODO List for Future AI Instances
-- [ ] Merge and review PR #9 and PR #10 into `develop`.
+- [ ] Merge and review PR #9, PR #10, and PR #11 into `develop`.
 - [ ] Verify `TaskAutoer.py` quest automation compatibility with the procedural quest dict during live server sessions.
 - [ ] Validate server stability with Astron local launcher under heavy zone switching.
 
