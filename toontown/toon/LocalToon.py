@@ -33,6 +33,7 @@ from toontown.shtiker import DisguisePage
 from toontown.shtiker import PhotoAlbumPage
 from toontown.shtiker import FishPage
 from toontown.shtiker import NPCFriendPage
+from toontown.shtiker import WordPage
 from toontown.shtiker import EventsPage
 from toontown.shtiker import TIPPage
 from toontown.quest import Quests
@@ -377,6 +378,9 @@ class LocalToon(DistributedToon.DistributedToon, LocalAvatar.LocalAvatar):
         self.suitPage = SuitPage.SuitPage()
         self.suitPage.load()
         self.book.addPage(self.suitPage, pageName=TTLocalizer.SuitPageTitle)
+        self.wordPage = WordPage.WordPage()
+        self.wordPage.load()
+        self.book.addPage(self.wordPage, pageName=TTLocalizer.SpellbookPageTitle)
         if base.config.GetBool('want-photo-album', 0):
             self.photoAlbumPage = PhotoAlbumPage.PhotoAlbumPage()
             self.photoAlbumPage.load()

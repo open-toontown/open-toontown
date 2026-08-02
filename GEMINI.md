@@ -68,10 +68,13 @@ Target: `C:\Users\Shadow\Desktop\ttbtn`
 - [x] Ported `toontown/settings/Settings.py`: Persistent JSON-backed settings manager with controls mapping, graphics/audio defaults, and property getters/setters.
 - [x] Ported revamped `toontown/shtiker/OptionsPage.py` & `OptionsPageGUI.py`: Tabbed options page (Gameplay, Privacy, Controls, Video, Audio) with resolution pickers, anti-aliasing, FPS limiters, and lighting toggles.
 - [x] Integrated `toontown/shtiker/ShtikerBook.py` & `toontown/toontowngui/ToontownScrolledFrame.py` with full OptionsPage support and localizations in `TTLocalizerEnglish.py`.
-- [x] Submitted Pull Request #9 (`feature/modern-loading-system`), Pull Request #10 (`feature/outdoor-lighting-and-procedural-quests`), and Pull Request #11 (`feature/settings-and-shtikerbook-revamp`) to GitHub repository.
+- [x] Ported Magic Word System (`toontown/spellbook/`): Integrated `MagicWordIndex.py` (340 magic words registered), `MagicWordConfig.py`, `TTOffMagicWordManager.py`, `TTOffMagicWordManagerAI.py`, and `ToontownMagicWordManager.py`.
+- [x] Ported Spellbook Shtiker Page (`toontown/shtiker/WordPage.py`): Tabbed Spellbook page with search, category filters, copy-to-chat, argument inspectors, clothing ID tab, and accessory ID tabs.
+- [x] Integrated `LocalToon.py` & `toontown/util/ui.py`: Registered `WordPage` in ShtikerBook and implemented `make_dsl_scrollable` wheel scrolling.
+- [x] Submitted Pull Request #9 (`feature/modern-loading-system`), Pull Request #10 (`feature/outdoor-lighting-and-procedural-quests`), Pull Request #11 (`feature/settings-and-shtikerbook-revamp`), and Pull Request #12 (`feature/magic-words-and-spellbook-page`) to GitHub repository.
 
 # TODO List for Future AI Instances
-- [ ] Merge and review PR #9, PR #10, and PR #11 into `develop`.
+- [ ] Merge and review PR #9, PR #10, PR #11, and PR #12 into `develop`.
 - [ ] Verify `TaskAutoer.py` quest automation compatibility with the procedural quest dict during live server sessions.
 - [ ] Validate server stability with Astron local launcher under heavy zone switching.
 
