@@ -1089,7 +1089,9 @@ class NPCMoviePlayer(DirectObject.DirectObject):
 
 vfs = VirtualFileSystem.getGlobalPtr()
 searchPath = DSearchPath()
-searchPath.appendDirectory(Filename('/phase_3/etc'))
+# Resources live under the 'resources/' folder on disk (model-path resources);
+# they are not VFS-mounted at the root like in the original game.
+searchPath.appendDirectory(Filename('resources/phase_3/etc'))
 scriptFile = Filename('QuestScripts.txt')
 found = vfs.resolveFilename(scriptFile, searchPath)
 if not found:

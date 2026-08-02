@@ -202,27 +202,28 @@ class ToonBase(OTPBase.OTPBase):
         multiplier = max(0.5, min(2.0, multiplier))
         self.mouseSensitivity = multiplier
     
+    def getAdjustedFov(self, baseFov):
+        """Return the horizontal FOV adjusted for the current aspect ratio.
+
+        Widescreen displays show more of the world horizontally instead of
+        cropping vertically. At 4:3 (1.333) the base FOV is returned
+        unchanged; wider aspect ratios get a proportional horizontal FOV
+        increase (capped to prevent a fish-eye effect).
+
+        This is the canonical helper - use it everywhere a FOV is set so the
+        game looks correct on widescreen monitors.
+        """
+        aspectRatio = base.camLens.getAspectRatio()
+        baseAspectRatio = 4.0 / 3.0
+        if aspectRatio > baseAspectRatio:
+            adjustedFov = baseFov * (aspectRatio / baseAspectRatio)
+            return min(adjustedFov, 90.0)
+        return baseFov
+
     def updateFovForAspectRatio(self):
         """Update FOV dynamically based on aspect ratio for proper widescreen support."""
-        aspectRatio = base.camLens.getAspectRatio()
-        
-        # Base FOV is for 4:3 aspect ratio (1.333...)
-        # For widescreen, we increase horizontal FOV to prevent stretching
-        baseAspectRatio = 4.0 / 3.0
-        
-        if aspectRatio > baseAspectRatio:
-            # Widescreen - increase FOV proportionally
-            # Calculate the horizontal FOV adjustment
-            fovMultiplier = aspectRatio / baseAspectRatio
-            newFov = self.baseFov * fovMultiplier
-            # Cap maximum FOV to prevent fish-eye effect
-            newFov = min(newFov, 90.0)
-        else:
-            # Standard or narrower aspect ratio
-            newFov = self.baseFov
-        
-        self.camLens.setFov(newFov)
-    
+        self.camLens.setFov(self.getAdjustedFov(self.baseFov))
+
     def getWidescreenGUIXScale(self):
         """Get the X scaling factor for GUI elements in widescreen.
         
@@ -232,7 +233,17 @@ class ToonBase(OTPBase.OTPBase):
         currentAspect = base.camLens.getAspectRatio()
         baseAspect = 4.0 / 3.0  # 1.333...
         return currentAspect / baseAspect
-    
+
+    def getFullscreenGuiXScale(self):
+        """Return the X scale multiplier needed to make a 4:3 full-screen GUI
+        card cover the current aspect ratio.
+
+        At 4:3 this returns 1.0 (no change); on widescreen displays it returns
+        >1.0 so backgrounds/overlays designed for a 4:3 screen stretch to fill
+        the extra horizontal space without leaving black bars at the sides.
+        """
+        return self.getWidescreenGUIXScale()
+
     def getWidescreenXOffset(self, baseX, alignment='left'):
         """Calculate proper X position for GUI elements in widescreen.
         
@@ -343,6 +354,20 @@ class ToonBase(OTPBase.OTPBase):
             z = yOffset
         
         return Point3(x, 0, z)
+
+    def updateDisplay(self):
+        """Apply the saved display settings (resolution, windowed mode, etc.).
+
+        Called by the OptionsPage when the player changes display options.
+        """
+        try:
+            if not hasattr(self, 'displayOptions') or not self.displayOptions:
+                from toontown.toonbase.DisplayOptions import DisplayOptions
+                self.displayOptions = DisplayOptions()
+            self.displayOptions.loadFromSettings()
+            self.displayOptions.restrictToEmbedded(False)
+        except Exception:
+            self.notify.warning('updateDisplay: Failed to apply display settings.')
 
     def windowEvent(self, win):
         OTPBase.OTPBase.windowEvent(self, win)

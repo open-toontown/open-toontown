@@ -125,6 +125,14 @@ class Settings:
     def readSettings(self) -> None:
         pass
 
+    def doSavedSettingsExist(self) -> bool:
+        """Return True if a settings file exists on disk.
+
+        Mirrors the legacy otp.settings.Settings method used by DisplayOptions
+        to decide whether saved settings (vs. defaults) should be honored.
+        """
+        return self.settingsFile.exists()
+
     def set(self, setting: str, value: Setting) -> None:
         if not isinstance(value, type(self.defaultSettings.get(setting))):
             return

@@ -111,7 +111,7 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
         camTrack = Sequence()
 
         def setCamFov(fov):
-            base.camLens.setFov(fov)
+            base.camLens.setFov(base.getAdjustedFov(fov))
 
         camTrack.append(Func(camera.wrtReparentTo, suitLeader))
         camTrack.append(Func(setCamFov, self.camFOFov))
@@ -157,7 +157,7 @@ class DistributedBattleBldg(DistributedBattleBase.DistributedBattleBase):
         self.clearInterval(self.faceOffName)
         self._removeMembersKeep()
         camera.wrtReparentTo(self)
-        base.camLens.setFov(self.camFov)
+        base.camLens.setFov(base.getAdjustedFov(self.camFov) if hasattr(base, 'getAdjustedFov') else self.camFov)
         return None
 
     def __playReward(self, ts, callback):

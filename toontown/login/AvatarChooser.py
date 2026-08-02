@@ -154,6 +154,7 @@ class AvatarChooser(StateData.StateData):
         elif failed or not haveBackdrop:
             chooser_notify.warning('pick_a_toon_gui failed to load; skipping legacy background image')
         self.title = OnscreenText(TTLocalizer.AvatarChooserPickAToon, scale=TTLocalizer.ACtitle, parent=hidden, font=ToontownGlobals.getSignFont(), fg=(1, 0.9, 0.1, 1), pos=(0.0, 0.82))
+
         # Some forks remove/rename assets; guard against missing models so we
         # don't trip Panda NodePath empty assertions.
         quitHover = None
@@ -167,8 +168,12 @@ class AvatarChooser(StateData.StateData):
         if quitHover is None:
             # Safe fallback: DirectButton allows image=None.
             chooser_notify.warning('pick_a_toon_gui missing QuitBtn_RLVR; using fallback button visuals')
-        self.quitButton = DirectButton(image=(quitHover, quitHover, quitHover), relief=None, text=TTLocalizer.AvatarChooserQuit, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_pos=TTLocalizer.ACquitButtonPos, text_scale=TTLocalizer.ACquitButton, image_scale=1, image1_scale=1.05, image2_scale=1.05, scale=1.05, pos=(1.08, 0, -0.907), command=self.__handleQuit)
-        self.logoutButton = DirectButton(relief=None, image=(quitHover, quitHover, quitHover), text=TTLocalizer.OptionsPageLogout, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_scale=TTLocalizer.AClogoutButton, text_pos=(0, -0.035), pos=(-1.17, 0, -0.914), image_scale=1.15, image1_scale=1.15, image2_scale=1.18, scale=0.5, command=self.__handleLogoutWithoutConfirm)
+        # Widescreen-aware: pin the quit/logout buttons to the screen edges
+        quitButtonPos = (base.getWidescreenXOffset(1.08, 'right') if hasattr(base, 'getWidescreenXOffset') else 1.08, 0, -0.907)
+        self.quitButton = DirectButton(image=(quitHover, quitHover, quitHover), relief=None, text=TTLocalizer.AvatarChooserQuit, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_pos=TTLocalizer.ACquitButtonPos, text_scale=TTLocalizer.ACquitButton, image_scale=1, image1_scale=1.05, image2_scale=1.05, scale=1.05, pos=quitButtonPos, command=self.__handleQuit)
+        logoutButtonPos = (base.getWidescreenXOffset(-1.17, 'left') if hasattr(base, 'getWidescreenXOffset') else -1.17, 0, -0.914)
+        self.logoutButton = DirectButton(relief=None, image=(quitHover, quitHover, quitHover), text=TTLocalizer.OptionsPageLogout, text_font=ToontownGlobals.getSignFont(), text_fg=(0.977, 0.816, 0.133, 1), text_scale=TTLocalizer.AClogoutButton, text_pos=(0, -0.035), pos=logoutButtonPos, image_scale=1.15, image1_scale=1.15, image2_scale=1.18, scale=0.5, command=self.__handleLogoutWithoutConfirm)
+
         self.logoutButton.hide()
         try:
             if gui is not None and not gui.isEmpty():

@@ -1,0 +1,173 @@
+{
+  "2": {
+    "state": "toon",
+    "block": "2",
+    "track": "c",
+    "difficulty": "1",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 0
+  },
+  "4": {
+    "state": "suit",
+    "block": "4",
+    "track": "c",
+    "difficulty": "1",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 1776407038.1934795
+  },
+  "6": {
+    "state": "suit",
+    "block": "6",
+    "track": "c",
+    "difficulty": "2",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 1776411273.1159532
+  },
+  "8": {
+    "state": "toon",
+    "block": "8",
+    "track": "c",
+    "difficulty": "1",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 0
+  },
+  "9": {
+    "state": "cogdo",
+    "block": "9",
+    "track": "s",
+    "difficulty": "4",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 1776407111.0249455
+  },
+  "12": {
+    "state": "suit",
+    "block": "12",
+    "track": "c",
+    "difficulty": "1",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 1776407036.3265915
+  },
+  "13": {
+    "state": "toon",
+    "block": "13",
+    "track": "c",
+    "difficulty": "1",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 0
+  },
+  "14": {
+    "state": "toon",
+    "block": "14",
+    "track": "c",
+    "difficulty": "1",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 0
+  },
+  "15": {
+    "state": "cogdo",
+    "block": "15",
+    "track": "s",
+    "difficulty": "4",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 1776411789.2534516
+  },
+  "16": {
+    "state": "toon",
+    "block": "16",
+    "track": "c",
+    "difficulty": "1",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 0
+  },
+  "17": {
+    "state": "cogdo",
+    "block": "17",
+    "track": "s",
+    "difficulty": "4",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 1776401079.7629383
+  },
+  "19": {
+    "state": "toon",
+    "block": "19",
+    "track": "c",
+    "difficulty": "1",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 0
+  },
+  "20": {
+    "state": "toon",
+    "block": "20",
+    "track": "c",
+    "difficulty": "1",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 0
+  },
+  "21": {
+    "state": "cogdo",
+    "block": "21",
+    "track": "s",
+    "difficulty": "4",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 1776407973.1377637
+  },
+  "22": {
+    "state": "toon",
+    "block": "22",
+    "track": "c",
+    "difficulty": "1",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 0
+  },
+  "24": {
+    "state": "toon",
+    "block": "24",
+    "track": "c",
+    "difficulty": "1",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 0
+  },
+  "26": {
+    "state": "cogdo",
+    "block": "26",
+    "track": "s",
+    "difficulty": "4",
+    "numFloors": "1",
+    "savedBy": [],
+    "becameSuitTime": 1776407160.0253901
+  },
+  "27": {
+    "state": "suit",
+    "block": "27",
+    "track": "c",
+    "difficulty": "2",
+    "numFloors": "2",
+    "savedBy": [],
+    "becameSuitTime": 1776406998.899616
+  },
+  "28": {
+    "state": "suit",
+    "block": "28",
+    "track": "c",
+    "difficulty": "2",
+    "numFloors": "3",
+    "savedBy": [],
+    "becameSuitTime": 1776401125.6067028
+  }
+}

@@ -48,3 +48,20 @@ ARGUMENT_NAME = 0
 ARGUMENT_TYPE = 1
 ARGUMENT_REQUIRED = 2
 ARGUMENT_DEFAULT = 3
+
+# The default values generated with config/spellbook.json to help server hosters get started.
+# ToontownMagicWordManagerAI writes these to config/spellbook.json on first run.
+CUSTOM_SPELLBOOK_DEFAULT = '''{
+    "words":
+    [
+        {
+            "name": "SetPos",
+            "access": "MODERATOR"
+        },
+        {
+            "name": "GetPos",
+            "access": "MODERATOR"
+        }
+    ]
+}
+'''

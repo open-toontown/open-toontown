@@ -69,4 +69,16 @@ htmlcov/
 *.tar.bz2
 *.tar.xz
 *.tar.zst
+
+# Gemini / Agent documentation
+GEMINI.md
+
 ```
+
+# Local environment / large assets (not part of the repo)
+Panda3D/
+resources/
+errorCode
+useropt.json
+toontown/launcher/useropt.json
+astron/databases/accounts.json

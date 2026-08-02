@@ -93,10 +93,12 @@ class RaceGUI:
         self.aspect2dRoot.setDepthWrite(1)
         self.raceModeRoot = self.aspect2dRoot.attachNewNode('RaceModeRoot')
         gui = loader.loadModel('phase_3.5/models/gui/avatar_panel_gui')
+        # Widescreen-aware: keep HUD buttons pinned to the screen edges
+        closeButtonPos = (base.a2dLeft + 0.343, 0, 0.925) if hasattr(base, 'a2dLeft') else (-0.99, 0, 0.925)
         self.closeButton = DirectButton(image=(gui.find('**/CloseBtn_UP'),
          gui.find('**/CloseBtn_DN'),
          gui.find('**/CloseBtn_Rllvr'),
-         gui.find('**/CloseBtn_UP')), relief=None, scale=1.05, text=TTLocalizer.KartRace_Leave, text_scale=0.04, text_pos=(0, -0.07), text_fg=VBase4(1, 1, 1, 1), pos=(-0.99, 0, 0.925), command=self.race.leaveRace)
+         gui.find('**/CloseBtn_UP')), relief=None, scale=1.05, text=TTLocalizer.KartRace_Leave, text_scale=0.04, text_pos=(0, -0.07), text_fg=VBase4(1, 1, 1, 1), pos=closeButtonPos, command=self.race.leaveRace)
         self.closeButton.reparentTo(self.aspect2dRoot)
         self.directObjList.append(self.closeButton)
         self.raceTimeDelta = 0
@@ -137,13 +139,15 @@ class RaceGUI:
         self.placeLabelStr = DirectLabel(relief=None, pos=TTLocalizer.RGUIplaceLabelStrPos, text=TTLocalizer.KartRace_FirstSuffix, text_scale=0.1, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont())
         self.placeLabelStr.reparentTo(self.raceModeRoot)
         self.directObjList.append(self.placeLabelStr)
-        self.lapLabel = DirectLabel(relief=None, pos=(1.1, 0, 0.45), text='1/' + str(self.race.lapCount), text_scale=0.1, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont())
+        lapLabelPos = (base.a2dRight - 0.233, 0, 0.45) if hasattr(base, 'a2dRight') else (1.1, 0, 0.45)
+        self.lapLabel = DirectLabel(relief=None, pos=lapLabelPos, text='1/' + str(self.race.lapCount), text_scale=0.1, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont())
         self.lapLabel.reparentTo(self.raceModeRoot)
         self.directObjList.append(self.lapLabel)
         self.photoFinishLabel = DirectLabel(relief=None, pos=(0, 0, -0.1), text=TTLocalizer.KartRace_PhotoFinish, text_scale=TTLocalizer.RGUIphotoFinish, text_fg=(0.95, 0.95, 0, 1), text_font=ToontownGlobals.getSignFont())
         self.photoFinishLabel.hide()
         self.directObjList.append(self.photoFinishLabel)
-        self.wrongWayLabel = DirectLabel(relief=None, pos=(1.1, 0, 0.85), text=TTLocalizer.KartRace_WrongWay, text_scale=0.1, text_fg=(0.95, 0, 0, 1), text_font=ToontownGlobals.getSignFont())
+        wrongWayLabelPos = (base.a2dRight - 0.233, 0, 0.85) if hasattr(base, 'a2dRight') else (1.1, 0, 0.85)
+        self.wrongWayLabel = DirectLabel(relief=None, pos=wrongWayLabelPos, text=TTLocalizer.KartRace_WrongWay, text_scale=0.1, text_fg=(0.95, 0, 0, 1), text_font=ToontownGlobals.getSignFont())
         self.wrongWayLabel.reparentTo(self.raceModeRoot)
         self.directObjList.append(self.wrongWayLabel)
         self.wrongWayLabel.setColorScale(Vec4(1, 1, 1, 0))
@@ -166,7 +170,8 @@ class RaceGUI:
         self.cardMaker.setName('GagIndicator')
         self.cardMaker.setFrame(-0.5, 0.5, -0.5, 0.5)
         self.cardMaker.setColor(1, 1, 1, 1)
-        self.gagPanel = DirectFrame(parent=self.raceModeRoot, relief=None, image=loader.loadModel('phase_6/models/karting/gag_panel'), image_scale=0.25, pos=(-1.13, 0, -0.5))
+        gagPanelPos = (base.a2dLeft + 0.203, 0, -0.5) if hasattr(base, 'a2dLeft') else (-1.13, 0, -0.5)
+        self.gagPanel = DirectFrame(parent=self.raceModeRoot, relief=None, image=loader.loadModel('phase_6/models/karting/gag_panel'), image_scale=0.25, pos=gagPanelPos)
         self.directObjList.append(self.gagPanel)
         self.gag = self.gagPanel.attachNewNode('gag')
         self.gag.setScale(0.2)

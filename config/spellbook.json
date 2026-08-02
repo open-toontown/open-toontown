@@ -1,0 +1,13 @@
+{
+    "words":
+    [
+        {
+            "name": "SetPos",
+            "access": "MODERATOR"
+        },
+        {
+            "name": "GetPos",
+            "access": "MODERATOR"
+        }
+    ]
+}

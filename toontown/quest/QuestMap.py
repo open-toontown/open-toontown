@@ -57,8 +57,10 @@ class QuestMap(DirectFrame):
         self.marker['image'] = iconNP
         self.marker.setScale(0.05)
         iconNP.removeNode()
-        self.mapOpenButton = DirectButton(image=(gui.find('**/tt_t_gui_qst_mapClose'), gui.find('**/tt_t_gui_qst_mapClose'), gui.find('**/tt_t_gui_qst_mapTryToOpen')), relief=None, pos=(1.25, 0, -0.63), scale=0.205, command=self.show)
-        self.mapCloseButton = DirectButton(image=(gui.find('**/tt_t_gui_qst_mapOpen'), gui.find('**/tt_t_gui_qst_mapOpen'), gui.find('**/tt_t_gui_qst_mapTryToClose')), relief=None, pos=(1.25, 0, -0.63), scale=0.205, command=self.hide)
+        # Widescreen-aware: pin the quest-map buttons to the right edge of the screen
+        mapButtonX = base.getWidescreenXOffset(1.25, 'right') if hasattr(base, 'getWidescreenXOffset') else 1.25
+        self.mapOpenButton = DirectButton(image=(gui.find('**/tt_t_gui_qst_mapClose'), gui.find('**/tt_t_gui_qst_mapClose'), gui.find('**/tt_t_gui_qst_mapTryToOpen')), relief=None, pos=(mapButtonX, 0, -0.63), scale=0.205, command=self.show)
+        self.mapCloseButton = DirectButton(image=(gui.find('**/tt_t_gui_qst_mapOpen'), gui.find('**/tt_t_gui_qst_mapOpen'), gui.find('**/tt_t_gui_qst_mapTryToClose')), relief=None, pos=(mapButtonX, 0, -0.63), scale=0.205, command=self.hide)
         self.mapOpenButton.hide()
         self.mapCloseButton.hide()
         gui.removeNode()

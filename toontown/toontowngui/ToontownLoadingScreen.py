@@ -22,6 +22,17 @@ class ToontownLoadingScreen:
         self.banner = loader.loadModel('phase_3/models/gui/toon_council').find('**/scroll')
         self.banner.reparentTo(self.gui)
         self.banner.setScale(0.4, 0.4, 0.4)
+        # Widescreen support: stretch the 4:3 background to cover widescreen
+        # displays, then counter-scale the child elements so they keep their
+        # original proportions (no black bars, no distorted text).
+        self.wideScale = 1.0
+        try:
+            self.wideScale = float(base.getWidescreenGUIXScale())
+        except Exception:
+            self.wideScale = 1.0
+        if self.wideScale != 1.0:
+            self.gui.setScale(self.wideScale, 1, 1)
+            self.banner.setScale(0.4 / self.wideScale, 0.4, 0.4)
         self.tip = DirectLabel(guiId='ToontownLoadingScreenTip', parent=self.banner, relief=None, text='', text_scale=TTLocalizer.TLStip, textMayChange=1, pos=(-1.2, 0.0, 0.1), text_fg=(0.4, 0.3, 0.2, 1), text_wordwrap=13, text_align=TextNode.ALeft)
         self.title = DirectLabel(guiId='ToontownLoadingScreenTitle', parent=self.gui, relief=None, pos=(-1.06, 0, -0.77), text='', textMayChange=1, text_scale=0.08, text_fg=(0, 0, 0.5, 1), text_align=TextNode.ALeft)
         self.waitBar = DirectWaitBar(guiId='ToontownLoadingScreenWaitBar', parent=self.gui, frameSize=(-1.06,
@@ -68,6 +79,10 @@ class ToontownLoadingScreen:
         if gui:
             self.waitBar.reparentTo(self.gui)
             self.title.reparentTo(self.gui)
+            if self.wideScale != 1.0:
+                # Counter-scale so the bar/title keep 4:3 proportions on widescreen
+                self.waitBar.setScale(1.0 / self.wideScale, 1, 1)
+                self.title.setScale(1.0 / self.wideScale, 1, 1)
             self.gui.reparentTo(aspect2dp, DGG.NO_FADE_SORT_INDEX)
         else:
             self.waitBar.reparentTo(aspect2dp, DGG.NO_FADE_SORT_INDEX)
@@ -83,6 +98,10 @@ class ToontownLoadingScreen:
         self.waitBar.finish()
         self.waitBar.reparentTo(self.gui)
         self.title.reparentTo(self.gui)
+        if self.wideScale != 1.0:
+            # Restore normal scale now that the screen is hidden
+            self.waitBar.setScale(1, 1, 1)
+            self.title.setScale(1, 1, 1)
         self.gui.reparentTo(hidden)
         return (self.__expectedCount, self.__count)
 

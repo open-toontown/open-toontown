@@ -9,7 +9,6 @@ import os
 from typing import Optional
 
 from direct.directnotify import DirectNotifyGlobal
-from direct.showbase.ShowBaseGlobal import base
 from direct.task import Task
 from panda3d.core import (
     AmbientLight,
@@ -45,6 +44,9 @@ class LoadingAssetPreview:
         pos: (x, y, z) in aspect2d space
         frame: (left, right, bottom, top) CardMaker frame (relative scale)
         """
+        # `base` may not exist yet at import time (this module is imported while
+        # ToonBase is still being constructed), so resolve it lazily at runtime.
+        from toontown.toonbase.ToonBaseGlobal import base
         self.detach_card()
         if not base.win:
             return
@@ -118,6 +120,7 @@ class LoadingAssetPreview:
         self._clear_holder()
 
     def _teardown_buffer(self):
+        from toontown.toonbase.ToonBaseGlobal import base
         if self._buffer:
             try:
                 base.graphicsEngine.removeWindow(self._buffer)
@@ -135,6 +138,7 @@ class LoadingAssetPreview:
             pass
 
     def _stop_spin(self):
+        from toontown.toonbase.ToonBaseGlobal import base
         if self._spin_task:
             try:
                 base.taskMgr.remove(self._spin_task)
@@ -156,6 +160,7 @@ class LoadingAssetPreview:
         texture: Optional[Texture] = None,
         force: bool = False,
     ):
+        from toontown.toonbase.ToonBaseGlobal import base
         if not self._buffer or not self._card:
             return
         now = base.globalClock.getRealTime()
