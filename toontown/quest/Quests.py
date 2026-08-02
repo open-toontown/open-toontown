@@ -17675,6 +17675,19 @@ QuestDict = {
          NA,
          TTLocalizer.QuestDialogDict[12032])}
 
+WANT_LEGACY_QUESTS = True
+
+if WANT_LEGACY_QUESTS:
+    from toontown.quest import LegacyQuestDict
+    for key, value in LegacyQuestDict.QuestDict.items():
+        QuestDict[key] = value
+
+def questExists(questId) -> bool:
+    try:
+        return int(questId) in QuestDict
+    except Exception:
+        return False
+
 Tier2QuestsDict = {}
 for questId, questDesc in list(QuestDict.items()):
     if questDesc[QuestDictStartIndex] == Start:
