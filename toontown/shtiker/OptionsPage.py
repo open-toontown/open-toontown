@@ -1,773 +1,879 @@
-from panda3d.core import *
-from . import ShtikerPage
-from toontown.toontowngui import TTDialog
-from direct.gui.DirectGui import *
-from toontown.toonbase import TTLocalizer
-from . import DisplaySettingsDialog
-from direct.task import Task
-from otp.speedchat import SpeedChat
-from otp.speedchat import SCColorScheme
-from otp.speedchat import SCStaticTextTerminal
+"""OptionsPage module: contains the OptionsPage class"""
+import os
+from enum import IntEnum, auto
+from typing import Optional
+
+from panda3d.core import TextNode, Vec4
 from direct.directnotify import DirectNotifyGlobal
-from enum import IntEnum
-speedChatStyles = ((2000,
-  (200 / 255.0, 60 / 255.0, 229 / 255.0),
-  (200 / 255.0, 135 / 255.0, 255 / 255.0),
-  (220 / 255.0, 195 / 255.0, 229 / 255.0)),
- (2001,
-  (0 / 255.0, 0 / 255.0, 255 / 255.0),
-  (140 / 255.0, 150 / 255.0, 235 / 255.0),
-  (201 / 255.0, 215 / 255.0, 255 / 255.0)),
- (2002,
-  (90 / 255.0, 175 / 255.0, 225 / 255.0),
-  (120 / 255.0, 215 / 255.0, 255 / 255.0),
-  (208 / 255.0, 230 / 255.0, 250 / 255.0)),
- (2003,
-  (130 / 255.0, 235 / 255.0, 235 / 255.0),
-  (120 / 255.0, 225 / 255.0, 225 / 255.0),
-  (234 / 255.0, 255 / 255.0, 255 / 255.0)),
- (2004,
-  (0 / 255.0, 200 / 255.0, 70 / 255.0),
-  (0 / 255.0, 200 / 255.0, 80 / 255.0),
-  (204 / 255.0, 255 / 255.0, 204 / 255.0)),
- (2005,
-  (235 / 255.0, 230 / 255.0, 0 / 255.0),
-  (255 / 255.0, 250 / 255.0, 100 / 255.0),
-  (255 / 255.0, 250 / 255.0, 204 / 255.0)),
- (2006,
-  (255 / 255.0, 153 / 255.0, 0 / 255.0),
-  (229 / 255.0, 147 / 255.0, 0 / 255.0),
-  (255 / 255.0, 234 / 255.0, 204 / 255.0)),
- (2007,
-  (255 / 255.0, 0 / 255.0, 50 / 255.0),
-  (229 / 255.0, 0 / 255.0, 50 / 255.0),
-  (255 / 255.0, 204 / 255.0, 204 / 255.0)),
- (2008,
-  (255 / 255.0, 153 / 255.0, 193 / 255.0),
-  (240 / 255.0, 157 / 255.0, 192 / 255.0),
-  (255 / 255.0, 215 / 255.0, 238 / 255.0)),
- (2009,
-  (170 / 255.0, 120 / 255.0, 20 / 255.0),
-  (165 / 255.0, 120 / 255.0, 50 / 255.0),
-  (210 / 255.0, 200 / 255.0, 180 / 255.0)))
-PageMode = IntEnum('PageMode', ('Options', 'Codes'), start=0)
+from direct.fsm.FSM import FSM
+from direct.gui.DirectGui import *
+from direct.showbase.MessengerGlobal import messenger
 
-class OptionsPage(ShtikerPage.ShtikerPage):
-    notify = DirectNotifyGlobal.directNotify.newCategory('OptionsPage')
+from otp.otpbase.OTPLocalizerEnglish import SpeedChatStaticTextToontown
+from otp.speedchat.SpeedChatGlobals import speedChatStyles
+from toontown.settings.Settings import Setting
+from toontown.shtiker.ShtikerPage import ShtikerPage
+from toontown.toonbase import TTLocalizer
+from toontown.toontowngui import TTDialog
+from toontown.toontowngui.ToontownScrolledFrame import ToontownScrolledFrame
 
+from direct.distributed.ClockDelta import *
+
+try:
+    from toontown.hood import OutdoorLighting
+except ImportError:
+    import OutdoorLighting
+from otp.avatar import ShadowCaster
+
+class OptionTypes(IntEnum):
+    BUTTON = auto()
+    DROPDOWN = auto()
+    SLIDER = auto()
+    CONTROL = auto()
+    BUTTON_SPEEDCHAT = auto()
+
+
+OptionToType = {
+    # Gameplay
+    'camSensitivityX': OptionTypes.SLIDER,
+    'camSensitivityY': OptionTypes.SLIDER,
+    'movement_mode': OptionTypes.BUTTON,
+    'sprint_mode': OptionTypes.BUTTON,
+    'fovEffects': OptionTypes.BUTTON,
+    'cam-toggle-lock': OptionTypes.BUTTON,
+    'boss-alerts': OptionTypes.BUTTON,
+    'speedchat-style': OptionTypes.BUTTON_SPEEDCHAT,
+    'discord-rich-presence': OptionTypes.BUTTON,
+    'color-blind-mode': OptionTypes.BUTTON,
+    'want-legacy-models': OptionTypes.BUTTON,
+    'laff-display': OptionTypes.BUTTON,
+    'battle-speed': OptionTypes.DROPDOWN,
+
+    # Privacy
+    "competitive-boss-scoring": OptionTypes.BUTTON,
+    "report-errors": OptionTypes.BUTTON,
+
+    # Video
+    "borderless": OptionTypes.BUTTON,
+    "resolution": OptionTypes.DROPDOWN,
+    "vertical-sync": OptionTypes.BUTTON,
+    "anisotropic-filter": OptionTypes.DROPDOWN,
+    "anti-aliasing": OptionTypes.DROPDOWN,
+    "frame-rate-meter": OptionTypes.BUTTON,
+    "fps-limit": OptionTypes.DROPDOWN,
+    "want-modern-outdoor-lighting": OptionTypes.BUTTON,
+    "dynamic-shadows": OptionTypes.BUTTON,
+    "shadow-quality": OptionTypes.DROPDOWN,
+    "lighting-bloom-enabled": OptionTypes.BUTTON,
+    "lighting-god-rays": OptionTypes.BUTTON,
+    "want-procedural-sky": OptionTypes.BUTTON,
+    "want-day-night-cycle": OptionTypes.BUTTON,
+    "want-water-reflections": OptionTypes.BUTTON,
+    "drop-shadow-strength": OptionTypes.SLIDER,
+
+    # Audio
+    "music": OptionTypes.BUTTON,
+    "sfx": OptionTypes.BUTTON,
+    "music-volume": OptionTypes.SLIDER,
+    "sfx-volume": OptionTypes.SLIDER,
+    "toon-chat-sounds": OptionTypes.BUTTON,
+    "random-music": OptionTypes.BUTTON,
+    "refresh-audio": OptionTypes.BUTTON
+}
+
+# All control options are naturally going to be of the CONTROL option type,
+# so let's fill the dictionary as such.
+controls = list(base.settings.getControls())
+OptionToType.update(dict(zip(controls, [OptionTypes.CONTROL for _ in range(len(controls))])))
+
+
+class OptionsPage(ShtikerPage):
+    """OptionsPage class"""
+
+    notify = DirectNotifyGlobal.directNotify.newCategory("OptionsPage")
+
+    # special methods
     def __init__(self):
-        ShtikerPage.ShtikerPage.__init__(self)
+        """__init__(self)
+        OptionsPage constructor: create the options page
+        """
+        super().__init__()
+
+        if __debug__:
+            base.op = self
 
     def load(self):
-        ShtikerPage.ShtikerPage.load(self)
+        assert self.notify.debugStateCall(self)
+        super().load()
+
+        # Create the OptionsTabPage
         self.optionsTabPage = OptionsTabPage(self)
         self.optionsTabPage.hide()
-        self.codesTabPage = CodesTabPage(self)
-        self.codesTabPage.hide()
-        titleHeight = 0.61
-        self.title = DirectLabel(parent=self, relief=None, text=TTLocalizer.OptionsPageTitle, text_scale=0.12, pos=(0, 0, titleHeight))
-        normalColor = (1, 1, 1, 1)
-        clickColor = (0.8, 0.8, 0, 1)
-        rolloverColor = (0.15, 0.82, 1.0, 1)
-        diabledColor = (1.0, 0.98, 0.15, 1)
-        gui = loader.loadModel('phase_3.5/models/gui/fishingBook')
-        self.optionsTab = DirectButton(parent=self, relief=None, text=TTLocalizer.OptionsPageTitle, text_scale=TTLocalizer.OPoptionsTab, text_align=TextNode.ALeft, text_pos=(0.01, 0.0, 0.0), image=gui.find('**/tabs/polySurface1'), image_pos=(0.55, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[PageMode.Options], pos=(-0.36, 0, 0.77))
-        self.codesTab = DirectButton(parent=self, relief=None, text=TTLocalizer.OptionsPageCodesTab, text_scale=TTLocalizer.OPoptionsTab, text_align=TextNode.ALeft, text_pos=(-0.035, 0.0, 0.0), image=gui.find('**/tabs/polySurface2'), image_pos=(0.12, 1, -0.91), image_hpr=(0, 0, -90), image_scale=(0.033, 0.033, 0.035), image_color=normalColor, image1_color=clickColor, image2_color=rolloverColor, image3_color=diabledColor, text_fg=Vec4(0.2, 0.1, 0, 1), command=self.setMode, extraArgs=[PageMode.Codes], pos=(0.11, 0, 0.77))
-        return
+
+        titleHeight = 0.61  # bigger number means higher the title
+        self.title = DirectLabel(
+            parent=self,
+            relief=None,
+            text=TTLocalizer.OptionsPageTitle,
+            text_scale=0.12,
+            pos=(0, 0, titleHeight),
+        )
 
     def enter(self):
-        self.setMode(PageMode.Options, updateAnyways=1)
-        ShtikerPage.ShtikerPage.enter(self)
+        assert self.notify.debugStateCall(self)
+
+        messenger.send('wakeup')
+
+        self.optionsTabPage.enter()
+
+        # Make the call to the superclass enter method.
+        super().enter()
 
     def exit(self):
+        assert self.notify.debugStateCall(self)
         self.optionsTabPage.exit()
-        self.codesTabPage.exit()
-        ShtikerPage.ShtikerPage.exit(self)
+
+        # Make the call to the superclass exit method.
+        super().exit()
 
     def unload(self):
+        assert self.notify.debugStateCall(self)
         self.optionsTabPage.unload()
+
+        # Cleanup the direct label.
+        self.title.destroy()
         del self.title
-        ShtikerPage.ShtikerPage.unload(self)
 
-    def setMode(self, mode, updateAnyways = 0):
-        messenger.send('wakeup')
-        if not updateAnyways:
-            if self.mode == mode:
-                return
-            else:
-                self.mode = mode
-        if mode == PageMode.Options:
-            self.mode = PageMode.Options
-            self.title['text'] = TTLocalizer.OptionsPageTitle
-            self.optionsTab['state'] = DGG.DISABLED
-            self.optionsTabPage.enter()
-            self.codesTab['state'] = DGG.NORMAL
-            self.codesTabPage.exit()
-        elif mode == PageMode.Codes:
-            self.mode = PageMode.Codes
-            self.title['text'] = TTLocalizer.CdrPageTitle
-            self.optionsTab['state'] = DGG.NORMAL
-            self.optionsTabPage.exit()
-            self.codesTab['state'] = DGG.DISABLED
-            self.codesTabPage.enter()
-        else:
-            raise Exception('OptionsPage::setMode - Invalid Mode %s' % mode)
+        # Make the call to the superclass unload method.
+        super().unload()
 
 
-class OptionsTabPage(DirectFrame):
-    notify = DirectNotifyGlobal.directNotify.newCategory('OptionsTabPage')
-    DisplaySettingsTaskName = 'save-display-settings'
-    DisplaySettingsDelay = 60
-    ChangeDisplaySettings = ConfigVariableBool('change-display-settings', 1).value
-    ChangeDisplayAPI = ConfigVariableBool('change-display-api', 0).value
+class OptionsTabPage(DirectFrame, FSM):
+    tabOptions = {
+        "Gameplay": [
+            'camSensitivityX',
+            'camSensitivityY',
+            'movement_mode',
+            'sprint_mode',
+            'battle-speed',
+            'fovEffects',
+            'cam-toggle-lock',
+            'boss-alerts',
+            'speedchat-style',
+            'discord-rich-presence',
+            'color-blind-mode',
+            'want-legacy-models',
+            'laff-display',
+        ],
+        "Privacy": [
+            "competitive-boss-scoring",
+            "report-errors"
+        ],
+        "Controls": [*list(base.settings.getControls())],
+        "Video": [
+            "borderless", "resolution", "vertical-sync", "anisotropic-filter",
+            "anti-aliasing", "frame-rate-meter", "fps-limit",
+            "want-modern-outdoor-lighting", "dynamic-shadows", "shadow-quality",
+            "lighting-bloom-enabled", "lighting-god-rays",
+            "want-procedural-sky", "want-day-night-cycle", "want-water-reflections",
+            "drop-shadow-strength",
+        ],
+        "Audio": [
+            "music", "sfx", "music-volume", "sfx-volume", "toon-chat-sounds",
+            "random-music", "refresh-audio"
+        ],
+    }
 
-    def __init__(self, parent = aspect2d):
+    def __init__(self, parent=aspect2d, **kw):
+        DirectFrame.__init__(self, parent, **kw)
+        FSM.__init__(self, "OptionsTabPageNEW")
+
         self._parent = parent
-        self.currentSizeIndex = None
-        DirectFrame.__init__(self, parent=self._parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
+
+        self.tabs: dict[str, DirectButton] = {}
+        self.options: dict[str, OptionsScrolledFrame] = {}
+
         self.load()
-        return
 
-    def destroy(self):
-        self._parent = None
-        DirectFrame.destroy(self)
-        return
+    def load(self) -> None:
+        # Load the Fish Page to borrow its tabs
+        base.loader.loadModel("phase_3.5/models/gui/fishingBook", callback=self.loadTabs)
+        # Load the "Exit Toontown" button
+        base.loader.loadModel("phase_3/models/gui/quit_button", callback=self.createExitButton)
+        # Load (& hide) the options frames
+        base.loader.loadModel("phase_3/models/gui/quit_button", callback=self.createTabs)
 
-    def load(self):
-        self.displaySettings = None
-        self.displaySettingsChanged = 0
-        self.displaySettingsSize = (None, None)
-        self.displaySettingsFullscreen = None
-        self.displaySettingsEmbedded = None
-        self.displaySettingsApi = None
-        self.displaySettingsApiChanged = 0
-        guiButton = loader.loadModel('phase_3/models/gui/quit_button')
-        gui = loader.loadModel('phase_3.5/models/gui/friendslist_gui')
-        titleHeight = 0.61
-        textStartHeight = 0.45
-        textRowHeight = 0.145
-        leftMargin = -0.72
-        buttonbase_xcoord = 0.35
-        buttonbase_ycoord = 0.45
-        button_image_scale = (0.7, 1, 1)
-        button_textpos = (0, -0.02)
-        options_text_scale = 0.052
-        disabled_arrow_color = Vec4(0.6, 0.6, 0.6, 1.0)
-        self.speed_chat_scale = 0.055
-        self.Music_Label = DirectLabel(parent=self, relief=None, text=TTLocalizer.OptionsPageMusicVolumeLabel, text_align=TextNode.ALeft, text_scale=options_text_scale, pos=(leftMargin, 0, textStartHeight))
-        self.SoundFX_Label = DirectLabel(parent=self, relief=None, text=TTLocalizer.OptionsPageSFXVolumeLabel, text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - textRowHeight))
-        self.Friends_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 3 * textRowHeight))
-        self.Whispers_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=16, pos=(leftMargin, 0, textStartHeight - 4 * textRowHeight))
-        self.DisplaySettings_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=10, pos=(leftMargin, 0, textStartHeight - 5 * textRowHeight))
-        self.SpeedChatStyle_Label = DirectLabel(parent=self, relief=None, text=TTLocalizer.OptionsPageSpeedChatStyleLabel, text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=10, pos=(leftMargin, 0, textStartHeight - 6 * textRowHeight))
-        self.ToonChatSounds_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 2 * textRowHeight + 0.025))
-        self.ToonChatSounds_Label.setScale(0.9)
-        self.TKeyOnlyChat_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 7 * textRowHeight))
-        # New QOL options
-        self.ShowFPS_Label = DirectLabel(parent=self, relief=None, text='Show FPS Counter', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 8 * textRowHeight))
-        self.MouseSensitivity_Label = DirectLabel(parent=self, relief=None, text='Mouse Sensitivity', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 9 * textRowHeight))
-        self.CameraFOV_Label = DirectLabel(parent=self, relief=None, text='Camera FOV', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 10 * textRowHeight))
-        self.SmoothAnimations_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 11 * textRowHeight))
-        self.ShowNametags_Label = DirectLabel(parent=self, relief=None, text='', text_align=TextNode.ALeft, text_scale=options_text_scale, text_wordwrap=15, pos=(leftMargin, 0, textStartHeight - 12 * textRowHeight))
-        # Controls info - WASD and Arrow keys both work
-        self.Controls_Label = DirectLabel(parent=self, relief=None, text='Controls: WASD and Arrow Keys, F9 for Screenshot', text_align=TextNode.ALeft, text_scale=options_text_scale * 0.75, text_wordwrap=25, pos=(leftMargin, 0, textStartHeight - 13 * textRowHeight))
-        # Music volume slider
-        self.Music_toggleSlider = DirectSlider(parent=self, relief=DGG.FLAT, range=(0, 100), value=100, pageSize=5, pos=(buttonbase_xcoord + 0.2, 0.0, buttonbase_ycoord), scale=0.5, command=self.__setMusicVolume)
-        self.Music_volumeLabel = DirectLabel(parent=self, relief=None, text='100%', text_scale=options_text_scale * 0.8, pos=(buttonbase_xcoord + 0.5, 0.0, buttonbase_ycoord))
-        # SFX volume slider
-        self.SoundFX_toggleSlider = DirectSlider(parent=self, relief=DGG.FLAT, range=(0, 100), value=100, pageSize=5, pos=(buttonbase_xcoord + 0.2, 0.0, buttonbase_ycoord - textRowHeight), scale=0.5, command=self.__setSfxVolume)
-        self.SoundFX_volumeLabel = DirectLabel(parent=self, relief=None, text='100%', text_scale=options_text_scale * 0.8, pos=(buttonbase_xcoord + 0.5, 0.0, buttonbase_ycoord - textRowHeight))
-        self.Friends_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 3), command=self.__doToggleAcceptFriends)
-        self.Whispers_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 4), command=self.__doToggleAcceptWhispers)
-        self.DisplaySettingsButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image3_color=Vec4(0.5, 0.5, 0.5, 0.5), image_scale=button_image_scale, text=TTLocalizer.OptionsPageChange, text3_fg=(0.5, 0.5, 0.5, 0.75), text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 5), command=self.__doDisplaySettings)
-        self.speedChatStyleLeftArrow = DirectButton(parent=self, relief=None, image=(gui.find('**/Horiz_Arrow_UP'),
-         gui.find('**/Horiz_Arrow_DN'),
-         gui.find('**/Horiz_Arrow_Rllvr'),
-         gui.find('**/Horiz_Arrow_UP')), image3_color=Vec4(1, 1, 1, 0.5), scale=(-1.0, 1.0, 1.0), pos=(0.25, 0, buttonbase_ycoord - textRowHeight * 6), command=self.__doSpeedChatStyleLeft)
-        self.speedChatStyleRightArrow = DirectButton(parent=self, relief=None, image=(gui.find('**/Horiz_Arrow_UP'),
-         gui.find('**/Horiz_Arrow_DN'),
-         gui.find('**/Horiz_Arrow_Rllvr'),
-         gui.find('**/Horiz_Arrow_UP')), image3_color=Vec4(1, 1, 1, 0.5), pos=(0.65, 0, buttonbase_ycoord - textRowHeight * 6), command=self.__doSpeedChatStyleRight)
-        self.ToonChatSounds_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'),
-         guiButton.find('**/QuitBtn_DN'),
-         guiButton.find('**/QuitBtn_RLVR'),
-         guiButton.find('**/QuitBtn_UP')), image3_color=Vec4(0.5, 0.5, 0.5, 0.5), image_scale=button_image_scale, text='', text3_fg=(0.5, 0.5, 0.5, 0.75), text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 2 + 0.025), command=self.__doToggleToonChatSounds)
-        self.ToonChatSounds_toggleButton.setScale(0.8)
-        self.TKeyOnlyChat_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 7), command=self.__doToggleTKeyOnlyChat)
-        # New QOL option controls
-        self.ShowFPS_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 8), command=self.__doToggleShowFPS)
-        self.MouseSensitivity_Slider = DirectSlider(parent=self, relief=DGG.FLAT, range=(0.5, 2.0), value=1.0, pageSize=0.1, pos=(buttonbase_xcoord + 0.2, 0.0, buttonbase_ycoord - textRowHeight * 9), scale=0.5, command=self.__setMouseSensitivity)
-        self.MouseSensitivity_valueLabel = DirectLabel(parent=self, relief=None, text='1.0x', text_scale=options_text_scale * 0.8, pos=(buttonbase_xcoord + 0.5, 0.0, buttonbase_ycoord - textRowHeight * 9))
-        self.CameraFOV_Slider = DirectSlider(parent=self, relief=DGG.FLAT, range=(40, 90), value=52.5, pageSize=1, pos=(buttonbase_xcoord + 0.2, 0.0, buttonbase_ycoord - textRowHeight * 10), scale=0.5, command=self.__setCameraFOV)
-        self.CameraFOV_valueLabel = DirectLabel(parent=self, relief=None, text='52.5°', text_scale=options_text_scale * 0.8, pos=(buttonbase_xcoord + 0.5, 0.0, buttonbase_ycoord - textRowHeight * 10))
-        self.SmoothAnimations_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 11), command=self.__doToggleSmoothAnimations)
-        self.ShowNametags_toggleButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=button_image_scale, text='', text_scale=options_text_scale, text_pos=button_textpos, pos=(buttonbase_xcoord, 0.0, buttonbase_ycoord - textRowHeight * 12), command=self.__doToggleShowNametags)
-        self.speedChatStyleText = SpeedChat.SpeedChat(name='OptionsPageStyleText', structure=[2000], backgroundModelName='phase_3/models/gui/ChatPanel', guiModelName='phase_3.5/models/gui/speedChatGui')
-        self.speedChatStyleText.setScale(self.speed_chat_scale)
-        self.speedChatStyleText.setPos(0.37, 0, buttonbase_ycoord - textRowHeight * 6 + 0.03)
-        self.speedChatStyleText.reparentTo(self, DGG.FOREGROUND_SORT_INDEX)
-        self.exitButton = DirectButton(parent=self, relief=None, image=(guiButton.find('**/QuitBtn_UP'), guiButton.find('**/QuitBtn_DN'), guiButton.find('**/QuitBtn_RLVR')), image_scale=1.15, text=TTLocalizer.OptionsPageExitToontown, text_scale=options_text_scale, text_pos=button_textpos, textMayChange=0, pos=(0.45, 0, -0.6), command=self.__handleExitShowWithConfirm)
-        guiButton.removeNode()
-        gui.removeNode()
-        return
+    def loadTabs(self, gui):
+        # The blue and yellow colors are trying to match the
+        # rollover and select colors on the options page:
+        normalColor = (1, 1, 1, 1)
+        clickColor = (.8, .8, 0, 1)
+        rolloverColor = (0.15, 0.82, 1.0, 1)
+        disabledColor = (1.0, 0.98, 0.15, 1)
 
-    def enter(self):
-        self.show()
-        taskMgr.remove(self.DisplaySettingsTaskName)
-        self.settingsChanged = 0
-        self.__setMusicSlider()
-        self.__setSoundFXSlider()
-        self.__setAcceptFriendsButton()
-        self.__setAcceptWhispersButton()
-        self.__setDisplaySettings()
-        self.__setToonChatSoundsButton()
-        self.__setTKeyOnlyChatButton()
-        # Initialize new QOL settings
-        self.__setShowFPSButton()
-        self.__setMouseSensitivitySlider()
-        self.__setCameraFOVSlider()
-        self.__setSmoothAnimationsButton()
-        self.__setShowNametagsButton()
-        self.speedChatStyleText.enter()
-        self.speedChatStyleIndex = base.localAvatar.getSpeedChatStyleIndex()
-        self.updateSpeedChatStyle()
-        if self._parent.book.safeMode:
-            self.exitButton.hide()
-        else:
-            self.exitButton.show()
+        initial = -0.175 * len(self.tabOptions)
+        interval = 1.95 * (1 / len(self.tabOptions))
 
-    def exit(self):
-        self.ignore('confirmDone')
-        self.hide()
-        if self.settingsChanged != 0:
-            base.settings.writeSettings()
-        self.speedChatStyleText.exit()
-        if self.displaySettingsChanged:
-            taskMgr.doMethodLater(self.DisplaySettingsDelay, self.writeDisplaySettings, self.DisplaySettingsTaskName)
+        for i, tab in enumerate(list(self.tabOptions)):
+            x = initial + i * interval
+            self.tabs[tab] = DirectButton(
+                parent=self, relief=None, text=TTLocalizer.OptionsPageTabs[i],
+                text_scale=0.06, text_align=TextNode.ACenter,
+                text_pos=(0.1, 0.0, 0.0),
+                image=gui.find("**/tabs/polySurface1"),
+                image_pos=(0.525, 1, -0.91), image_hpr=(0, 0, -90),
+                image_scale=(0.033, 0.033, 0.035),
+                image_color=normalColor, image1_color=clickColor,
+                image2_color=rolloverColor, image3_color=disabledColor,
+                text_fg=Vec4(0.2, 0.1, 0, 1), command=self.request,
+                extraArgs=[tab], pos=(x, 0, 0.77)
+            )
 
-    def unload(self):
-        self.writeDisplaySettings()
-        taskMgr.remove(self.DisplaySettingsTaskName)
-        if self.displaySettings != None:
-            self.ignore(self.displaySettings.doneEvent)
-            self.displaySettings.unload()
-        self.displaySettings = None
+        gui.remove_node()
+
+    def createExitButton(self, gui) -> None:
+        self.exitButton = DirectButton(
+            parent=self, relief=None,
+            image=(gui.find("**/QuitBtn_UP"),
+                   gui.find("**/QuitBtn_DN"),
+                   gui.find("**/QuitBtn_RLVR"),
+                   ),
+            image_scale=1.15,
+            text=TTLocalizer.OptionsPageExitToontown,
+            text_scale=0.052,
+            text_pos=(0, -0.02),
+            textMayChange=False,
+            pos=(0.45, 0, -0.6),
+            command=self.__handleExitShowWithConfirm,
+        )
+
+        gui.remove_node()
+
+    def createTabs(self, gui) -> None:
+        for tab, options in self.tabOptions.items():
+            frame = OptionsScrolledFrame(parent=self._parent, options=options, gui=gui)
+            frame.hide()
+            self.options[tab] = frame
+
+        gui.remove_node()
+
+    def unload(self) -> None:
+        for tab in self.tabs.values():
+            tab.destroy()
+
+        self.tabs = {}
+
+        self.destroyOptions()
+
         self.exitButton.destroy()
-        self.Music_toggleSlider.destroy()
-        self.Music_volumeLabel.destroy()
-        self.SoundFX_toggleSlider.destroy()
-        self.SoundFX_volumeLabel.destroy()
-        self.Friends_toggleButton.destroy()
-        self.Whispers_toggleButton.destroy()
-        self.TKeyOnlyChat_toggleButton.destroy()
-        self.DisplaySettingsButton.destroy()
-        self.speedChatStyleLeftArrow.destroy()
-        self.speedChatStyleRightArrow.destroy()
-        del self.exitButton
-        del self.SoundFX_Label
-        del self.Music_Label
-        del self.Friends_Label
-        del self.Whispers_Label
-        del self.SpeedChatStyle_Label
-        del self.SoundFX_toggleSlider
-        del self.SoundFX_volumeLabel
-        del self.Music_toggleSlider
-        del self.Music_volumeLabel
-        del self.Friends_toggleButton
-        del self.Whispers_toggleButton
-        del self.TKeyOnlyChat_toggleButton
-        del self.speedChatStyleLeftArrow
-        del self.speedChatStyleRightArrow
-        self.speedChatStyleText.exit()
-        self.speedChatStyleText.destroy()
-        del self.speedChatStyleText
-        # Clean up new QOL widgets
-        self.ShowFPS_toggleButton.destroy()
-        del self.ShowFPS_toggleButton
-        del self.ShowFPS_Label
-        self.MouseSensitivity_Slider.destroy()
-        self.MouseSensitivity_valueLabel.destroy()
-        del self.MouseSensitivity_Slider
-        del self.MouseSensitivity_valueLabel
-        del self.MouseSensitivity_Label
-        self.CameraFOV_Slider.destroy()
-        self.CameraFOV_valueLabel.destroy()
-        del self.CameraFOV_Slider
-        del self.CameraFOV_valueLabel
-        del self.CameraFOV_Label
-        self.SmoothAnimations_toggleButton.destroy()
-        del self.SmoothAnimations_toggleButton
-        del self.SmoothAnimations_Label
-        self.ShowNametags_toggleButton.destroy()
-        del self.ShowNametags_toggleButton
-        del self.ShowNametags_Label
-        del self.Controls_Label
-        self.currentSizeIndex = None
-        return
+        self.exitButton = None
 
-    def __setMusicVolume(self):
-        messenger.send('wakeup')
-        volume = int(self.Music_toggleSlider['value'])
-        self.Music_volumeLabel['text'] = '%d%%' % volume
-        volumeFloat = volume / 100.0
-        if volumeFloat == 0:
-            base.enableMusic(0)
-        else:
-            if not base.musicActive:
-                base.enableMusic(1)
-            base.musicManager.setVolume(volumeFloat)
-        base.settings.updateSetting('musicVolume', volume)
-        self.settingsChanged = 1
+    def enter(self) -> None:
+        self.show()
 
-    def __setMusicSlider(self):
-        volume = base.settings.getSetting('musicVolume', 100)
-        self.Music_toggleSlider['value'] = volume
-        self.Music_volumeLabel['text'] = '%d%%' % volume
+        base.localAvatar.disableOldPieKeys()
+        self.request("Gameplay")
 
-    def __setSfxVolume(self):
-        messenger.send('wakeup')
-        volume = int(self.SoundFX_toggleSlider['value'])
-        self.SoundFX_volumeLabel['text'] = '%d%%' % volume
-        volumeFloat = volume / 100.0
-        if volumeFloat == 0:
-            base.enableSoundEffects(0)
-        else:
-            if not base.sfxActive:
-                base.enableSoundEffects(1)
-            for sfxManager in base.sfxManagerList:
-                sfxManager.setVolume(volumeFloat)
-        base.settings.updateSetting('sfxVolume', volume)
-        self.settingsChanged = 1
+    def exit(self) -> None:
+        self.hide()
+        self.request("Off")
 
-    def __setSoundFXSlider(self):
-        volume = base.settings.getSetting('sfxVolume', 100)
-        self.SoundFX_toggleSlider['value'] = volume
-        self.SoundFX_volumeLabel['text'] = '%d%%' % volume
+        # Write the settings to the local JSON file.
+        base.settings.write()
+        base.localAvatar.resetPieKeys()
+        base.localAvatar.updateOverhead()
 
-    def __doToggleToonChatSounds(self):
-        messenger.send('wakeup')
-        if base.toonChatSounds:
-            base.toonChatSounds = 0
-            base.settings.updateSetting('toon-chat-sounds', False)
-        else:
-            base.toonChatSounds = 1
-            base.settings.updateSetting('toon-chat-sounds', True)
-        self.settingsChanged = 1
-        self.__setToonChatSoundsButton()
+    def updateTabs(self) -> None:
+        messenger.send("wakeup")
 
+        for tab in self.tabs.values():
+            tab["state"] = DGG.NORMAL
 
-    def __setToonChatSoundsButton(self):
-        if base.toonChatSounds:
-            self.ToonChatSounds_Label['text'] = TTLocalizer.OptionsPageToonChatSoundsOnLabel
-            self.ToonChatSounds_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
-        else:
-            self.ToonChatSounds_Label['text'] = TTLocalizer.OptionsPageToonChatSoundsOffLabel
-            self.ToonChatSounds_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
-        if base.sfxActive:
-            self.ToonChatSounds_Label.setColorScale(1.0, 1.0, 1.0, 1.0)
-            self.ToonChatSounds_toggleButton['state'] = DGG.NORMAL
-        else:
-            self.ToonChatSounds_Label.setColorScale(0.5, 0.5, 0.5, 0.5)
-            self.ToonChatSounds_toggleButton['state'] = DGG.DISABLED
+        currState = self.getCurrentOrNextState()
+        if currState in self.tabs:
+            self.tabs[currState]["state"] = DGG.DISABLED
 
-    def __doToggleAcceptFriends(self):
-        messenger.send('wakeup')
-        if base.localAvatar.acceptingNewFriends:
-            base.localAvatar.acceptingNewFriends = 0
-            base.settings.updateSetting('accepting-new-friends', False)
-        else:
-            base.localAvatar.acceptingNewFriends = 1
-            base.settings.updateSetting('accepting-new-friends', True)
-        self.settingsChanged = 1
-        self.__setAcceptFriendsButton()
+    def destroyOptions(self) -> None:
+        for frame in self.options.values():
+            frame.destroy()
 
-    def __doToggleAcceptWhispers(self):
-        messenger.send('wakeup')
-        if base.localAvatar.acceptingNonFriendWhispers:
-            base.localAvatar.acceptingNonFriendWhispers = 0
-            base.settings.updateSetting('accepting-non-friend-whispers', False)
-        else:
-            base.localAvatar.acceptingNonFriendWhispers = 1
-            base.settings.updateSetting('accepting-non-friend-whispers', True)
-        self.settingsChanged = 1
-        self.__setAcceptWhispersButton()
+        self.options = {}
 
-    def __setAcceptFriendsButton(self):
-        if base.localAvatar.acceptingNewFriends:
-            self.Friends_Label['text'] = TTLocalizer.OptionsPageFriendsEnabledLabel
-            self.Friends_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
-        else:
-            self.Friends_Label['text'] = TTLocalizer.OptionsPageFriendsDisabledLabel
-            self.Friends_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
+    """
+    FSM states
+    """
 
-    def __setAcceptWhispersButton(self):
-        if base.localAvatar.acceptingNonFriendWhispers:
-            self.Whispers_Label['text'] = TTLocalizer.OptionsPageWhisperEnabledLabel
-            self.Whispers_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
-        else:
-            self.Whispers_Label['text'] = TTLocalizer.OptionsPageWhisperDisabledLabel
-            self.Whispers_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
-    
-    def __doToggleTKeyOnlyChat(self):
-        tKeyOnly = base.settings.getSetting('tKeyOnlyChat', False)
-        base.settings.updateSetting('tKeyOnlyChat', not tKeyOnly)
-        self.settingsChanged = 1
-        self.__setTKeyOnlyChatButton()
-    
-    def __setTKeyOnlyChatButton(self):
-        if base.settings.getSetting('tKeyOnlyChat', False):
-            self.TKeyOnlyChat_Label['text'] = 'T-Key Only Chat: ON'
-            self.TKeyOnlyChat_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
-        else:
-            self.TKeyOnlyChat_Label['text'] = 'T-Key Only Chat: OFF'
-            self.TKeyOnlyChat_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
+    def enterGameplay(self) -> None:
+        self.updateTabs()
+        self.options["Gameplay"].show()
 
-    def __doToggleShowFPS(self):
-        messenger.send('wakeup')
-        showFPS = base.settings.getSetting('show-fps', False)
-        base.settings.updateSetting('show-fps', not showFPS)
-        base.setFrameRateMeter(not showFPS)
-        self.settingsChanged = 1
-        self.__setShowFPSButton()
+    def exitGameplay(self) -> None:
+        self.options["Gameplay"].hide()
 
-    def __setShowFPSButton(self):
-        showFPS = base.settings.getSetting('show-fps', False)
-        if showFPS:
-            self.ShowFPS_Label['text'] = 'FPS Counter: ON'
-            self.ShowFPS_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
-            base.setFrameRateMeter(True)
-        else:
-            self.ShowFPS_Label['text'] = 'FPS Counter: OFF'
-            self.ShowFPS_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
-            base.setFrameRateMeter(False)
+    def enterPrivacy(self) -> None:
+        self.updateTabs()
+        self.options["Privacy"].show()
 
-    def __setMouseSensitivity(self):
-        messenger.send('wakeup')
-        sensitivity = round(self.MouseSensitivity_Slider['value'], 1)
-        self.MouseSensitivity_valueLabel['text'] = '%.1fx' % sensitivity
-        base.settings.updateSetting('mouse-sensitivity', sensitivity)
-        # Apply to camera control if it exists
-        if hasattr(base, 'mouseSensitivity'):
-            base.mouseSensitivity = sensitivity
-        self.settingsChanged = 1
+    def exitPrivacy(self) -> None:
+        self.options["Privacy"].hide()
 
-    def __setMouseSensitivitySlider(self):
-        sensitivity = base.settings.getSetting('mouse-sensitivity', 1.0)
-        self.MouseSensitivity_Slider['value'] = sensitivity
-        self.MouseSensitivity_valueLabel['text'] = '%.1fx' % sensitivity
-        if hasattr(base, 'mouseSensitivity'):
-            base.mouseSensitivity = sensitivity
+    def enterControls(self) -> None:
+        self.updateTabs()
+        self.options["Controls"].show()
 
-    def __setCameraFOV(self):
-        messenger.send('wakeup')
-        fov = round(self.CameraFOV_Slider['value'], 1)
-        self.CameraFOV_valueLabel['text'] = '%.1f°' % fov
-        base.settings.updateSetting('camera-fov', fov)
-        # Apply FOV to camera
-        if hasattr(base, 'camLens'):
-            base.camLens.setFov(fov)
-        self.settingsChanged = 1
+    def exitControls(self) -> None:
+        self.options["Controls"].hide()
 
-    def __setCameraFOVSlider(self):
-        fov = base.settings.getSetting('camera-fov', 52.5)
-        self.CameraFOV_Slider['value'] = fov
-        self.CameraFOV_valueLabel['text'] = '%.1f°' % fov
-        if hasattr(base, 'camLens'):
-            base.camLens.setFov(fov)
+    def enterVideo(self) -> None:
+        self.updateTabs()
+        self.options["Video"].show()
 
-    def __doToggleSmoothAnimations(self):
-        messenger.send('wakeup')
-        smoothAnims = base.settings.getSetting('smooth-animations', True)
-        base.settings.updateSetting('smooth-animations', not smoothAnims)
-        # Apply smooth animations setting
-        if hasattr(base, 'transitions'):
-            base.transitions.setUseBlend(not smoothAnims)
-        self.settingsChanged = 1
-        self.__setSmoothAnimationsButton()
+    def exitVideo(self) -> None:
+        self.options["Video"].hide()
 
-    def __setSmoothAnimationsButton(self):
-        smoothAnims = base.settings.getSetting('smooth-animations', True)
-        if smoothAnims:
-            self.SmoothAnimations_Label['text'] = 'Smooth Animations: ON'
-            self.SmoothAnimations_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
-        else:
-            self.SmoothAnimations_Label['text'] = 'Smooth Animations: OFF'
-            self.SmoothAnimations_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
+    def enterAudio(self) -> None:
+        self.updateTabs()
+        self.options["Audio"].show()
 
-    def __doToggleShowNametags(self):
-        messenger.send('wakeup')
-        showNametags = base.settings.getSetting('show-nametags', True)
-        base.settings.updateSetting('show-nametags', not showNametags)
-        # Apply nametag visibility
-        if hasattr(base, 'cr') and hasattr(base.cr, 'doFindAll'):
-            avatars = base.cr.doFindAll('DistributedToon')
-            for avatar in avatars:
-                if hasattr(avatar, 'nametag3d'):
-                    if not showNametags:
-                        avatar.nametag3d.hide()
-                    else:
-                        avatar.nametag3d.show()
-        self.settingsChanged = 1
-        self.__setShowNametagsButton()
+    def exitAudio(self) -> None:
+        self.options["Audio"].hide()
 
-    def __setShowNametagsButton(self):
-        showNametags = base.settings.getSetting('show-nametags', True)
-        if showNametags:
-            self.ShowNametags_Label['text'] = 'Show Nametags: ON'
-            self.ShowNametags_toggleButton['text'] = TTLocalizer.OptionsPageToggleOff
-        else:
-            self.ShowNametags_Label['text'] = 'Show Nametags: OFF'
-            self.ShowNametags_toggleButton['text'] = TTLocalizer.OptionsPageToggleOn
-
-    def __doDisplaySettings(self):
-        if self.displaySettings == None:
-            self.displaySettings = DisplaySettingsDialog.DisplaySettingsDialog()
-            self.displaySettings.load()
-            self.accept(self.displaySettings.doneEvent, self.__doneDisplaySettings)
-        self.displaySettings.enter(self.ChangeDisplaySettings, self.ChangeDisplayAPI)
-        return
-
-    def __doneDisplaySettings(self, anyChanged, apiChanged):
-        if anyChanged:
-            self.__setDisplaySettings()
-            properties = base.win.getProperties()
-            self.displaySettingsChanged = 1
-            self.displaySettingsSize = (properties.getXSize(), properties.getYSize())
-            self.displaySettingsFullscreen = properties.getFullscreen()
-            self.displaySettingsEmbedded = self.isPropertiesEmbedded(properties)
-            self.displaySettingsApi = base.pipe.getInterfaceName()
-            self.displaySettingsApiChanged = apiChanged
-
-    def isPropertiesEmbedded(self, properties):
-        result = False
-        if properties.getParentWindow():
-            result = True
-        return result
-
-    def __setDisplaySettings(self):
-        properties = base.win.getProperties()
-        if properties.getFullscreen():
-            screensize = '%s x %s' % (properties.getXSize(), properties.getYSize())
-        else:
-            screensize = TTLocalizer.OptionsPageDisplayWindowed
-        isEmbedded = self.isPropertiesEmbedded(properties)
-        if isEmbedded:
-            screensize = TTLocalizer.OptionsPageDisplayEmbedded
-        api = base.pipe.getInterfaceName()
-        settings = {'screensize': screensize,
-         'api': api}
-        if self.ChangeDisplayAPI:
-            OptionsPage.notify.debug('change display settings...')
-            text = TTLocalizer.OptionsPageDisplaySettings % settings
-        else:
-            OptionsPage.notify.debug('no change display settings...')
-            text = TTLocalizer.OptionsPageDisplaySettingsNoApi % settings
-        self.DisplaySettings_Label['text'] = text
-
-    def __doSpeedChatStyleLeft(self):
-        if self.speedChatStyleIndex > 0:
-            self.speedChatStyleIndex = self.speedChatStyleIndex - 1
-            self.updateSpeedChatStyle()
-
-    def __doSpeedChatStyleRight(self):
-        if self.speedChatStyleIndex < len(speedChatStyles) - 1:
-            self.speedChatStyleIndex = self.speedChatStyleIndex + 1
-            self.updateSpeedChatStyle()
-
-    def updateSpeedChatStyle(self):
-        nameKey, arrowColor, rolloverColor, frameColor = speedChatStyles[self.speedChatStyleIndex]
-        newSCColorScheme = SCColorScheme.SCColorScheme(arrowColor=arrowColor, rolloverColor=rolloverColor, frameColor=frameColor)
-        self.speedChatStyleText.setColorScheme(newSCColorScheme)
-        self.speedChatStyleText.clearMenu()
-        colorName = SCStaticTextTerminal.SCStaticTextTerminal(nameKey)
-        self.speedChatStyleText.append(colorName)
-        self.speedChatStyleText.finalize()
-        self.speedChatStyleText.setPos(0.445 - self.speedChatStyleText.getWidth() * self.speed_chat_scale / 2, 0, self.speedChatStyleText.getPos()[2])
-        if self.speedChatStyleIndex > 0:
-            self.speedChatStyleLeftArrow['state'] = DGG.NORMAL
-        else:
-            self.speedChatStyleLeftArrow['state'] = DGG.DISABLED
-        if self.speedChatStyleIndex < len(speedChatStyles) - 1:
-            self.speedChatStyleRightArrow['state'] = DGG.NORMAL
-        else:
-            self.speedChatStyleRightArrow['state'] = DGG.DISABLED
-        base.localAvatar.b_setSpeedChatStyleIndex(self.speedChatStyleIndex)
-
-    def writeDisplaySettings(self, task = None):
-        if not self.displaySettingsChanged:
-            return
-        taskMgr.remove(self.DisplaySettingsTaskName)
-        self.notify.info('writing new display settings %s, fullscreen %s, embedded %s, %s to SettingsFile.' % (self.displaySettingsSize,
-         self.displaySettingsFullscreen,
-         self.displaySettingsEmbedded,
-         self.displaySettingsApi))
-        base.settings.updateSetting('resolution', (self.displaySettingsSize[0], self.displaySettingsSize[1]))
-        base.settings.updateSetting('windowed-mode', not self.displaySettingsFullscreen)
-        #base.settings.updateSetting('embedded-mode', self.displaySettingsEmbedded)
-        if self.displaySettingsApiChanged:
-            api = self.DisplaySettingsApiMap.get(self.displaySettingsApi)
-            if api == None:
-                self.notify.warning('Cannot save unknown display API: %s' % self.displaySettingsApi)
-            else:
-                Settings.setDisplayDriver(api)
-        base.settings.writeSettings()
-        self.displaySettingsChanged = 0
-        return Task.done
+    """
+    Exit button
+    """
 
     def __handleExitShowWithConfirm(self):
-        self.confirm = TTDialog.TTGlobalDialog(doneEvent='confirmDone', message=TTLocalizer.OptionsPageExitConfirm, style=TTDialog.TwoChoice)
+        # For exiting from the options panel to the avatar chooser.
+        """__handleExitShowWithConfirm(self)
+        """
+        self.confirm = TTDialog.TTGlobalDialog(
+            doneEvent="confirmDone",
+            message=TTLocalizer.OptionsPageExitConfirm,
+            style=TTDialog.TwoChoice)
         self.confirm.show()
-        self._parent.doneStatus = {'mode': 'exit',
-         'exitTo': 'closeShard'}
-        self.accept('confirmDone', self.__handleConfirm)
+        self._parent.doneStatus = {
+            "mode": "exit",
+            "exitTo": "closeShard"}
+        self.accept("confirmDone", self.__handleConfirm)
 
     def __handleConfirm(self):
+        """__handleConfirm(self)
+        """
         status = self.confirm.doneStatus
-        self.ignore('confirmDone')
+        self.ignore("confirmDone")
         self.confirm.cleanup()
         del self.confirm
-        if status == 'ok':
+        if (status == "ok"):
             base.cr._userLoggingOut = True
             messenger.send(self._parent.doneEvent)
+            # self.cr.loginFSM.request("chooseAvatar", [self.cr.avList])
 
 
-class CodesTabPage(DirectFrame):
-    notify = DirectNotifyGlobal.directNotify.newCategory('CodesTabPage')
+class OptionsScrolledFrame(ToontownScrolledFrame):
+    width = 0.8
+    height = 0.53
 
-    def __init__(self, parent = aspect2d):
-        self._parent = parent
-        DirectFrame.__init__(self, parent=self._parent, relief=None, pos=(0.0, 0.0, 0.0), scale=(1.0, 1.0, 1.0))
-        self.load()
-        return
+    def __init__(self, parent=None, options: list[str] = None, gui=None, **kw) -> None:
+        super().__init__(
+            parent, relief=None,
+            pos=(0, 0, 0),
+            canvasSize=(-self.width, self.width, -self.height, self.height),
+            frameSize=(-self.width, self.width, -self.height, self.height),
+            **kw
+        )
+        self.initialiseoptions(OptionsScrolledFrame)
 
-    def destroy(self):
-        self._parent = None
-        DirectFrame.destroy(self)
-        return
+        self.optionNames = options or []
 
-    def load(self):
-        cdrGui = loader.loadModel('phase_3.5/models/gui/tt_m_gui_sbk_codeRedemptionGui')
-        instructionGui = cdrGui.find('**/tt_t_gui_sbk_cdrPresent')
-        flippyGui = cdrGui.find('**/tt_t_gui_sbk_cdrFlippy')
-        codeBoxGui = cdrGui.find('**/tt_t_gui_sbk_cdrCodeBox')
-        self.resultPanelSuccessGui = cdrGui.find('**/tt_t_gui_sbk_cdrResultPanel_success')
-        self.resultPanelFailureGui = cdrGui.find('**/tt_t_gui_sbk_cdrResultPanel_failure')
-        self.resultPanelErrorGui = cdrGui.find('**/tt_t_gui_sbk_cdrResultPanel_error')
-        self.successSfx = base.loader.loadSfx('phase_3.5/audio/sfx/tt_s_gui_sbk_cdrSuccess.ogg')
-        self.failureSfx = base.loader.loadSfx('phase_3.5/audio/sfx/tt_s_gui_sbk_cdrFailure.ogg')
-        self.instructionPanel = DirectFrame(parent=self, relief=None, image=instructionGui, image_scale=0.8, text=TTLocalizer.CdrInstructions, text_pos=TTLocalizer.OPCodesInstructionPanelTextPos, text_align=TextNode.ACenter, text_scale=TTLocalizer.OPCodesResultPanelTextScale, text_wordwrap=TTLocalizer.OPCodesInstructionPanelTextWordWrap, pos=(-0.429, 0, -0.05))
-        self.codeBox = DirectFrame(parent=self, relief=None, image=codeBoxGui, pos=(0.433, 0, 0.35))
-        self.flippyFrame = DirectFrame(parent=self, relief=None, image=flippyGui, pos=(0.44, 0, -0.353))
-        self.codeInput = DirectEntry(parent=self.codeBox, relief=DGG.GROOVE, scale=0.08, pos=(-0.33, 0, -0.006), borderWidth=(0.05, 0.05), frameColor=((1, 1, 1, 1), (1, 1, 1, 1), (0.5, 0.5, 0.5, 0.5)), state=DGG.NORMAL, text_align=TextNode.ALeft, text_scale=TTLocalizer.OPCodesInputTextScale, width=10.5, numLines=1, focus=1, backgroundFocus=0, cursorKeys=1, text_fg=(0, 0, 0, 1), suppressMouse=1, autoCapitalize=0, command=self.__submitCode)
-        submitButtonGui = loader.loadModel('phase_3/models/gui/quit_button')
-        self.submitButton = DirectButton(parent=self, relief=None, image=(submitButtonGui.find('**/QuitBtn_UP'),
-         submitButtonGui.find('**/QuitBtn_DN'),
-         submitButtonGui.find('**/QuitBtn_RLVR'),
-         submitButtonGui.find('**/QuitBtn_UP')), image3_color=Vec4(0.5, 0.5, 0.5, 0.5), image_scale=1.15, state=DGG.NORMAL, text=TTLocalizer.NameShopSubmitButton, text_scale=TTLocalizer.OPCodesSubmitTextScale, text_align=TextNode.ACenter, text_pos=TTLocalizer.OPCodesSubmitTextPos, text3_fg=(0.5, 0.5, 0.5, 0.75), textMayChange=0, pos=(0.45, 0.0, 0.0896), command=self.__submitCode)
-        self.resultPanel = DirectFrame(parent=self, relief=None, image=self.resultPanelSuccessGui, text='', text_pos=TTLocalizer.OPCodesResultPanelTextPos, text_align=TextNode.ACenter, text_scale=TTLocalizer.OPCodesResultPanelTextScale, text_wordwrap=TTLocalizer.OPCodesResultPanelTextWordWrap, pos=(-0.42, 0, -0.0567))
-        self.resultPanel.hide()
-        closeButtonGui = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
-        self.closeButton = DirectButton(parent=self.resultPanel, pos=(0.296, 0, -0.466), relief=None, state=DGG.NORMAL, image=(closeButtonGui.find('**/CloseBtn_UP'), closeButtonGui.find('**/CloseBtn_DN'), closeButtonGui.find('**/CloseBtn_Rllvr')), image_scale=(1, 1, 1), command=self.__hideResultPanel)
-        closeButtonGui.removeNode()
-        cdrGui.removeNode()
-        submitButtonGui.removeNode()
-        return
+        self.optionElements = []
+        for index, option in enumerate(self.optionNames):
+            element = OptionElement(parent, parent=self.getCanvas(), name=option, index=index, gui=gui)
+            self.bindToScroll(element)
+            self.optionElements.append(element)
 
-    def enter(self):
-        self.show()
-        localAvatar.chatMgr.fsm.request('otherDialog')
-        self.codeInput['focus'] = 1
-        self.codeInput.enterText('')
-        self.__enableCodeEntry()
+        optionAmt = len(self.optionElements)
 
-    def exit(self):
-        self.resultPanel.hide()
-        self.hide()
-        localAvatar.chatMgr.fsm.request('mainMenu')
+        # Update the scrollbar if there are more than x elements.
+        canvasHeight = ((optionAmt * 0.1) - self.height) if optionAmt > 10 else self.height
 
-    def unload(self):
-        self.instructionPanel.destroy()
-        self.instructionPanel = None
-        self.codeBox.destroy()
-        self.codeBox = None
-        self.flippyFrame.destroy()
-        self.flippyFrame = None
-        self.codeInput.destroy()
-        self.codeInput = None
-        self.submitButton.destroy()
-        self.submitButton = None
-        self.resultPanel.destroy()
-        self.resultPanel = None
-        self.closeButton.destroy()
-        self.closeButton = None
-        del self.successSfx
-        del self.failureSfx
-        return
+        self["canvasSize"] = (-self.width, self.width, -canvasHeight, self.height)
+        self.setCanvasSize()
 
-    def __submitCode(self, input = None):
-        if input == None:
-            input = self.codeInput.get()
-        self.codeInput['focus'] = 1
-        if input == '':
-            return
-        messenger.send('wakeup')
-        if hasattr(base, 'codeRedemptionMgr'):
-            base.codeRedemptionMgr.redeemCode(input, self.__getCodeResult)
-        self.codeInput.enterText('')
-        self.__disableCodeEntry()
-        return
+    def destroy(self) -> None:
+        if hasattr(self, "optionElements"):
+            for option in self.optionElements:
+                option.destroy()
+            del self.optionElements
 
-    def __getCodeResult(self, result, awardMgrResult):
-        self.notify.debug('result = %s' % result)
-        self.notify.debug('awardMgrResult = %s' % awardMgrResult)
-        self.__enableCodeEntry()
-        if result == 0:
-            self.resultPanel['image'] = self.resultPanelSuccessGui
-            self.resultPanel['text'] = TTLocalizer.CdrResultSuccess
-        elif result == 1 or result == 3:
-            self.resultPanel['image'] = self.resultPanelFailureGui
-            self.resultPanel['text'] = TTLocalizer.CdrResultInvalidCode
-        elif result == 2:
-            self.resultPanel['image'] = self.resultPanelFailureGui
-            self.resultPanel['text'] = TTLocalizer.CdrResultExpiredCode
-        elif result == 4:
-            self.resultPanel['image'] = self.resultPanelErrorGui
-            if awardMgrResult == 0:
-                self.resultPanel['text'] = TTLocalizer.CdrResultSuccess
-            elif awardMgrResult == 1 or awardMgrResult == 2 or awardMgrResult == 15 or awardMgrResult == 16:
-                self.resultPanel['text'] = TTLocalizer.CdrResultUnknownError
-            elif awardMgrResult == 3 or awardMgrResult == 4:
-                self.resultPanel['text'] = TTLocalizer.CdrResultMailboxFull
-            elif awardMgrResult == 5 or awardMgrResult == 10:
-                self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyInMailbox
-            elif awardMgrResult == 6 or awardMgrResult == 7 or awardMgrResult == 11:
-                self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyInQueue
-            elif awardMgrResult == 8:
-                self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyInCloset
-            elif awardMgrResult == 9:
-                self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyBeingWorn
-            elif awardMgrResult == 12 or awardMgrResult == 13 or awardMgrResult == 14:
-                self.resultPanel['text'] = TTLocalizer.CdrResultAlreadyReceived
-        elif result == 5:
-            self.resultPanel['text'] = TTLocalizer.CdrResultTooManyFails
-            self.__disableCodeEntry()
-        elif result == 6:
-            self.resultPanel['text'] = TTLocalizer.CdrResultServiceUnavailable
-            self.__disableCodeEntry()
-        if result == 0:
-            self.successSfx.play()
+        super().destroy()
+
+
+class DropdownScrolledFrame(ToontownScrolledFrame):
+    width = 0.3
+    height = 0.3
+    offset = 0.225
+
+    def __init__(self, optionName: str, parent=None, pos=(0, 0, 0), options: list[str] = None, command=None, **kw
+                 ) -> None:
+        super().__init__(
+            parent, relief=None,
+            pos=(pos[0], pos[1], pos[2] - self.offset),
+            canvasSize=(-self.width, self.width, -self.height, self.height),
+            frameSize=(-self.width, self.width, -self.height, self.height),
+            **kw
+        )
+        self.initialiseoptions(DropdownScrolledFrame)
+
+        self.optionName = optionName
+        self.optionNames = options or []
+
+        gui = base.loader.loadModel("phase_3/models/gui/quit_button")
+
+        self.optionElements = []
+        for index, option in enumerate(self.optionNames):
+            element = DirectButton(
+                parent=self.getCanvas(), relief=None, pos=(0, 0, self.offset - (index * 0.1)),
+                text=self.formatSetting(option),
+                text_scale=0.052, image_pos=(0, 0, 0.02),
+                image=(
+                    gui.find("**/QuitBtn_UP"),
+                    gui.find("**/QuitBtn_DN"),
+                    gui.find("**/QuitBtn_RLVR"),
+                ),
+                image_scale=(0.7, 1, 1),
+                command=command, extraArgs=[option]
+            )
+            self.bindToScroll(element)
+            self.optionElements.append(element)
+
+        gui.remove_node()
+
+        optionAmt = len(self.optionElements)
+
+        # Update the scrollbar if there are more than x elements.
+        canvasHeight = ((optionAmt * 0.1) - self.height) if optionAmt > 4 else self.height
+
+        self["canvasSize"] = (-self.width, self.width, -canvasHeight, self.height)
+        self.setCanvasSize()
+
+        base.transitions.fadeScreen(0.5)
+
+    def formatSetting(self, setting: Setting) -> str:
+        """Given the type of setting we're dealing with, handle
+        how the text on the button will display.
+        """
+        if isinstance(setting, list):
+            # When dealing with list options, strip the brackets and
+            # join the parts together.
+            if self.optionName == "resolution":
+                string = "x"
+            else:
+                string = ""
+
+            return string.join([str(e) for e in setting]).replace("[", "").replace("[", "")
+        elif isinstance(setting, int):
+            # We're most likely dealing with a list of integer settings,
+            # so return the string from the localizer given the current setting.
+            if self.optionName == "anti-aliasing":
+                return TTLocalizer.OptionAntiAlias[setting]
+            if self.optionName == "anisotropic-filter":
+                return TTLocalizer.OptionAnisotropic[setting]
+            if self.optionName == "fps-limit":
+                return TTLocalizer.OptionFPSLimit[setting]
+            if self.optionName == "battle-speed":
+                return TTLocalizer.OptionBattleSpeed[setting]
+
+        return str(setting)
+
+    def destroy(self) -> None:
+        if hasattr(self, "optionElements"):
+            for option in self.optionElements:
+                option.destroy()
+            del self.optionElements
+
+        base.transitions.noFade()
+
+        super().destroy()
+
+
+class OptionElement(DirectFrame):
+    """
+    Option types:
+    Button: Clicking on the button will scroll through the options
+    - i.e (true, false), (red, yellow, orange, blue, green), etc.
+    Slider: Slide between two extremes
+    - i.e (0% vol, 100% vol), (50 fov, 150 fov), etc.
+
+    See toontown.settings.Settings.py for the default settings.
+    """
+
+    optionOptions = {}
+    for option, default in base.settings.defaultSettings.items():
+        if isinstance(default, bool):
+            optionOptions[option] = [True, False]
+        elif option == "movement_mode":
+            optionOptions[option] = ["TTCC", "TTR"]
+        elif option == "sprint_mode":
+            optionOptions[option] = ["Hold", "Toggle"]
+
+    optionOptions.update({
+        "resolution": base.possibleScreenSizes,
+        "anisotropic-filter": list(TTLocalizer.OptionAnisotropic),
+        "anti-aliasing": list(TTLocalizer.OptionAntiAlias),
+        "fps-limit": list(TTLocalizer.OptionFPSLimit),
+        "battle-speed": list(TTLocalizer.OptionBattleSpeed),
+        "shadow-quality": ["off", "low", "medium", "high"],
+    })
+
+    def __init__(self, page, parent, name: str, index: int, gui, **kw):
+        super().__init__(parent, **kw)
+
+        self.page = page
+
+        # The name of the setting.
+        self.optionName = name
+        self.optionType = OptionToType[self.optionName]
+
+        if self.optionType == OptionTypes.CONTROL:
+            currSetting = self.formatKeybind(base.settings.getControl(name))
+        elif self.optionType == OptionTypes.BUTTON_SPEEDCHAT:
+            currSetting = self.formatSpeedchat(base.localAvatar.getSpeedChatStyleIndex())
         else:
-            self.failureSfx.play()
-        self.resultPanel.show()
+            currSetting = base.settings.get(name)
 
-    def __hideResultPanel(self):
-        self.resultPanel.hide()
+        z = 0.45 - (index * 0.1)
 
-    def __disableCodeEntry(self):
-        self.codeInput['state'] = DGG.DISABLED
-        self.submitButton['state'] = DGG.DISABLED
+        # Make the label which will appear on the left-hand side of
+        # the page.
+        self.label = DirectLabel(
+            parent=self, relief=None, pos=(-0.4, 0, z),
+            text=TTLocalizer.OptionNames[self.optionName],
+            text_scale=0.052,
+        )
 
-    def __enableCodeEntry(self):
-        self.codeInput['state'] = DGG.NORMAL
-        self.codeInput['focus'] = 1
-        self.submitButton['state'] = DGG.NORMAL
+        # A separate frame for dropdown options which contains a list of option buttons.
+        self.dropdownFrame: Optional[DropdownScrolledFrame] = None
+
+        # Make the button which will appear on the right-hand side of
+        # the page.
+        if self.optionType in (OptionTypes.BUTTON, OptionTypes.CONTROL, OptionTypes.BUTTON_SPEEDCHAT,
+                               OptionTypes.DROPDOWN):
+            self.optionModifier = DirectButton(
+                parent=self, relief=None, pos=(0.37, 0, z),
+                text=self.formatSetting(currSetting),
+                text_scale=0.052, image_pos=(0, 0, 0.02),
+                image=(
+                    gui.find("**/QuitBtn_UP"),
+                    gui.find("**/QuitBtn_DN"),
+                    gui.find("**/QuitBtn_RLVR"),
+                ),
+                image_scale=(0.7, 1, 1),
+            )
+            if self.optionType == OptionTypes.DROPDOWN:
+                self.optionModifier["command"] = self._openDropdown
+            else:
+                self.optionModifier["command"] = self._updateButtonOption
+
+            if self.optionType == OptionTypes.CONTROL:
+                self.checkForDuplicates()
+                self.accept("controls_findDuplicates", self.checkForDuplicates)
+            
+            if self.optionName == 'refresh-audio':
+                self.optionModifier["text"] = TTLocalizer.OptionRefresh  # This is a special case where there is no setting to display.
+        
+        # Make the slider which will appear on the right-hand side of
+        # the page.
+        elif self.optionType == OptionTypes.SLIDER:
+            self.optionModifier = DirectSlider(
+                parent=self, relief=DGG.SUNKEN, pos=(0.37, 0, z), thumb_relief=None,
+                thumb_image_scale=(0.3, 0.8, 0.8),
+                frameSize=(-0.25, 0.25, -0.1, 0.1),
+                image_pos=(0, 0, 0.02),
+                thumb_image=(
+                    gui.find("**/QuitBtn_UP"),
+                    gui.find("**/QuitBtn_DN"),
+                    gui.find("**/QuitBtn_RLVR"),
+                ),
+                value=currSetting,
+                command=self._updateSliderOption,
+            )
+
+            self.sliderLabel = DirectLabel(
+                parent=self.optionModifier, relief=None, pos=(0.3, 0, -0.01),
+                text=str(round(currSetting * 100)), text_scale=0.052,
+            )
+        else:
+            raise Exception(f"Undefined option type: {self.optionType}")
+
+        self.controlTask = ""
+
+    def destroy(self) -> None:
+        self.doneRegisterKey()
+
+        self.ignore("controls_findDuplicates")
+
+        if hasattr(self, "sliderLabel"):
+            self.sliderLabel.destroy()
+            del self.sliderLabel
+
+        self.optionModifier.destroy()
+        del self.optionModifier
+
+        self.label.destroy()
+        del self.label
+
+        super().destroy()
+
+    @staticmethod
+    def formatKeybind(keybind: str) -> str:
+        return " ".join(keybind.split("_")).title()
+
+    @staticmethod
+    def formatSpeedchat(index: int) -> str:
+        return SpeedChatStaticTextToontown[speedChatStyles[index][0]]
+
+    def formatSetting(self, setting: Setting) -> str:
+        """Given the type of setting we're dealing with, handle
+        how the text on the button will display.
+        """
+        if isinstance(setting, list):
+            # When dealing with list options, strip the brackets and
+            # join the parts together.
+            if self.optionName == "resolution":
+                string = "x"
+            else:
+                string = ""
+
+            return string.join([str(e) for e in setting]).replace("[", "").replace("[", "")
+        elif isinstance(setting, bool):
+            return TTLocalizer.OptionEnabled if setting else TTLocalizer.OptionDisabled
+        elif isinstance(setting, int):
+            # We're most likely dealing with a list of integer settings,
+            # so return the string from the localizer given the current setting.
+            if self.optionName == "anti-aliasing":
+                return TTLocalizer.OptionAntiAlias[setting]
+            if self.optionName == "anisotropic-filter":
+                return TTLocalizer.OptionAnisotropic[setting]
+            if self.optionName == "fps-limit":
+                return TTLocalizer.OptionFPSLimit[setting]
+            if self.optionName == "battle-speed":
+                return TTLocalizer.OptionBattleSpeed[setting]
+
+        return str(setting)
+
+    def registerKey(self, keybind: str) -> None:
+        base.settings.setControl(self.optionName, keybind)
+        self.doneRegisterKey()
+
+    def doneRegisterKey(self) -> None:
+        self.ignore("controls_stopListening")
+        self.ignore(self.controlTask)
+        messenger.send("enable-hotkeys")
+
+        self.optionModifier.configure(
+            text=self.formatKeybind(base.settings.getControl(self.optionName)),
+            image_color=Vec4(1, 1, 1, 1),
+        )
+
+        messenger.send("controls_findDuplicates")
+
+    def checkForDuplicates(self) -> None:
+        """Iterate through our control schema to find if there are any
+        duplicates. In the case that there is, change the button color
+        to RED, to indicate that.
+        """
+        currentKeybind = base.settings.getControl(self.optionName)
+        for control, keybind in base.settings.getControls().items():
+            # This control is different, but the keybind is the same.
+            # Make the button red.
+            if control != self.optionName and keybind == currentKeybind:
+                self.optionModifier["image_color"] = Vec4(1, 0.1, 0.1, 1)
+                return
+
+        # No duplicates were found, keep the color the same.
+        self.optionModifier["image_color"] = Vec4(1, 1, 1, 1)
+
+    def _openDropdown(self) -> None:
+        self.dropdownFrame = DropdownScrolledFrame(
+            self.optionName, parent=self.page, pos=self.optionModifier.getPos(),
+            options=self.optionOptions[self.optionName],
+            command=self._updateDropdownOption
+        )
+        self.dropdownFrame.setBin('gui-popup', 5000)
+
+    def _updateDropdownOption(self, newSetting) -> None:
+        print(f"[DEBUG VideoSettings] OptionsPage: _updateDropdownOption called: {self.optionName} -> {newSetting}")
+        if self.dropdownFrame is not None:
+            self.dropdownFrame.destroy()
+            self.dropdownFrame = None
+
+        # Update the new setting.
+        base.settings.set(self.optionName, newSetting)
+
+        if self.optionName in (
+            "shadow-quality",
+        ):
+            # Defer to the next task frame — refreshSettings tears down and
+            # recreates CommonFilters (bloom) offscreen buffers via
+            # engine.removeWindow(), which deadlocks if called from a GUI
+            # callback while the render thread holds the GL context mutex.
+            taskMgr.remove('optionsRefreshSettings')
+            taskMgr.doMethodLater(0, lambda t: (OutdoorLighting.refreshSettings(), t.done)[1],
+                                  'optionsRefreshSettings')
+
+        if self.optionName in ("resolution", "anisotropic-filter", "anti-aliasing"):
+            base.updateDisplay()
+        elif self.optionName == "fps-limit":
+            if newSetting != 0:
+                globalClock.setMode(ClockObject.MLimited)
+                globalClock.setFrameRate(newSetting)
+            else:
+                globalClock.setMode(ClockObject.MNormal)
+
+        # Update the button text with the new setting.
+        self.optionModifier["text"] = self.formatSetting(newSetting)
+
+    def _updateButtonOption(self) -> None:
+        messenger.send("wakeup")
+
+        if self.optionType == OptionTypes.CONTROL:
+            # Tell any controls that are listening for input to stop doing that.
+            messenger.send("controls_stopListening")
+            # Then, listen for that same message on this control in the case
+            # of another control being clicked.
+            self.accept("controls_stopListening", self.doneRegisterKey)
+
+            self.controlTask = f"{self.optionName}-updateControl"
+
+            self.optionModifier.configure(text='...', image_color=Vec4(0.2, 0.9, 0.9, 1))
+            base.buttonThrowers[0].node().setButtonDownEvent(self.controlTask)
+
+            messenger.send("disable-hotkeys")
+            self.accept(self.controlTask, self.registerKey)
+            return
+        
+        elif self.optionName == 'refresh-audio':
+            base.refreshAudio()
+            self.optionModifier["text"] = TTLocalizer.OptionRefresh
+            return
+
+        elif self.optionType == OptionTypes.BUTTON_SPEEDCHAT:
+            # Increment the speedchat index.
+            current = base.localAvatar.getSpeedChatStyleIndex()
+            new = current + 1
+            if new >= len(speedChatStyles):
+                new = 0
+
+            # We handle this differently, as it gets saved on the toon itself.
+            base.localAvatar.b_setSpeedChatStyleIndex(new)
+
+            # Update the button text with the new setting.
+            self.optionModifier["text"] = self.formatSpeedchat(new)
+            return
+
+        # Get the current setting.
+        currSetting = base.settings.get(self.optionName)
+
+        # Get the index of the next element of the list of options
+        # for this setting.
+        index = self.optionOptions[self.optionName].index(currSetting) + 1
+
+        # If it's beyond the scope, set it to 0.
+        if index >= len(self.optionOptions[self.optionName]):
+            index = 0
+
+        # Index into the options with the new index.
+        newSetting = self.optionOptions[self.optionName][index]
+        print(f"[DEBUG VideoSettings] OptionsPage: _updateButtonOption called: {self.optionName} -> {newSetting}")
+
+        # Update the new setting.
+        base.settings.set(self.optionName, newSetting)
+
+        if self.optionName in (
+            "want-modern-outdoor-lighting",
+            "dynamic-shadows",
+            "lighting-bloom-enabled",
+            "lighting-god-rays",
+            "want-procedural-sky",
+            "want-day-night-cycle",
+            "want-water-reflections",
+            "lighting-fog-enabled",
+            "lighting-specular-enabled",
+        ):
+            # Defer to the next task frame — refreshSettings tears down and
+            # recreates CommonFilters (bloom) offscreen buffers via
+            # engine.removeWindow(), which deadlocks if called from a GUI
+            # callback while the render thread holds the GL context mutex.
+            taskMgr.remove('optionsRefreshSettings')
+            taskMgr.doMethodLater(0, lambda t: (OutdoorLighting.refreshSettings(), t.done)[1],
+                                  'optionsRefreshSettings')
+
+        if self.optionName == "dynamic-shadows":
+            try:
+                ShadowCaster.setGlobalDropShadowFlag(1 if newSetting else 0)
+            except Exception:
+                pass
+
+        # Update the client with the new value.
+        if self.optionName == "music":
+            base.enableMusic(newSetting)
+        elif self.optionName == "sfx":
+            base.enableSoundEffects(newSetting)
+        elif self.optionName == "toon-chat-sounds":
+            base.toonChatSounds = newSetting
+        elif self.optionName == 'competitive-boss-scoring':
+            base.localAvatar.wantCompetitiveBossScoring = newSetting
+        elif self.optionName == 'boss-alerts':
+            base.localAvatar.wantAlerts = newSetting
+        elif self.optionName == 'report-errors':
+            os.environ['WANT_ERROR_REPORTING'] = 'true' if newSetting else 'false'
+        elif self.optionName in ("borderless", "vertical-sync"):
+            base.updateDisplay()
+        elif self.optionName == "frame-rate-meter":
+            base.setFrameRateMeter(newSetting)
+        elif self.optionName == "movement_mode":
+            base.localAvatar.updateMovementMode()
+        elif self.optionName == "fovEffects":
+            base.WANT_FOV_EFFECTS = newSetting
+        elif self.optionName == 'discord-rich-presence':
+            base.wantRichPresence = newSetting
+            base.setRichPresence()
+        elif self.optionName == "cam-toggle-lock":
+            base.CAM_TOGGLE_LOCK = newSetting
+        elif self.optionName == "color-blind-mode":
+            base.colorBlindMode = newSetting
+        elif self.optionName == "want-legacy-models":
+            base.WANT_LEGACY_MODELS = newSetting
+        elif self.optionName == "laff-display":
+            base.laffMeterDisplay = newSetting
+        elif self.optionName == "battle-speed":
+            base.battleSpeed = newSetting
+        elif self.optionName == "ap-sounds":
+            base.apSounds = newSetting
+        elif self.optionName == "random-music":
+            base.randomMusic = newSetting
+            base.refreshRandomMusic()
+
+        # Update the button text with the new setting.
+        self.optionModifier["text"] = self.formatSetting(newSetting)
+
+    def _updateSliderOption(self) -> None:
+        messenger.send("wakeup")
+
+        newSetting = self.optionModifier["value"]
+        print(f"[DEBUG VideoSettings] OptionsPage: _updateSliderOption called: {self.optionName} -> {newSetting}")
+
+        # Save the new option and update the gui.
+        if self.optionName == "music-volume":
+            base.musicManager.setVolume(newSetting ** 2)
+        elif self.optionName == "sfx-volume":
+            for sfm in base.sfxManagerList:
+                sfm.setVolume(newSetting ** 2)
+        elif self.optionName == "drop-shadow-strength":
+            try:
+                ShadowCaster.setGlobalDropShadowGrayLevel(float(newSetting))
+            except Exception:
+                pass
+
+        self.sliderLabel["text"] = str(round(newSetting * 100))
+        base.settings.set(self.optionName, newSetting)

@@ -1,0 +1,31 @@
+#This will not work unless you have Toon Bot running on your toontown
+#If you do not have Toon Bot you can download it at youtube.com/toontowninjecting
+
+script={
+
+    'name':'Mini Spam',\
+    
+    'description':"Spams minigames to get on top toons.",\
+                   
+    'author': 'Freshollie',\
+    
+    'version': '1',\
+    
+    'unload':'minigameSpammer.revert()',\
+    
+    'start':'minigameSpammer.start()',\
+    
+    'stop':'minigameSpammer.stop()',\
+    
+    'close':'minigameSpammer.autoerGui.hideAll()',\
+    
+    'open':'minigameSpammer.autoerGui.showAll()',\
+    
+    'options':{ 
+        },\
+    'location':'http://goo.gl/dlExaZ'}
+    
+try:
+    toonBot.addScript(script)
+except:
+    base.localAvatar.setSystemMessage(0,'You did not follow instructions, this script needs to be added to Toon-Bot which can be found on my channel (youtube.com/toontowninjecting)')

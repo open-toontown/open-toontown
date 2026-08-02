@@ -16,6 +16,7 @@ from .PartyGlobals import FireworksFinishedEvent
 from .PartyGlobals import FireworksPostLaunchDelay
 from .PartyGlobals import RocketSoundDelay
 from .PartyGlobals import RocketDirectionDelay
+from direct.directnotify.DirectNotifyGlobal import directNotify
 from .DistributedPartyActivity import DistributedPartyActivity
 from .activityFSMs import FireworksActivityFSM
 from . import PartyGlobals

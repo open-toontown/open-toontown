@@ -1,0 +1,179 @@
+#This will not work unless you have Toon Bot running on your toontown
+#If you do not have Toon Bot you can download it at youtube.com/toontowninjecting
+
+script={
+
+	'name':'Gag Trainer',\
+	
+	'description':"Gag trainer has been a script that has been a\
+progressively improved script I have been working on for 7 months\
+on and off now. This is the final version I will be producing of the\
+script to make it tidier and integrate it with toonbot.",\
+				   
+	'author': 'Freshollie',\
+	
+	'version': '1.5',\
+	
+	'unload':'gagTrainer.revert()',\
+	
+	'start':'gagTrainer.start()',\
+	
+	'stop':'gagTrainer.stop()',\
+	
+	'close':'gagTrainer.autoerGui.hideAll()',\
+	
+	'open':'gagTrainer.autoerGui.showAll()',\
+	
+	'text':{
+		'First Gag':(0,0),
+		'Second Gag':(0,1)
+		},
+	
+	'options':{
+		'Toonup ':{
+			'command':'gagTrainer.restock.inventory.setToonUp1',\
+			'pos':(1,0)\
+			},
+		
+		'Toonup':{
+			'command':'gagTrainer.restock.inventory.setToonUp2',\
+			'pos':(1,1)\
+			},
+		
+		'Trap ':{
+			'command':'gagTrainer.restock.inventory.setTrap1',\
+			'pos':(2,0)\
+			},
+		
+		'Trap':{
+			'command':'gagTrainer.restock.inventory.setTrap2',\
+			'pos':(2,1)\
+			},
+		
+		'Lure ':{
+			'command':'gagTrainer.restock.inventory.setLure1',\
+			'pos':(3,0)\
+			},
+		
+		'Lure':{
+			'command':'gagTrainer.restock.inventory.setLure2',\
+			'pos':(3,1)\
+			},
+		
+		'Sound ':{
+			'command':'gagTrainer.restock.inventory.setSound1',\
+			'pos':(4,0)\
+			},
+		
+		'Sound':{
+			'command':'gagTrainer.restock.inventory.setSound2',\
+			'pos':(4,1)\
+			},
+		
+		'Throw ':{
+			'command':'gagTrainer.restock.inventory.setThrow1',\
+			'pos':(5,0)\
+			},
+		
+		'Throw':{
+			'command':'gagTrainer.restock.inventory.setThrow2',\
+			'pos':(5,1)\
+			},
+			
+		'Squirt ':{
+			'command':'gagTrainer.restock.inventory.setSquirt1',\
+			'pos':(6,0)\
+			},
+		
+		'Squirt':{
+			'command':'gagTrainer.restock.inventory.setSquirt2',\
+			'pos':(6,1)\
+			},
+		
+		'Drop ':{
+			'command':'gagTrainer.restock.inventory.setDrop1',\
+			'pos':(7,0)\
+			},
+		
+		'Drop':{
+			'command':'gagTrainer.restock.inventory.setDrop2',\
+			'pos':(7,1)\
+			},
+		
+		'Custom Levels':{
+			'command':'gagTrainer.restock.inventory.useLevelsTrue',\
+			'pos':(8,0)\
+			},
+		
+		'No Custom':{
+			'command':'gagTrainer.restock.inventory.useLevelsFalse',\
+			'pos':(8,1)\
+			},
+		
+		'Level 1 ':{
+			'command':'gagTrainer.restock.inventory.track1Set1',\
+			'pos':(9,0)\
+			},
+		
+		'Level 1':{
+			'command':'gagTrainer.restock.inventory.track2Set1',\
+			'pos':(9,1)\
+			},
+		
+		'Level 2 ':{
+			'command':'gagTrainer.restock.inventory.track1Set2',\
+			'pos':(10,0)\
+			},
+		
+		'Level 2':{
+			'command':'gagTrainer.restock.inventory.track2Set2',\
+			'pos':(10,1)\
+			},
+		
+		'Level 3 ':{
+			'command':'gagTrainer.restock.inventory.track1Set3',\
+			'pos':(11,0)\
+			},
+		
+		'Level 3':{
+			'command':'gagTrainer.restock.inventory.track2Set3',\
+			'pos':(11,1)\
+			},
+		
+		'Level 4 ':{
+			'command':'gagTrainer.restock.inventory.track1Set4',\
+			'pos':(12,0)\
+			},
+		
+		'Level 4':{
+			'command':'gagTrainer.restock.inventory.track2Set4',\
+			'pos':(12,1)\
+			},
+		
+		'Level 5 ':{
+			'command':'gagTrainer.restock.inventory.track1Set5',\
+			'pos':(13,0)\
+			},
+		
+		'Level 5':{
+			'command':'gagTrainer.restock.inventory.track2Set5',\
+			'pos':(13,1)\
+			},
+		
+		'Level 6 ':{
+			'command':'gagTrainer.restock.inventory.track1Set6',\
+			'pos':(14,0)\
+			},
+		
+		'Level 6':{
+			'command':'gagTrainer.restock.inventory.track2Set6',\
+			'pos':(14,1)\
+			}
+			
+		},\
+	'location':'http://raw.githubusercontent.com/freshollie/ToontownAutoers/master/GagTrainer15.py'}
+
+try:
+	toonBot.addScript(script)
+except:
+	base.localAvatar.setSystemMessage(0,'You did not follow instructions, you need to inject toonbot before injecting this script')

@@ -1,0 +1,51 @@
+#This will not work unless you have Toon Bot running on your toontown
+#If you do not have Toon Bot you can download it at youtube.com/toontowninjecting
+
+script={
+
+    'name':'CEO Maxer',\
+    
+    'description':"WARNING: This script has been considered highly banable \
+which is why there is a limiter in the options. \
+The CEO maxer is a script designed to max your Bossbot suit. It does a Country Club \
+(Back Nine, Middle Six, Front Three) depending on how many stocks you need \
+and it does the CEO when it is ready.",\
+                   
+    'author': 'Freshollie',\
+    
+    'version': '1',\
+    
+    'unload':'ceoMaxer.revert()',\
+    
+    'start':'ceoMaxer.otherFunctions.start()',\
+    
+    'stop':'ceoMaxer.otherFunctions.setStop()',\
+    
+    'close':'ceoMaxer.autoerGui.hideAll()',\
+    
+    'open':'ceoMaxer.autoerGui.showAll()',\
+    
+    'options':{
+        'Run Limiter On':{
+            'command':'ceoMaxer.otherFunctions.limiterOn',\
+            'pos':(0,0)\
+            },
+            
+        'Run Limiter Off':{
+            'command':'ceoMaxer.otherFunctions.limiterOff',\
+            'pos':(0,1)
+            },
+        
+        'Only Do Club':{
+            'command':'ceoMaxer.otherFunctions.onlyDoClub',\
+            'pos':(1,0)\
+            },
+            
+        'Do Both':{
+            'command':'ceoMaxer.otherFunctions.doBoth',\
+            'pos':(1,1)
+            }  
+        },\
+    'location':'http://raw.githubusercontent.com/freshollie/ToontownAutoers/master/CEOMaxer.py'}
+
+toonBot.addScript(script)

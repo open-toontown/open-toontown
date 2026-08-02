@@ -198,12 +198,9 @@ def isInterior(zoneId):
 
 
 def overrideOn(branch, exteriorList, interiorList):
-    global tutorialDict
-    if tutorialDict:
-        zoneUtilNotify.warning('setTutorialDict: tutorialDict is already set!')
-    tutorialDict = {'branch': branch,
-     'exteriors': exteriorList,
-     'interiors': interiorList}
+    # Tutorial zone overrides create hard locks by rewriting hood/zone routing.
+    # This project disables tutorial zone locking entirely.
+    return
 
 
 def overrideOff():

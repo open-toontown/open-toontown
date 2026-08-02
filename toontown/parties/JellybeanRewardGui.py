@@ -11,6 +11,7 @@ from direct.gui.DirectGui import DirectFrame
 from direct.gui.DirectGui import DirectButton
 from direct.gui.DirectGui import DirectLabel
 from direct.gui import DirectGuiGlobals
+from direct.directnotify.DirectNotifyGlobal import directNotify
 
 # Toontown imports
 from toontown.toonbase import ToontownGlobals
