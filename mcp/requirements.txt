@@ -1,0 +1,2 @@
+# FastMCP lives in the 1.x line; mcp 2.0 removed it (split into a separate package).
+mcp>=1.2,<2

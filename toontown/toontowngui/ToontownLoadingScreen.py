@@ -15,7 +15,11 @@ class ToontownLoadingScreen:
         self.modern = None
         if ConfigVariableBool('want-modern-launcher-ui', True).value:
             try:
-                self.modern = ModernLoadingScreen.ModernLoadingScreen()
+                if hasattr(base, 'modernLoading') and base.modernLoading:
+                    self.modern = base.modernLoading
+                else:
+                    self.modern = ModernLoadingScreen.ModernLoadingScreen()
+                    base.modernLoading = self.modern
             except Exception:
                 self.modern = None
         self.gui = loader.loadModel('phase_3/models/gui/progress-background')
@@ -42,12 +46,14 @@ class ToontownLoadingScreen:
         return
 
     def destroy(self):
-        if self.modern:
+        import builtins
+        b = getattr(builtins, 'base', None)
+        if self.modern and self.modern is not getattr(b, 'modernLoading', None):
             try:
                 self.modern.destroy()
             except Exception:
                 pass
-            self.modern = None
+        self.modern = None
         self.tip.destroy()
         self.title.destroy()
         self.waitBar.destroy()

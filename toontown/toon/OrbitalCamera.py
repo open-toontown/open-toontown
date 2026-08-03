@@ -166,11 +166,11 @@ class OrbitalCamera(FSM, NodePath, ParamObj):
         del self.cTravOnFloor
         del self.ccRay2
         del self.ccRay2Node
-        self.ccRay2NodePath.remove_node()
+        self.ccRay2NodePath.removeNode()
         del self.ccRay2NodePath
-        self.ccRay2MoveNodePath.remove_node()
+        self.ccRay2MoveNodePath.removeNode()
         del self.ccRay2MoveNodePath
-        self.camFloorRayNode.remove_node()
+        self.camFloorRayNode.removeNode()
         del self.camFloorRayNode
 
     # ------------------------------------------------------------------ #

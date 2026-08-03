@@ -184,3 +184,29 @@ skip-phone-quest true
 
 # Optional local overrides (dev/debug). Create this file if needed.
 load-prc-file etc/Configrc_dev.prc
+
+# No-Districts auto-retry: when the client finds no available district (e.g. the
+# AI server is still registering during a local-stack boot), it normally shows
+# "No Districts are available. Try again?" and waits for a click. With the
+# defaults below it retries on its own, with no prompt.
+#   auto-retry-no-shards 0    -> always show the prompt
+#   no-shards-max-retries 5   -> fall back to the prompt after 5 failed attempts
+#                               (0 = retry forever)
+#   no-shards-retry-delay 2.0 -> seconds between auto-retries#   auto-retry-no-shards #t
+#   no-shards-max-retries 0
+#   no-shards-retry-delay 2.0
+#
+# Tutorial-availability skip: on some stacks the client-side TutorialManager
+# (a district object) never generates, so asking for the tutorial would stall
+# ~75s and then throw the "Lost connection" prompt. When the TutorialManager
+# is missing, the client now skips the tutorial and goes straight into the
+# game. Set #f to keep the old (prompt + stall) behavior. As a second safety
+# net, an unanswered tutorial request also skips into the game after
+# tutorial-request-timeout seconds.
+# skip-tutorial-if-unavailable #t
+# tutorial-request-timeout 25.0
+#
+# Note: with auto-retry on, the noShards path that can also fire mid-game
+# (district disappears) now silently returns the player to Pick-a-Toon
+# instead of showing a prompt -- the same destination as the old dialog's
+# Retry button, just without asking first.

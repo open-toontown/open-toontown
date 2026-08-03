@@ -295,10 +295,17 @@ class ModernLoadingScreen:
         if not self._enabled:
             return
         self._bulk_active = True
+        if hasattr(base, 'cr') and base.cr and (getattr(base.cr, 'playGame', None) or getattr(base, 'localAvatar', None)):
+            self._launcher_done = True
         if ConfigVariableBool('want-zero-load-ui', False).value:
             return
         self._layout_compact_bar()
         if self._launcher_done:
+            if self.root:
+                try:
+                    self.root.reparentTo(hidden)
+                except Exception:
+                    pass
             try:
                 self.compact_root.reparentTo(aspect2d, DGG.NO_FADE_SORT_INDEX)
             except Exception:
@@ -314,6 +321,8 @@ class ModernLoadingScreen:
 
     def leave_bulk_load(self):
         self._bulk_active = False
+        if hasattr(base, 'cr') and base.cr and (getattr(base.cr, 'playGame', None) or getattr(base, 'localAvatar', None)):
+            self._launcher_done = True
         if ConfigVariableBool('want-zero-load-ui', False).value:
             if self._preview:
                 try:
@@ -321,9 +330,14 @@ class ModernLoadingScreen:
                 except Exception:
                     pass
             return
-        if self._launcher_done and self.compact_root:
+        if self.compact_root:
             try:
                 self.compact_root.reparentTo(hidden)
+            except Exception:
+                pass
+        if self.root and self._launcher_done:
+            try:
+                self.root.reparentTo(hidden)
             except Exception:
                 pass
         if self._preview:

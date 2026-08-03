@@ -247,7 +247,7 @@ class DistributedPhotoGame(DistributedMinigame, PhotoGameBase.PhotoGameBase):
         self.ignoreAll()
 
         for rayEntry in self.rayArray:
-            rayEntry[3].remove_node()
+            rayEntry[3].removeNode()
         del self.rayArray
 
         return

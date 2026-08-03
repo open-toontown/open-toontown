@@ -82,3 +82,8 @@ errorCode
 useropt.json
 toontown/launcher/useropt.json
 astron/databases/accounts.json
+
+# MCP server runtime artifacts
+mcp/.venv/
+mcp/runtime/
+logs/mcp/

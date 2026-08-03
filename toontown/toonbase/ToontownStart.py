@@ -219,6 +219,19 @@ cr.music = music
 del music
 base.initNametagGlobals()
 base.cr = cr
+
+# Optional MCP test bridge (off by default). Lets an external MCP server (AI
+# assistant) drive and inspect the running client via a localhost JSON socket.
+if ConfigVariableBool('want-mcp-bridge', False).value:
+    try:
+        from toontown.util.mcp_bridge import MCPBridge
+        base.mcpBridge = MCPBridge()
+        print('ToontownStart: MCP bridge listening on %s:%s' % (base.mcpBridge.host, base.mcpBridge.port))
+    except Exception:
+        import traceback
+        print('ToontownStart: MCP bridge failed to start:')
+        print(traceback.format_exc())
+
 loader.endBulkLoad('init')
 from otp.distributed.OtpDoGlobals import OTP_DO_ID_FRIEND_MANAGER
 cr.generateGlobalObject(OTP_DO_ID_FRIEND_MANAGER, 'FriendManager')

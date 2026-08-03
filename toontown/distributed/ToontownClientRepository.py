@@ -797,10 +797,34 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
             self.handleMessageType(msgType, di)
 
     def __requestTutorial(self, hoodId, zoneId, avId):
+        # On this Astron stack the client-side TutorialManager (a district
+        # object) may never generate, so 'requestTutorial' would have no
+        # listener and the AI could never answer -- the client would stall
+        # ~75s and then throw the "Lost connection" prompt. If the tutorial
+        # manager never showed up, skip the tutorial and go straight into
+        # the game (same path as an avatar that already acked it).
+        if ConfigVariableBool('skip-tutorial-if-unavailable', True).value and not messenger.whoAccepts('requestTutorial'):
+            self.notify.info('TutorialManager not available; skipping tutorial.')
+            self.gameFSM.request('playGame', [hoodId, zoneId, avId])
+            return
         self.notify.debug('requesting tutorial')
         self.acceptOnce('startTutorial', self.__handleStartTutorial, [avId])
         messenger.send('requestTutorial')
         self.waitForDatabaseTimeout(requestName='RequestTutorial')
+        # Safety net: even if the TutorialManager is present, the AI may
+        # never answer the request. Rather than stall ~75s into the
+        # "Lost connection" prompt, skip into the game after a timeout.
+        taskMgr.doMethodLater(ConfigVariableDouble('tutorial-request-timeout', 25.0).value,
+                              self.__tutorialRequestTimeout, 'tutorialRequestTimeout',
+                              extraArgs=[hoodId, zoneId, avId])
+
+    def __tutorialRequestTimeout(self, hoodId, zoneId, avId):
+        taskMgr.remove('tutorialRequestTimeout')
+        if self.gameFSM.getCurrentState().getName() == 'tutorialQuestion':
+            self.notify.info('Tutorial request timed out; skipping tutorial.')
+            self.cleanupWaitingForDatabase()
+            self.gameFSM.request('playGame', [hoodId, zoneId, avId])
+        return Task.done
 
     def __handleStartTutorial(self, avId, zoneId):
         self.gameFSM.request('playGame', [Tutorial, zoneId, avId])
@@ -811,6 +835,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
         self.handlerArgs = None
         self.ignore('startTutorial')
         taskMgr.remove('waitingForTutorial')
+        taskMgr.remove('tutorialRequestTimeout')
         return
 
     def enterSwitchShards(self, shardId, hoodId, zoneId, avId):
@@ -963,6 +988,7 @@ class ToontownClientRepository(OTPClientRepository.OTPClientRepository):
     def _wantShardListComplete(self):
         print(self.activeDistrictMap)
         if self._shardsAreReady():
+            self._noShardsRetries = 0
             self.acceptOnce(ToontownDistrictStats.EventName(), self.shardDetailStatsComplete)
             ToontownDistrictStats.refresh()
         else:

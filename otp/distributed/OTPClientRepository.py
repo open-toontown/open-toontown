@@ -448,6 +448,8 @@ class OTPClientRepository(ClientRepositoryBase):
         self.playGame = playGame(self.gameFSM, self.gameDoneEvent)
         self.shardListHandle = None
         self.uberZoneInterest = None
+        self.noShardsBox = None
+        self._noShardsRetries = 0
         self.wantSwitchboard = ConfigVariableBool('want-switchboard', 0).value
         self.wantSwitchboardHacks = ConfigVariableBool('want-switchboard-hacks', 0).value
         self.__pendingGenerates = {}
@@ -774,6 +776,7 @@ class OTPClientRepository(ClientRepositoryBase):
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
     def _wantShardListComplete(self):
         if self._shardsAreReady():
+            self._noShardsRetries = 0
             self.loginFSM.request('waitForAvatarList')
         else:
             self.loginFSM.request('noShards')
@@ -796,6 +799,24 @@ class OTPClientRepository(ClientRepositoryBase):
     def enterNoShards(self):
         messenger.send('connectionIssue')
         self.handler = self.handleMessageType
+
+        # Automatically retry (no prompt) when no district is available yet --
+        # e.g. the AI server is still registering its district while the local
+        # stack boots. This replaces the "No Districts are available. Try
+        # again?" dialog so login proceeds on its own. Configurable:
+        #   auto-retry-no-shards 0     always show the prompt
+        #   no-shards-max-retries 5    fall back to the prompt after 5 attempts
+        #   no-shards-retry-delay 2.0  seconds between auto-retries
+        autoRetry = ConfigVariableBool('auto-retry-no-shards', True).value
+        maxRetries = ConfigVariableInt('no-shards-max-retries', 0).value
+        if autoRetry:
+            self._noShardsRetries += 1
+            if maxRetries == 0 or self._noShardsRetries <= maxRetries:
+                self.notify.info('No districts available (attempt %s); auto-retrying without prompt.'
+                                 % self._noShardsRetries)
+                self.loginFSM.request('noShardsWait')
+                return
+
         dialogClass = OTPGlobals.getGlobalDialogClass()
         self.noShardsBox = dialogClass(message=OTPLocalizer.CRNoDistrictsTryAgain, doneEvent='noShardsAck', style=OTPDialog.TwoChoice)
         self.noShardsBox.show()
@@ -816,8 +837,9 @@ class OTPClientRepository(ClientRepositoryBase):
     def exitNoShards(self):
         self.handler = None
         self.ignore('noShardsAck')
-        self.noShardsBox.cleanup()
-        del self.noShardsBox
+        if self.noShardsBox:
+            self.noShardsBox.cleanup()
+            self.noShardsBox = None
         return
 
     @report(types=['args', 'deltaStamp'], dConfigParam='teleport')
@@ -831,7 +853,11 @@ class OTPClientRepository(ClientRepositoryBase):
         def doneWait(task, self = self):
             self.loginFSM.request('waitForShardList')
 
-        if __debug__:
+        if ConfigVariableBool('auto-retry-no-shards', True).value:
+            # While auto-retrying, use a modest fixed delay so the client
+            # doesn't hot-loop while waiting for a district to come online.
+            delay = ConfigVariableDouble('no-shards-retry-delay', 2.0).value
+        elif __debug__:
             delay = 0.0
         else:
             delay = 6.5 + random.random() * 2.0

@@ -1,4 +1,12 @@
 INCOMING_CHAT_MESSAGE_NAME = 'magicWord'
+# Outgoing/local-player chat events. In this codebase TalkAssistant.sendOpenTalk()
+# fires the 'magicWord' event when the typed message starts with the chat prefix,
+# so the magic word manager listens on the same event name (ToontownMagicWordManager
+# imports these names via `from MagicWordConfig import *` -- they must exist or the
+# client crashes with NameError when the manager is generated after picking a toon).
+OUTGOING_CHAT_MESSAGE_NAME = 'magicWord'
+CLICKED_NAMETAG_MESSAGE_NAME = 'clickedNametag'
+FOCUS_OUT_MESSAGE_NAME = 'focusOutNametag'
 PREFIX_DEFAULT = '~'
 PREFIX_ALLOWED = ['~', '?', '/', '<', ':', ';']
 if config.GetBool('exec-chat', False):

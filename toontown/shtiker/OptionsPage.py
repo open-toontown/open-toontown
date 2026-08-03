@@ -197,11 +197,14 @@ class OptionsTabPage(DirectFrame, FSM):
 
     def load(self) -> None:
         # Load the Fish Page to borrow its tabs
-        base.loader.loadModel("phase_3.5/models/gui/fishingBook", callback=self.loadTabs)
+        guiFish = base.loader.loadModel("phase_3.5/models/gui/fishingBook")
+        self.loadTabs(guiFish)
         # Load the "Exit Toontown" button
-        base.loader.loadModel("phase_3/models/gui/quit_button", callback=self.createExitButton)
+        guiQuit = base.loader.loadModel("phase_3/models/gui/quit_button")
+        self.createExitButton(guiQuit)
         # Load (& hide) the options frames
-        base.loader.loadModel("phase_3/models/gui/quit_button", callback=self.createTabs)
+        guiQuit2 = base.loader.loadModel("phase_3/models/gui/quit_button")
+        self.createTabs(guiQuit2)
 
     def loadTabs(self, gui):
         # The blue and yellow colors are trying to match the
@@ -229,7 +232,7 @@ class OptionsTabPage(DirectFrame, FSM):
                 extraArgs=[tab], pos=(x, 0, 0.77)
             )
 
-        gui.remove_node()
+        gui.removeNode()
 
     def createExitButton(self, gui) -> None:
         self.exitButton = DirectButton(
@@ -247,7 +250,7 @@ class OptionsTabPage(DirectFrame, FSM):
             command=self.__handleExitShowWithConfirm,
         )
 
-        gui.remove_node()
+        gui.removeNode()
 
     def createTabs(self, gui) -> None:
         for tab, options in self.tabOptions.items():
@@ -255,7 +258,7 @@ class OptionsTabPage(DirectFrame, FSM):
             frame.hide()
             self.options[tab] = frame
 
-        gui.remove_node()
+        gui.removeNode()
 
     def unload(self) -> None:
         for tab in self.tabs.values():
@@ -446,7 +449,7 @@ class DropdownScrolledFrame(ToontownScrolledFrame):
             self.bindToScroll(element)
             self.optionElements.append(element)
 
-        gui.remove_node()
+        gui.removeNode()
 
         optionAmt = len(self.optionElements)
 
