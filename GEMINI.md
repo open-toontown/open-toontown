@@ -71,10 +71,14 @@ Target: `C:\Users\Shadow\Desktop\ttbtn`
 - [x] Ported Magic Word System (`toontown/spellbook/`): Integrated `MagicWordIndex.py` (340 magic words registered), `MagicWordConfig.py`, `TTOffMagicWordManager.py`, `TTOffMagicWordManagerAI.py`, and `ToontownMagicWordManager.py`.
 - [x] Ported Spellbook Shtiker Page (`toontown/shtiker/WordPage.py`): Tabbed Spellbook page with search, category filters, copy-to-chat, argument inspectors, clothing ID tab, and accessory ID tabs.
 - [x] Integrated `LocalToon.py` & `toontown/util/ui.py`: Registered `WordPage` in ShtikerBook and implemented `make_dsl_scrollable` wheel scrolling.
-- [x] Submitted Pull Request #9 (`feature/modern-loading-system`), Pull Request #10 (`feature/outdoor-lighting-and-procedural-quests`), Pull Request #11 (`feature/settings-and-shtikerbook-revamp`), and Pull Request #12 (`feature/magic-words-and-spellbook-page`) to GitHub repository.
+- [x] Fixed Modern Loading Screen Hiding Issue: Shared `base.modernLoading` across `ToontownLoadingScreen.py` and updated `ModernLoadingScreen.py` (`enter_bulk_load` & `leave_bulk_load`) to detect in-game state and automatically hide full-screen overlay during zone transitions.
+- [x] Fixed Stickerbook (OptionsPage) Opening Crash: Replaced asynchronous model loading in `OptionsTabPage.load()` with synchronous loading, fixed invalid `remove_node()` calls to `removeNode()`, and added `StickerBookPageLeft`/`StickerBookPageRight` constants to `OTPGlobals.py`.
+- [x] Built-In MCP Server Verification: Validated game startup, authentication, in-world interaction, and clean teardown via `mcp/test_client.py run_smoke_test` and `scan_crash_logs`.
+- [x] Submitted Pull Request #146 (`fix/loading-screen-and-stickerbook-fixes`) to GitHub repository.
 
 # TODO List for Future AI Instances
-- [ ] Merge and review PR #9, PR #10, PR #11, and PR #12 into `develop`.
+- [ ] Merge and review PR #146 (`fix/loading-screen-and-stickerbook-fixes`) into `develop`.
 - [ ] Verify `TaskAutoer.py` quest automation compatibility with the procedural quest dict during live server sessions.
 - [ ] Validate server stability with Astron local launcher under heavy zone switching.
+
 
