@@ -716,7 +716,7 @@ class DistributedGolfSpot(DistributedObject.DistributedObject, FSM.FSM):
          throwerId))
         if flyBallCode == ToontownGlobals.PieCodeBossCog and self.avId == localAvatar.doId and self.lastHitSequenceNum != self.__flyBallSequenceNum:
             self.lastHitSequenceNum = self.__flyBallSequenceNum
-            if base.config.GetBool('want-ceo-golf-classic-damage', False):
+            if base.config.GetBool('want-ceo-golf-classic-damage', True):
                 self.boss.d_ballHitBoss(1)
             else:
                 self.boss.d_ballHitBoss(2)
