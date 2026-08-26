@@ -97,7 +97,8 @@ class PartyCogActivity(DirectObject):
         signLocator = self.arena.find('**/eventSign_locator')
         self.activity.sign.setPos(signLocator.getPos(self.root))
         if self.texture:
-            reskinTexture = loader.loadTexture(self.texture)
+            textureAlpha = self.texture[:-4] + '_a.rgb'
+            reskinTexture = loader.loadTexture(self.texture, textureAlpha)
             self.arena.find('**/center_grp').setTexture(reskinTexture, 100)
             self.arena.find('**/leftSide_grp').setTexture(reskinTexture, 100)
             self.arena.find('**/rightSide_grp').setTexture(reskinTexture, 100)
