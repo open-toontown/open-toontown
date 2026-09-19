@@ -133,7 +133,10 @@ class DatabaseObject:
             dg.addString(field)
 
         for field, value in items:
-            dg.addString(value.getMessage())
+            # Datagram.getMessage() is bytes under Python 3; addString() only
+            # takes str.  addBlob() writes the identical uint16-length-prefixed
+            # wire format.
+            dg.addBlob(value.getMessage())
 
         self.air.send(dg)
 
@@ -189,7 +192,7 @@ class DatabaseObject:
             dg.addString(field)
 
         for value in list(values.values()):
-            dg.addString(value.getMessage())
+            dg.addBlob(value.getMessage())
 
         self.air.send(dg)
 
