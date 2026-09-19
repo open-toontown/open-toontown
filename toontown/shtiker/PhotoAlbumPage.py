@@ -44,7 +44,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
          0.66,
          -0.88,
          0.06), itemFrame_frameColor=(0.85, 0.95, 1, 1), itemFrame_borderWidth=(0.01, 0.01), numItemsVisible=13, items=[])
-        self.renamePanel = DirectFrame(parent=self, relief=None, pos=(0.45, 0, -0.45), image=DGG.getDefaultDialogGeom(), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.0, 1.0, 0.6), text='Caption Photo', text_scale=0.06, text_pos=(0.0, 0.13), sortOrder=NO_FADE_SORT_INDEX)
+        self.renamePanel = DirectFrame(parent=self, relief=None, pos=(0.45, 0, -0.45), image=DGG.getDefaultDialogGeom(), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.0, 1.0, 0.6), text='Caption Photo', text_scale=0.06, text_pos=(0.0, 0.13), sortOrder=DGG.NO_FADE_SORT_INDEX)
         self.renameEntry = DirectEntry(parent=self.renamePanel, relief=DGG.SUNKEN, scale=0.06, pos=(-0.3, 0, 0), borderWidth=(0.1, 0.1), numLines=1, cursorKeys=0, frameColor=(0.8, 0.8, 0.5, 1), frameSize=(-0.2,
          10,
          -0.4,
@@ -52,7 +52,7 @@ class PhotoAlbumPage(ShtikerPage.ShtikerPage):
         buttons = loader.loadModel('phase_3/models/gui/dialog_box_buttons_gui')
         self.bCancel = DirectButton(parent=self.renamePanel, image=(buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr')), relief=None, text='Cancel', text_scale=0.05, text_pos=(0.0, -0.1), pos=(0.0, 0.0, -0.1), command=self.renameCancel)
         self.renamePanel.hide()
-        self.deletePanel = DirectFrame(parent=self, relief=None, pos=(0, 0, 0), image=DGG.getDefaultDialogGeom(), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.0, 1.0, 0.6), text='Delete Photo?', text_scale=0.06, text_pos=(0.0, 0.13), sortOrder=NO_FADE_SORT_INDEX)
+        self.deletePanel = DirectFrame(parent=self, relief=None, pos=(0, 0, 0), image=DGG.getDefaultDialogGeom(), image_color=ToontownGlobals.GlobalDialogColor, image_scale=(1.0, 1.0, 0.6), text='Delete Photo?', text_scale=0.06, text_pos=(0.0, 0.13), sortOrder=DGG.NO_FADE_SORT_INDEX)
         self.dOk = DirectButton(parent=self.deletePanel, image=(buttons.find('**/ChtBx_OKBtn_UP'), buttons.find('**/ChtBx_OKBtn_DN'), buttons.find('**/ChtBx_OKBtn_Rllvr')), relief=None, text='Ok', text_scale=0.05, text_pos=(0.0, -0.1), pos=(-0.1, 0.0, -0.1), command=self.deleteConfirm)
         self.dCancel = DirectButton(parent=self.deletePanel, image=(buttons.find('**/CloseBtn_UP'), buttons.find('**/CloseBtn_DN'), buttons.find('**/CloseBtn_Rllvr')), relief=None, text='Cancel', text_scale=0.05, text_pos=(0.0, -0.1), pos=(0.1, 0.0, -0.1), command=self.deleteCancel)
         self.deletePanel.hide()
