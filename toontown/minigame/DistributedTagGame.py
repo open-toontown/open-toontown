@@ -1,4 +1,5 @@
 from panda3d.core import *
+from panda3d.otp import NametagGlobals
 from toontown.toonbase.ToonBaseGlobal import *
 from .DistributedMinigame import *
 from direct.interval.IntervalGlobal import *
