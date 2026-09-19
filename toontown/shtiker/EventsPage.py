@@ -925,15 +925,22 @@ class EventsPage(ShtikerPage.ShtikerPage):
         else:
             self.getFileUrl(newsUrl)
 
+    def getTextData(self, data):
+        # Ramfile.getData() (and urllib's read() in getFileUrl) return bytes
+        # under Python 3; the news index and the article text are text.
+        if isinstance(data, bytes):
+            data = data.decode('utf-8', 'replace')
+        return data
+
     def doneGettingUrl(self, url, data, allOk):
         self.notify.debug('doneGettingUrl %s %s %s' % (url, type(data), allOk))
         self.printCurFields()
         if url == self.getNewsUrl():
             if allOk:
                 if type(data) == Ramfile:
-                    self.urls = data.getData().split('\r\n')
+                    self.urls = self.getTextData(data.getData()).split('\r\n')
                 else:
-                    self.urls = data.split('\r\n')
+                    self.urls = self.getTextData(data).split('\r\n')
             else:
                 self.notify.warning('Could not open %s' % url)
                 self.newsStatusLabel['text'] = TTLocalizer.EventsPageNewsUnavailable
@@ -965,9 +972,9 @@ class EventsPage(ShtikerPage.ShtikerPage):
                 text = ''
                 self.articleText[self.curArticleIndex] = text
                 if type(data) == Ramfile:
-                    textData = data.getData()
+                    textData = self.getTextData(data.getData())
                 else:
-                    textData = data
+                    textData = self.getTextData(data)
                 textData = textData.replace('\\1', '\x01')
                 textData = textData.replace('\\2', '\x02')
                 textData = textData.replace('\r', ' ')
