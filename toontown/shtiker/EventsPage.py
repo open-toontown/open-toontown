@@ -523,11 +523,9 @@ class EventsPage(ShtikerPage.ShtikerPage):
 
     def setMode(self, mode, updateAnyways = 0):
         messenger.send('wakeup')
-        if updateAnyways == False:
-            if self.mode == mode:
-                return
-            else:
-                self.mode = mode
+        if updateAnyways == False and self.mode == mode:
+            return
+        self.mode = mode
         self.show()
         self.updatePage()
 
