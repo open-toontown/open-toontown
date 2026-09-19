@@ -188,6 +188,12 @@ class ToontownMagicWordManagerAI(DistributedObjectAI.DistributedObjectAI):
         # Get the name of the word in lowercase
         magicWord = magicWord.lower()
 
+        # The client filters unknown words itself, but a client running a newer index than this AI
+        # (or a hand-crafted update) can still send one; never let it take the district down
+        if magicWord not in MagicWordIndex:
+            self.generateResponse(avId=avId, responseType="BadWord")
+            return
+
         # Lookup the info for this word
         magicWordInfo = MagicWordIndex[magicWord]
 
