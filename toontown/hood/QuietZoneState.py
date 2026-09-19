@@ -310,9 +310,15 @@ class QuietZoneState(StateData.StateData):
     
     if __astron__:
         def getStreetViszones(self, zoneId):
-            visZones = [ZoneUtil.getBranchZone(zoneId)]
+            branchZoneId = ZoneUtil.getBranchZone(zoneId)
+            visZones = [branchZoneId]
             # Assuming that the DNA have been loaded by bulk load before this (see Street.py).
             loader = base.cr.playGame.hood.loader
+            if zoneId == branchZoneId or zoneId not in loader.nodeDict:
+                # The branch zone itself is not a visgroup and has no entry in
+                # nodeDict (KeyError); it can only see itself.
+                self.notify.debug(f'getStreetViszones(zoneId={zoneId}): no visgroup, returning {visZones}')
+                return visZones
             visZones += [loader.node2zone[x] for x in loader.nodeDict[zoneId]]
             self.notify.debug(f'getStreetViszones(zoneId={zoneId}): returning visZones: {visZones}')
             return visZones
